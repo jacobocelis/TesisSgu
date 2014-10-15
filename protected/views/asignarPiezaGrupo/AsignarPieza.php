@@ -4,9 +4,9 @@
 	$seleccionCantidad = 'cantidad';
 	
 	$this->menu=array(
-	array('label'=>'Registrar pieza', 'url'=>array('')),
-	array('label'=>'Crear nuevo grupo', 'url'=>array('')),
-	array('label'=>'Atrás', 'url'=>array('')),
+	array('label'=>'Registrar pieza', 'url'=>array('repuesto/create')),
+	array('label'=>'Crear nuevo grupo', 'url'=>array('grupo/create')),
+	array('label'=>'Ver piezas asignadas', 'url'=>array('detallePiezaGrupo/detallepieza')),
 );
 ?>
 <div class='form'>

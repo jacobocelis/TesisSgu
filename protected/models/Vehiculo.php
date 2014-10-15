@@ -50,7 +50,7 @@ class Vehiculo extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('numeroUnidad, serialCarroceria,serialMotor, placa, anno, cantidadRuedas, capTanque, idmodelo, idgrupo, idcombustible, idcolor,idpropiedad,fechaRegistro', 'required'),
+			array('numeroUnidad, serialCarroceria,serialMotor, placa, anno, cantidadRuedas, capTanque, idmodelo, idgrupo, idcombustible, idcolor,idpropiedad', 'required'),
 			array('numeroUnidad, anno, nroPuestos, nroEjes, capCarga, cantidadRuedas, capTanque, idmodelo, idgrupo, idcombustible,idcolor,idpropiedad', 'numerical', 'integerOnly'=>true),
 			array('serialCarroceria', 'length', 'max'=>45),
 			array('placa', 'length', 'max'=>7),

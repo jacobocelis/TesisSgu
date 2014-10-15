@@ -38001,3 +38001,152 @@ Stack trace:
 REQUEST_URI=/yii/tsg/infgrupo/delete/41.sgu?ajax=campos
 HTTP_REFERER=http://localhost/yii/tsg/grupo/2.sgu
 ---
+2014/10/14 15:20:47 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'The requested page does not exist.' in C:\xampp\htdocs\yii\tsg\protected\controllers\VehiculoController.php:229
+Stack trace:
+#0 C:\xampp\htdocs\yii\tsg\protected\controllers\VehiculoController.php(126): VehiculoController->loadModel('1')
+#1 [internal function]: VehiculoController->actionView('1')
+#2 C:\xampp\htdocs\yii\tsg\yii\framework\web\actions\CAction.php(108): ReflectionMethod->invokeArgs(Object(VehiculoController), Array)
+#3 C:\xampp\htdocs\yii\tsg\yii\framework\web\actions\CInlineAction.php(47): CAction->runWithParamsInternal(Object(VehiculoController), Object(ReflectionMethod), Array)
+#4 C:\xampp\htdocs\yii\tsg\yii\framework\web\CController.php(308): CInlineAction->runWithParams(Array)
+#5 C:\xampp\htdocs\yii\tsg\yii\framework\web\filters\CFilterChain.php(133): CController->runAction(Object(CInlineAction))
+#6 C:\xampp\htdocs\yii\tsg\yii\framework\web\filters\CFilter.php(40): CFilterChain->run()
+#7 C:\xampp\htdocs\yii\tsg\yii\framework\web\CController.php(1145): CFilter->filter(Object(CFilterChain))
+#8 C:\xampp\htdocs\yii\tsg\yii\framework\web\filters\CInlineFilter.php(58): CController->filterAccessControl(Object(CFilterChain))
+#9 C:\xampp\htdocs\yii\tsg\yii\framework\web\filters\CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#10 C:\xampp\htdocs\yii\tsg\yii\framework\web\CController.php(291): CFilterChain->run()
+#11 C:\xampp\htdocs\yii\tsg\yii\framework\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#12 C:\xampp\htdocs\yii\tsg\yii\framework\web\CWebApplication.php(282): CController->run('view')
+#13 C:\xampp\htdocs\yii\tsg\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('vehiculo/view')
+#14 C:\xampp\htdocs\yii\tsg\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#15 C:\xampp\htdocs\yii\tsg\index.php(12): CApplication->run()
+#16 {main}
+REQUEST_URI=/yii/tsg/vehiculo/1.sgu
+---
+2014/10/14 20:47:28 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "pieza/create"' in C:\xampp\htdocs\yii\tsg\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\xampp\htdocs\yii\tsg\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('pieza/create')
+#1 C:\xampp\htdocs\yii\tsg\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\xampp\htdocs\yii\tsg\index.php(12): CApplication->run()
+#3 {main}
+REQUEST_URI=/yii/tsg/pieza/create.sgu
+HTTP_REFERER=http://localhost/yii/tsg/asignarpiezagrupo/asignarpieza.sgu
+---
+2014/10/14 20:47:50 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "pieza/create"' in C:\xampp\htdocs\yii\tsg\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\xampp\htdocs\yii\tsg\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('pieza/create')
+#1 C:\xampp\htdocs\yii\tsg\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\xampp\htdocs\yii\tsg\index.php(12): CApplication->run()
+#3 {main}
+REQUEST_URI=/yii/tsg/pieza/create.sgu
+HTTP_REFERER=http://localhost/yii/tsg/asignarpiezagrupo/asignarpieza.sgu
+---
+2014/10/14 20:56:17 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "yii/tsg/asignarpiezagrupo/asignarpieza.sgu"' in C:\xampp\htdocs\yii\tsg\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\xampp\htdocs\yii\tsg\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('yii/tsg/asignar...')
+#1 C:\xampp\htdocs\yii\tsg\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\xampp\htdocs\yii\tsg\index.php(12): CApplication->run()
+#3 {main}
+REQUEST_URI=/yii/tsg/yii/tsg/asignarpiezagrupo/asignarpieza.sgu.sgu
+HTTP_REFERER=http://localhost/yii/tsg/detallePiezaGrupo/detallepieza.sgu
+---
+2014/10/14 22:02:57 [warning] [application] Error al establecer unsafe al atributo "id" de "Vehiculo".
+in C:\xampp\htdocs\yii\tsg\protected\controllers\VehiculoController.php (144)
+in C:\xampp\htdocs\yii\tsg\index.php (12)
+2014/10/14 22:04:44 [warning] [application] Error al establecer unsafe al atributo "id" de "Vehiculo".
+in C:\xampp\htdocs\yii\tsg\protected\controllers\VehiculoController.php (144)
+in C:\xampp\htdocs\yii\tsg\index.php (12)
+2014/10/14 22:18:46 [warning] [application] Error al establecer unsafe al atributo "id" de "Vehiculo".
+in C:\xampp\htdocs\yii\tsg\protected\controllers\VehiculoController.php (144)
+in C:\xampp\htdocs\yii\tsg\index.php (12)
+2014/10/14 22:25:18 [warning] [application] Error al establecer unsafe al atributo "id" de "Vehiculo".
+in C:\xampp\htdocs\yii\tsg\protected\controllers\VehiculoController.php (144)
+in C:\xampp\htdocs\yii\tsg\index.php (12)
+2014/10/14 22:25:54 [warning] [application] Error al establecer unsafe al atributo "id" de "Vehiculo".
+in C:\xampp\htdocs\yii\tsg\protected\controllers\VehiculoController.php (144)
+in C:\xampp\htdocs\yii\tsg\index.php (12)
+2014/10/14 22:29:18 [error] [exception.CException] exception 'CException' with message 'CActiveForm y sus behaviors no tienen un método o closure llamado "hidden".' in C:\xampp\htdocs\yii\tsg\yii\framework\base\CComponent.php:266
+Stack trace:
+#0 C:\xampp\htdocs\yii\tsg\protected\views\vehiculo\_form.php(136): CComponent->__call('hidden', Array)
+#1 C:\xampp\htdocs\yii\tsg\protected\views\vehiculo\_form.php(136): CActiveForm->hidden(Object(Vehiculo), 'fechaRegistro')
+#2 C:\xampp\htdocs\yii\tsg\yii\framework\web\CBaseController.php(126): require('C:\\xampp\\htdocs...')
+#3 C:\xampp\htdocs\yii\tsg\yii\framework\web\CBaseController.php(95): CBaseController->renderInternal('C:\\xampp\\htdocs...', Array, true)
+#4 C:\xampp\htdocs\yii\tsg\yii\framework\web\CController.php(869): CBaseController->renderFile('C:\\xampp\\htdocs...', Array, true)
+#5 C:\xampp\htdocs\yii\tsg\protected\views\vehiculo\create.php(17): CController->renderPartial('_form', Array)
+#6 C:\xampp\htdocs\yii\tsg\yii\framework\web\CBaseController.php(126): require('C:\\xampp\\htdocs...')
+#7 C:\xampp\htdocs\yii\tsg\yii\framework\web\CBaseController.php(95): CBaseController->renderInternal('C:\\xampp\\htdocs...', Array, true)
+#8 C:\xampp\htdocs\yii\tsg\yii\framework\web\CController.php(869): CBaseController->renderFile('C:\\xampp\\htdocs...', Array, true)
+#9 C:\xampp\htdocs\yii\tsg\yii\framework\web\CController.php(782): CController->renderPartial('create', Array, true)
+#10 C:\xampp\htdocs\yii\tsg\protected\controllers\VehiculoController.php(151): CController->render('create', Array)
+#11 C:\xampp\htdocs\yii\tsg\yii\framework\web\actions\CInlineAction.php(49): VehiculoController->actionCreate()
+#12 C:\xampp\htdocs\yii\tsg\yii\framework\web\CController.php(308): CInlineAction->runWithParams(Array)
+#13 C:\xampp\htdocs\yii\tsg\yii\framework\web\filters\CFilterChain.php(133): CController->runAction(Object(CInlineAction))
+#14 C:\xampp\htdocs\yii\tsg\yii\framework\web\filters\CFilter.php(40): CFilterChain->run()
+#15 C:\xampp\htdocs\yii\tsg\yii\framework\web\CController.php(1145): CFilter->filter(Object(CFilterChain))
+#16 C:\xampp\htdocs\yii\tsg\yii\framework\web\filters\CInlineFilter.php(58): CController->filterAccessControl(Object(CFilterChain))
+#17 C:\xampp\htdocs\yii\tsg\yii\framework\web\filters\CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#18 C:\xampp\htdocs\yii\tsg\yii\framework\web\CController.php(291): CFilterChain->run()
+#19 C:\xampp\htdocs\yii\tsg\yii\framework\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#20 C:\xampp\htdocs\yii\tsg\yii\framework\web\CWebApplication.php(282): CController->run('create')
+#21 C:\xampp\htdocs\yii\tsg\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('vehiculo/create')
+#22 C:\xampp\htdocs\yii\tsg\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#23 C:\xampp\htdocs\yii\tsg\index.php(12): CApplication->run()
+#24 {main}
+REQUEST_URI=/yii/tsg/vehiculo/create.sgu
+---
+2014/10/14 22:29:51 [warning] [application] Error al establecer unsafe al atributo "id" de "Vehiculo".
+in C:\xampp\htdocs\yii\tsg\protected\controllers\VehiculoController.php (144)
+in C:\xampp\htdocs\yii\tsg\index.php (12)
+2014/10/14 22:30:12 [warning] [application] Error al establecer unsafe al atributo "id" de "Vehiculo".
+in C:\xampp\htdocs\yii\tsg\protected\controllers\VehiculoController.php (144)
+in C:\xampp\htdocs\yii\tsg\index.php (12)
+2014/10/14 22:38:24 [warning] [application] Error al establecer unsafe al atributo "id" de "Vehiculo".
+in C:\xampp\htdocs\yii\tsg\protected\controllers\VehiculoController.php (144)
+in C:\xampp\htdocs\yii\tsg\index.php (12)
+2014/10/14 22:40:16 [warning] [application] Error al establecer unsafe al atributo "id" de "Vehiculo".
+in C:\xampp\htdocs\yii\tsg\protected\controllers\VehiculoController.php (144)
+in C:\xampp\htdocs\yii\tsg\index.php (12)
+2014/10/14 22:44:58 [warning] [application] Error al establecer unsafe al atributo "id" de "Vehiculo".
+in C:\xampp\htdocs\yii\tsg\protected\controllers\VehiculoController.php (144)
+in C:\xampp\htdocs\yii\tsg\index.php (12)
+2014/10/14 22:48:55 [warning] [application] Error al establecer unsafe al atributo "id" de "Vehiculo".
+in C:\xampp\htdocs\yii\tsg\protected\controllers\VehiculoController.php (144)
+in C:\xampp\htdocs\yii\tsg\index.php (12)
+2014/10/14 22:48:55 [warning] [application] Error al establecer unsafe al atributo "fechaRegistro" de "Vehiculo".
+in C:\xampp\htdocs\yii\tsg\protected\controllers\VehiculoController.php (144)
+in C:\xampp\htdocs\yii\tsg\index.php (12)
+2014/10/14 22:49:13 [warning] [application] Error al establecer unsafe al atributo "id" de "Vehiculo".
+in C:\xampp\htdocs\yii\tsg\protected\controllers\VehiculoController.php (144)
+in C:\xampp\htdocs\yii\tsg\index.php (12)
+2014/10/14 22:49:13 [warning] [application] Error al establecer unsafe al atributo "fechaRegistro" de "Vehiculo".
+in C:\xampp\htdocs\yii\tsg\protected\controllers\VehiculoController.php (144)
+in C:\xampp\htdocs\yii\tsg\index.php (12)
+2014/10/14 23:04:37 [warning] [application] Error al establecer unsafe al atributo "id" de "Vehiculo".
+in C:\xampp\htdocs\yii\tsg\protected\controllers\VehiculoController.php (144)
+in C:\xampp\htdocs\yii\tsg\index.php (12)
+2014/10/14 23:04:37 [warning] [application] Error al establecer unsafe al atributo "fechaRegistro" de "Vehiculo".
+in C:\xampp\htdocs\yii\tsg\protected\controllers\VehiculoController.php (144)
+in C:\xampp\htdocs\yii\tsg\index.php (12)
+2014/10/14 23:05:58 [warning] [application] Error al establecer unsafe al atributo "id" de "Vehiculo".
+in C:\xampp\htdocs\yii\tsg\protected\controllers\VehiculoController.php (144)
+in C:\xampp\htdocs\yii\tsg\index.php (12)
+2014/10/14 23:05:58 [warning] [application] Error al establecer unsafe al atributo "fechaRegistro" de "Vehiculo".
+in C:\xampp\htdocs\yii\tsg\protected\controllers\VehiculoController.php (144)
+in C:\xampp\htdocs\yii\tsg\index.php (12)
+2014/10/14 23:09:30 [warning] [application] Error al establecer unsafe al atributo "id" de "Vehiculo".
+in C:\xampp\htdocs\yii\tsg\protected\controllers\VehiculoController.php (144)
+in C:\xampp\htdocs\yii\tsg\index.php (12)
+2014/10/14 23:09:30 [warning] [application] Error al establecer unsafe al atributo "fechaRegistro" de "Vehiculo".
+in C:\xampp\htdocs\yii\tsg\protected\controllers\VehiculoController.php (144)
+in C:\xampp\htdocs\yii\tsg\index.php (12)
+2014/10/14 23:10:40 [warning] [application] Error al establecer unsafe al atributo "fechaRegistro" de "Vehiculo".
+in C:\xampp\htdocs\yii\tsg\protected\controllers\VehiculoController.php (144)
+in C:\xampp\htdocs\yii\tsg\index.php (12)
+2014/10/14 23:11:43 [warning] [application] Error al establecer unsafe al atributo "fechaRegistro" de "Vehiculo".
+in C:\xampp\htdocs\yii\tsg\protected\controllers\VehiculoController.php (144)
+in C:\xampp\htdocs\yii\tsg\index.php (12)
+2014/10/14 23:12:45 [warning] [application] Error al establecer unsafe al atributo "fechaRegistro" de "Vehiculo".
+in C:\xampp\htdocs\yii\tsg\protected\controllers\VehiculoController.php (144)
+in C:\xampp\htdocs\yii\tsg\index.php (12)
+2014/10/14 23:14:00 [warning] [application] Error al establecer unsafe al atributo "fechaRegistro" de "Vehiculo".
+in C:\xampp\htdocs\yii\tsg\protected\controllers\VehiculoController.php (144)
+in C:\xampp\htdocs\yii\tsg\index.php (12)

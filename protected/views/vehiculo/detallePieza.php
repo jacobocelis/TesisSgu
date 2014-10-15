@@ -6,7 +6,9 @@ $this->breadcrumbs=array(
 	$id,
 );
 	$this->menu=array(
-	array('label'=>'Atrás', 'url'=>array('vehiculo/'.$id)),
+	array('label'=>'Registrar pieza', 'url'=>array('repuesto/create')),
+	array('label'=>'Asignar pieza a grupo', 'url'=>array('asignarPiezaGrupo/AsignarPieza')),
+	array('label'=>'Regresar', 'url'=>array('vehiculo/'.$id)),
 );
 ?>
 <div class='form'>

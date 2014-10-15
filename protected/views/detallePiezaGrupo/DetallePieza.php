@@ -4,9 +4,12 @@ $this->breadcrumbs=array(
 	$model->id,
 );
 	$this->menu=array(
-	array('label'=>'Registrar repuesto', 'url'=>array('')),
-	array('label'=>'Crear nuevo grupo', 'url'=>array('')),
+	array('label'=>'Registrar pieza', 'url'=>array('repuesto/create')),
+	array('label'=>'Crear nuevo grupo', 'url'=>array('grupo/create')),
+	array('label'=>'Regresar', 'url'=>Yii::app()->user->returnUrl),
+	
 );
+
 ?>
 <div class='form'>
 <div class='crugepanel user-assignments-role-list'>

@@ -21,7 +21,7 @@
 	
 	<div class="row">
 		<?php echo $form->labelEx($model,'idgrupo'); ?>
-		<?php echo $form->dropDownList($model,'id',CHtml::listData(Grupo::model()->findAll(array('order' => 'id ASC')), 'id', 'grupo'),
+		<?php echo $form->dropDownList($model,'idgrupo',CHtml::listData(Grupo::model()->findAll(array('order' => 'id ASC')), 'id', 'grupo'),
 		array(
 			'ajax'=>array(
 			'type'=>'GET',
@@ -110,7 +110,7 @@
 	</div>
 	<div class="row">
 		<?php echo $form->labelEx($model,'idmodelo'); ?>
-		<?php echo $form->dropDownList($model,'idmodelo',array()); ?>
+		<?php echo $form->dropDownList($model,'idmodelo',array('Seleccione marca')); ?>
 		<?php echo $form->error($model,'idmodelo'); ?>
 	</div>
 
@@ -132,6 +132,11 @@
 		<?php echo $form->error($model,'idpropiedad'); ?>
 	</div>
 	<div class="row">
+		
+		<?php echo $form->hiddenField($model,'fechaRegistro'); ?>
+		
+	</div>
+	<div class="row">
 		<?php echo $form->labelEx($model,'comentario'); ?>
 		<?php echo $form->textArea($model,'comentario',array('size'=>60,'maxlength'=>200)); ?>
 		<?php echo $form->error($model,'comentario'); ?>
@@ -149,7 +154,7 @@
 
 Yii::app()->clientScript->registerScript("update","
     function prueba(data, textStatus, jqXHR){
-		if(data==null){
+		if(data==null){	
 			$('#Vehiculo_anno').val('');
 			$('#Vehiculo_nroPuestos').val('');
 			$('#Vehiculo_nroEjes').val('');
@@ -160,6 +165,7 @@ Yii::app()->clientScript->registerScript("update","
 			$('#color').val('');
 			$('#propiedad').val('');
 		}
+		$('#Vehiculo_idgrupo').val(data.idgrupo);
         $('#Vehiculo_anno').val(data.anno);
 		$('#Vehiculo_nroPuestos').val(data.nroPuestos);
 		$('#Vehiculo_nroEjes').val(data.nroEjes);
@@ -168,7 +174,7 @@ Yii::app()->clientScript->registerScript("update","
 		$('#Vehiculo_capTanque').val(data.capTanque);
 		$('#combustible').val(data.idcombustible);
 		$('#color').val(data.idcolor);
-		$('#propiedad').val(data.idpropiedad);
+		$('#propiedad').val(data.idpropiedad);	
     }
 ");
 ?>

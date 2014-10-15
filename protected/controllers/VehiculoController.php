@@ -274,7 +274,7 @@ class VehiculoController extends Controller
 		}
 	}
 	public function actionGetdatos($id){
-			file_put_contents('dataa.txt', print_r($id,true));
+			//file_put_contents('dataa.txt', print_r($id,true));
 			$data=Vehiculo::model()->findByAttributes(array('idgrupo'=>$id)
 );
 			  echo CJSON::encode($data);
