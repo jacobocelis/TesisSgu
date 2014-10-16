@@ -74,61 +74,122 @@ if ($rol == "Jefe Departamento") {
     $varCaracteristica = array();
 }
 
-function setNotificaciones($notif) {
-    $arrayInt = array();
-    foreach ($notif as $t) {
-        $titulo = $t['estatus'] . ' - ' . $t['Titulo'];
-        if (array_key_exists('Descripcion', $t)) {
-            $contenido = '<p>' . $t['Descripcion'] . '</p>';
-        } else {
-            $contenido = '<p>' . $t['Temática y Linea de investigacion'] . '</p>';
-        }
-        $arrayInt[$titulo] = $contenido;
-    }
-    return $arrayInt;
-    $varCaracteristica = array();
-}
 
-if (isset($_GET["tipo"]))
-    switch ($_GET["tipo"]) {
-        case 1:
-            $arrayNot = setNotificaciones($varTesis);
-
-            break;
-        case 2:
-            $arrayNot = setNotificaciones($varPasantias);
-
-            break;
-
-        case 3:
-            $arrayNot = setNotificaciones($varCaracteristica);
-
-            break;
-
-        default:
-            break;
-    } else {
-    $arrayNot = setNotificaciones($varTesis);
-}
 ?>
 
-<div class="controls-row">
-    <div class="span3">
-        
-    </div>
+
+
     <div class="span8">  
-        <div class="portlet" id="accordion">
-            <div class="portlet-decoration">
-                <div class="portlet-title">Inicio</div>
-            </div>
-            <div class="portlet-content">     
-                <?php
-                echo CHtml::link('Vehiculos',array('vehiculo/index')); ?><br>
-				<?php echo CHtml::link('Piezas y repuestos',array('repuesto/index')); ?><br>
-                <?php echo CHtml::link('Mantenimiento preventivo',array('vehiculo/index')); ?><br>
-				<?php echo CHtml::link('Mantenimiento correctivo',array('vehiculo/index')); ?><br>
-				<?php echo CHtml::link('Reportes y estadísticas',array('vehiculo/index')); ?><br>
-            </div>
-        </div>
-    </div>
+			
+				<div id="uno">
+					
+					<a href="<?php echo Yii::app()->request->baseUrl;?>/vehiculo/" id="vehiculos"></a>
+					
+					
+				</div>
+			
+					
+				
+					<a href="<?php echo Yii::app()->request->baseUrl;?>/repuesto/" id="repuesto"></a>
+				
+			
+				
+				<a href="<?php echo Yii::app()->request->baseUrl;?>" id="preventivo">
+				
+				</a>
+				
+				<a href="<?php echo Yii::app()->request->baseUrl;?>" id="correctivo">
+				
+				</a>
+				
+				<a href="<?php echo Yii::app()->request->baseUrl;?>" id="combustible">
+				
+				</a>
+			
+				<a href="<?php echo Yii::app()->request->baseUrl;?>" id="viajes">
+				
+				</a>
+			
+            
+  
+	
 </div>
+<style>
+
+.span8 {
+    margin-left: 17%;
+    width: 68%;
+	margin-top: 2%;
+	   border: 1px dotted #aaa;
+    border-radius: 5px;
+   padding: 5px;
+}
+#vehiculos{
+margin-top: 4%;
+ margin-right: 2%;
+background-image: url("<?php echo Yii::app()->request->baseUrl;?>/imagenes/vehiculos.png");
+height: 145px;
+width: 150px;
+display: block;
+  //margin: 0 auto;
+  text-indent: -9999px;
+  float:left;
+}
+#repuesto{
+margin-top: 4%;
+ margin-right: 2%;
+background-image: url("<?php echo Yii::app()->request->baseUrl;?>/imagenes/piezas.png");
+height: 145px;
+width: 125px;
+display: block;
+  //margin: 0 auto;
+  text-indent: -9999px;
+  float:left;
+}
+#preventivo{
+margin-top: 4%;
+ margin-right: 2%;
+background-image: url("<?php echo Yii::app()->request->baseUrl;?>/imagenes/preventivo.png");
+height: 145px;
+width: 125px;
+display: block;
+  //margin: 0 auto;
+  text-indent: -9999px;
+  float:left;
+}
+#correctivo{
+margin-top: 4%;
+ margin-right: 2%;
+background-image: url("<?php echo Yii::app()->request->baseUrl;?>/imagenes/correctivo.png");
+height: 148px;
+width: 125px;
+display: block;
+  //margin: 0 auto;
+  text-indent: -9999px;
+  float:left;
+}
+#combustible{
+margin-top: 4%;
+ margin-right: 2%;
+background-image: url("<?php echo Yii::app()->request->baseUrl;?>/imagenes/combustible.png");
+height: 145px;
+width: 125px;
+display: block;
+  //margin: 0 auto;
+  text-indent: -9999px;
+  float:left;
+}
+#viajes{
+margin-top: 4%;
+ margin-right: 2%;
+background-image: url("<?php echo Yii::app()->request->baseUrl;?>/imagenes/viajes.png");
+height: 145px;
+width: 125px;
+display: block;
+  //margin: 0 auto;
+  text-indent: -9999px;
+  float:left;
+}
+
+
+</style>

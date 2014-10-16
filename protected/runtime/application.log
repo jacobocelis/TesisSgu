@@ -38150,3 +38150,14 @@ in C:\xampp\htdocs\yii\tsg\index.php (12)
 2014/10/14 23:14:00 [warning] [application] Error al establecer unsafe al atributo "fechaRegistro" de "Vehiculo".
 in C:\xampp\htdocs\yii\tsg\protected\controllers\VehiculoController.php (144)
 in C:\xampp\htdocs\yii\tsg\index.php (12)
+2014/10/15 22:24:01 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'El sistema no ha podido encontrar la acción "hand.png" solicitada.' in C:\xampp\htdocs\yii\tsg\yii\framework\web\CController.php:483
+Stack trace:
+#0 C:\xampp\htdocs\yii\tsg\yii\framework\web\CController.php(270): CController->missingAction('hand.png')
+#1 C:\xampp\htdocs\yii\tsg\yii\framework\web\CWebApplication.php(282): CController->run('hand.png')
+#2 C:\xampp\htdocs\yii\tsg\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('asignarpiezagru...')
+#3 C:\xampp\htdocs\yii\tsg\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#4 C:\xampp\htdocs\yii\tsg\index.php(12): CApplication->run()
+#5 {main}
+REQUEST_URI=/yii/tsg/asignarpiezagrupo/hand.png
+HTTP_REFERER=http://localhost/yii/tsg/asignarpiezagrupo/asignarpieza.sgu
+---
