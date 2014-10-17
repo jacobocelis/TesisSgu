@@ -1,4 +1,4 @@
-<h1><?php echo CrugeTranslator::t("Iniciar Sesion"); ?></h1>
+<h1><?php echo CrugeTranslator::t("Iniciar Sesión"); ?></h1>
 <?php if(Yii::app()->user->hasFlash('loginflash')): ?>
 <div class="flash-error">
 	<?php echo Yii::app()->user->getFlash('loginflash'); ?>
@@ -32,11 +32,11 @@
 	</div>
 
 	<div class="row buttons">
-		<?php Yii::app()->user->ui->tbutton("Iniciar Sesion"); ?>
+		<?php Yii::app()->user->ui->tbutton("Ingresar"); ?>
 		<?php echo Yii::app()->user->ui->passwordRecoveryLink; ?>
 		<?php
 			if(Yii::app()->user->um->getDefaultSystem()->getn('registrationonlogin')===1)
-				echo Yii::app()->user->ui->registrationLink;
+				/*echo Yii::app()->user->ui->registrationLink;*/
 		?>
 	</div>
 

@@ -100,9 +100,6 @@ class VehiculoController extends Controller
 					'pageSize'=>9999,
 					),
                     ));
-					
-
-			
 		$this->render('detallePieza',array(
 			'model'=>$dataProvider,
 			'id'=>$id,
@@ -142,8 +139,37 @@ class VehiculoController extends Controller
 		if(isset($_POST['Vehiculo']))
 		{
 			$model->attributes=$_POST['Vehiculo'];
-			if($model->save())
+			if($model->save()){
+			/*inserta informacion adicional*/
+				$totalVeh=Yii::app()->db->createCommand('select informacion from sgu_infGrupo where idgrupo="'.$model->idgrupo.'"')->queryAll();
+				$total=count($totalVeh);
+				if($total>0){
+					for($i=0;$i<$total;$i++){
+					
+						Yii::app()->db->createCommand("INSERT INTO `tsg`.`sgu_informacion` (`idvehiculo`,`informacion`) 
+						VALUES ('".$model->id."','".$totalVeh[$i]["informacion"]."')")->query();
+					}
+				}
+				/*inserta piezas al grupo que fue asignado*/
+				$totalInf=Yii::app()->db->createCommand('select * from sgu_CaracteristicaVehGrupo where idgrupo="'.$model->idgrupo.'"')->queryAll();
+				$totDet=Yii::app()->db->createCommand('select * from sgu_CantidadGrupo where idCaracteristicaVehGrupo in ( select id from sgu_CaracteristicaVehGrupo where idgrupo="'.$model->idgrupo.'")')->queryAll();
+				$k=0;
+				$total=count($totalInf);
+				if($total>0){
+					for($i=0;$i<$total;$i++){
+						Yii::app()->db->createCommand("INSERT INTO `tsg`.`sgu_CaracteristicaVeh` (`idvehiculo`,`idrepuesto`,`cantidad`) 
+						VALUES ('".$model->id."','".$totalInf[$i]["idrepuesto"]."','".$totalInf[$i]["cantidad"]."')")->query();
+						$max=Yii::app()->db->createCommand("select max(id) as id from sgu_CaracteristicaVeh")->queryRow();
+						
+						for($j=0;$j<$totalInf[$i]["cantidad"];$j++){
+								Yii::app()->db->createCommand("INSERT ignore INTO `tsg`.`sgu_Cantidad` (`idCaracteristicaVeh`,`detallePieza`) 
+								VALUES ('".$max['id']."','".$totDet[$k]["detallePieza"]."')")->query();
+								$k++;
+							}
+					}
+				}
 				$this->redirect(array('view','id'=>$model->id));
+			}
 		}
 		$this->render('create',array(
 			'model'=>$model,

@@ -103,14 +103,15 @@
 			'type'=>'POST',
 			'url'=>CController::createUrl('Vehiculo/Selectdos'),
 			'update'=>'#'.CHtml::activeId($model,'idmodelo'),
-			),'prompt'=>'Seleccione: ')); 
+			)
+			,'prompt'=>'Seleccione: ')); 
 			
 			?>
 		<?php echo $form->error($marca,'id'); ?>
 	</div>
 	<div class="row">
 		<?php echo $form->labelEx($model,'idmodelo'); ?>
-		<?php echo $form->dropDownList($model,'idmodelo',array('Seleccione marca')); ?>
+		<?php echo $form->dropDownList($model,'idmodelo',array(),array('prompt'=>'Seleccione marca ')); ?>
 		<?php echo $form->error($model,'idmodelo'); ?>
 	</div>
 

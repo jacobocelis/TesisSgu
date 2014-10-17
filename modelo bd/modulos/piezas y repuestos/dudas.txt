@@ -8,3 +8,6 @@ para un 2015.(aceite 15w40). se debe especificar en algun lado o se
 puede obviar?
 
 como llegan las facturas definitivamente para realizar el modelo.?
+
+**creo que hara falta agregar una tabla más para caracterizar la informacion adicional
+que se agrege a cada vehiculo

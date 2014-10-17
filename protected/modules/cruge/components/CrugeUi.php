@@ -210,7 +210,7 @@ class CrugeUi extends CComponent
     public function getPasswordRecoveryLink($label = null)
     {
         if ($label === null) {
-            $label = 'Lost Password?';
+            $label = 'Recuperar contraseña';
         }
         return CHtml::link(CrugeTranslator::t('logon', $label), self::getPasswordRecoveryUrl());
     }

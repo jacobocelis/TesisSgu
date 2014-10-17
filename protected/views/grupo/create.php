@@ -9,7 +9,7 @@ $this->breadcrumbs=array(
 
 $this->menu=array(
 	array('label'=>'Listar grupos', 'url'=>array('index')),
-	array('label'=>'Administraar grupos', 'url'=>array('admin')),
+	array('label'=>'Administrar grupos', 'url'=>array('admin')),
 );
 ?>
 

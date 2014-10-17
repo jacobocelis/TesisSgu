@@ -144,9 +144,11 @@ $this->beginWidget('zii.widgets.jui.CJuiDialog', array( // the dialog
 <div id="container-1">
 	<div class="myGallery">
 	    <ul id="myGallery">
+		
 			<?php foreach ($model->Fotos as $foto): ?>
 				<li><?php echo CHtml::image('data:image/jpeg;base64,'.$foto->imagen); ?></li>
 			<?php endforeach; ?>
+			<li><img/>
 		</ul>
 	</div>
 	<div id="descriptions">
