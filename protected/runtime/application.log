@@ -38678,3 +38678,243 @@ in C:\xampp\htdocs\yii\tsg\index.php (12)
 2014/10/16 22:52:09 [warning] [application] Error al establecer unsafe al atributo "fechaRegistro" de "Vehiculo".
 in C:\xampp\htdocs\yii\tsg\protected\controllers\VehiculoController.php (141)
 in C:\xampp\htdocs\yii\tsg\index.php (12)
+2014/10/17 16:25:52 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'El sistema no ha podido encontrar la acción "indes" solicitada.' in C:\xampp\htdocs\yii\tsg\yii\framework\web\CController.php:483
+Stack trace:
+#0 C:\xampp\htdocs\yii\tsg\yii\framework\web\CController.php(270): CController->missingAction('indes')
+#1 C:\xampp\htdocs\yii\tsg\yii\framework\web\CWebApplication.php(282): CController->run('indes')
+#2 C:\xampp\htdocs\yii\tsg\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('grupo/indes')
+#3 C:\xampp\htdocs\yii\tsg\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#4 C:\xampp\htdocs\yii\tsg\index.php(12): CApplication->run()
+#5 {main}
+REQUEST_URI=/yii/tsg/grupo/indes.sgu
+HTTP_REFERER=http://localhost/yii/tsg/vehiculo/
+---
+2014/10/17 16:39:12 [error] [php] Trying to get property of non-object (C:\xampp\htdocs\yii\tsg\protected\views\grupo\admin.php:33)
+Stack trace:
+#0 C:\xampp\htdocs\yii\tsg\yii\framework\web\CController.php(869): GrupoController->renderFile()
+#1 C:\xampp\htdocs\yii\tsg\yii\framework\web\CController.php(782): GrupoController->renderPartial()
+#2 C:\xampp\htdocs\yii\tsg\protected\controllers\GrupoController.php(207): GrupoController->render()
+#3 C:\xampp\htdocs\yii\tsg\yii\framework\web\actions\CInlineAction.php(49): GrupoController->actionAdmin()
+#4 C:\xampp\htdocs\yii\tsg\yii\framework\web\CController.php(308): CInlineAction->runWithParams()
+#5 C:\xampp\htdocs\yii\tsg\yii\framework\web\filters\CFilterChain.php(133): GrupoController->runAction()
+#6 C:\xampp\htdocs\yii\tsg\yii\framework\web\filters\CFilter.php(40): CFilterChain->run()
+#7 C:\xampp\htdocs\yii\tsg\yii\framework\web\CController.php(1145): CAccessControlFilter->filter()
+#8 C:\xampp\htdocs\yii\tsg\yii\framework\web\filters\CInlineFilter.php(58): GrupoController->filterAccessControl()
+#9 C:\xampp\htdocs\yii\tsg\yii\framework\web\filters\CFilterChain.php(130): CInlineFilter->filter()
+#10 C:\xampp\htdocs\yii\tsg\yii\framework\web\CController.php(291): CFilterChain->run()
+#11 C:\xampp\htdocs\yii\tsg\yii\framework\web\CController.php(265): GrupoController->runActionWithFilters()
+#12 C:\xampp\htdocs\yii\tsg\yii\framework\web\CWebApplication.php(282): GrupoController->run()
+#13 C:\xampp\htdocs\yii\tsg\yii\framework\web\CWebApplication.php(141): CWebApplication->runController()
+#14 C:\xampp\htdocs\yii\tsg\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#15 C:\xampp\htdocs\yii\tsg\index.php(12): CWebApplication->run()
+REQUEST_URI=/yii/tsg/grupo/admin.sgu
+in C:\xampp\htdocs\yii\tsg\protected\views\grupo\admin.php (33)
+in C:\xampp\htdocs\yii\tsg\protected\controllers\GrupoController.php (207)
+in C:\xampp\htdocs\yii\tsg\index.php (12)
+2014/10/17 17:24:30 [error] [php] Undefined offset: 0 (C:\xampp\htdocs\yii\tsg\yii\framework\zii\widgets\CMenu.php:311)
+Stack trace:
+#0 C:\xampp\htdocs\yii\tsg\yii\framework\web\CBaseController.php(147): CMenu->init()
+#1 C:\xampp\htdocs\yii\tsg\yii\framework\web\CBaseController.php(172): VehiculoController->createWidget()
+#2 C:\xampp\htdocs\yii\tsg\themes\abound\views\layouts\column2.php(16): VehiculoController->widget()
+#3 C:\xampp\htdocs\yii\tsg\yii\framework\web\CBaseController.php(126): require()
+#4 C:\xampp\htdocs\yii\tsg\yii\framework\web\CBaseController.php(95): VehiculoController->renderInternal()
+#5 C:\xampp\htdocs\yii\tsg\yii\framework\web\CController.php(784): VehiculoController->renderFile()
+#6 C:\xampp\htdocs\yii\tsg\protected\controllers\VehiculoController.php(125): VehiculoController->render()
+#7 unknown(0): VehiculoController->actionView()
+#8 C:\xampp\htdocs\yii\tsg\yii\framework\web\actions\CAction.php(108): ReflectionMethod->invokeArgs()
+#9 C:\xampp\htdocs\yii\tsg\yii\framework\web\actions\CInlineAction.php(47): CInlineAction->runWithParamsInternal()
+#10 C:\xampp\htdocs\yii\tsg\yii\framework\web\CController.php(308): CInlineAction->runWithParams()
+#11 C:\xampp\htdocs\yii\tsg\yii\framework\web\filters\CFilterChain.php(133): VehiculoController->runAction()
+#12 C:\xampp\htdocs\yii\tsg\yii\framework\web\filters\CFilter.php(40): CFilterChain->run()
+#13 C:\xampp\htdocs\yii\tsg\yii\framework\web\CController.php(1145): CAccessControlFilter->filter()
+#14 C:\xampp\htdocs\yii\tsg\yii\framework\web\filters\CInlineFilter.php(58): VehiculoController->filterAccessControl()
+#15 C:\xampp\htdocs\yii\tsg\yii\framework\web\filters\CFilterChain.php(130): CInlineFilter->filter()
+#16 C:\xampp\htdocs\yii\tsg\yii\framework\web\CController.php(291): CFilterChain->run()
+#17 C:\xampp\htdocs\yii\tsg\yii\framework\web\CController.php(265): VehiculoController->runActionWithFilters()
+#18 C:\xampp\htdocs\yii\tsg\yii\framework\web\CWebApplication.php(282): VehiculoController->run()
+#19 C:\xampp\htdocs\yii\tsg\yii\framework\web\CWebApplication.php(141): CWebApplication->runController()
+#20 C:\xampp\htdocs\yii\tsg\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#21 C:\xampp\htdocs\yii\tsg\index.php(12): CWebApplication->run()
+REQUEST_URI=/yii/tsg/vehiculo/1.sgu
+in C:\xampp\htdocs\yii\tsg\themes\abound\views\layouts\column2.php (16)
+in C:\xampp\htdocs\yii\tsg\protected\controllers\VehiculoController.php (125)
+in C:\xampp\htdocs\yii\tsg\index.php (12)
+2014/10/18 00:15:52 [error] [php] file_get_contents(): Filename cannot be empty (C:\xampp\htdocs\yii\tsg\protected\controllers\FotoController.php:75)
+Stack trace:
+#0 C:\xampp\htdocs\yii\tsg\yii\framework\web\actions\CAction.php(108): ReflectionMethod->invokeArgs()
+#1 C:\xampp\htdocs\yii\tsg\yii\framework\web\actions\CInlineAction.php(47): CInlineAction->runWithParamsInternal()
+#2 C:\xampp\htdocs\yii\tsg\yii\framework\web\CController.php(308): CInlineAction->runWithParams()
+#3 C:\xampp\htdocs\yii\tsg\yii\framework\web\filters\CFilterChain.php(133): FotoController->runAction()
+#4 C:\xampp\htdocs\yii\tsg\yii\framework\web\filters\CFilter.php(40): CFilterChain->run()
+#5 C:\xampp\htdocs\yii\tsg\yii\framework\web\CController.php(1145): CAccessControlFilter->filter()
+#6 C:\xampp\htdocs\yii\tsg\yii\framework\web\filters\CInlineFilter.php(58): FotoController->filterAccessControl()
+#7 C:\xampp\htdocs\yii\tsg\yii\framework\web\filters\CFilterChain.php(130): CInlineFilter->filter()
+#8 C:\xampp\htdocs\yii\tsg\yii\framework\web\CController.php(291): CFilterChain->run()
+#9 C:\xampp\htdocs\yii\tsg\yii\framework\web\CController.php(265): FotoController->runActionWithFilters()
+#10 C:\xampp\htdocs\yii\tsg\yii\framework\web\CWebApplication.php(282): FotoController->run()
+#11 C:\xampp\htdocs\yii\tsg\yii\framework\web\CWebApplication.php(141): CWebApplication->runController()
+#12 C:\xampp\htdocs\yii\tsg\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#13 C:\xampp\htdocs\yii\tsg\index.php(12): CWebApplication->run()
+REQUEST_URI=/yii/tsg/foto/create/1.sgu
+in C:\xampp\htdocs\yii\tsg\protected\controllers\FotoController.php (75)
+in C:\xampp\htdocs\yii\tsg\index.php (12)
+2014/10/18 00:16:19 [error] [php] file_get_contents(): Filename cannot be empty (C:\xampp\htdocs\yii\tsg\protected\controllers\FotoController.php:75)
+Stack trace:
+#0 C:\xampp\htdocs\yii\tsg\yii\framework\web\actions\CAction.php(108): ReflectionMethod->invokeArgs()
+#1 C:\xampp\htdocs\yii\tsg\yii\framework\web\actions\CInlineAction.php(47): CInlineAction->runWithParamsInternal()
+#2 C:\xampp\htdocs\yii\tsg\yii\framework\web\CController.php(308): CInlineAction->runWithParams()
+#3 C:\xampp\htdocs\yii\tsg\yii\framework\web\filters\CFilterChain.php(133): FotoController->runAction()
+#4 C:\xampp\htdocs\yii\tsg\yii\framework\web\filters\CFilter.php(40): CFilterChain->run()
+#5 C:\xampp\htdocs\yii\tsg\yii\framework\web\CController.php(1145): CAccessControlFilter->filter()
+#6 C:\xampp\htdocs\yii\tsg\yii\framework\web\filters\CInlineFilter.php(58): FotoController->filterAccessControl()
+#7 C:\xampp\htdocs\yii\tsg\yii\framework\web\filters\CFilterChain.php(130): CInlineFilter->filter()
+#8 C:\xampp\htdocs\yii\tsg\yii\framework\web\CController.php(291): CFilterChain->run()
+#9 C:\xampp\htdocs\yii\tsg\yii\framework\web\CController.php(265): FotoController->runActionWithFilters()
+#10 C:\xampp\htdocs\yii\tsg\yii\framework\web\CWebApplication.php(282): FotoController->run()
+#11 C:\xampp\htdocs\yii\tsg\yii\framework\web\CWebApplication.php(141): CWebApplication->runController()
+#12 C:\xampp\htdocs\yii\tsg\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#13 C:\xampp\htdocs\yii\tsg\index.php(12): CWebApplication->run()
+REQUEST_URI=/yii/tsg/foto/create/1.sgu
+in C:\xampp\htdocs\yii\tsg\protected\controllers\FotoController.php (75)
+in C:\xampp\htdocs\yii\tsg\index.php (12)
+2014/10/18 00:16:29 [error] [php] PDOStatement::execute(): MySQL server has gone away (C:\xampp\htdocs\yii\tsg\yii\framework\db\CDbCommand.php:335)
+Stack trace:
+#0 C:\xampp\htdocs\yii\tsg\yii\framework\db\ar\CActiveRecord.php(806): Foto->insert()
+#1 C:\xampp\htdocs\yii\tsg\protected\controllers\FotoController.php(76): Foto->save()
+#2 unknown(0): FotoController->actionCreate()
+#3 C:\xampp\htdocs\yii\tsg\yii\framework\web\actions\CAction.php(108): ReflectionMethod->invokeArgs()
+#4 C:\xampp\htdocs\yii\tsg\yii\framework\web\actions\CInlineAction.php(47): CInlineAction->runWithParamsInternal()
+#5 C:\xampp\htdocs\yii\tsg\yii\framework\web\CController.php(308): CInlineAction->runWithParams()
+#6 C:\xampp\htdocs\yii\tsg\yii\framework\web\filters\CFilterChain.php(133): FotoController->runAction()
+#7 C:\xampp\htdocs\yii\tsg\yii\framework\web\filters\CFilter.php(40): CFilterChain->run()
+#8 C:\xampp\htdocs\yii\tsg\yii\framework\web\CController.php(1145): CAccessControlFilter->filter()
+#9 C:\xampp\htdocs\yii\tsg\yii\framework\web\filters\CInlineFilter.php(58): FotoController->filterAccessControl()
+#10 C:\xampp\htdocs\yii\tsg\yii\framework\web\filters\CFilterChain.php(130): CInlineFilter->filter()
+#11 C:\xampp\htdocs\yii\tsg\yii\framework\web\CController.php(291): CFilterChain->run()
+#12 C:\xampp\htdocs\yii\tsg\yii\framework\web\CController.php(265): FotoController->runActionWithFilters()
+#13 C:\xampp\htdocs\yii\tsg\yii\framework\web\CWebApplication.php(282): FotoController->run()
+#14 C:\xampp\htdocs\yii\tsg\yii\framework\web\CWebApplication.php(141): CWebApplication->runController()
+#15 C:\xampp\htdocs\yii\tsg\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#16 C:\xampp\htdocs\yii\tsg\index.php(12): CWebApplication->run()
+REQUEST_URI=/yii/tsg/foto/create/1.sgu
+in C:\xampp\htdocs\yii\tsg\protected\controllers\FotoController.php (76)
+in C:\xampp\htdocs\yii\tsg\index.php (12)
+2014/10/18 23:18:15 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "request/fillTree"' in C:\xampp\htdocs\yii\tsg\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\xampp\htdocs\yii\tsg\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('request/fillTre...')
+#1 C:\xampp\htdocs\yii\tsg\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\xampp\htdocs\yii\tsg\index.php(12): CApplication->run()
+#3 {main}
+REQUEST_URI=/yii/tsg/request/fillTree.sgu?root=source
+HTTP_REFERER=http://localhost/yii/tsg/vehiculo/1.sgu
+---
+2014/10/18 23:18:42 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "request/fillTree"' in C:\xampp\htdocs\yii\tsg\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\xampp\htdocs\yii\tsg\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('request/fillTre...')
+#1 C:\xampp\htdocs\yii\tsg\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\xampp\htdocs\yii\tsg\index.php(12): CApplication->run()
+#3 {main}
+REQUEST_URI=/yii/tsg/request/fillTree.sgu?root=source
+HTTP_REFERER=http://localhost/yii/tsg/vehiculo/1.sgu
+---
+2014/10/18 23:18:57 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'No es posible resolver la solicitud "request/fillTree"' in C:\xampp\htdocs\yii\tsg\yii\framework\web\CWebApplication.php:286
+Stack trace:
+#0 C:\xampp\htdocs\yii\tsg\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('request/fillTre...')
+#1 C:\xampp\htdocs\yii\tsg\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\xampp\htdocs\yii\tsg\index.php(12): CApplication->run()
+#3 {main}
+REQUEST_URI=/yii/tsg/request/fillTree.sgu?root=source
+HTTP_REFERER=http://localhost/yii/tsg/vehiculo/1.sgu
+---
+2014/10/19 22:32:28 [error] [php] Trying to get property of non-object (C:\xampp\htdocs\yii\tsg\yii\framework\base\CComponent.php(612) : eval()'d code:1)
+Stack trace:
+#0 C:\xampp\htdocs\yii\tsg\yii\framework\zii\widgets\grid\CGridColumn.php(151): CDataColumn->renderDataCellContent()
+#1 C:\xampp\htdocs\yii\tsg\yii\framework\zii\widgets\grid\CGridView.php(616): CDataColumn->renderDataCell()
+#2 C:\xampp\htdocs\yii\tsg\yii\framework\zii\widgets\grid\CGridView.php(572): CGridView->renderTableRow()
+#3 C:\xampp\htdocs\yii\tsg\yii\framework\zii\widgets\grid\CGridView.php(482): CGridView->renderTableBody()
+#4 C:\xampp\htdocs\yii\tsg\yii\framework\zii\widgets\CBaseListView.php(167): CGridView->renderItems()
+#5 unknown(0): CGridView->renderSection()
+#6 C:\xampp\htdocs\yii\tsg\yii\framework\zii\widgets\CBaseListView.php(150): preg_replace_callback()
+#7 C:\xampp\htdocs\yii\tsg\yii\framework\zii\widgets\CBaseListView.php(135): CGridView->renderContent()
+#8 C:\xampp\htdocs\yii\tsg\yii\framework\web\CBaseController.php(173): CGridView->run()
+#9 C:\xampp\htdocs\yii\tsg\protected\views\asignarPiezaGrupo\AsignarPieza.php(72): AsignarPiezaGrupoController->widget()
+#10 C:\xampp\htdocs\yii\tsg\yii\framework\web\CBaseController.php(126): require()
+#11 C:\xampp\htdocs\yii\tsg\yii\framework\web\CBaseController.php(95): AsignarPiezaGrupoController->renderInternal()
+#12 C:\xampp\htdocs\yii\tsg\yii\framework\web\CController.php(869): AsignarPiezaGrupoController->renderFile()
+#13 C:\xampp\htdocs\yii\tsg\yii\framework\web\CController.php(782): AsignarPiezaGrupoController->renderPartial()
+#14 C:\xampp\htdocs\yii\tsg\protected\controllers\AsignarPiezaGrupoController.php(167): AsignarPiezaGrupoController->render()
+#15 C:\xampp\htdocs\yii\tsg\yii\framework\web\actions\CInlineAction.php(49): AsignarPiezaGrupoController->actionAsignarPieza()
+#16 C:\xampp\htdocs\yii\tsg\yii\framework\web\CController.php(308): CInlineAction->runWithParams()
+#17 C:\xampp\htdocs\yii\tsg\yii\framework\web\filters\CFilterChain.php(133): AsignarPiezaGrupoController->runAction()
+#18 C:\xampp\htdocs\yii\tsg\yii\framework\web\filters\CFilter.php(40): CFilterChain->run()
+#19 C:\xampp\htdocs\yii\tsg\yii\framework\web\CController.php(1145): CAccessControlFilter->filter()
+#20 C:\xampp\htdocs\yii\tsg\yii\framework\web\filters\CInlineFilter.php(58): AsignarPiezaGrupoController->filterAccessControl()
+#21 C:\xampp\htdocs\yii\tsg\yii\framework\web\filters\CFilterChain.php(130): CInlineFilter->filter()
+#22 C:\xampp\htdocs\yii\tsg\yii\framework\web\CController.php(291): CFilterChain->run()
+#23 C:\xampp\htdocs\yii\tsg\yii\framework\web\CController.php(265): AsignarPiezaGrupoController->runActionWithFilters()
+#24 C:\xampp\htdocs\yii\tsg\yii\framework\web\CWebApplication.php(282): AsignarPiezaGrupoController->run()
+#25 C:\xampp\htdocs\yii\tsg\yii\framework\web\CWebApplication.php(141): CWebApplication->runController()
+#26 C:\xampp\htdocs\yii\tsg\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#27 C:\xampp\htdocs\yii\tsg\index.php(12): CWebApplication->run()
+REQUEST_URI=/yii/tsg/asignarpiezagrupo/asignarpieza.sgu?ajax=_lista1&id=1%2C2%2C3%2C4%2C5%2C9%2C8%2C7%2C6%2C10%2C11%2C17%2C16%2C15%2C14%2C13%2C12%2C20%2C19%2C18%2C30%2C29%2C28%2C27%2C26%2C25%2C24%2C23%2C22%2C21%2C37%2C36%2C35%2C34%2C33%2C32%2C31%2C47%2C46%2C45%2C44%2C43%2C42%2C41%2C40%2C39%2C38%2C54%2C53%2C52%2C51%2C50%2C49%2C48%2C61%2C60%2C59%2C58%2C57%2C56%2C55%2C64%2C63%2C62%2C65%2C66%2C67%2C68&itemName=Aveo+2012+A%2FAC&mode=assign&total=1%2C1%2C1%2C1%2C1%2C1%2C1%2C1%2C1%2C1%2C1%2C1%2C1%2C1%2C1%2C1%2C1%2C1%2C1%2C1%2C1%2C1%2C1%2C1%2C1%2C1%2C1%2C1%2C1%2C1%2C1%2C1%2C1%2C1%2C1%2C1%2C1%2C1%2C1%2C1%2C1%2C1%2C1%2C1%2C1%2C1%2C1%2C1%2C1%2C1%2C1%2C1%2C1%2C1%2C1%2C1%2C1%2C1%2C1%2C1%2C1%2C1%2C1%2C1%2C1%2C1%2C1%2C1
+in C:\xampp\htdocs\yii\tsg\protected\views\asignarPiezaGrupo\AsignarPieza.php (72)
+in C:\xampp\htdocs\yii\tsg\protected\controllers\AsignarPiezaGrupoController.php (167)
+in C:\xampp\htdocs\yii\tsg\index.php (12)
+2014/10/19 22:38:29 [error] [system.db.CDbCommand] CDbCommand::fetchAll() falló: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'r.idTipoRepuesto' in 'where clause'. La sentencia SQL ejecutada fue: select re.id, re.repuesto, cg.cantidad, st.subTipo from sgu_CaracteristicaVehGrupo cg, 
+		sgu_grupo gu, sgu_subTipoRepuesto st, sgu_repuesto re where cg.idgrupo=gu.id and gu.grupo="" 
+		and r.idTipoRepuesto=st.id
+		and re.id=cg.idrepuesto ORDER BY re.repuesto ASC.
+in C:\xampp\htdocs\yii\tsg\protected\controllers\AsignarPiezaGrupoController.php (157)
+in C:\xampp\htdocs\yii\tsg\index.php (12)
+2014/10/19 22:38:29 [error] [exception.CDbException] exception 'CDbException' with message 'CDbCommand falló al ejecutar la sentencia SQL: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'r.idTipoRepuesto' in 'where clause'. The SQL statement executed was: select re.id, re.repuesto, cg.cantidad, st.subTipo from sgu_CaracteristicaVehGrupo cg, 
+		sgu_grupo gu, sgu_subTipoRepuesto st, sgu_repuesto re where cg.idgrupo=gu.id and gu.grupo="" 
+		and r.idTipoRepuesto=st.id
+		and re.id=cg.idrepuesto ORDER BY re.repuesto ASC' in C:\xampp\htdocs\yii\tsg\yii\framework\db\CDbCommand.php:543
+Stack trace:
+#0 C:\xampp\htdocs\yii\tsg\yii\framework\db\CDbCommand.php(396): CDbCommand->queryInternal('fetchAll', Array, Array)
+#1 C:\xampp\htdocs\yii\tsg\protected\controllers\AsignarPiezaGrupoController.php(157): CDbCommand->queryAll()
+#2 C:\xampp\htdocs\yii\tsg\yii\framework\web\actions\CInlineAction.php(49): AsignarPiezaGrupoController->actionAsignarPieza()
+#3 C:\xampp\htdocs\yii\tsg\yii\framework\web\CController.php(308): CInlineAction->runWithParams(Array)
+#4 C:\xampp\htdocs\yii\tsg\yii\framework\web\filters\CFilterChain.php(133): CController->runAction(Object(CInlineAction))
+#5 C:\xampp\htdocs\yii\tsg\yii\framework\web\filters\CFilter.php(40): CFilterChain->run()
+#6 C:\xampp\htdocs\yii\tsg\yii\framework\web\CController.php(1145): CFilter->filter(Object(CFilterChain))
+#7 C:\xampp\htdocs\yii\tsg\yii\framework\web\filters\CInlineFilter.php(58): CController->filterAccessControl(Object(CFilterChain))
+#8 C:\xampp\htdocs\yii\tsg\yii\framework\web\filters\CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#9 C:\xampp\htdocs\yii\tsg\yii\framework\web\CController.php(291): CFilterChain->run()
+#10 C:\xampp\htdocs\yii\tsg\yii\framework\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#11 C:\xampp\htdocs\yii\tsg\yii\framework\web\CWebApplication.php(282): CController->run('asignarpieza')
+#12 C:\xampp\htdocs\yii\tsg\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('asignarpiezagru...')
+#13 C:\xampp\htdocs\yii\tsg\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#14 C:\xampp\htdocs\yii\tsg\index.php(12): CApplication->run()
+#15 {main}
+REQUEST_URI=/yii/tsg/asignarpiezagrupo/asignarpieza.sgu
+---
+2014/10/19 22:38:42 [error] [system.db.CDbCommand] CDbCommand::fetchAll() falló: SQLSTATE[42S22]: Column not found: 1054 Unknown column 're.idTipoRepuesto' in 'where clause'. La sentencia SQL ejecutada fue: select re.id, re.repuesto, cg.cantidad, st.subTipo from sgu_CaracteristicaVehGrupo cg, 
+		sgu_grupo gu, sgu_subTipoRepuesto st, sgu_repuesto re where cg.idgrupo=gu.id and gu.grupo="" 
+		and re.idTipoRepuesto=st.id
+		and re.id=cg.idrepuesto ORDER BY re.repuesto ASC.
+in C:\xampp\htdocs\yii\tsg\protected\controllers\AsignarPiezaGrupoController.php (157)
+in C:\xampp\htdocs\yii\tsg\index.php (12)
+2014/10/19 22:38:42 [error] [exception.CDbException] exception 'CDbException' with message 'CDbCommand falló al ejecutar la sentencia SQL: SQLSTATE[42S22]: Column not found: 1054 Unknown column 're.idTipoRepuesto' in 'where clause'. The SQL statement executed was: select re.id, re.repuesto, cg.cantidad, st.subTipo from sgu_CaracteristicaVehGrupo cg, 
+		sgu_grupo gu, sgu_subTipoRepuesto st, sgu_repuesto re where cg.idgrupo=gu.id and gu.grupo="" 
+		and re.idTipoRepuesto=st.id
+		and re.id=cg.idrepuesto ORDER BY re.repuesto ASC' in C:\xampp\htdocs\yii\tsg\yii\framework\db\CDbCommand.php:543
+Stack trace:
+#0 C:\xampp\htdocs\yii\tsg\yii\framework\db\CDbCommand.php(396): CDbCommand->queryInternal('fetchAll', Array, Array)
+#1 C:\xampp\htdocs\yii\tsg\protected\controllers\AsignarPiezaGrupoController.php(157): CDbCommand->queryAll()
+#2 C:\xampp\htdocs\yii\tsg\yii\framework\web\actions\CInlineAction.php(49): AsignarPiezaGrupoController->actionAsignarPieza()
+#3 C:\xampp\htdocs\yii\tsg\yii\framework\web\CController.php(308): CInlineAction->runWithParams(Array)
+#4 C:\xampp\htdocs\yii\tsg\yii\framework\web\filters\CFilterChain.php(133): CController->runAction(Object(CInlineAction))
+#5 C:\xampp\htdocs\yii\tsg\yii\framework\web\filters\CFilter.php(40): CFilterChain->run()
+#6 C:\xampp\htdocs\yii\tsg\yii\framework\web\CController.php(1145): CFilter->filter(Object(CFilterChain))
+#7 C:\xampp\htdocs\yii\tsg\yii\framework\web\filters\CInlineFilter.php(58): CController->filterAccessControl(Object(CFilterChain))
+#8 C:\xampp\htdocs\yii\tsg\yii\framework\web\filters\CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#9 C:\xampp\htdocs\yii\tsg\yii\framework\web\CController.php(291): CFilterChain->run()
+#10 C:\xampp\htdocs\yii\tsg\yii\framework\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#11 C:\xampp\htdocs\yii\tsg\yii\framework\web\CWebApplication.php(282): CController->run('asignarpieza')
+#12 C:\xampp\htdocs\yii\tsg\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('asignarpiezagru...')
+#13 C:\xampp\htdocs\yii\tsg\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#14 C:\xampp\htdocs\yii\tsg\index.php(12): CApplication->run()
+#15 {main}
+REQUEST_URI=/yii/tsg/asignarpiezagrupo/asignarpieza.sgu
+---

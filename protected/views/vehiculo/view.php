@@ -9,20 +9,23 @@ $this->breadcrumbs=array(
 );
 
 $this->menu=array(
-	array('label'=>'Histórico de reparaciones', 'url'=>array('index')),
+	array('label'=>'Gastos y reparaciones', 'url'=>array('index')),
+	array('label'=>'Mtmo preventivo', 'url'=>array('')),
 	array('label'=>'Piezas y repuestos', 'url'=>array('DetallePieza', 'id'=>$model->id)),
+	array('label'=>'Siniestros y averías', 'url'=>array('')),
 	array('label'=>'Combustible', 'url'=>array('index')),
 	array('label'=>'Ruedas', 'url'=>array('index')),
-	
+	array('label'=>'Viajes', 'url'=>array('')),
+	array('label'=>'Conductores', 'url'=>array('')),
+	array('label'=>'Estadísticas', 'url'=>array('')),
 	array('label'=>'Fotos', 'url'=>array('/foto/index','id'=>$model->id)),
-	
-	array('label'=>'Eliminar Vehiculo', 'url'=>'#', 'linkOptions'=>array('submit'=>array('delete','id'=>$model->id),'confirm'=>'Are you sure you want to delete this item?')),
+	/*array('label'=>'Eliminar Vehiculo', 'url'=>'#', 'linkOptions'=>array('submit'=>array('delete','id'=>$model->id),'confirm'=>'Are you sure you want to delete this item?')),*/
 	array('label'=>'Actualizar datos', 'url'=>array('update', 'id'=>$model->id)),
 	array('label'=>'Regresar', 'url'=>array('index')),
 );
 ?>
 
-<h1>Información completa del vehiculo </h1>
+<h1>Ficha técnica del vehiculo </h1>
 
 <?php $this->widget('zii.widgets.CDetailView', array(
 	'data'=>$model,

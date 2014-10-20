@@ -8,7 +8,7 @@ $this->breadcrumbs=array(
 
 $this->menu=array(
 	array('label'=>'Registrar vehiculo', 'url'=>array('create')),
-	array('label'=>'Registrar grupo', 'url'=>array('/grupo/create')),
+	array('label'=>'Grupos de vehiculos', 'url'=>array('/grupo/index')),
 	array('label'=>'Administrar vehiculos', 'url'=>array('admin')),
 );
 ?>

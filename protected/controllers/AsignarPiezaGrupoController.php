@@ -151,9 +151,10 @@ class AsignarPiezaGrupoController extends Controller
 			}
 		}		
 		/*paso 1: en lista1 mostrar los repuestos al hacer click en el grupo*/
-		$consulta=Yii::app()->db->createCommand('select re.id, re.repuesto, cg.cantidad from sgu_CaracteristicaVehGrupo cg, 
-		sgu_grupo gu, sgu_repuesto re where cg.idgrupo=gu.id and gu.grupo="'.$authItemName.'" 
-		and re.id=cg.idrepuesto ORDER BY re.repuesto ASC')->queryAll(); 
+		$consulta=Yii::app()->db->createCommand('select re.id, re.repuesto, cg.cantidad, st.subTipo from sgu_CaracteristicaVehGrupo cg, 
+		sgu_grupo gu, sgu_subTipoRepuesto st, sgu_repuesto re where cg.idgrupo=gu.id and gu.grupo="'.$authItemName.'" 
+		and re.idSubTipoRepuesto=st.id
+		and re.id=cg.idrepuesto ORDER BY st.subTipo ASC')->queryAll(); 
 		$piezasGrupo=new CArrayDataProvider($consulta, array('keyField'=>'id','pagination'=>array('pageSize'=>$pieza_->count())));
         $this->render(
             'AsignarPieza',

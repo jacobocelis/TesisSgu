@@ -123,6 +123,7 @@ if ($rol == "Jefe Departamento") {
 	   border: 1px dotted #aaa;
     border-radius: 5px;
    padding: 5px;
+   overflow: auto;
 }
 #vehiculos{
 margin-top: 4%;

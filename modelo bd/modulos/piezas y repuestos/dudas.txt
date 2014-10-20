@@ -11,3 +11,6 @@ como llegan las facturas definitivamente para realizar el modelo.?
 
 **creo que hara falta agregar una tabla más para caracterizar la informacion adicional
 que se agrege a cada vehiculo
+
+**registrar conductores? y en que lado se usan los conductores
+aparte de conductores algun otro tipo de empleado?

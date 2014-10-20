@@ -44,7 +44,7 @@
 			'selectableRows'=>2,
 			'dataProvider'=>$piezasGrupo,
 			'enablePagination' => false,
-			'afterAjaxUpdate' => "prueba",
+			'afterAjaxUpdate' => "actualizar",
 			'template'=>"{items}\n{summary}\n{pager}",
 			'ajaxUpdate' => true,
 			'columns'=>array(
@@ -52,9 +52,16 @@
 				array(
 					'class'=>'CCheckBoxColumn'
 				),
+				
 				array(
 					'header'=>'Repuestos agregados',
 					'name'=>'repuesto',
+				),
+				array(
+					'header'=>'Parte de',
+					'name'=>'subTipo',
+					
+					//'footer'=>'',
 				),
 				array(
 					'header'=>'Cantidad',
@@ -78,7 +85,7 @@
 			'filter'=>$model,
 			'selectableRows'=>2,
 			'ajaxUpdate' => true,
-			'afterAjaxUpdate' => "prueba",
+			'afterAjaxUpdate' => "actualizar",
 			'dataProvider'=>$DataProvider,
 			'enablePagination' => false,
 			'template'=>"{items}{summary}{pager}",
@@ -88,10 +95,17 @@
 					'class'=>'CCheckBoxColumn'
 				),
 				array(
-					'header'=>'Repuestos registrados',
+					'header'=>'Repuesto',
 					'name'=>'repuesto',
 					//'footer'=>'',
 				),
+				array(
+					'header'=>'Parte de',
+					'name'=>'idsubTipoRepuesto',
+					'value'=>'$data->idsubTipoRepuesto0->subTipo',
+					//'footer'=>'',
+				),
+			
 				array(
 					'header'=>'Cantidad',
 					'value'=>'CHTML::textField("campo",1,array(\'width\'=>4,\'maxlength\'=>2,\'onkeypress\'=>"return justNumbers(event)",\'style\'=>\'width: 50px;\' ))',
@@ -333,7 +347,7 @@ div.user-assignments-detail .lista {
     float: left;
     margin-right: 10px;
     padding: 10px;
-    width: 40%;
+    width: 46%;
 	min-width: 200px;
 }
 div.user-assignments-detail .boton {
@@ -360,14 +374,14 @@ div.user-assignments-detail #lista2 .boton {
 	var i=0;
 	var itemName=""	;
 	var veces=0;
-	function prueba(lista,itemName){
+	function actualizar(lista,itemName){
 	if(lista==1){
 			$.fn.yiiGridView.update('_lista1',{ data : "itemName="+itemName+"&mode=select" });
 			$.fn.yiiGridView.update('_lista2',{ data : "itemName="+itemName+"&mode=select" });
 		}
 		veces++;
 	if(veces>=3){
-		if(i<1){
+		if(i<5){
 				//$.fn.yiiGridView.update('_lista1');
 				$.fn.yiiGridView.update('_lista2');
 				i++;
@@ -407,7 +421,7 @@ div.user-assignments-detail #lista2 .boton {
 			// actualiza la lista1, que contiene los usuarios que tienen la asignacion	
 			//$.fn.yiiGridView.update('_lista1',{ data : "itemName="+itemName+"&mode=select" });
 			//$.fn.yiiGridView.update('_lista2',{ data : "itemName="+itemName+"&mode=select" });
-			prueba(1,itemName);
+			actualizar(1,itemName);
 		});
 	});
 	$('#asignarSeleccion').css("cursor","pointer");

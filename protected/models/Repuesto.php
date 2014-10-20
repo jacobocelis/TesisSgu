@@ -107,7 +107,7 @@ class Repuesto extends CActiveRecord
 			//$criteria->compare('id',$this->id);
 			$criteria->compare('t.id not in (select re.id from sgu_CaracteristicaVehGrupo cg, 
 			sgu_grupo gu, sgu_repuesto re where cg.idgrupo=gu.id and gu.grupo="'.$grupo.'" and re.id=cg.idrepuesto) and t.repuesto',$this->repuesto,true);
-			$criteria->order = 'repuesto ASC';
+			$criteria->order = 'idsubTipoRepuesto ASC';
 			$criteria->addCondition('t.id not in (select re.id from sgu_CaracteristicaVehGrupo cg, 
 			sgu_grupo gu, sgu_repuesto re where cg.idgrupo=gu.id and gu.grupo="'.$grupo.'" and re.id=cg.idrepuesto)');
 			
@@ -119,7 +119,7 @@ class Repuesto extends CActiveRecord
 		}
 		if($grupo==""){
 			$criteria->compare('repuesto',$this->repuesto,true);
-			$criteria->order = 'repuesto ASC';
+			$criteria->order = 'idsubTipoRepuesto ASC';
 			 $dataProvider=new CActiveDataProvider($this, array(
 				'criteria'=>$criteria,
 				));
@@ -140,7 +140,7 @@ class Repuesto extends CActiveRecord
 		$criteria->addCondition('id not in (select re.id from sgu_CaracteristicaVehGrupo cg, 
 		sgu_grupo gu, sgu_repuesto re where cg.idgrupo=gu.id and gu.grupo="'.$grupo.'"
 		and re.id=cg.idrepuesto)');
-		$criteria->order = 'repuesto ASC';
+		$criteria->order = 'idsubTipoRepuesto ASC';
 		$dataProvider= new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
 		));
