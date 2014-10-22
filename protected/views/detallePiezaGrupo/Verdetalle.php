@@ -30,7 +30,7 @@
 			'enablePagination' => false,
 			'columns'=>array(
 				array(
-					'header'=>'Repuesto',
+					'header'=>'Pieza',
 					'name'=>'repuesto',
 					
 					'htmlOptions'=>array('style'=>'width:400px;'),

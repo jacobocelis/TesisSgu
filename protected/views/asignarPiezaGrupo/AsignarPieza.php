@@ -1,5 +1,11 @@
+
 <?php 
-	
+	$this->breadcrumbs=array(
+	'Partes y piezas'=>array('repuesto/index'),
+	'Asignación',
+);
+
+
 	$selectedUserGetter = 'repuesto';
 	$seleccionCantidad = 'cantidad';
 	
@@ -54,7 +60,7 @@
 				),
 				
 				array(
-					'header'=>'Repuestos agregados',
+					'header'=>'Piezas agregadas',
 					'name'=>'repuesto',
 				),
 				array(
@@ -89,26 +95,28 @@
 			'dataProvider'=>$DataProvider,
 			'enablePagination' => false,
 			'template'=>"{items}{summary}{pager}",
-			
 			'columns'=>array(	
+			
 			array(
 					'class'=>'CCheckBoxColumn'
 				),
 				array(
-					'header'=>'Repuesto',
+					'header'=>'Piezas',
 					'name'=>'repuesto',
+					'htmlOptions'=>array('style'=>'width: 140px;'),
 					//'footer'=>'',
 				),
 				array(
 					'header'=>'Parte de',
 					'name'=>'idsubTipoRepuesto',
 					'value'=>'$data->idsubTipoRepuesto0->subTipo',
+					'filter' => false,
 					//'footer'=>'',
 				),
 			
 				array(
 					'header'=>'Cantidad',
-					'value'=>'CHTML::textField("campo",1,array(\'width\'=>4,\'maxlength\'=>2,\'onkeypress\'=>"return justNumbers(event)",\'style\'=>\'width: 50px;\' ))',
+					'value'=>'CHTML::textField("campo",1,array(\'width\'=>4,\'maxlength\'=>2,\'onkeypress\'=>"return justNumbers(event)",\'style\'=>\'width: 40px;height:16px;margin: 0 auto;text-align: center;\' ))',
 					'type'=>'raw',
 					'htmlOptions'=>array('style'=>'width: 50px;'),
 				),

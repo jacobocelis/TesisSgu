@@ -40,8 +40,46 @@ class DetallePiezaGrupoController extends Controller
 			),
 		);
 	}
-	public function actionAgregardetalle($id){
-	 $data=$id;
+	public function actionAgregardetalle($id,$fila){
+	 
+	 //$data=$id;
+	 $model=CantidadGrupo::model()->findByPk($id);
+	 
+	 if(isset($_POST['CantidadGrupo'])){
+	 
+            $model->attributes=$_POST['CantidadGrupo'];
+            /*insert de detalle por pagina*/
+			if($model->save()){
+            /*inserts por debajo*/
+			$idgrupo=Yii::app()->db->createCommand('select idCaracteristicaVehGrupo as id from sgu_CantidadGrupo where id="'.$id.'"')->queryRow();
+			$detalles=Yii::app()->db->createCommand('select id from sgu_CantidadGrupo where idCaracteristicaVehGrupo="'.$idgrupo['id'].'"')->queryAll();
+			$total=count($detalles);
+			
+			$tot=Yii::app()->db->createCommand('select cv.id from sgu_CaracteristicaVeh cv, sgu_CaracteristicaVehGrupo cvg  
+				where cvg.id="'.$idgrupo['id'].'" and cv.idrepuesto=cvg.idrepuesto and
+				cv.idvehiculo in (select id from sgu_vehiculo where idgrupo in 
+				(select idgrupo from sgu_CaracteristicaVehGrupo where id="'.$idgrupo['id'].'"))')->queryAll();
+				
+			$tota=count($tot);
+			file_put_contents('prueba1.txt', print_r($tot[0]['id'],true));
+			for($j=0;$j<$tota;$j++){
+				Yii::app()->db->createCommand('SET @rownum=0;')->execute();
+				$idg=Yii::app()->db->createCommand('select (@rownum := @rownum + 1) AS fila, id from sgu_Cantidad where idCaracteristicaVeh="'.$tot[$j]['id'].'" having fila="'.$fila.'"')->queryRow();
+				Yii::app()->db->createCommand('UPDATE `tsg`.`sgu_Cantidad` SET `detallePieza` = "'.$model->detallePieza.'" WHERE `sgu_Cantidad`.`id` = '.$idg['id'])->query();
+			}
+			/*------------------*/
+				if (Yii::app()->request->isAjaxRequest){
+                    echo CJSON::encode(array(
+                        'status'=>'success', 
+                        'div'=>"se agregó el detalle correctamente"
+                        ));
+                    exit;               
+                }
+                /*else
+                    $this->redirect(array('view','id'=>$model->id));*/
+            }
+        }
+		
 	if(isset($_GET['total'])){
 		$dat=$_GET['total'];
 		$datos= explode(",", $dat);
@@ -64,43 +102,20 @@ class DetallePiezaGrupoController extends Controller
 			}
 		}
 	}
-	
-	$consulta=Yii::app()->db->createCommand('select g.grupo from sgu_grupo g, sgu_CaracteristicaVehGrupo cvg where g.id=cvg.idgrupo and cvg.id='.$data)->queryRow();
-	
-	$grupo= new CArrayDataProvider($consulta);
-	$var=new CActiveDataProvider('CantidadGrupo',array(
-                    'criteria'=>array(                          
-                      'condition'=>'t.idcaracteristicavehgrupo='.$data,
-                  ),
-                    ));
-					
-		$this->render('Agregardetalle',array(
-            'model'=>$var,
-			'grupo'=>$grupo,
-			'id'=>$data,
-            ));
-	}
-	public function actionVerdetalle($id){
-		$data=$id;
-		$consulta=Yii::app()->db->createCommand('select r.repuesto, cg.detallePieza, g.grupo from sgu_grupo g, sgu_CantidadGrupo cg, sgu_repuesto r, sgu_CaracteristicaVehGrupo cvg where idCaracteristicaVehGrupo="'.$data.'" and
-			r.id=cvg.idrepuesto and cvg.id=cg.idcaracteristicavehgrupo and g.id=cvg.idgrupo')->queryAll();
-		
-		$detalle=new CArrayDataProvider($consulta, array('keyField'=>'repuesto','pagination'=>array(
-      'pageSize'=>100,
-     ),));
-
-		$this->render('Verdetalle',array(
-            'model'=>$detalle,
-            ),false,TRUE);
-	
-	
+	 if (Yii::app()->request->isAjaxRequest){
+				$model=CantidadGrupo::model()->findByPk($id);
+			//$model=$this->loadModel($id);
+            echo CJSON::encode(array(
+                'status'=>'failure', 
+                'div'=>$this->renderPartial('_form2', array('model'=>$model), true)));
+            exit;               
+        }
 	}
 	public function actionDetallePieza()
     {
 		$authItemName = "";	
 		$grupo=Grupo::model()->findAll();
 		$pieza_=Repuesto::model();
-		
 		
 		$pieza=$pieza_->buscar($authItemName);
 		
@@ -142,6 +157,11 @@ class DetallePiezaGrupoController extends Controller
 		/*$consulta=Yii::app()->db->createCommand('select  re.repuesto, cg.cantidad, cg.id from sgu_caracteristicavehgrupo cg, 
 		sgu_grupo gu, sgu_repuesto re where cg.idgrupo=gu.id and gu.grupo="'.$authItemName.'" 
 		and re.id=cg.idrepuesto ORDER BY re.repuesto ASC')->queryAll(); */
+		if (isset($_GET['idetalle'])){ 
+			$idetalle=$_GET['idetalle'];
+		}else{
+			$idetalle="0";
+		}
 		
 		if (isset($_GET['itemName'])){ 
 			$consulta=Yii::app()->db->createCommand('select id from sgu_grupo where grupo="'.$authItemName.'"')->queryAll(); 
@@ -149,27 +169,33 @@ class DetallePiezaGrupoController extends Controller
 		}else{
 			$data="0";
 		}
-		$var=new CActiveDataProvider('CaracteristicaVehGrupo',array(
+		
+		$detalle=new CActiveDataProvider('CantidadGrupo',array(
                     'criteria'=>array(                          
-                      'condition'=>'t.idgrupo='.$data,
+                      'condition'=>'t.idCaracteristicaVehGrupo="'.$idetalle.'"',
                   ),
-				  
 				  'pagination'=>array(
 					'pageSize'=>9999,
 					),
                     ));
-		
-		
-		//$piezasGrupo=new CArrayDataProvider($consulta, array('keyField'=>'id','pagination'=>array('pageSize'=>$pieza_->count())));
+	  
+		$var=new CActiveDataProvider('CaracteristicaVehGrupo',array(
+                    'criteria'=>array(                          
+                      'condition'=>'t.idgrupo='.$data,
+                  ),
+				  'pagination'=>array(
+					'pageSize'=>9999,
+					),
+                    ));
         $this->render(
             'DetallePieza',
             array(
-				
                 //'piezasGrupo' => $piezasGrupo,
                 'DataProvider' => $pieza,
 				'grupo'=>$grupo,
 				'model'=>$pieza_,
 				'var'=>$var,
+				'detalle'=>$detalle,
             )
         );	
     }

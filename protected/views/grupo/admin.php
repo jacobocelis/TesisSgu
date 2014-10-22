@@ -29,8 +29,8 @@ $this->menu=array(
 		'descripcion',
 	
 		array(
-		'name'=>'idtipo',
-		'value'=>'$data->idtipo0->tipo','type'=>'text'
+			'name'=>'idtipo',
+			'value'=>'$data->idtipo0->tipo','type'=>'text',
 		),
 		array(
 			'class'=>'CButtonColumn',

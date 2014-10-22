@@ -34,7 +34,7 @@
 					
 				),
 				array(
-					'header'=>'Repuesto',
+					'header'=>'Pieza',
 					//'name'=>'repuesto',
 					'value'=>'$data->idCaracteristicaVehGrupo0->idrepuesto0->repuesto',
 					'htmlOptions'=>array('style'=>'width:400px;'),

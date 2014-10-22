@@ -104,6 +104,7 @@ class InformacionController extends Controller
             }
         }
         if (Yii::app()->request->isAjaxRequest){
+
 		$id=$this->loadModel($id);
 			//$model=$this->loadModel($id);
             echo CJSON::encode(array(

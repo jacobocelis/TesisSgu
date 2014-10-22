@@ -1,3 +1,4 @@
+
 <?php 
 
 $this->breadcrumbs=array(
@@ -55,6 +56,7 @@ $this->breadcrumbs=array(
 
 </div>
 </div>
+
 <style type="text/css">
 
 .code {
