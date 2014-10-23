@@ -1,4 +1,4 @@
-
+<script src="<?php echo Yii::app()->baseUrl;?>/js/shortcut.js" type="text/javascript"></script>
 <?php 
 	$this->breadcrumbs=array(
 	'Partes y piezas'=>array('repuesto/index'),
@@ -60,11 +60,11 @@
 				),
 				
 				array(
-					'header'=>'Piezas agregadas',
+					'header'=>'Pieza agregadas',
 					'name'=>'repuesto',
 				),
 				array(
-					'header'=>'Parte de',
+					'header'=>'Categoría',
 					'name'=>'subTipo',
 					
 					//'footer'=>'',
@@ -101,13 +101,13 @@
 					'class'=>'CCheckBoxColumn'
 				),
 				array(
-					'header'=>'Piezas',
+					'header'=>'Pieza',
 					'name'=>'repuesto',
 					'htmlOptions'=>array('style'=>'width: 140px;'),
 					//'footer'=>'',
 				),
 				array(
-					'header'=>'Parte de',
+					'header'=>'Categoría',
 					'name'=>'idsubTipoRepuesto',
 					'value'=>'$data->idsubTipoRepuesto0->subTipo',
 					'filter' => false,
@@ -389,7 +389,7 @@ div.user-assignments-detail #lista2 .boton {
 		}
 		veces++;
 	if(veces>=3){
-		if(i<5){
+		if(i<4){
 				//$.fn.yiiGridView.update('_lista1');
 				$.fn.yiiGridView.update('_lista2');
 				i++;
@@ -499,5 +499,8 @@ function geTotal(){
 		});
 			return values;
     }
+	
+
+
 </script>
 

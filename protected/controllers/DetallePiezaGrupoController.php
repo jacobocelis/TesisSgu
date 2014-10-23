@@ -40,8 +40,8 @@ class DetallePiezaGrupoController extends Controller
 			),
 		);
 	}
-	public function actionAgregardetalle($id,$fila){
 	 
+	public function actionAgregardetalle($id,$fila){
 	 //$data=$id;
 	 $model=CantidadGrupo::model()->findByPk($id);
 	 
@@ -181,7 +181,8 @@ class DetallePiezaGrupoController extends Controller
 	  
 		$var=new CActiveDataProvider('CaracteristicaVehGrupo',array(
                     'criteria'=>array(                          
-                      'condition'=>'t.idgrupo='.$data,
+                      'condition'=>'idrepuesto in (select id from sgu_repuesto order by idsubTipoRepuesto ASC ) and t.idgrupo='.$data,
+					  //'condition'=>'idrepuesto in (select id from sgu_repuesto order by idsubTipoRepuesto ASC )',
                   ),
 				  'pagination'=>array(
 					'pageSize'=>9999,

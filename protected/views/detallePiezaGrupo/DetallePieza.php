@@ -1,3 +1,4 @@
+<script src="<?php echo Yii::app()->baseUrl;?>/js/shortcut.js" type="text/javascript"></script>
 <?php 
 	
 	$this->breadcrumbs=array(
@@ -15,9 +16,9 @@
 ?>
 <div class='form'>
 <div class='crugepanel user-assignments-role-list'>
-	<h1><?php echo ucfirst(CrugeTranslator::t("Detalle de cada pieza en grupo seleccionado"));?></h1>
-	<p><?php echo ucfirst(CrugeTranslator::t("Haz click en un grupo para ver y agregar un detalle a cada pieza"));?></p>
-	<strong><p><?php echo ucfirst(CrugeTranslator::t("Seleccione un grupo:"));?></p></strong>
+	<h1><?php echo ucfirst(CrugeTranslator::t("Detalle de cada pieza asignada en grupo"));?></h1>
+	<strong><p><?php echo ucfirst(CrugeTranslator::t("Haz click en un grupo para ver y agregar un detalle a cada pieza"));?></p></strong>
+	<p><?php echo ucfirst(CrugeTranslator::t("Seleccione un grupo:"));?></p>
 	<ul class='auth-item'>
 	<?php 
 		$loader = "<span class='loader'></span>";		
@@ -89,7 +90,7 @@
 					'name'=>'idrepuesto',
 					'value'=>'$data->idrepuesto0->repuesto',
 					
-					'htmlOptions'=>array('style'=>'width:400px;'),
+					'htmlOptions'=>array('style'=>'width:380px;'),
 				),
 				array(
 					'header'=>'Parte de',
@@ -212,8 +213,6 @@ $this->beginWidget('zii.widgets.jui.CJuiDialog', array( // the dialog
 </div>
 </div>
 <style>
-
-
 .nueva
 {
 	padding: 0px 0px;
@@ -681,6 +680,7 @@ div.user-assignments-role-list {
 }
 div.user-assignments-detail {
     overflow: auto;
+	background: none repeat scroll 0% 0% #F4FBF8;
 }
 div.user-assignments-detail .lista {
     border: 1px solid #eee;
@@ -796,5 +796,49 @@ function mostrarDetalles(){
 
 var idetalle = $.fn.yiiGridView.getSelection('_lista1');
 $.fn.yiiGridView.update('detalle',{ data: "idetalle="+idetalle });
+}
+</script>
+<script> /*script para añadir que se muevan las filas con el teclado*/
+
+
+$("#_lista1").scrollTop($("#_lista1").scrollTop() + 300);
+
+
+jQuery(document).bind('keydown', function (event){
+    if(event.which==38)
+	moveUp();
+	if(event.which==40)
+	moveDown();
+  });
+function moveDown() {
+    var rows = $('#_lista1 table tr');
+    var currentRow = $("tr.selected").get(0);
+
+    if (rows.length > 2) {
+        if (currentRow === undefined) {
+            rows.eq(1).addClass('selected');
+        } else if ($(currentRow).next('tr').get(0) === undefined) {
+            //do nothing
+        } else {
+            $(currentRow).next('tr').addClass('selected');
+            $(currentRow).removeClass('selected');
+        }
+    }
+}
+
+function moveUp() {
+    var rows = $('#_lista1 table tr');
+    var currentRow = $("tr.selected").get(0);
+
+    if (rows.length > 2) {
+        if (currentRow === undefined) {
+            rows.eq(1).addClass('selected');
+        } else if ($(currentRow).prev('tr').get(0) === undefined) {
+            //do nothing
+        } else {
+            $(currentRow).prev('tr').addClass('selected');
+            $(currentRow).removeClass('selected');
+        }
+    }
 }
 </script>

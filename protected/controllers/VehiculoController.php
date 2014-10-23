@@ -28,7 +28,7 @@ class VehiculoController extends Controller
 	{
 		return array(
 			array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array('index','view','detallePieza','verDetalle','agregarDetalle','fotos','Selectdos','Getdatos'),
+				'actions'=>array('index','view','detallePieza','Agregardetalle','fotos','Selectdos','Getdatos'),
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
@@ -44,7 +44,7 @@ class VehiculoController extends Controller
 			),
 		);
 	}
-	public function actionverDetalle($id){
+	/*public function actionverDetalle($id){
 		
 		$consulta=Yii::app()->db->createCommand('select r.repuesto, c.detallePieza, c.codigoPiezaEnUso, c.fechaIncorporacion from  sgu_Cantidad c, sgu_repuesto r, sgu_CaracteristicaVeh cv where c.idCaracteristicaVeh="'.$id.'" and
 			r.id=cv.idrepuesto and cv.id=c.idcaracteristicaveh')->queryAll();
@@ -88,21 +88,70 @@ class VehiculoController extends Controller
 			'id'=>$data,
 			'idveh'=>$idv->getData(),
             ));
+	}*/
+	public function actionAgregardetalle($id,$fila,$veh){
+	 $model=Cantidad::model()->findByPk($id);
+	 
+	 if(isset($_POST['Cantidad'])){
+            $model->attributes=$_POST['Cantidad'];
+            /*insert de detalle por pagina*/
+			if($model->save()){
+			/*------------------*/
+				if (Yii::app()->request->isAjaxRequest){
+                    echo CJSON::encode(array(
+                        'status'=>'success', 
+                        'div'=>"se agregó la informacion correctamente"
+                        ));
+                    exit;               
+                }
+            }
+        }
+	 if (Yii::app()->request->isAjaxRequest){
+				$model=Cantidad::model()->findByPk($id);
+			//$model=$this->loadModel($id);
+            echo CJSON::encode(array(
+                'status'=>'failure', 
+                'div'=>$this->renderPartial('_formCantidad', array('model'=>$model,'rep'=>$veh), true)));
+            exit;               
+        }
 	}
 	public function actiondetallePieza($id){ 
-	$dataProvider=new CActiveDataProvider('CaracteristicaVeh',array(
+	if (isset($_GET['idetalle'])){ 
+			$idetalle=$_GET['idetalle'];
+		}else{
+			$idetalle="0";
+		}
+		
+	$var=new CActiveDataProvider('CaracteristicaVeh',array(
                     'criteria'=>array(
 					  'select' => 'max(t.id) as id, t.cantidad, t.idvehiculo, t.idrepuesto' ,
-                      'condition'=>'t.idvehiculo='.$id,
-					  'group'=>'t.idvehiculo, t.idrepuesto',
+                      'condition'=>'t.idvehiculo=0',
+					  'group'=>'t.idvehiculo, t.idrepuesto')));
+					  
+	$dataProvider=new CActiveDataProvider('CaracteristicaVeh',array(
+                    'criteria'=>array(
+					  /*'select' => 'max(t.id) as id, t.cantidad, t.idvehiculo, t.idrepuesto' ,*/
+                      'condition'=>'t.idrepuesto in (select id from sgu_repuesto order by idsubTipoRepuesto ASC ) and t.idvehiculo="'.$id.'"',
+					  /*'group'=>'t.idvehiculo, t.idrepuesto',*/
                   ),
 				  'pagination'=>array(
 					'pageSize'=>9999,
 					),
                     ));
+	$detalle=new CActiveDataProvider('Cantidad',array(
+                    'criteria'=>array(                          
+                      'condition'=>'t.idCaracteristicaVeh="'.$idetalle.'"'),'pagination'=>array('pageSize'=>9999,),));
+					  
+	$det=new CActiveDataProvider('Cantidad',array(
+                    'criteria'=>array(                          
+                      'condition'=>'t.idCaracteristicaVeh=0'),'pagination'=>array('pageSize'=>9999,),));
+
 		$this->render('detallePieza',array(
 			'model'=>$dataProvider,
 			'id'=>$id,
+			'vacio'=>$var,
+			'detvacio'=>$det,
+			'detalle'=>$detalle
 		));
 	}
 	/**
