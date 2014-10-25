@@ -14,10 +14,12 @@
 	// controller action is handling ajax validation correctly.
 	// There is a call to performAjaxValidation() commented in generated controller code.
 	// See class documentation of CActiveForm for details on this.
+	// echo $form->errorSummary($model);
 	'enableAjaxValidation'=>false,
 )); ?>
 
-	<?php echo $form->errorSummary($model); ?>
+	<?php 
+	?>
 
 		<div class="row">
 		<?php echo $form->labelEx($model,'informacion'); ?>

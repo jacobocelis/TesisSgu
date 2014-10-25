@@ -142,7 +142,7 @@ $this->breadcrumbs=array(
 					'headerHtmlOptions'=>array('style'=>'text-align:center;'),
 				),
 				array(
-					'header'=>'Fecha de cambio',
+					'header'=>'Último cambio',
 					'name'=>'fechaIncorporacion',
 					'headerHtmlOptions'=>array('style'=>'text-align:center;'),
 				),
@@ -184,12 +184,12 @@ $this->breadcrumbs=array(
 					'htmlOptions'=>array('style'=>'text-align:center;width:145px;'),
 				),
 				array(
-					'header'=>'Fecha de cambio',
+					'header'=>'Último cambio',
 					'name'=>'fechaIncorporacion',
+					 //'value'=>'Yii::app()->dateFormatter->format("d MMM y",strtotime($data->fechaIncorporacion))',
 					'htmlOptions'=>array('style'=>'text-align:center;'),
 				),
 				array(
-						'header'=>'Fecha de cambio',
 						'type'=>'raw',
 						'value'=>'CHtml::link(CHtml::image(Yii::app()->request->baseUrl."/imagenes/agregar.png","Agregar",array("title"=>"Agregar")),"",
                         array(
@@ -731,16 +731,16 @@ function addDetalle(_url){
                 'data':$(this).serialize(),
                 'type':'post',
                 'dataType':'json',
-                'success':function(data)
-                        {
+                'success':function(data){
+				
                                 if (data.status == 'failure')
-                                {
-                                        $('#dialog div.divForForm').html(data.div);
+                                {   
+										$('#dialog div.divForForm').html(data.div);
                                         // Here is the trick: on submit-> once again this function!
                                         $('#dialog div.divForForm form').submit(addDetalle); // updatePaymentComment
                                 }
                                 else
-                                {
+                                {		
                                         $('#dialog div.divForForm').html(data.div);
                                         setTimeout("$('#dialog').dialog('close') ",1000);
                                         $.fn.yiiGridView.update('detalle');

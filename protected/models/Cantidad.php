@@ -31,7 +31,7 @@ class Cantidad extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('id, idCaracteristicaVeh', 'required'),
+			array('id, idCaracteristicaVeh,fechaIncorporacion', 'required'),
 			array('id, idCaracteristicaVeh', 'numerical', 'integerOnly'=>true),
 			array('codigoPiezaEnUso, detallePieza', 'length', 'max'=>100),
 			array('fechaIncorporacion', 'safe'),

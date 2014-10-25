@@ -138,7 +138,7 @@ if (isset($_GET['nrol']))
             </div>
             <?php if (!Yii::app()->user->isGuest) { ?>
                 <form class="navbar-search pull-right" action="">           	 
-                    <input type="text" class="search-query span2" placeholder="Búsqueda..">         
+                    <!-- <input type="text" class="search-query span2" placeholder="Búsqueda..">      -->   
                 </form>
             <?php } ?>
         </div><!-- container -->

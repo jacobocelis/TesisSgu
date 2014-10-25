@@ -9,7 +9,8 @@
 	$this->menu=array(
 	array('label'=>'Registrar pieza', 'url'=>array('repuesto/create')),
 	array('label'=>'Crear nuevo grupo', 'url'=>array('grupo/create')),
-	array('label'=>'Regresar', 'url'=>array('asignarPiezaGrupo/AsignarPieza')),
+	array('label'=>'Asignación de piezas a grupos', 'url'=>array('asignarPiezaGrupo/AsignarPieza')),
+	array('label'=>'Atrás', 'url'=>array('repuesto/index')),
 	
 );
 
@@ -18,7 +19,7 @@
 <div class='crugepanel user-assignments-role-list'>
 	<h1><?php echo ucfirst(CrugeTranslator::t("Detalle de cada pieza asignada en grupo"));?></h1>
 	<strong><p><?php echo ucfirst(CrugeTranslator::t("Haz click en un grupo para ver y agregar un detalle a cada pieza"));?></p></strong>
-	<p><?php echo ucfirst(CrugeTranslator::t("Seleccione un grupo:"));?></p>
+	<p><?php echo ucfirst(CrugeTranslator::t("Grupos registrados:"));?></p>
 	<ul class='auth-item'>
 	<?php 
 		$loader = "<span class='loader'></span>";		
@@ -29,7 +30,11 @@
 	</ul>
 </div>
 <div class='crugepanel user-assignments-detail'>
-	<h6><div id='mostrarSeleccion'></div></h6>
+<div><input placeholder="Buscar pieza" name="Repuesto[repuesto]" id="repuesto" class="buscar" maxlength="200" type="text" style="width:180px "onkeyup = " buscar(event);  " ></div>
+	<h6><div id='mostrarSeleccion' class="mostrar">Seleccione un grupo</div></h6>
+	
+	
+	
 	<?php 	//$var='$("#mydialog").dialog("open"); return false;';
 		$this->widget('zii.widgets.grid.CGridView', array(
 			'htmlOptions' => array('class' => 'nueva'),
@@ -78,6 +83,7 @@
 			'id'=>'_lista1',
 			'hideHeader'=>true,
 			'summaryText' => '',
+			//'filter' => $modelo,
 			'selectableRows'=>1,
 			'enableSorting' => false,
 			'selectionChanged'=>'mostrarDetalles',
@@ -93,14 +99,17 @@
 					'htmlOptions'=>array('style'=>'width:380px;'),
 				),
 				array(
+				
 					'header'=>'Parte de',
 					'name'=>'idrepuesto',
+					'filter' => false,
 					'value'=>'$data->idrepuesto0->idsubTipoRepuesto0->subTipo',
 					'htmlOptions'=>array('style'=>'width:400px;'),
 				),
 				array(
 					'header'=>'Cantidad',
 					'name'=>'cantidad',
+					'filter' => false,
 					'htmlOptions'=>array('style'=>'text-align:center;width:120px'),
 				),
 				/*array(
@@ -129,6 +138,8 @@
  //CHtml::link("Ver ",Yii::app()->request->baseUrl."/a.php")."".CHtml::link("Agregar",Yii::app()->request->baseUrl)
  ?>  
  <br>
+ </div>
+ <div class='crugepanel user-assignments-detail'>
 <?php 
 		$this->widget('zii.widgets.grid.CGridView', array(
 			'htmlOptions' => array('class' => 'nueva'),
@@ -144,6 +155,7 @@
 					'header'=>'Pieza',
 					'value'=>'$data->idCaracteristicaVehGrupo0->idrepuesto0->repuesto',
 					'headerHtmlOptions'=>array('style'=>'width:340px;'),
+					
 				),
 				array(
 					'header'=>'Detalle',
@@ -167,7 +179,8 @@
 			'id'=>'detalle',
 			'selectableRows'=>1,
 			'hideHeader'=>true,
-			'summaryText' => '',
+			'summaryText' =>'',
+			'emptyText'=>'',
 			'dataProvider'=>$detalle,
 			'enablePagination' => false,
 			'enableSorting' => false,
@@ -212,6 +225,26 @@ $this->beginWidget('zii.widgets.jui.CJuiDialog', array( // the dialog
 <?php $this->endWidget();?>
 </div>
 </div>
+<style>
+.buscar{
+	display: inline-block;
+height: 20px;
+padding: 4px 6px;
+margin-bottom: 9px;
+font-size: 14px;
+line-height: 20px;
+color: #555;
+border-radius: 3px;
+float: right;
+margin-top: 10px;
+
+
+}
+.mostrar{
+
+max-width:350px;
+}
+</style>
 <style>
 .nueva
 {
@@ -805,10 +838,14 @@ $("#_lista1").scrollTop($("#_lista1").scrollTop() + 300);
 
 
 jQuery(document).bind('keydown', function (event){
-    if(event.which==38)
-	moveUp();
-	if(event.which==40)
-	moveDown();
+    if(event.which==38){
+		moveUp();
+		mostrarDetalles();
+	}
+	if(event.which==40){
+		mostrarDetalles();
+		moveDown();
+	}
   });
 function moveDown() {
     var rows = $('#_lista1 table tr');
@@ -840,5 +877,17 @@ function moveUp() {
             $(currentRow).removeClass('selected');
         }
     }
+}
+</script>
+<script>
+//funcion para el input de buscar pieza
+function buscar(event){
+	
+	if(event.keyCode == 13){
+		rep=$('#repuesto').val();
+		$.fn.yiiGridView.update('_lista1',
+				{ data : "rep="+rep });
+	}
+	
 }
 </script>

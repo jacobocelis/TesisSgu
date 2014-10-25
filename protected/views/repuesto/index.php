@@ -8,8 +8,8 @@ $this->breadcrumbs=array(
 
 $this->menu=array(
 	array('label'=>'Registrar pieza', 'url'=>array('create')),
-	array('label'=>'Asignación a grupos', 'url'=>array('asignarPiezaGrupo/AsignarPieza')),
-	array('label'=>'piezas en grupos', 'url'=>array('detallePiezaGrupo/detallePieza')),
+	array('label'=>'Asignación de piezas a grupos', 'url'=>array('asignarPiezaGrupo/AsignarPieza')),
+	array('label'=>'Ver piezas asignadas en grupos', 'url'=>array('detallePiezaGrupo/detallePieza')),
 	array('label'=>'Administrar piezas', 'url'=>array('admin')),
 );
 ?>

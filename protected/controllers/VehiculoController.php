@@ -28,7 +28,7 @@ class VehiculoController extends Controller
 	{
 		return array(
 			array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array('index','view','detallePieza','Agregardetalle','fotos','Selectdos','Getdatos'),
+				'actions'=>array('index','view','detallePieza','agregardetalle','fotos','Selectdos','Getdatos'),
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
@@ -90,13 +90,13 @@ class VehiculoController extends Controller
             ));
 	}*/
 	public function actionAgregardetalle($id,$fila,$veh){
+	
 	 $model=Cantidad::model()->findByPk($id);
 	 
 	 if(isset($_POST['Cantidad'])){
             $model->attributes=$_POST['Cantidad'];
-            /*insert de detalle por pagina*/
+           
 			if($model->save()){
-			/*------------------*/
 				if (Yii::app()->request->isAjaxRequest){
                     echo CJSON::encode(array(
                         'status'=>'success', 

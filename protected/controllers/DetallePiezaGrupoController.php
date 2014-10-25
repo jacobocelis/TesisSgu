@@ -116,7 +116,7 @@ class DetallePiezaGrupoController extends Controller
 		$authItemName = "";	
 		$grupo=Grupo::model()->findAll();
 		$pieza_=Repuesto::model();
-		
+		$modelo=new CaracteristicaVehGrupo('search');
 		$pieza=$pieza_->buscar($authItemName);
 		
 		/*cuado se busca un repuesto en list2 se muestra*/
@@ -197,6 +197,7 @@ class DetallePiezaGrupoController extends Controller
 				'model'=>$pieza_,
 				'var'=>$var,
 				'detalle'=>$detalle,
+				'modelo'=>$modelo,
             )
         );	
     }

@@ -13,6 +13,7 @@
 	array('label'=>'Registrar pieza', 'url'=>array('repuesto/create')),
 	array('label'=>'Crear nuevo grupo', 'url'=>array('grupo/create')),
 	array('label'=>'Ver piezas asignadas', 'url'=>array('detallePiezaGrupo/detallepieza')),
+	array('label'=>'Atrás', 'url'=>array('repuesto/index')),
 );
 ?>
 <div class='form'>
@@ -30,7 +31,7 @@
 	</ul>
 </div>
 <div class='crugepanel user-assignments-detail'>
-	<h6><div id='mostrarSeleccion'></div></h6>
+	<h6><div id='mostrarSeleccion'>Seleccione un grupo</div></h6>
 	
 	<div id='lista1' class='lista'>
 	
@@ -103,6 +104,7 @@
 				array(
 					'header'=>'Pieza',
 					'name'=>'repuesto',
+					'filter'=>CHtml::activeTextField($model, 'repuesto',array("placeholder"=>"Búsqueda..")),
 					'htmlOptions'=>array('style'=>'width: 140px;'),
 					//'footer'=>'',
 				),
@@ -397,7 +399,7 @@ div.user-assignments-detail #lista2 .boton {
 		}
 	}
 	<?php /* a cada LI del div de roles le anexa un evento click y le pone un cursor */ ?>
-	$('#_lista2').find('input[type=text],textarea,select').filter(':visible:first').attr('placeholder', 'Búsqueda..');
+	//$('#_lista2').find('input[type=text],textarea,select').filter(':visible:first').attr('placeholder', 'Búsqueda..');
 	
 	//aqui se agrega el grupo seleccionado al label y se muestra en la vista
 	var _setSelectedItemName = function(valor){
