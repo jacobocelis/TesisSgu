@@ -61,7 +61,7 @@ class DetallePiezaGrupoController extends Controller
 				(select idgrupo from sgu_CaracteristicaVehGrupo where id="'.$idgrupo['id'].'"))')->queryAll();
 				
 			$tota=count($tot);
-			file_put_contents('prueba1.txt', print_r($tot[0]['id'],true));
+			//file_put_contents('prueba1.txt', print_r($tot[0]['id'],true));
 			for($j=0;$j<$tota;$j++){
 				Yii::app()->db->createCommand('SET @rownum=0;')->execute();
 				$idg=Yii::app()->db->createCommand('select (@rownum := @rownum + 1) AS fila, id from sgu_Cantidad where idCaracteristicaVeh="'.$tot[$j]['id'].'" having fila="'.$fila.'"')->queryRow();
@@ -153,10 +153,6 @@ class DetallePiezaGrupoController extends Controller
 				//$pieza=$pieza_->ActualizarRepuestos($authItemName);
 			}
 		}		
-		/*paso 1: en lista1 mostrar los repuestos al hacer click en el grupo*/
-		/*$consulta=Yii::app()->db->createCommand('select  re.repuesto, cg.cantidad, cg.id from sgu_caracteristicavehgrupo cg, 
-		sgu_grupo gu, sgu_repuesto re where cg.idgrupo=gu.id and gu.grupo="'.$authItemName.'" 
-		and re.id=cg.idrepuesto ORDER BY re.repuesto ASC')->queryAll(); */
 		if (isset($_GET['idetalle'])){ 
 			$idetalle=$_GET['idetalle'];
 		}else{
@@ -173,28 +169,26 @@ class DetallePiezaGrupoController extends Controller
 		$detalle=new CActiveDataProvider('CantidadGrupo',array(
                     'criteria'=>array(                          
                       'condition'=>'t.idCaracteristicaVehGrupo="'.$idetalle.'"',
-                  ),
-				  'pagination'=>array(
-					'pageSize'=>9999,
-					),
-                    ));
+                  ),'pagination'=>array('pageSize'=>9999)));
 	  
 		$var=new CActiveDataProvider('CaracteristicaVehGrupo',array(
                     'criteria'=>array(                          
                       'condition'=>'idrepuesto in (select id from sgu_repuesto order by idsubTipoRepuesto ASC ) and t.idgrupo='.$data,
 					  //'condition'=>'idrepuesto in (select id from sgu_repuesto order by idsubTipoRepuesto ASC )',
-                  ),
-				  'pagination'=>array(
-					'pageSize'=>9999,
-					),
-                    ));
+                  ),'pagination'=>array('pageSize'=>9999)));
+		
+		if (isset($_GET['rep'])){ 
+			$rep=$_GET['rep'];
+			$var=new CActiveDataProvider('CaracteristicaVehGrupo',array(
+                    'criteria'=>array(                          
+                      'condition'=>'idrepuesto in (select id from sgu_repuesto where repuesto like "%'.$rep.'%" order by idsubTipoRepuesto ASC ) and t.idgrupo='.$data,
+					  //'condition'=>'idrepuesto in (select id from sgu_repuesto order by idsubTipoRepuesto ASC )',
+                  ),'pagination'=>array('pageSize'=>9999)));
+		}
         $this->render(
             'DetallePieza',
             array(
-                //'piezasGrupo' => $piezasGrupo,
-                'DataProvider' => $pieza,
 				'grupo'=>$grupo,
-				'model'=>$pieza_,
 				'var'=>$var,
 				'detalle'=>$detalle,
 				'modelo'=>$modelo,

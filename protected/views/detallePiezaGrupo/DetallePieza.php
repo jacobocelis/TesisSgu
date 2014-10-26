@@ -51,13 +51,13 @@
 					'header'=>'Pieza',
 					'name'=>'idrepuesto',
 					'value'=>'$data->idrepuesto0->repuesto',
-					'headerHtmlOptions'=>array('style'=>'width:400px;'),
+					'headerHtmlOptions'=>array('style'=>'width:400px;text-align:left;'),
 				),
 				array(
 					'header'=>'Parte de',
 					'name'=>'idrepuesto',
 					'value'=>'$data->idrepuesto0->idsubTipoRepuesto0->subTipo',
-					'headerHtmlOptions'=>array('style'=>'width:400px;'),
+					'headerHtmlOptions'=>array('style'=>'width:400px;text-align:left;'),
 				),
 				array(
 					'header'=>'Cantidad',
@@ -139,7 +139,7 @@
  ?>  
  <br>
  </div>
- <div class='crugepanel user-assignments-detail'>
+ <div id='ocultar' class='crugepanel user-assignments-detail'>
 <?php 
 		$this->widget('zii.widgets.grid.CGridView', array(
 			'htmlOptions' => array('class' => 'nueva'),
@@ -154,13 +154,13 @@
 				array(
 					'header'=>'Pieza',
 					'value'=>'$data->idCaracteristicaVehGrupo0->idrepuesto0->repuesto',
-					'headerHtmlOptions'=>array('style'=>'width:340px;'),
+					'headerHtmlOptions'=>array('style'=>'width:340px;text-align:left;'),
 					
 				),
 				array(
 					'header'=>'Detalle',
 					'name'=>'detallePieza',
-					
+					'headerHtmlOptions'=>array('style'=>'text-align:left;'),
 					'htmlOptions'=>array('style'=>'text-align:center;'),
 				),
 				array(
@@ -738,6 +738,8 @@ div.user-assignments-detail .boton:hover {
 }
 </style>
 <script>
+$('#ocultar').hide();
+
 var _updatePaymentComment_url;
 function addDetalle(_url){
 //$.fn.yiiGridView.update('detalle');
@@ -801,6 +803,8 @@ function addDetalle(_url){
 			});
 			$(this).addClass('selected');
 			_setSelectedItemName(itemName);
+			/*muestro el div de detalles*/
+			$('#ocultar').show(500);
 			// actualiza la lista1, que contiene los usuarios que tienen la asignacion	
 			$.fn.yiiGridView.update('_lista1',{ data : "itemName="+itemName+"&mode=select" });
 			$.fn.yiiGridView.update('_lista2',{ data : "itemName="+itemName+"&mode=select" });
@@ -837,7 +841,7 @@ $.fn.yiiGridView.update('detalle',{ data: "idetalle="+idetalle });
 $("#_lista1").scrollTop($("#_lista1").scrollTop() + 300);
 
 
-jQuery(document).bind('keydown', function (event){
+jQuery(document).bind('keyup', function (event){
     if(event.which==38){
 		moveUp();
 		mostrarDetalles();
@@ -882,11 +886,11 @@ function moveUp() {
 <script>
 //funcion para el input de buscar pieza
 function buscar(event){
-	
+	var grupo=$('#mostrarSeleccion').html();
 	if(event.keyCode == 13){
 		rep=$('#repuesto').val();
 		$.fn.yiiGridView.update('_lista1',
-				{ data : "rep="+rep });
+				{ data : "rep="+rep+"&grupo="+grupo});
 	}
 	
 }
