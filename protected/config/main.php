@@ -20,6 +20,8 @@ return array(
         'application.modules.rights.components.dataproviders.*',
 		'application.components.validators.*',
 		'application.extensions.eeditable.*',
+		'application.extensions.SilcomTreeGridView.*',
+		
     ),
     'modules' => array(
         // uncomment the following to enable the Gii tool

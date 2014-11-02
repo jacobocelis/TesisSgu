@@ -4,7 +4,7 @@
 $this->breadcrumbs=array(
 	'Vehiculos'=>array('index'),
 	'Partes'=>array('vehiculo/'.$id),
-	$id,
+	"Unidad ".$id,
 );
 	$this->menu=array(
 	array('label'=>'Registrar pieza', 'url'=>array('repuesto/create')),
@@ -93,6 +93,7 @@ $this->breadcrumbs=array(
 					'name'=>'cantidad',
 					'htmlOptions'=>array('style'=>'text-align:center;width:100px'),
 				),
+				
 				/*array(
                         'header'=>'Detalle',
                         'type'=>'raw',
@@ -194,7 +195,7 @@ $this->breadcrumbs=array(
 						'value'=>'CHtml::link(CHtml::image(Yii::app()->request->baseUrl."/imagenes/agregar.png","Agregar",array("title"=>"Agregar")),"",
                         array(
                                 \'style\'=>\'cursor: pointer; width:50px;text-decoration: underline;\',
-                                \'onclick\'=>\'{addDetalle("\'.Yii::app()->createUrl("vehiculo/agregardetalle",array("id"=>$data["id"],"fila"=>$row+1,"veh"=>$data->idCaracteristicaVeh0->idrepuesto0->repuesto)
+                                \'onclick\'=>\'{addDetalle("\'.Yii::app()->createUrl("cantidad/agregardetalle",array("id"=>$data["id"],"fila"=>$row+1,"rep"=>$data->idCaracteristicaVeh0->idrepuesto0->repuesto)
 								).\'"); $("#dialog").dialog("open");}\'
                         )
                 );',
@@ -217,7 +218,6 @@ $this->beginWidget('zii.widgets.jui.CJuiDialog', array( // the dialog
 ));?>
 <div class="divForForm"></div>
 <?php $this->endWidget();?>
-</div>
 </div>
 </div>
 
@@ -745,7 +745,6 @@ function addDetalle(_url){
                                         setTimeout("$('#dialog').dialog('close') ",1000);
                                         $.fn.yiiGridView.update('detalle');
                                 }
-
                         } ,
                 'cache':false});
         return false;

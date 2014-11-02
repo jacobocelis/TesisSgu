@@ -5,7 +5,7 @@
 
 $this->breadcrumbs=array(
 	'Vehiculos'=>array('index'),
-	$model->id,
+	"Unidad ".$model->id,
 );
 
 $this->menu=array(
@@ -124,8 +124,7 @@ $this->menu=array(
                 );',
 ),
 			),
-		));?> 
-		
+		));?>
 <?php 
 $this->beginWidget('zii.widgets.jui.CJuiDialog', array( // the dialog
     'id'=>'dialog',

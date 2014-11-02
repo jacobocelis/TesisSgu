@@ -58,7 +58,7 @@ $repuesto=new Repuesto();
 
 </div><!-- form -->
 <script type="text/javascript">
-	/*$(function($){
+	$(function($){
 	    $.datepicker.regional['es'] = {
 	        closeText: 'Cerrar',
 	        prevText: 'Anterior',
@@ -85,5 +85,5 @@ $repuesto=new Repuesto();
 			$("#findate").datepicker("option","minDate", selected+" +1d");
 		}
 	});
-	$("#findate").datepicker();*/
+	$("#findate").datepicker();
 </script>

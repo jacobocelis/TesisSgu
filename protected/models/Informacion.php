@@ -32,7 +32,7 @@ class Informacion extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('informacion, idvehiculo', 'required'),
+			array('informacion, idvehiculo,descripcion', 'required'),
 			array('idvehiculo', 'numerical', 'integerOnly'=>true),
 			array('informacion', 'length', 'max'=>60),
 			array('descripcion', 'length', 'max'=>80),

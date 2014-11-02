@@ -1,4 +1,3 @@
-<script src="<?php echo Yii::app()->baseUrl;?>/js/shortcut.js" type="text/javascript"></script>
 <?php 
 	$this->breadcrumbs=array(
 	'Partes y piezas'=>array('repuesto/index'),
@@ -118,7 +117,7 @@
 			
 				array(
 					'header'=>'Cantidad',
-					'value'=>'CHTML::textField("campo",1,array(\'width\'=>4,\'maxlength\'=>2,\'onkeypress\'=>"return justNumbers(event)",\'style\'=>\'width: 40px;height:16px;margin: 0 auto;text-align: center;\' ))',
+					'value'=>'CHTML::textField("campo",1,array(\'id\'=>"campo$data->id",\'width\'=>4,\'maxlength\'=>2,\'onblur\'=>"return validar($data->id)",\'onkeypress\'=>"return justNumbers(event,$data->id)",\'onmousedown\'=>"return seleccion($data->id)",\'style\'=>\'width: 40px;height:16px;margin: 0 auto;text-align: center;\' ))',
 					'type'=>'raw',
 					'htmlOptions'=>array('style'=>'width: 50px;'),
 				),
@@ -466,19 +465,32 @@ div.user-assignments-detail #lista2 .boton {
 		}
 		//$.fn.yiiGridView.update('_lista2',{ data : "itemName="+itemName+"&mode=select" });
 	});
-
-	function justNumbers(e){
-    var keynum = window.event ? window.event.keyCode : e.which;
-	campo = document.getElementById("campo").value;
-	if(campo.length == 0){
-		var elem = document.getElementById("campo");
-			elem.value = "1";
+	/*
+$("input[name=campo]").focusout(function() {
+	alert('focusout');
+});
+$( "input[name=campo]" ).click(function() {
+	alert();
+});*/
+	function seleccion(){
+		$('.grid-view table.items').children('tbody').children().each(function () {
+			if($(this).hasClass('selected')) {
+				
+				$(this).addClass('selected');
+			}
+		});
 	}
-	
+	function validar(id){
+			if($('#campo'+id).val()==""){
+				$('#campo'+id).val('1');
+			}
+	}			
+	function justNumbers(e,id){
+    var keynum = window.event ? window.event.keyCode : e.which;
+	campo = document.getElementById("campo"+id).value;
     if ((keynum == 8)  || (keynum == 0) || (keynum == 13))
     return true;
     return /\d/.test(String.fromCharCode(keynum));
-	
 }
 function geTotal(){
 		var otherInputs;
@@ -489,9 +501,6 @@ function geTotal(){
 			if($(this).hasClass('selected')) {
 						$(this).closest('tr').find("input").each(function() {
 						otherInputs = $(this).parents('td').siblings().find('input');
-							$('#campo').focusout(function() {
-									alert('sii');
-							})
 							data = $(otherInputs[0]).val();
 							values.push(data);
 							total++;

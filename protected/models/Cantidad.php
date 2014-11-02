@@ -34,7 +34,7 @@ class Cantidad extends CActiveRecord
 			array('id, idCaracteristicaVeh,fechaIncorporacion', 'required'),
 			array('id, idCaracteristicaVeh', 'numerical', 'integerOnly'=>true),
 			array('codigoPiezaEnUso, detallePieza', 'length', 'max'=>100),
-			array('fechaIncorporacion', 'safe'),
+			//array('fechaIncorporacion', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
 			array('id, codigoPiezaEnUso, detallePieza, fechaIncorporacion, idCaracteristicaVeh', 'safe', 'on'=>'search'),

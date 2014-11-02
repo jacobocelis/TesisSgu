@@ -28,7 +28,7 @@ class CantidadController extends Controller
 	{
 		return array(
 			array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array('index','view'),
+				'actions'=>array('index','view','Agregardetalle'),
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
@@ -49,6 +49,30 @@ class CantidadController extends Controller
 	 * Displays a particular model.
 	 * @param integer $id the ID of the model to be displayed
 	 */
+	 public function actionAgregardetalle($id,$rep){
+	 $model=$this->loadModel($id);
+	 if(isset($_POST['Cantidad'])){
+            $model->attributes=$_POST['Cantidad'];
+           
+			if($model->save()){
+				if (Yii::app()->request->isAjaxRequest){
+                    echo CJSON::encode(array(
+                        'status'=>'success', 
+                        'div'=>"se agregó la informacion correctamente"
+                        ));
+                    exit;               
+                }
+            }
+        }
+	 if (Yii::app()->request->isAjaxRequest){
+				
+			$model=$this->loadModel($id);
+            echo CJSON::encode(array(
+                'status'=>'failure', 
+                'div'=>$this->renderPartial('_formCantidad', array('model'=>$model,'rep'=>$rep), true)));
+            exit;               
+        }
+	}
 	public function actionView($id)
 	{
 		$this->render('view',array(

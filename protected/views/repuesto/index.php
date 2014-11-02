@@ -14,4 +14,14 @@ $this->menu=array(
 );
 ?>
 <h1>Partes y piezas</h1>
-
+<?php /*
+$this->widget('ext.SilcomTreeGridView.SilcomTreeGridView', array(
+                'id'=>'your-grid-id',
+                'treeViewOptions'=>array(
+                    'initialState'=>'collapsed',
+                    'expandable'=>true,
+                ),
+                'parentColumn'=>'id',
+                'dataProvider'=>$dataProvider,
+        ));*/
+?>

@@ -17,10 +17,6 @@
 	// echo $form->errorSummary($model);
 	'enableAjaxValidation'=>false,
 )); ?>
-
-	<?php 
-	?>
-
 		<div class="row">
 		<?php echo $form->labelEx($model,'informacion'); ?>
 		<?php echo $form->textField($model,'informacion',array('size'=>60,'maxlength'=>60,'readonly'=>true)); ?>

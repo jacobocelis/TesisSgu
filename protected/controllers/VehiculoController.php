@@ -28,7 +28,7 @@ class VehiculoController extends Controller
 	{
 		return array(
 			array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array('index','view','detallePieza','agregardetalle','fotos','Selectdos','Getdatos'),
+				'actions'=>array('index','view','detallePieza','fotos','Selectdos','Getdatos'),
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
@@ -89,32 +89,6 @@ class VehiculoController extends Controller
 			'idveh'=>$idv->getData(),
             ));
 	}*/
-	public function actionAgregardetalle($id,$fila,$veh){
-	
-	 $model=Cantidad::model()->findByPk($id);
-	 
-	 if(isset($_POST['Cantidad'])){
-            $model->attributes=$_POST['Cantidad'];
-           
-			if($model->save()){
-				if (Yii::app()->request->isAjaxRequest){
-                    echo CJSON::encode(array(
-                        'status'=>'success', 
-                        'div'=>"se agregó la informacion correctamente"
-                        ));
-                    exit;               
-                }
-            }
-        }
-	 if (Yii::app()->request->isAjaxRequest){
-				$model=Cantidad::model()->findByPk($id);
-			//$model=$this->loadModel($id);
-            echo CJSON::encode(array(
-                'status'=>'failure', 
-                'div'=>$this->renderPartial('_formCantidad', array('model'=>$model,'rep'=>$veh), true)));
-            exit;               
-        }
-	}
 	public function actiondetallePieza($id){ 
 	if (isset($_GET['idetalle'])){ 
 			$idetalle=$_GET['idetalle'];
