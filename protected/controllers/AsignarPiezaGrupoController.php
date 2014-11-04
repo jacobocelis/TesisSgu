@@ -55,7 +55,6 @@ class AsignarPiezaGrupoController extends Controller
 			$pieza=$pieza_->buscar($authItemName);
 		}
 		if (Yii::app()->request->isAjaxRequest && isset($_GET['mode'])){	
-			
 			if(isset($_GET['total'])){
 				$total=$_GET['total'];
 				$tot = explode(",", $total);
@@ -119,6 +118,14 @@ class AsignarPiezaGrupoController extends Controller
 						$k++;
 					}
 				}
+					/*llenado por debajo de tabla plan de grupo*/
+		
+					$tipo=Yii::app()->db->createCommand('select t.tipo  from sgu_tipo t, sgu_grupo g where t.id=g.idtipo and g.grupo="'.$itemName.'"')->queryRow();
+					Yii::app()->db->createCommand("INSERT INTO `tsg`.`sgu_planGrupo` (`parte`,`idgrupo`,`idplanGrupo`) 
+								VALUES ('".$tipo["tipo"]."','".$idGrupo["id"]."',NULL)")->query();
+								
+					$categoria
+					/*******************************************/
 			}
 			if ($mode == 'revoke') {
 				/*eliminando cada vehiculo del grupo*/
@@ -165,7 +172,8 @@ class AsignarPiezaGrupoController extends Controller
 				'model'=>$pieza_,
 				'actualizar'=>$actualizar,
             )
-        );	
+        );
+	
     }
 }
 ?>

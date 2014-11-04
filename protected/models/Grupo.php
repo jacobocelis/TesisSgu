@@ -57,6 +57,7 @@ class Grupo extends CActiveRecord
 			'sguGrupoitems' => array(self::HAS_MANY, 'Grupoitem', 'idgrupo'),
 			'sguInfgrupos' => array(self::HAS_MANY, 'Infgrupo', 'idgrupo'),
 			'sguVehiculos' => array(self::HAS_MANY, 'Vehiculo', 'idgrupo'),
+			'sguPlangrupos' => array(self::HAS_MANY,'Plangrupo', 'idgrupo'),
 		);
 	}
 

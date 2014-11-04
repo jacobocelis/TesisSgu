@@ -81,6 +81,7 @@ class Vehiculo extends CActiveRecord
 			'idpropiedad0' => array(self::BELONGS_TO, 'Propiedad', 'idpropiedad'),
 			'Vehitems' => array(self::HAS_MANY, 'Vehitem', 'idvehiculo'),
 			'sguInformacions' => array(self::HAS_MANY, 'Informacion', 'idvehiculo'),
+			'sguPlans' => array(self::HAS_MANY, 'Plan', 'idvehiculo'),
 		);
 	}
 

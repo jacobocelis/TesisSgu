@@ -10,7 +10,7 @@
 ?>
 <div class='form'>
 <div class='crugepanel user-assignments-role-list'>
-	<h1><?php echo ucfirst(CrugeTranslator::t("crear un plan asociado a grupo de vehiculos"));?></h1>
+	<h1><?php echo ucfirst(CrugeTranslator::t("crear un plan asociado a un grupo de vehiculos"));?></h1>
 	<p><?php echo ucfirst(CrugeTranslator::t("Haz click en un grupo para crear un plan de mantenimiento"));?></p>
 	<strong><p><?php echo ucfirst(CrugeTranslator::t("Grupos registrados:"));?></p></strong>
 	<ul class='auth-item'>
@@ -24,30 +24,23 @@
 </div>
 <div class='crugepanel user-assignments-detail'>
 <h6><div id='mostrarSeleccion'>Seleccione un grupo</div></h6>
-
-	<?php $this->widget('ext.SilcomTreeGridView.SilcomTreeGridView', array(
-                'id'=>'your-grid-id',
-				'summaryText' => '',
-                'treeViewOptions'=>array(
-				'clickableNodeNames'=>false,
-                    'initialState'=>'Collapse',
-                    'expandable'=>true,
-                ),
-               'parentColumn'=>'idrecursiva',
-                'dataProvider'=>$dataProvider,
-                'columns'=>array(
-										
-                     array(
-					'header'=>'Partes y piezas del grupo seleccionado',
-					'name'=>'parte',
-					'htmlOptions'=>array('style'=>'text-align:left;cursor: pointer;'),
-				),
-									 
-                            )
-        ));
-?>
+	<?php 
+		if(isset($seleccion)){
+				$this->renderPartial('_vista', array('dataProvider'=>$dataProvider));
+				?>
+				<script>$('#mostrarSeleccion').html("<?php echo $seleccion;?>");
+				$('.user-assignments-role-list ul').find('li').each(function(){
+					if($(this).attr("alt")=="<?php echo $seleccion;?>")
+					$(this).addClass('selected');
+				});
+				</script>
+				<?php
+			}?>
 </div>
 </div>
+<form id="formulario" action="<?php echo Yii::app()->createUrl('/MttoPreventivo/crearPlan'); ?>" method="post">
+<input id="grupo" type="hidden" name="grupo" />
+</form>
 <style type="text/css">
 
 
@@ -317,7 +310,7 @@ div.user-assignments-detail #lista2 .boton {
 <script>
 	<?php /* a cada LI del div de roles le anexa un evento click y le pone un cursor */ ?>
 	//$('#_lista2').find('input[type=text],textarea,select').filter(':visible:first').attr('placeholder', 'Búsqueda..');
-	
+
 	//aqui se agrega el grupo seleccionado al label y se muestra en la vista
 	var _setSelectedItemName = function(valor){
 	//document.writeln(valor); 
@@ -334,101 +327,46 @@ div.user-assignments-detail #lista2 .boton {
 	}
 	//se encarga de colocar el nombre del grupo en la vista llamando a setSelectedItemName
 	$('.user-assignments-role-list ul').find('li').each(function(){
-	i=0;
 		var li = $(this);
 		li.css("cursor","pointer");
 		li.click(function(){
-			itemName = $(this).attr('alt');
+		var itemName = $(this).attr('alt');
 			_setSelectedItemName("");
+			$('#grupo').val(itemName);
+			$('#formulario').submit();
 			$('.user-assignments-role-list ul').find('li').each(function(){
 				$(this).removeClass('selected');
 			});
 			$(this).addClass('selected');
 			_setSelectedItemName(itemName);
 			// actualiza la lista1, que contiene los usuarios que tienen la asignacion	
-			//$.fn.yiiGridView.update('_lista1',{ data : "itemName="+itemName+"&mode=select" });
 			//$.fn.yiiGridView.update('_lista2',{ data : "itemName="+itemName+"&mode=select" });
 		});
 	});
-	$('#asignarSeleccion').css("cursor","pointer");
-	$('#asignarSeleccion').click(function(){
-	
-		var total = geTotal();
-		if(!_isSelectedItemName()){
-			alert('Por favor primero seleccione un grupo');
-			return;
-		}
-		var itemName = _getSelectedItemName();
-		var selectedUsers = $.fn.yiiGridView.getSelection('_lista2');
-		
-		if(((selectedUsers == 'undefined') || (selectedUsers==""))==false){
-			$.fn.yiiGridView.update('_lista1',
-				{ 
-				data : "itemName="+itemName+"&id="+selectedUsers+"&mode=assign&total="+total });
-		}
-		//$.fn.yiiGridView.update('_lista2');
-		
-	});
+function listar()
+{	
+   jQuery.ajax({
+                'url':'crearPlan',
+                'data':{data:"data"},
+                'type':'post',
+                'dataType':'json',
+                'success':function(data)
+                        {	
+								
+                                if (data.status == 'failure')
+                                {
+                                     
+                                }
+                                else
+                                {
+                                        //$('#dialog div.divForForm').html(data.div);
+                                        //setTimeout("$('#dialog').dialog('close') ",1000);
+                                        //$.fn.yiiGridView.update('detalle');
+                                }
 
-	$('#revocarSeleccion').css("cursor","pointer");
-	$('#revocarSeleccion').click(function(){
-	i=0;
-		if(!_isSelectedItemName())return;
-		var itemName = _getSelectedItemName();
-		var selectedUsers = $.fn.yiiGridView.getSelection('_lista1');
-		if(((selectedUsers == 'undefined') || (selectedUsers==""))==false){
-			$.fn.yiiGridView.update('_lista1',
-				{ data : "itemName="+itemName+"&id="+selectedUsers+"&mode=revoke" });
-		}
-		//$.fn.yiiGridView.update('_lista2',{ data : "itemName="+itemName+"&mode=select" });
-	});
-	/*
-$("input[name=campo]").focusout(function() {
-	alert('focusout');
-});
-$( "input[name=campo]" ).click(function() {
-	alert();
-});*/
-	function seleccion(){
-		$('.grid-view table.items').children('tbody').children().each(function () {
-			if($(this).hasClass('selected')) {
-				
-				$(this).addClass('selected');
-			}
-		});
-	}
-	function validar(id){
-			if($('#campo'+id).val()==""){
-				$('#campo'+id).val('1');
-			}
-	}			
-	function justNumbers(e,id){
-    var keynum = window.event ? window.event.keyCode : e.which;
-	campo = document.getElementById("campo"+id).value;
-    if ((keynum == 8)  || (keynum == 0) || (keynum == 13))
-    return true;
-    return /\d/.test(String.fromCharCode(keynum));
+                        } ,
+                'cache':false});
+ 
 }
-function geTotal(){
-		var otherInputs;
-		var values = [];
-		var data;
-		var total=0;
-		$('.grid-view table.items').children('tbody').children().each(function () {
-			if($(this).hasClass('selected')) {
-						$(this).closest('tr').find("input").each(function() {
-						otherInputs = $(this).parents('td').siblings().find('input');
-							data = $(otherInputs[0]).val();
-							values.push(data);
-							total++;
-							return false;
-						});
-			}
-		});
-			return values;
-    }
-	
-
-
 </script>
 

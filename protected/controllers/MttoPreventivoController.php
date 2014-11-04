@@ -28,7 +28,7 @@ class MttoPreventivoController extends Controller
 	{
 		return array(
 			array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array('index','view','crearPlan'),
+				'actions'=>array('index','view','crearPlan','planes'),
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
@@ -60,15 +60,32 @@ class MttoPreventivoController extends Controller
 	 * Creates a new model.
 	 * If creation is successful, the browser will be redirected to the 'view' page.
 	 */
+	public function actionPlanes()
+	{
+		$this->render('planes');
+	}
 	public function actionCrearPlan()
 	{
-		$dataProvider=new CActiveDataProvider('Recursiva');
-		$grupo=Grupo::model()->findAll();
+
+	$dataProvider=new CActiveDataProvider('Plangrupo');
+	$grupo=Grupo::model()->findAll();
+		if(isset($_POST['grupo'])){
+			$dataProvider=new CActiveDataProvider('Plangrupo',array('criteria' => array(
+			'condition' =>'idgrupo=(select id from sgu_grupo where grupo="'.$_POST['grupo'].'")')));
+			
+			$this->render('crearPlan',array(
+			'grupo'=>$grupo,
+			'dataProvider'=>$dataProvider,
+			'seleccion'=>$_POST['grupo']
+		));
+			//file_put_contents('pruebaa.txt', print_r($_POST['grupo'],true));
+		}
+		else{
 		$this->render('crearPlan',array(
 			'grupo'=>$grupo,
-			'dataProvider'=>$dataProvider
-			
+			'dataProvider'=>$dataProvider,
 		));
+		}
 	}
 
 	/**
@@ -115,10 +132,8 @@ class MttoPreventivoController extends Controller
 	 */
 	public function actionIndex()
 	{
-	
 		$this->render('index');
 	}
-
 	/**
 	 * Manages all models.
 	 */

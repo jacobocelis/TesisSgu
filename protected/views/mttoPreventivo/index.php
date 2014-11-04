@@ -3,11 +3,11 @@
 /* @var $dataProvider CActiveDataProvider */
 
 $this->breadcrumbs=array(
-	'Partes y piezas',
+	'Mantenimiento preventivo',
 );
 
 $this->menu=array(
-	array('label'=>'Crear plan de mantenimiento', 'url'=>array('crearPlan')),
+	array('label'=>'Planes de mantenimiento', 'url'=>array('planes')),
 );
 ?>
 <h1>Mantenimiento preventivo</h1>
