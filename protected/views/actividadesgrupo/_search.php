@@ -32,6 +32,11 @@
 	</div>
 
 	<div class="row">
+		<?php echo $form->label($model,'frecuencia'); ?>
+		<?php echo $form->textField($model,'frecuencia',array('size'=>45,'maxlength'=>45)); ?>
+	</div>
+
+	<div class="row">
 		<?php echo $form->label($model,'duracion'); ?>
 		<?php echo $form->textField($model,'duracion'); ?>
 	</div>

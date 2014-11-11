@@ -38,6 +38,12 @@
 	</div>
 
 	<div class="row">
+		<?php echo $form->labelEx($model,'ultimo'); ?>
+		<?php echo $form->textField($model,'ultimo',array('size'=>45,'maxlength'=>45)); ?>
+		<?php echo $form->error($model,'ultimo'); ?>
+	</div>
+
+	<div class="row">
 		<?php echo $form->labelEx($model,'frecuenciaKm'); ?>
 		<?php echo $form->textField($model,'frecuenciaKm'); ?>
 		<?php echo $form->error($model,'frecuenciaKm'); ?>
@@ -50,6 +56,12 @@
 	</div>
 
 	<div class="row">
+		<?php echo $form->labelEx($model,'frecuencia'); ?>
+		<?php echo $form->textField($model,'frecuencia',array('size'=>45,'maxlength'=>45)); ?>
+		<?php echo $form->error($model,'frecuencia'); ?>
+	</div>
+
+	<div class="row">
 		<?php echo $form->labelEx($model,'proximoKm'); ?>
 		<?php echo $form->textField($model,'proximoKm'); ?>
 		<?php echo $form->error($model,'proximoKm'); ?>
@@ -59,6 +71,12 @@
 		<?php echo $form->labelEx($model,'proximoFecha'); ?>
 		<?php echo $form->textField($model,'proximoFecha'); ?>
 		<?php echo $form->error($model,'proximoFecha'); ?>
+	</div>
+
+	<div class="row">
+		<?php echo $form->labelEx($model,'proximo'); ?>
+		<?php echo $form->textField($model,'proximo',array('size'=>45,'maxlength'=>45)); ?>
+		<?php echo $form->error($model,'proximo'); ?>
 	</div>
 
 	<div class="row">

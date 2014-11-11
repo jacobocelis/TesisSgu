@@ -45,8 +45,8 @@ class Prioridad extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-			'sguActividades' => array(self::HAS_MANY, 'SguActividades', 'idprioridad'),
-			'sguActividadesgrupos' => array(self::HAS_MANY, 'SguActividadesgrupo', 'idprioridad'),
+			'sguActividades' => array(self::HAS_MANY, 'Actividades', 'idprioridad'),
+			'sguActividadesgrupos' => array(self::HAS_MANY, 'Actividadesgrupo', 'idprioridad'),
 		);
 	}
 

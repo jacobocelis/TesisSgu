@@ -90,7 +90,7 @@ class ActividadesgrupoController extends Controller
 
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
-
+/*
 		if(isset($_POST['Actividadesgrupo']))
 		{
 			$model->attributes=$_POST['Actividadesgrupo'];
@@ -100,7 +100,41 @@ class ActividadesgrupoController extends Controller
 
 		$this->render('update',array(
 			'model'=>$model,
-		));
+		));*/
+		if(isset($_POST['Actividadesgrupo'])){
+            $model->attributes=$_POST['Actividadesgrupo'];
+            if($model->save()){
+                if (Yii::app()->request->isAjaxRequest){
+				
+				/*actualizacion por debajo a tabla actividades*/
+				
+				
+				
+				//$modelo=Plangrupo::model()->findByPk($id);
+				//$totalVeh=Yii::app()->db->createCommand('select id from sgu_actividades where idactividadesGrupo ="'.$id.'"')->queryAll();
+				//$total=count($totalVeh);
+				
+				//for($i=0;$i<$total;$i++){
+					Yii::app()->db->createCommand('UPDATE `tsg`.`sgu_actividades` SET `actividad` = "'.$model->actividad.'", `frecuenciaKm` = "'.$model->frecuenciaKm.'", `frecuenciaMes` = "'.$model->frecuenciaMes.'", `duracion` = "'.$model->duracion.'", `idprioridad` = "'.$model->idprioridad.'", `idtiempod` = "'.$model->idtiempod.'", `idtiempof` = "'.$model->idtiempof.'"  WHERE `sgu_actividades`.`idactividadesGrupo` = '.$id)->query();
+					
+				//}
+					/*-----------------------------------------------------------------------------------------------*/
+                    echo CJSON::encode(array(
+                        'status'=>'success', 
+                        'div'=>"se editó el campo correctamente"
+                        ));
+                    exit;               
+                }
+                /*else
+                    $this->redirect(array('view','id'=>$model->id));*/
+            }
+        }
+        if (Yii::app()->request->isAjaxRequest){
+            echo CJSON::encode(array(
+                'status'=>'failure', 
+                'div'=>$this->renderPartial('_form', array('model'=>$model,'id'=>$id), true)));
+            exit;               
+        }
 	}
 
 	/**
@@ -110,8 +144,13 @@ class ActividadesgrupoController extends Controller
 	 */
 	public function actionDelete($id)
 	{
+		Yii::app()->db->createCommand("DELETE FROM `tsg`.`sgu_actividades` WHERE `sgu_actividades`.`idactividadesGrupo` = '".$id."'")->query();
 		$this->loadModel($id)->delete();
-
+		/*aqui elimino por debajo*/
+		
+		
+		
+		
 		// if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
 		if(!isset($_GET['ajax']))
 			$this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));

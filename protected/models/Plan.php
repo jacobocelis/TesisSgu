@@ -5,14 +5,12 @@
  *
  * The followings are the available columns in table 'sgu_plan':
  * @property integer $id
- * @property string $parte
- * @property integer $idplan
  * @property integer $idvehiculo
+ * @property integer $idplanGrupo
  *
  * The followings are the available model relations:
  * @property SguActividades[] $sguActividades
- * @property Plan $idplan0
- * @property Plan[] $sguPlans
+ * @property SguPlangrupo $idplanGrupo0
  * @property SguVehiculo $idvehiculo0
  */
 class Plan extends CActiveRecord
@@ -33,12 +31,11 @@ class Plan extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('parte, idvehiculo', 'required'),
-			array('idplan, idvehiculo', 'numerical', 'integerOnly'=>true),
-			array('parte', 'length', 'max'=>45),
+			array('idvehiculo, idplanGrupo', 'required'),
+			array('idvehiculo, idplanGrupo', 'numerical', 'integerOnly'=>true),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, parte, idplan, idvehiculo', 'safe', 'on'=>'search'),
+			array('id, idvehiculo, idplanGrupo', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -50,10 +47,9 @@ class Plan extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-			'sguActividades' => array(self::HAS_MANY, 'SguActividades', 'idplan'),
-			'idplan0' => array(self::BELONGS_TO, 'Plan', 'idplan'),
-			'sguPlans' => array(self::HAS_MANY, 'Plan', 'idplan'),
-			'idvehiculo0' => array(self::BELONGS_TO, 'SguVehiculo', 'idvehiculo'),
+			'sguActividades' => array(self::HAS_MANY, 'Actividades', 'idplan'),
+			'idplanGrupo0' => array(self::BELONGS_TO, 'Plangrupo', 'idplanGrupo'),
+			'idvehiculo0' => array(self::BELONGS_TO, 'Vehiculo', 'idvehiculo'),
 		);
 	}
 
@@ -64,9 +60,8 @@ class Plan extends CActiveRecord
 	{
 		return array(
 			'id' => 'ID',
-			'parte' => 'Parte',
-			'idplan' => 'Idplan',
 			'idvehiculo' => 'Idvehiculo',
+			'idplanGrupo' => 'Idplan Grupo',
 		);
 	}
 
@@ -89,9 +84,8 @@ class Plan extends CActiveRecord
 		$criteria=new CDbCriteria;
 
 		$criteria->compare('id',$this->id);
-		$criteria->compare('parte',$this->parte,true);
-		$criteria->compare('idplan',$this->idplan);
 		$criteria->compare('idvehiculo',$this->idvehiculo);
+		$criteria->compare('idplanGrupo',$this->idplanGrupo);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,

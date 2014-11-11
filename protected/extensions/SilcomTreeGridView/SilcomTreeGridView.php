@@ -1,5 +1,4 @@
 <?php
-
 /**
 *   @author Jhonatan Bianchi
 *
@@ -23,6 +22,7 @@
 *   stringExpand        string  "Expand"                For internationalization.
 *
 */
+
 Yii::import('zii.widgets.grid.CGridView');
 
 class SilcomTreeGridView extends CGridView
@@ -42,7 +42,8 @@ class SilcomTreeGridView extends CGridView
 
         // parent must be followed by their children, so, order the dataProvider
         $data = $this->dataProvider->getData();
-
+		//file_put_contents('pruebaa.txt', print_r($data,true));
+		
         $newData = $this->orderData($data);
         $this->dataProvider->setData($newData);
     }
@@ -62,7 +63,7 @@ class SilcomTreeGridView extends CGridView
 
             if (count($orderedData) == 0)
             {
-                throw new Exception("Error, no roots found");
+               // throw new Exception("Error, no roots found");
             }
         }
         else

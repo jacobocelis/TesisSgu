@@ -1,11 +1,10 @@
-<script src="<?php echo Yii::app()->baseUrl;?>/js/shortcut.js" type="text/javascript"></script>
 <?php 
 	$this->breadcrumbs=array(
 	'Mantenimiento preventivo'=>array('mttoPreventivo/index'),
 	'Crear plan',
 );
 	$this->menu=array(
-	array('label'=>'............', 'url'=>array('')),
+	array('label'=>'Ver planes de mantenimiento', 'url'=>array('')),
 );
 ?>
 <div class='form'>
@@ -21,12 +20,16 @@
 		}
 	?>
 	</ul>
-</div>
-<div class='crugepanel user-assignments-detail'>
 <h6><div id='mostrarSeleccion'>Seleccione un grupo</div></h6>
+	</div>
 	<?php 
+	
 		if(isset($seleccion)){
-				$this->renderPartial('_vista', array('dataProvider'=>$dataProvider));
+				$this->renderPartial('_vista', array('dataProvider'=>$dataProvider,'actividades'=>$actividades,'vacio'=>$vacio,'grupoSel'=>$seleccion));
+				//print_r($dataProvider);
+				//print_r( $actividades);
+				//print_r($vacio);
+				
 				?>
 				<script>$('#mostrarSeleccion').html("<?php echo $seleccion;?>");
 				$('.user-assignments-role-list ul').find('li').each(function(){
@@ -34,16 +37,25 @@
 					$(this).addClass('selected');
 				});
 				</script>
-				<?php
+		<?php
+			
 			}?>
+
 </div>
-</div>
-<form id="formulario" action="<?php echo Yii::app()->createUrl('/MttoPreventivo/crearPlan'); ?>" method="post">
+<form id="formulario" action="<?php echo Yii::app()->createUrl('/mttoPreventivo/crearPlan'); ?>" method="post">
 <input id="grupo" type="hidden" name="grupo" />
 </form>
 <style type="text/css">
-
-
+.grid-view table.items th a {
+    color: rgba(0, 0, 0, 1);
+    font-weight: bold;
+    text-decoration: none;
+}
+.grid-view table.items th {
+    color: #AAA;
+    background: none repeat scroll 0% 0% #C6DDED;
+    text-align: center;
+}
 .code {
     color: #666;
     font-family: monospace;
@@ -339,34 +351,7 @@ div.user-assignments-detail #lista2 .boton {
 			});
 			$(this).addClass('selected');
 			_setSelectedItemName(itemName);
-			// actualiza la lista1, que contiene los usuarios que tienen la asignacion	
-			//$.fn.yiiGridView.update('_lista2',{ data : "itemName="+itemName+"&mode=select" });
 		});
 	});
-function listar()
-{	
-   jQuery.ajax({
-                'url':'crearPlan',
-                'data':{data:"data"},
-                'type':'post',
-                'dataType':'json',
-                'success':function(data)
-                        {	
-								
-                                if (data.status == 'failure')
-                                {
-                                     
-                                }
-                                else
-                                {
-                                        //$('#dialog div.divForForm').html(data.div);
-                                        //setTimeout("$('#dialog').dialog('close') ",1000);
-                                        //$.fn.yiiGridView.update('detalle');
-                                }
-
-                        } ,
-                'cache':false});
- 
-}
 </script>
 

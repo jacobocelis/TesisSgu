@@ -83,12 +83,10 @@ class DetallePiezaGrupoController extends Controller
 	if(isset($_GET['total'])){
 		$dat=$_GET['total'];
 		$datos= explode(",", $dat);
-		
 		$detalles=Yii::app()->db->createCommand('select id from sgu_CantidadGrupo where idCaracteristicaVehGrupo="'.$data.'"')->queryAll();
 		$total=count($detalles);
 		for($i=0;$i<$total;$i++){
 			Yii::app()->db->createCommand('UPDATE `tsg`.`sgu_CantidadGrupo` SET `detallePieza` = "'.$datos[$i].'" WHERE `sgu_CantidadGrupo`.`id` = '.$detalles[$i]['id'])->query();
-			
 		}
 		$tot=Yii::app()->db->createCommand('select cv.id from sgu_CaracteristicaVeh cv, sgu_CaracteristicaVehGrupo cvg  
 			where cvg.id="'.$data.'" and cv.idrepuesto=cvg.idrepuesto and

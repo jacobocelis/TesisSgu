@@ -32,6 +32,11 @@
 	</div>
 
 	<div class="row">
+		<?php echo $form->label($model,'ultimo'); ?>
+		<?php echo $form->textField($model,'ultimo',array('size'=>45,'maxlength'=>45)); ?>
+	</div>
+
+	<div class="row">
 		<?php echo $form->label($model,'frecuenciaKm'); ?>
 		<?php echo $form->textField($model,'frecuenciaKm'); ?>
 	</div>
@@ -42,6 +47,11 @@
 	</div>
 
 	<div class="row">
+		<?php echo $form->label($model,'frecuencia'); ?>
+		<?php echo $form->textField($model,'frecuencia',array('size'=>45,'maxlength'=>45)); ?>
+	</div>
+
+	<div class="row">
 		<?php echo $form->label($model,'proximoKm'); ?>
 		<?php echo $form->textField($model,'proximoKm'); ?>
 	</div>
@@ -49,6 +59,11 @@
 	<div class="row">
 		<?php echo $form->label($model,'proximoFecha'); ?>
 		<?php echo $form->textField($model,'proximoFecha'); ?>
+	</div>
+
+	<div class="row">
+		<?php echo $form->label($model,'proximo'); ?>
+		<?php echo $form->textField($model,'proximo',array('size'=>45,'maxlength'=>45)); ?>
 	</div>
 
 	<div class="row">

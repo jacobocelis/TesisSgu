@@ -11,6 +11,7 @@
  *
  * The followings are the available model relations:
  * @property SguActividadesgrupo[] $sguActividadesgrupos
+ * @property SguPlan[] $sguPlans
  * @property SguGrupo $idgrupo0
  * @property Plangrupo $idplanGrupo0
  * @property Plangrupo[] $sguPlangrupos
@@ -22,7 +23,7 @@ class Plangrupo extends CActiveRecord
 	 */
 	public function tableName()
 	{
-		return 'sgu_plangrupo';
+		return 'sgu_planGrupo';
 	}
 
 	/**
@@ -50,8 +51,9 @@ class Plangrupo extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-			'sguActividadesgrupos' => array(self::HAS_MANY, 'SguActividadesgrupo', 'idplan'),
-			'idgrupo0' => array(self::BELONGS_TO, 'SguGrupo', 'idgrupo'),
+			'sguActividadesgrupos' => array(self::HAS_MANY, 'Actividadesgrupo', 'idplan'),
+			'sguPlans' => array(self::HAS_MANY, 'Plan', 'idplanGrupo'),
+			'idgrupo0' => array(self::BELONGS_TO, 'Grupo', 'idgrupo'),
 			'idplanGrupo0' => array(self::BELONGS_TO, 'Plangrupo', 'idplanGrupo'),
 			'sguPlangrupos' => array(self::HAS_MANY, 'Plangrupo', 'idplanGrupo'),
 		);

@@ -25,6 +25,7 @@ $this->menu=array(
 		'actividad',
 		'frecuenciaKm',
 		'frecuenciaMes',
+		'frecuencia',
 		'duracion',
 		'diasParo',
 		'idplan',

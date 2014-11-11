@@ -35,17 +35,12 @@ $repuesto=new Repuesto();
 		<?php echo $form->textField($model,'codigoPiezaEnUso',array('size'=>60,'maxlength'=>100)); ?>
 		<?php echo $form->error($model,'codigoPiezaEnUso'); ?>
 	</div>
-
-
-
 	<div class="row">
 		<?php echo $form->labelEx($model,'fechaIncorporacion'); ?>
 		<?php echo $form->textField($model,'fechaIncorporacion'); ?>
 		<?php echo $form->error($model,'fechaIncorporacion'); ?>
 	</div>
-
 	<div class="row">
-	
 		<?php echo $form->hiddenField($model,'idCaracteristicaVeh'); ?>
 		<?php echo $form->error($model,'idCaracteristicaVeh'); ?>
 	</div>

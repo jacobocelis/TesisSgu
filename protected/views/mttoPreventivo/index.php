@@ -7,7 +7,8 @@ $this->breadcrumbs=array(
 );
 
 $this->menu=array(
-	array('label'=>'Planes de mantenimiento', 'url'=>array('planes')),
+	array('label'=>'Crear planes', 'url'=>array('crearPlan')),
+	array('label'=>'Ver planes', 'url'=>array('planes')),
 );
 ?>
 <h1>Mantenimiento preventivo</h1>

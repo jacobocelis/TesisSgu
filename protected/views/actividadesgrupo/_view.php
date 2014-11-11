@@ -21,6 +21,10 @@
 	<?php echo CHtml::encode($data->frecuenciaMes); ?>
 	<br />
 
+	<b><?php echo CHtml::encode($data->getAttributeLabel('frecuencia')); ?>:</b>
+	<?php echo CHtml::encode($data->frecuencia); ?>
+	<br />
+
 	<b><?php echo CHtml::encode($data->getAttributeLabel('duracion')); ?>:</b>
 	<?php echo CHtml::encode($data->duracion); ?>
 	<br />
@@ -29,11 +33,11 @@
 	<?php echo CHtml::encode($data->diasParo); ?>
 	<br />
 
+	<?php /*
 	<b><?php echo CHtml::encode($data->getAttributeLabel('idplan')); ?>:</b>
 	<?php echo CHtml::encode($data->idplan); ?>
 	<br />
 
-	<?php /*
 	<b><?php echo CHtml::encode($data->getAttributeLabel('idprioridad')); ?>:</b>
 	<?php echo CHtml::encode($data->idprioridad); ?>
 	<br />

@@ -12,13 +12,20 @@
  * @property integer $frecuenciaMes
  * @property integer $proximoKm
  * @property string $proximoFecha
+ * @property integer $duracion
  * @property integer $atraso
  * @property integer $idprioridad
  * @property integer $idplan
+ * @property integer $idtiempod
+ * @property integer $idtiempof
+ * @property integer $idactividadesGrupo
  *
  * The followings are the available model relations:
+ * @property SguActividadesgrupo $idactividadesGrupo0
  * @property SguPlan $idplan0
  * @property SguPrioridad $idprioridad0
+ * @property SguTiempo $idtiempod0
+ * @property SguTiempo $idtiempof0
  */
 class Actividades extends CActiveRecord
 {
@@ -38,13 +45,13 @@ class Actividades extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('actividad, idprioridad, idplan', 'required'),
-			array('ultimoKm, frecuenciaKm, frecuenciaMes, proximoKm, atraso, idprioridad, idplan', 'numerical', 'integerOnly'=>true),
+			array('actividad, frecuenciaKm, duracion, idprioridad, idplan, idtiempod, idtiempof, idactividadesGrupo', 'required'),
+			array('ultimoKm, frecuenciaKm, frecuenciaMes, proximoKm, duracion, atraso, idprioridad, idplan, idtiempod, idtiempof, idactividadesGrupo', 'numerical', 'integerOnly'=>true),
 			array('actividad', 'length', 'max'=>80),
 			array('ultimoFecha, proximoFecha', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, actividad, ultimoKm, ultimoFecha, frecuenciaKm, frecuenciaMes, proximoKm, proximoFecha, atraso, idprioridad, idplan', 'safe', 'on'=>'search'),
+			array('id, actividad, ultimoKm, ultimoFecha, frecuenciaKm, frecuenciaMes, proximoKm, proximoFecha, duracion, atraso, idprioridad, idplan, idtiempod, idtiempof, idactividadesGrupo', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -56,8 +63,11 @@ class Actividades extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-			'idplan0' => array(self::BELONGS_TO, 'SguPlan', 'idplan'),
-			'idprioridad0' => array(self::BELONGS_TO, 'SguPrioridad', 'idprioridad'),
+			'idactividadesGrupo0' => array(self::BELONGS_TO, 'Actividadesgrupo', 'idactividadesGrupo'),
+			'idplan0' => array(self::BELONGS_TO, 'Plan', 'idplan'),
+			'idprioridad0' => array(self::BELONGS_TO, 'Prioridad', 'idprioridad'),
+			'idtiempod0' => array(self::BELONGS_TO, 'Tiempo', 'idtiempod'),
+			'idtiempof0' => array(self::BELONGS_TO, 'Tiempo', 'idtiempof'),
 		);
 	}
 
@@ -75,9 +85,13 @@ class Actividades extends CActiveRecord
 			'frecuenciaMes' => 'Frecuencia Mes',
 			'proximoKm' => 'Proximo Km',
 			'proximoFecha' => 'Proximo Fecha',
+			'duracion' => 'Duracion',
 			'atraso' => 'Atraso',
 			'idprioridad' => 'Idprioridad',
 			'idplan' => 'Idplan',
+			'idtiempod' => 'Idtiempod',
+			'idtiempof' => 'Idtiempof',
+			'idactividadesGrupo' => 'Idactividades Grupo',
 		);
 	}
 
@@ -107,9 +121,13 @@ class Actividades extends CActiveRecord
 		$criteria->compare('frecuenciaMes',$this->frecuenciaMes);
 		$criteria->compare('proximoKm',$this->proximoKm);
 		$criteria->compare('proximoFecha',$this->proximoFecha,true);
+		$criteria->compare('duracion',$this->duracion);
 		$criteria->compare('atraso',$this->atraso);
 		$criteria->compare('idprioridad',$this->idprioridad);
 		$criteria->compare('idplan',$this->idplan);
+		$criteria->compare('idtiempod',$this->idtiempod);
+		$criteria->compare('idtiempof',$this->idtiempof);
+		$criteria->compare('idactividadesGrupo',$this->idactividadesGrupo);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,

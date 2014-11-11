@@ -8,13 +8,19 @@
  * @property string $actividad
  * @property integer $frecuenciaKm
  * @property integer $frecuenciaMes
+ * @property string $frecuencia
  * @property integer $duracion
  * @property integer $diasParo
  * @property integer $idplan
  * @property integer $idprioridad
+ * @property integer $idtiempod
+ * @property integer $idtiempof
  *
  * The followings are the available model relations:
+ * @property SguActividades[] $sguActividades
  * @property SguPrioridad $idprioridad0
+ * @property SguTiempo $idtiempod0
+ * @property SguTiempo $idtiempof0
  * @property SguPlangrupo $idplan0
  */
 class Actividadesgrupo extends CActiveRecord
@@ -24,7 +30,7 @@ class Actividadesgrupo extends CActiveRecord
 	 */
 	public function tableName()
 	{
-		return 'sgu_actividadesgrupo';
+		return 'sgu_actividadesGrupo';
 	}
 
 	/**
@@ -35,12 +41,13 @@ class Actividadesgrupo extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('actividad, idplan, idprioridad', 'required'),
-			array('frecuenciaKm, frecuenciaMes, duracion, diasParo, idplan, idprioridad', 'numerical', 'integerOnly'=>true),
+			array('actividad, frecuenciaKm, duracion, idplan, idprioridad, idtiempod, idtiempof', 'required'),
+			array('frecuenciaKm, frecuenciaMes, duracion, diasParo, idplan, idprioridad, idtiempod, idtiempof', 'numerical', 'integerOnly'=>true),
 			array('actividad', 'length', 'max'=>80),
+			array('frecuencia', 'length', 'max'=>45),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, actividad, frecuenciaKm, frecuenciaMes, duracion, diasParo, idplan, idprioridad', 'safe', 'on'=>'search'),
+			array('id, actividad, frecuenciaKm, frecuenciaMes, frecuencia, duracion, diasParo, idplan, idprioridad, idtiempod, idtiempof', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -52,8 +59,11 @@ class Actividadesgrupo extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-			'idprioridad0' => array(self::BELONGS_TO, 'SguPrioridad', 'idprioridad'),
-			'idplan0' => array(self::BELONGS_TO, 'SguPlangrupo', 'idplan'),
+			'sguActividades' => array(self::HAS_MANY, 'Actividades', 'idactividadesGrupo'),
+			'idprioridad0' => array(self::BELONGS_TO, 'Prioridad', 'idprioridad'),
+			'idtiempod0' => array(self::BELONGS_TO, 'Tiempo', 'idtiempod'),
+			'idtiempof0' => array(self::BELONGS_TO, 'Tiempo', 'idtiempof'),
+			'idplan0' => array(self::BELONGS_TO, 'Plangrupo', 'idplan'),
 		);
 	}
 
@@ -67,10 +77,13 @@ class Actividadesgrupo extends CActiveRecord
 			'actividad' => 'Actividad',
 			'frecuenciaKm' => 'Frecuencia Km',
 			'frecuenciaMes' => 'Frecuencia Mes',
+			'frecuencia' => 'Frecuencia',
 			'duracion' => 'Duracion',
 			'diasParo' => 'Dias Paro',
 			'idplan' => 'Idplan',
 			'idprioridad' => 'Idprioridad',
+			'idtiempod' => 'Idtiempod',
+			'idtiempof' => 'Idtiempof',
 		);
 	}
 
@@ -96,10 +109,13 @@ class Actividadesgrupo extends CActiveRecord
 		$criteria->compare('actividad',$this->actividad,true);
 		$criteria->compare('frecuenciaKm',$this->frecuenciaKm);
 		$criteria->compare('frecuenciaMes',$this->frecuenciaMes);
+		$criteria->compare('frecuencia',$this->frecuencia,true);
 		$criteria->compare('duracion',$this->duracion);
 		$criteria->compare('diasParo',$this->diasParo);
 		$criteria->compare('idplan',$this->idplan);
 		$criteria->compare('idprioridad',$this->idprioridad);
+		$criteria->compare('idtiempod',$this->idtiempod);
+		$criteria->compare('idtiempof',$this->idtiempof);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
