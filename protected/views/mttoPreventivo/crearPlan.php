@@ -23,13 +23,12 @@
 <h6><div id='mostrarSeleccion'>Seleccione un grupo</div></h6>
 	</div>
 	<?php 
-	
 		if(isset($seleccion)){
+			
 				$this->renderPartial('_vista', array('dataProvider'=>$dataProvider,'actividades'=>$actividades,'vacio'=>$vacio,'grupoSel'=>$seleccion));
 				//print_r($dataProvider);
 				//print_r( $actividades);
 				//print_r($vacio);
-				
 				?>
 				<script>$('#mostrarSeleccion').html("<?php echo $seleccion;?>");
 				$('.user-assignments-role-list ul').find('li').each(function(){
@@ -38,9 +37,8 @@
 				});
 				</script>
 		<?php
-			
+		
 			}?>
-
 </div>
 <form id="formulario" action="<?php echo Yii::app()->createUrl('/mttoPreventivo/crearPlan'); ?>" method="post">
 <input id="grupo" type="hidden" name="grupo" />

@@ -33,9 +33,10 @@ class Tiempo extends CActiveRecord
 		return array(
 			array('tiempo', 'required'),
 			array('tiempo', 'length', 'max'=>10),
+			array('sqlTimevalues', 'length', 'max'=>45),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, tiempo', 'safe', 'on'=>'search'),
+			array('id, tiempo', 'sqlTimevalues', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -62,6 +63,7 @@ class Tiempo extends CActiveRecord
 		return array(
 			'id' => 'ID',
 			'tiempo' => 'Tiempo',
+			'sqlTimevalues' => 'Sql Timevalues',
 		);
 	}
 

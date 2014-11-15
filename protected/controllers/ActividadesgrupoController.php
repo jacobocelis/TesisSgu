@@ -18,7 +18,6 @@ class ActividadesgrupoController extends Controller
 			'postOnly + delete', // we only allow deletion via POST request
 		);
 	}
-
 	/**
 	 * Specifies the access control rules.
 	 * This method is used by the 'accessControl' filter.
@@ -105,11 +104,7 @@ class ActividadesgrupoController extends Controller
             $model->attributes=$_POST['Actividadesgrupo'];
             if($model->save()){
                 if (Yii::app()->request->isAjaxRequest){
-				
 				/*actualizacion por debajo a tabla actividades*/
-				
-				
-				
 				//$modelo=Plangrupo::model()->findByPk($id);
 				//$totalVeh=Yii::app()->db->createCommand('select id from sgu_actividades where idactividadesGrupo ="'.$id.'"')->queryAll();
 				//$total=count($totalVeh);
@@ -147,15 +142,10 @@ class ActividadesgrupoController extends Controller
 		Yii::app()->db->createCommand("DELETE FROM `tsg`.`sgu_actividades` WHERE `sgu_actividades`.`idactividadesGrupo` = '".$id."'")->query();
 		$this->loadModel($id)->delete();
 		/*aqui elimino por debajo*/
-		
-		
-		
-		
 		// if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
 		if(!isset($_GET['ajax']))
 			$this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));
 	}
-
 	/**
 	 * Lists all models.
 	 */

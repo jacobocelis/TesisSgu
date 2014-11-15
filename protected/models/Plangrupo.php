@@ -25,6 +25,15 @@ class Plangrupo extends CActiveRecord
 	{
 		return 'sgu_planGrupo';
 	}
+	public function getCompiledColour()
+	{
+		return 'Green';
+    }
+	public static function parte($id){
+		$parte=Yii::app()->db->createCommand('select concat_ws(" => ",(select parte from sgu_plangrupo c1 where c1.id=c2.idplanGrupo),c2.parte) as parte from sgu_plangrupo c2
+		where c2.id="'.$id.'"')->queryRow();
+		return $parte["parte"];
+	}
 
 	/**
 	 * @return array validation rules for model attributes.

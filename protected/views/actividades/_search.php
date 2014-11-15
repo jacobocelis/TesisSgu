@@ -32,11 +32,6 @@
 	</div>
 
 	<div class="row">
-		<?php echo $form->label($model,'ultimo'); ?>
-		<?php echo $form->textField($model,'ultimo',array('size'=>45,'maxlength'=>45)); ?>
-	</div>
-
-	<div class="row">
 		<?php echo $form->label($model,'frecuenciaKm'); ?>
 		<?php echo $form->textField($model,'frecuenciaKm'); ?>
 	</div>
@@ -44,11 +39,6 @@
 	<div class="row">
 		<?php echo $form->label($model,'frecuenciaMes'); ?>
 		<?php echo $form->textField($model,'frecuenciaMes'); ?>
-	</div>
-
-	<div class="row">
-		<?php echo $form->label($model,'frecuencia'); ?>
-		<?php echo $form->textField($model,'frecuencia',array('size'=>45,'maxlength'=>45)); ?>
 	</div>
 
 	<div class="row">
@@ -62,8 +52,8 @@
 	</div>
 
 	<div class="row">
-		<?php echo $form->label($model,'proximo'); ?>
-		<?php echo $form->textField($model,'proximo',array('size'=>45,'maxlength'=>45)); ?>
+		<?php echo $form->label($model,'duracion'); ?>
+		<?php echo $form->textField($model,'duracion'); ?>
 	</div>
 
 	<div class="row">
@@ -79,6 +69,26 @@
 	<div class="row">
 		<?php echo $form->label($model,'idplan'); ?>
 		<?php echo $form->textField($model,'idplan'); ?>
+	</div>
+
+	<div class="row">
+		<?php echo $form->label($model,'idtiempod'); ?>
+		<?php echo $form->textField($model,'idtiempod'); ?>
+	</div>
+
+	<div class="row">
+		<?php echo $form->label($model,'idtiempof'); ?>
+		<?php echo $form->textField($model,'idtiempof'); ?>
+	</div>
+
+	<div class="row">
+		<?php echo $form->label($model,'idactividadesGrupo'); ?>
+		<?php echo $form->textField($model,'idactividadesGrupo'); ?>
+	</div>
+
+	<div class="row">
+		<?php echo $form->label($model,'idestatus'); ?>
+		<?php echo $form->textField($model,'idestatus'); ?>
 	</div>
 
 	<div class="row buttons">

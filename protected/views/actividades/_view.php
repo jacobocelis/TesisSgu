@@ -21,10 +21,6 @@
 	<?php echo CHtml::encode($data->ultimoFecha); ?>
 	<br />
 
-	<b><?php echo CHtml::encode($data->getAttributeLabel('ultimo')); ?>:</b>
-	<?php echo CHtml::encode($data->ultimo); ?>
-	<br />
-
 	<b><?php echo CHtml::encode($data->getAttributeLabel('frecuenciaKm')); ?>:</b>
 	<?php echo CHtml::encode($data->frecuenciaKm); ?>
 	<br />
@@ -33,21 +29,17 @@
 	<?php echo CHtml::encode($data->frecuenciaMes); ?>
 	<br />
 
-	<?php /*
-	<b><?php echo CHtml::encode($data->getAttributeLabel('frecuencia')); ?>:</b>
-	<?php echo CHtml::encode($data->frecuencia); ?>
-	<br />
-
 	<b><?php echo CHtml::encode($data->getAttributeLabel('proximoKm')); ?>:</b>
 	<?php echo CHtml::encode($data->proximoKm); ?>
 	<br />
 
+	<?php /*
 	<b><?php echo CHtml::encode($data->getAttributeLabel('proximoFecha')); ?>:</b>
 	<?php echo CHtml::encode($data->proximoFecha); ?>
 	<br />
 
-	<b><?php echo CHtml::encode($data->getAttributeLabel('proximo')); ?>:</b>
-	<?php echo CHtml::encode($data->proximo); ?>
+	<b><?php echo CHtml::encode($data->getAttributeLabel('duracion')); ?>:</b>
+	<?php echo CHtml::encode($data->duracion); ?>
 	<br />
 
 	<b><?php echo CHtml::encode($data->getAttributeLabel('atraso')); ?>:</b>
@@ -60,6 +52,22 @@
 
 	<b><?php echo CHtml::encode($data->getAttributeLabel('idplan')); ?>:</b>
 	<?php echo CHtml::encode($data->idplan); ?>
+	<br />
+
+	<b><?php echo CHtml::encode($data->getAttributeLabel('idtiempod')); ?>:</b>
+	<?php echo CHtml::encode($data->idtiempod); ?>
+	<br />
+
+	<b><?php echo CHtml::encode($data->getAttributeLabel('idtiempof')); ?>:</b>
+	<?php echo CHtml::encode($data->idtiempof); ?>
+	<br />
+
+	<b><?php echo CHtml::encode($data->getAttributeLabel('idactividadesGrupo')); ?>:</b>
+	<?php echo CHtml::encode($data->idactividadesGrupo); ?>
+	<br />
+
+	<b><?php echo CHtml::encode($data->getAttributeLabel('idestatus')); ?>:</b>
+	<?php echo CHtml::encode($data->idestatus); ?>
 	<br />
 
 	*/ ?>

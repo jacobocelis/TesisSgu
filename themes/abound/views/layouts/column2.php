@@ -11,6 +11,7 @@
 			'title'=>'Menu',
 		));
 		$this->widget('zii.widgets.CMenu', array(
+			'encodeLabel' => false,
 			'items'=>$this->menu,
 			'htmlOptions'=>array('class'=>'operations'),
 		));

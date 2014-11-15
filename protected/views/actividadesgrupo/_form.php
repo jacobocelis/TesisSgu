@@ -30,11 +30,15 @@
 		<?php echo $form->textField($model,'frecuenciaKm',array('style' => 'width:60px;'));?> Km
 		<?php echo $form->error($model,'frecuenciaKm'); ?>
 	
+	
 		<?php echo $form->labelEx($model,'frecuenciaMes'); ?>
 		<?php echo $form->textField($model,'frecuenciaMes',array('style' => 'width:50px;')); ?>
-		<?php echo $form->dropDownList($model,'idtiempof',CHtml::listData(Tiempo::model()->findAll(array("condition"=>"id <> 2")),'id','tiempo'),array('id'=>'tiempo','style' => 'width:90px;')); ?>
+		<?php echo $form->dropDownList($model,'idtiempof',CHtml::listData(Tiempo::model()->findAll(array("condition"=>"id <> 5 and id <> 2")),'id','tiempo'),array('id'=>'tiempo','style' => 'width:90px;')); ?>
 		<?php echo $form->error($model,'frecuenciaMes'); ?>
 	</div>
+	
+	
+	
 
 	<div class="row">
 		<?php //echo $form->labelEx($model,'frecuencia'); ?>
@@ -46,7 +50,7 @@
 	<div class="row">
 		<?php echo $form->labelEx($model,'duracion'); ?>
 		<?php echo $form->textField($model,'duracion',array('style' => 'width:60px;')); ?>
-		<?php echo $form->dropDownList($model,'idtiempod',CHtml::listData(Tiempo::model()->findAll(array("condition"=>"tiempo = 'Hora(s)' or tiempo = 'Día(s)' order by id DESC")),'id','tiempo'),array('style' => 'width:90px;')); ?>
+		<?php echo $form->dropDownList($model,'idtiempod',CHtml::listData(Tiempo::model()->findAll(array("condition"=>"id = 2 or id = 5 or id = 1 order by id DESC")),'id','tiempo'),array('style' => 'width:90px;')); ?>
 		<?php echo $form->error($model,'duracion'); ?>
 	</div>
 

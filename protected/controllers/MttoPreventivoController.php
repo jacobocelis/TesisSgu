@@ -28,7 +28,7 @@ class MttoPreventivoController extends Controller
 	{
 		return array(
 			array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array('index','view','crearPlan','planes','agregarActividad','obtenerParte','mttopVehiculo'),
+				'actions'=>array('index','view','crearPlan','planes','agregarActividad','obtenerParte','mttopVehiculo','mttopIniciales'),
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
@@ -58,14 +58,24 @@ class MttoPreventivoController extends Controller
 	public function actionMttopVehiculo($id){
 	
 		$dataProvider=new CActiveDataProvider('Actividades',array('criteria' => array(
-			'condition' =>'idplan in (select id from sgu_plan where idvehiculo="'.$id.'")')
+			'condition' =>'idplan in (select id from sgu_plan where idvehiculo="'.$id.'") and idestatus<>1 and idestatus<>3')
 			,'pagination'=>array('pageSize'=>9999999)));
 			
+		$mi=Yii::app()->db->createCommand("select count(*) as total from sgu_actividades where idestatus=1 and idplan in(select id from sgu_plan where idvehiculo=".$id.")")->queryRow();
 		$this->render('mttopVehiculo',array(
 			'id'=>$id,
 			'dataProvider'=>$dataProvider,
+			'mi'=>$mi["total"]
 		));
-		
+	}
+	public function actionMttopIniciales($id){
+		$dataProvider=new CActiveDataProvider('Actividades',array('criteria' => array(
+			'condition' =>'idplan in (select id from sgu_plan where idvehiculo="'.$id.'") and idestatus <>3 ')
+			,'pagination'=>array('pageSize'=>9999999)));
+		$this->render('mttopIniciales',array(
+			'id'=>$id,
+			'dataProvider'=>$dataProvider,
+		));
 	}
 	/**
 	 * Creates a new model.
@@ -94,12 +104,12 @@ class MttoPreventivoController extends Controller
 						$ultimo=Yii::app()->db->createCommand('select id from sgu_plan order by id desc limit 1')->queryRow();
 					/**/
 					//file_put_contents('pruebaa.txt', print_r($model,true));
-						Yii::app()->db->createCommand("INSERT INTO `tsg`.`sgu_actividades` (`actividad`,`frecuenciaKm`,`frecuenciaMes`,`duracion`,`idprioridad`,`idplan`,`idtiempod`,`idtiempof`,`idactividadesGrupo`)
-						VALUES ('".$model->actividad."',".$model->frecuenciaKm.",'".$model->frecuenciaMes."',".$model->duracion.",".$model->idprioridad.",".$ultimo["id"].",".$model->idtiempod.",".$model->idtiempof.",".$model->id.")")->query();
+						Yii::app()->db->createCommand("INSERT INTO `tsg`.`sgu_actividades` (`actividad`,`frecuenciaKm`,`frecuenciaMes`,`duracion`,`idprioridad`,`idplan`,`idtiempod`,`idtiempof`,`idactividadesGrupo`,`idestatus`)
+						VALUES ('".$model->actividad."',".$model->frecuenciaKm.",'".$model->frecuenciaMes."',".$model->duracion.",".$model->idprioridad.",".$ultimo["id"].",".$model->idtiempod.",".$model->idtiempof.",".$model->id.",1)")->query();
 					}else{
 							//file_put_contents('prueba.txt', print_r($model,true));
-							Yii::app()->db->createCommand("INSERT  INTO `tsg`.`sgu_actividades` (`actividad`,`frecuenciaKm`,`frecuenciaMes`,`duracion`,`idprioridad`,`idplan`,`idtiempod`,`idtiempof`,`idactividadesGrupo`)
-						VALUES ('".$model->actividad."',".$model->frecuenciaKm.",'".$model->frecuenciaMes."',".$model->duracion.",".$model->idprioridad.",".$existe[0]["id"].",".$model->idtiempod.",".$model->idtiempof.",".$model->id.")")->query();
+							Yii::app()->db->createCommand("INSERT  INTO `tsg`.`sgu_actividades` (`actividad`,`frecuenciaKm`,`frecuenciaMes`,`duracion`,`idprioridad`,`idplan`,`idtiempod`,`idtiempof`,`idactividadesGrupo`,`idestatus`)
+						VALUES ('".$model->actividad."',".$model->frecuenciaKm.",'".$model->frecuenciaMes."',".$model->duracion.",".$model->idprioridad.",".$existe[0]["id"].",".$model->idtiempod.",".$model->idtiempof.",".$model->id.",1)")->query();
 					}
 				}
                     echo CJSON::encode(array(
@@ -108,8 +118,6 @@ class MttoPreventivoController extends Controller
                         ));
                     exit;
                 }
-             
-				
             }
         }
         if (Yii::app()->request->isAjaxRequest){
@@ -221,9 +229,15 @@ where c2.id=4;"*/
 	/**
 	 * Lists all models.
 	 */
-	public function actionIndex()
-	{
-		$this->render('index');
+	public function actionIndex(){
+	
+			$dataProvider=new CActiveDataProvider('Actividades',array('criteria' => array(
+			'condition' =>'idplan in (select id from sgu_plan) and idestatus<>1 and idestatus<>3',
+			'order'=>'proximoFecha'
+			)));
+		$this->render('index',array(
+			'dataProvider'=>$dataProvider,
+			));
 	}
 	/**
 	 * Manages all models.

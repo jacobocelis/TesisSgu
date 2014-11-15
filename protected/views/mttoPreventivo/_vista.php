@@ -30,10 +30,8 @@
                'parentColumn'=>'idplanGrupo',
                 'dataProvider'=>$dataProvider,
 				'columns'=>array(
-					'parte',
-					
+					'parte',	
 				)
-
         ));
 ?>
 </div>
@@ -119,7 +117,7 @@ $this->beginWidget('zii.widgets.jui.CJuiDialog', array( // the dialog
         'autoOpen'=>false,
         'modal'=>true,
         'width'=>500,
-        'height'=>305,
+        'height'=>380,
 		'resizable'=>false
     ),
 ));?>

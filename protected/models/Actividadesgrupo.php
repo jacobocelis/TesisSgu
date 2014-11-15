@@ -75,13 +75,13 @@ class Actividadesgrupo extends CActiveRecord
 		return array(
 			'id' => 'ID',
 			'actividad' => 'Actividad',
-			'frecuenciaKm' => 'Frecuencia Km',
-			'frecuenciaMes' => 'Frecuencia Mes',
+			'frecuenciaKm' => 'Frecuencia',
+			'frecuenciaMes' => 'o máximo cada',
 			'frecuencia' => 'Frecuencia',
-			'duracion' => 'Duracion',
+			'duracion' => 'Duración',
 			'diasParo' => 'Dias Paro',
 			'idplan' => 'Idplan',
-			'idprioridad' => 'Idprioridad',
+			'idprioridad' => 'Prioridad',
 			'idtiempod' => 'Idtiempod',
 			'idtiempof' => 'Idtiempof',
 		);

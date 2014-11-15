@@ -36,7 +36,71 @@ class Actividades extends CActiveRecord
 	{
 		return 'sgu_actividades';
 	}
-
+	public function noasignado(){
+			return '<span style="color:red">no registrado</span>';
+    }
+	public function valores($id){
+		if($id=='0000-01-01'||$id==-1)
+			return 0;
+		return 1;
+    }
+	function diasRestantes($fin){
+		$datetime1 = new DateTime($fin);
+		$datetime2 = new DateTime("now");
+		$datetime2=$datetime2->format('Y-m-d');
+		$fecha=new DateTime($datetime2);
+		$interval = $fecha->diff($datetime1);
+			if($interval->format('%R%a')<0)
+				return 0;
+		return $interval->format('%a');
+	}
+	/*public function porcentaje($ini,$fin){
+		$datetime1 = new DateTime($fin);
+		$datetime2 = new DateTime("now");
+		$interval = $datetime2->diff($datetime1);
+		$diasR=$interval->format('%a');
+		//dias totales
+		$datetime1 = new DateTime($fin);
+		$datetime2 = new DateTime($ini);
+		$interval = $datetime2->diff($datetime1);
+		$diasT=$interval->format('%a');		
+		
+		return 100-(($diasR/$diasT)*100);
+	}*/
+	public function atraso($fin){
+		$datetime1 = new DateTime($fin);
+		$datetime2 = new DateTime("now");
+		$interval = $datetime2->diff($datetime1);
+		$retraso=$interval->format('%R%a');
+		
+		if($retraso==-1)
+			return $interval->format('%a Día');
+		if($retraso<-1)
+			return $interval->format('%a Días');
+		return "";
+	}
+	public function porcentaje($ini,$fin){
+		$datetime1 = new DateTime($fin);
+		$datetime2 = new DateTime("now");
+		$datetime2=$datetime2->format('Y-m-d');
+		$fecha=new DateTime($datetime2);
+		$interval = $fecha->diff($datetime1);
+		
+		if($interval->format('%R%a')<0)
+			return 100;
+		$diasR=$interval->format('%a');
+		if($diasR>5)
+			return 0;
+		else	
+			return 100-(($diasR/5)*100);
+		
+	}
+	public function obtColor($restante){
+		if($restante<=5)
+			return 'F00';
+		else
+			return '20DA14';
+	}
 	/**
 	 * @return array validation rules for model attributes.
 	 */
@@ -45,13 +109,13 @@ class Actividades extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('actividad, frecuenciaKm, duracion, idprioridad, idplan, idtiempod, idtiempof, idactividadesGrupo', 'required'),
-			array('ultimoKm, frecuenciaKm, frecuenciaMes, proximoKm, duracion, atraso, idprioridad, idplan, idtiempod, idtiempof, idactividadesGrupo', 'numerical', 'integerOnly'=>true),
+			array('actividad, frecuenciaKm, duracion, idprioridad, idplan, idtiempod, idtiempof, idactividadesGrupo,ultimoKm,ultimoFecha,idestatus', 'required'),
+			array('ultimoKm, frecuenciaKm, frecuenciaMes, proximoKm, duracion, atraso, idprioridad, idplan, idtiempod, idtiempof, idactividadesGrupo,idestatus', 'numerical', 'integerOnly'=>true),
 			array('actividad', 'length', 'max'=>80),
 			array('ultimoFecha, proximoFecha', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, actividad, ultimoKm, ultimoFecha, frecuenciaKm, frecuenciaMes, proximoKm, proximoFecha, duracion, atraso, idprioridad, idplan, idtiempod, idtiempof, idactividadesGrupo', 'safe', 'on'=>'search'),
+			array('id, actividad, ultimoKm, ultimoFecha, frecuenciaKm, frecuenciaMes, proximoKm, proximoFecha, duracion, atraso, idprioridad, idplan, idtiempod, idtiempof, idactividadesGrupo,idestatus', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -68,6 +132,7 @@ class Actividades extends CActiveRecord
 			'idprioridad0' => array(self::BELONGS_TO, 'Prioridad', 'idprioridad'),
 			'idtiempod0' => array(self::BELONGS_TO, 'Tiempo', 'idtiempod'),
 			'idtiempof0' => array(self::BELONGS_TO, 'Tiempo', 'idtiempof'),
+			'idestatus0' => array(self::BELONGS_TO, 'Estatus', 'idestatus'),
 		);
 	}
 
@@ -79,8 +144,8 @@ class Actividades extends CActiveRecord
 		return array(
 			'id' => 'ID',
 			'actividad' => 'Actividad',
-			'ultimoKm' => 'Ultimo Km',
-			'ultimoFecha' => 'Ultimo Fecha',
+			'ultimoKm' => 'Ultimo mantenimiento',
+			'ultimoFecha' => 'Fecha del último mantenimiento',
 			'frecuenciaKm' => 'Frecuencia Km',
 			'frecuenciaMes' => 'Frecuencia Mes',
 			'proximoKm' => 'Proximo Km',
@@ -92,6 +157,7 @@ class Actividades extends CActiveRecord
 			'idtiempod' => 'Idtiempod',
 			'idtiempof' => 'Idtiempof',
 			'idactividadesGrupo' => 'Idactividades Grupo',
+			'idestatus' => 'Idestatus',
 		);
 	}
 
@@ -128,7 +194,8 @@ class Actividades extends CActiveRecord
 		$criteria->compare('idtiempod',$this->idtiempod);
 		$criteria->compare('idtiempof',$this->idtiempof);
 		$criteria->compare('idactividadesGrupo',$this->idactividadesGrupo);
-
+		$criteria->compare('idestatus',$this->idestatus);
+	
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
 		));

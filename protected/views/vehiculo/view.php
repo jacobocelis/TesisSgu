@@ -9,8 +9,9 @@ $this->breadcrumbs=array(
 );
 
 $this->menu=array(
-	array('label'=>'Gastos y reparaciones', 'url'=>array('index')),
-	array('label'=>'Mtmo preventivo', 'url'=>array('mttoPreventivo/mttopVehiculo','id'=>$model->id)),
+	array('label'=>'Gastos y consumos', 'url'=>array('index')),
+	array('label'=>'Mantenimiento preventivo', 'url'=>array('mttoPreventivo/mttopVehiculo','id'=>$model->id)),
+	array('label'=>'Mantenimiento correctivo', 'url'=>array('index')),
 	array('label'=>'Piezas y repuestos', 'url'=>array('DetallePieza', 'id'=>$model->id)),
 	array('label'=>'Siniestros y averías', 'url'=>array('')),
 	array('label'=>'Combustible', 'url'=>array('index')),

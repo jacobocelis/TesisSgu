@@ -38,12 +38,6 @@
 	</div>
 
 	<div class="row">
-		<?php echo $form->labelEx($model,'ultimo'); ?>
-		<?php echo $form->textField($model,'ultimo',array('size'=>45,'maxlength'=>45)); ?>
-		<?php echo $form->error($model,'ultimo'); ?>
-	</div>
-
-	<div class="row">
 		<?php echo $form->labelEx($model,'frecuenciaKm'); ?>
 		<?php echo $form->textField($model,'frecuenciaKm'); ?>
 		<?php echo $form->error($model,'frecuenciaKm'); ?>
@@ -53,12 +47,6 @@
 		<?php echo $form->labelEx($model,'frecuenciaMes'); ?>
 		<?php echo $form->textField($model,'frecuenciaMes'); ?>
 		<?php echo $form->error($model,'frecuenciaMes'); ?>
-	</div>
-
-	<div class="row">
-		<?php echo $form->labelEx($model,'frecuencia'); ?>
-		<?php echo $form->textField($model,'frecuencia',array('size'=>45,'maxlength'=>45)); ?>
-		<?php echo $form->error($model,'frecuencia'); ?>
 	</div>
 
 	<div class="row">
@@ -74,9 +62,9 @@
 	</div>
 
 	<div class="row">
-		<?php echo $form->labelEx($model,'proximo'); ?>
-		<?php echo $form->textField($model,'proximo',array('size'=>45,'maxlength'=>45)); ?>
-		<?php echo $form->error($model,'proximo'); ?>
+		<?php echo $form->labelEx($model,'duracion'); ?>
+		<?php echo $form->textField($model,'duracion'); ?>
+		<?php echo $form->error($model,'duracion'); ?>
 	</div>
 
 	<div class="row">
@@ -95,6 +83,30 @@
 		<?php echo $form->labelEx($model,'idplan'); ?>
 		<?php echo $form->textField($model,'idplan'); ?>
 		<?php echo $form->error($model,'idplan'); ?>
+	</div>
+
+	<div class="row">
+		<?php echo $form->labelEx($model,'idtiempod'); ?>
+		<?php echo $form->textField($model,'idtiempod'); ?>
+		<?php echo $form->error($model,'idtiempod'); ?>
+	</div>
+
+	<div class="row">
+		<?php echo $form->labelEx($model,'idtiempof'); ?>
+		<?php echo $form->textField($model,'idtiempof'); ?>
+		<?php echo $form->error($model,'idtiempof'); ?>
+	</div>
+
+	<div class="row">
+		<?php echo $form->labelEx($model,'idactividadesGrupo'); ?>
+		<?php echo $form->textField($model,'idactividadesGrupo'); ?>
+		<?php echo $form->error($model,'idactividadesGrupo'); ?>
+	</div>
+
+	<div class="row">
+		<?php echo $form->labelEx($model,'idestatus'); ?>
+		<?php echo $form->textField($model,'idestatus'); ?>
+		<?php echo $form->error($model,'idestatus'); ?>
 	</div>
 
 	<div class="row buttons">

@@ -36,7 +36,7 @@
 	
 		
 	<div id='revocarSeleccion' class='boton'>
-		<?php echo CrugeTranslator::t("revocar selección") ?>
+		<?php echo CrugeTranslator::t("Quitar piezas") ?>
 		
 	</div>
 
@@ -82,7 +82,7 @@
 	<div id='lista2' class='lista'>
 	<div id='asignarSeleccion' class='boton'>
 		<?php 
-		echo CrugeTranslator::t("asignar selección");?></div>
+		echo CrugeTranslator::t("Agregar piezas");?></div>
 
 	<?php 
 	
@@ -377,6 +377,16 @@ div.user-assignments-detail #lista1 .boton {
 }
 div.user-assignments-detail #lista2 .boton {
     background-image: url("<?php echo Yii::app()->request->baseUrl;?>/imagenes/hand.png");
+}
+.grid-view table.items th {
+    color: #000;
+    background: none repeat scroll 0% 0% #D9EDFF;
+    text-align: center;
+}
+.grid-view table.items th a {
+    color: #000;
+    font-weight: bold;
+    text-decoration: none;
 }
 </style>
 <script>

@@ -84,13 +84,43 @@ class ActividadesController extends Controller
 	 * If update is successful, the browser will be redirected to the 'view' page.
 	 * @param integer $id the ID of the model to be updated
 	 */
-	public function actionUpdate($id)
-	{
+	public function actionUpdate($id,$idestatus){
+	
 		$model=$this->loadModel($id);
-
+		if($model->ultimoKm==-1 or $model->ultimoFecha=='0000-01-01')
+			$var=1;
+		else
+			$var=0;
+			if(isset($_POST['Actividades'])){
+            $model->attributes=$_POST['Actividades'];
+            if($model->save()){
+			//calculo del proximo mantenimiento a realizarse en base al ultimo ingresado
+				$proximoFecha = new DateTime($model->ultimoFecha);
+				$proximoKm=$model->ultimoKm+$model->frecuenciaKm;
+				$proximoFecha->add(new DateInterval('P'.$model->frecuenciaMes.$model->idtiempof0->sqlTimevalues));
+				file_put_contents('prueba.txt', print_r($proximoFecha,true));
+				
+				Yii::app()->db->createCommand("update `tsg`.`sgu_actividades` set proximoKm='".$proximoKm."', proximoFecha='".$proximoFecha->format("Y-m-d")."', idestatus='".$model->idestatus."'
+				where id = '".$id."'")->query();
+				
+                if (Yii::app()->request->isAjaxRequest){
+                    echo CJSON::encode(array(
+                        'status'=>'success', 
+                        'div'=>"se registró el mantenimiento correctamente"
+                        ));
+                    exit;               
+                }
+            }
+        }
+        if (Yii::app()->request->isAjaxRequest){
+            echo CJSON::encode(array(
+                'status'=>'failure', 
+                'div'=>$this->renderPartial('_formRegistrarMi', array('model'=>$model,'id'=>$var,'idestatus'=>$idestatus), true)));
+            exit;               
+        }
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
-
+		
 		if(isset($_POST['Actividades']))
 		{
 			$model->attributes=$_POST['Actividades'];
@@ -102,7 +132,31 @@ class ActividadesController extends Controller
 			'model'=>$model,
 		));
 	}
-
+		/*public function actionUpdate($id,$idestatus){
+		
+		$model=$this->loadModel($id);
+		if($model->ultimoKm==-1 or $model->ultimoFecha=='0000-01-01')
+			$var=1;
+		else
+			$var=0;
+			if(isset($_POST['Actividades'])){
+            $model->attributes=$_POST['Actividades'];
+            if($model->save()){
+			//calculo del proximo mantenimiento a realizarse en base al ultimo ingresado
+				$proximoFecha = new DateTime($model->ultimoFecha);
+				$proximoKm=$model->ultimoKm+$model->frecuenciaKm;
+				$proximoFecha->add(new DateInterval('P'.$model->frecuenciaMes.$model->idtiempof0->sqlTimevalues));
+				//file_put_contents('prueba.txt', print_r($proximoFecha,true));
+				
+				Yii::app()->db->createCommand("update `tsg`.`sgu_actividades` set proximoKm='".$proximoKm."', proximoFecha='".$proximoFecha."', idestatus='".$model->idestatus."'
+				where id = '".$id."'")->query();
+			}
+		}
+		$this->render('update',array(
+			'model'=>$model,
+		));
+		
+		}*/
 	/**
 	 * Deletes a particular model.
 	 * If deletion is successful, the browser will be redirected to the 'admin' page.
