@@ -28,7 +28,7 @@ class MttoPreventivoController extends Controller
 	{
 		return array(
 			array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array('index','view','crearPlan','planes','agregarActividad','obtenerParte','mttopVehiculo','mttopIniciales'),
+				'actions'=>array('index','view','crearPlan','planes','agregarActividad','obtenerParte','mttopVehiculo','mttopIniciales','calendario'),
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
@@ -55,21 +55,51 @@ class MttoPreventivoController extends Controller
 			'model'=>$this->loadModel($id),
 		));
 	}
+	public function actionCalendario(){
+	$act=Yii::app()->db->createCommand("select concat('Unidad ',v.numeroUnidad ,' ', pg.parte,'=>',a.actividad) as titulo, a.proximoFecha from sgu_actividades a, sgu_plan p, sgu_vehiculo v, sgu_planGrupo pg where a.idplan=p.id and p.idvehiculo=v.id and p.idplanGrupo=pg.id")->queryAll();
+    $tot=count($act);
+	for($i=0;$i<$tot;$i++){
+	$items[]=array(
+        'title'=>$act[$i]["titulo"],
+        'start'=>$act[$i]["proximoFecha"],
+        'color'=>'#CC0000',
+        'allDay'=>true,
+        //'url'=>'',
+		'editable'=>true,
+		'selectable' => true,
+    );}
+	$this->render('calendar',array(
+		'items'=>$items
+	));
+    //echo CJSON::encode($items);
+    //Yii::app()->end();
+}
+	/*public function actionCalendario(){
+		
+		$this->render('calendar');
+	}*/
 	public function actionMttopVehiculo($id){
 	
 		$dataProvider=new CActiveDataProvider('Actividades',array('criteria' => array(
+			'order'=>'proximoFecha asc',
 			'condition' =>'idplan in (select id from sgu_plan where idvehiculo="'.$id.'") and idestatus<>1 and idestatus<>3')
 			,'pagination'=>array('pageSize'=>9999999)));
 			
 		$mi=Yii::app()->db->createCommand("select count(*) as total from sgu_actividades where idestatus=1 and idplan in(select id from sgu_plan where idvehiculo=".$id.")")->queryRow();
+		if($mi["total"]>0)
+			$color='important';
+		else	
+			$color='';
 		$this->render('mttopVehiculo',array(
 			'id'=>$id,
 			'dataProvider'=>$dataProvider,
-			'mi'=>$mi["total"]
+			'mi'=>$mi["total"],
+			'color'=>$color
 		));
 	}
 	public function actionMttopIniciales($id){
 		$dataProvider=new CActiveDataProvider('Actividades',array('criteria' => array(
+			'order'=>'proximoFecha asc',
 			'condition' =>'idplan in (select id from sgu_plan where idvehiculo="'.$id.'") and idestatus <>3 ')
 			,'pagination'=>array('pageSize'=>9999999)));
 		$this->render('mttopIniciales',array(

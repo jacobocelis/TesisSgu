@@ -131,8 +131,11 @@ class AsignarPiezaGrupoController extends Controller
 					}
 					else{
 						/*falta aqui arreglar que si se cambia el tipo del grupo se actualice el nombre*/
-					}
+					}//file_put_contents('pruebaa.txt', print_r($ids,true));
 					 foreach ($ids as $parte) {
+					 //arreglar esto para que los consumibles no se agreguen para el plan de mantenimiento
+						if($parte<=73){
+							
 						$categoria=Yii::app()->db->createCommand('select tr.tipo from sgu_subTipoRepuesto str, sgu_TipoRepuesto tr, sgu_repuesto r where r.idsubTipoRepuesto=str.id and str.idTipoRepuesto=tr.id and r.id="'.$parte.'"')->queryRow();
 						
 						$idplanGrupo1=Yii::app()->db->createCommand('select id from sgu_planGrupo where parte="'.$tipo["tipo"].'" and idgrupo="'.$idGrupo["id"].'" and idplanGrupo is NULL')->queryRow();
@@ -148,7 +151,8 @@ class AsignarPiezaGrupoController extends Controller
 						$repu=Yii::app()->db->createCommand('select r.repuesto from sgu_repuesto r where r.id="'.$parte.'"')->queryRow();
 						Yii::app()->db->createCommand("INSERT ignore INTO `tsg`.`sgu_planGrupo` (`parte`,`idgrupo`,`idplanGrupo`)
 						VALUES ('".$repu["repuesto"]."',".$idGrupo["id"].",".$idplanGrupo3["id"].")")->query();
-					 }
+						} 
+					} // and r.id not in (select re.id from sgu_repuesto re, sgu_subTipoRepuesto str, sgu_TipoRepuesto tr where re.idsubTipoRepuesto=str.id and str.idTipoRepuesto= tr.id and tr.id=4)
 			}
 			if ($mode == 'revoke'){
 				/*eliminando cada vehiculo del grupo*/
@@ -190,9 +194,9 @@ class AsignarPiezaGrupoController extends Controller
 			}
 		}		
 		/*paso 1: en lista1 mostrar los repuestos al hacer click en el grupo*/
-		$consulta=Yii::app()->db->createCommand('select re.id, re.repuesto, cg.cantidad, st.subTipo from sgu_CaracteristicaVehGrupo cg, 
+		$consulta=Yii::app()->db->createCommand('select re.id, re.repuesto, cg.cantidad, st.subTipo, u.unidad from sgu_unidad u ,sgu_CaracteristicaVehGrupo cg, 
 		sgu_grupo gu, sgu_subTipoRepuesto st, sgu_repuesto re where cg.idgrupo=gu.id and gu.grupo="'.$authItemName.'" 
-		and re.idSubTipoRepuesto=st.id
+		and re.idSubTipoRepuesto=st.id and re.idunidad=u.id
 		and re.id=cg.idrepuesto ORDER BY st.subTipo ASC')->queryAll(); 
 		$piezasGrupo=new CArrayDataProvider($consulta, array('keyField'=>'id','pagination'=>array('pageSize'=>$pieza_->count())));
         $this->render(

@@ -10,12 +10,12 @@ $this->menu=array(
 	array('label'=>'Crear planes', 'url'=>array('crearPlan')),
 	array('label'=>'Ver planes', 'url'=>array('planes')),
 	array('label'=>'mantenimientos abiertos', 'url'=>array('planes')),
+	array('label'=>'Ajuste de fechas', 'url'=>array('calendario')),
 	array('label'=>'Histórico de mantenimientos', 'url'=>array('planes')),
 );
 ?>
 <h1>Próximos mantenimientos a realizarse</h1>
 <?php
-$prueba=Plangrupo::model();
 $this->widget('zii.widgets.grid.CGridView', array(
                 'id'=>'head',
 				'summaryText'=>'',

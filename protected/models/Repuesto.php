@@ -34,13 +34,13 @@ class Repuesto extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('repuesto, idsubTipoRepuesto', 'required'),
-			array('idsubTipoRepuesto', 'numerical', 'integerOnly'=>true),
+			array('repuesto, idsubTipoRepuesto,idunidad', 'required'),
+			array('idsubTipoRepuesto,idunidad', 'numerical', 'integerOnly'=>true),
 			array('repuesto', 'length', 'max'=>200),
 			array('descripcion', 'length', 'max'=>45),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, repuesto, descripcion, idsubTipoRepuesto', 'safe', 'on'=>'search'),
+			array('id, repuesto, descripcion, idsubTipoRepuesto,idunidad', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -57,6 +57,7 @@ class Repuesto extends CActiveRecord
 			'idsubTipoRepuesto0' => array(self::BELONGS_TO, 'Subtiporepuesto', 'idsubTipoRepuesto'),
 			'sguSinonimos' => array(self::HAS_MANY, 'Sinonimo', 'idrepuesto1'),
 			'sguSinonimos1' => array(self::HAS_MANY, 'Sinonimo', 'idrepuesto2'),
+			'idunidad0' => array(self::BELONGS_TO, 'Unidad', 'idunidad'),
 		);
 	}
 
@@ -70,6 +71,7 @@ class Repuesto extends CActiveRecord
 			'repuesto' => 'Repuesto',
 			'descripcion' => 'Descripcion',
 			'idsubTipoRepuesto' => 'Sub-tipo',
+			'idunidad' => 'Idunidad',
 		);
 	}
 
@@ -93,6 +95,7 @@ class Repuesto extends CActiveRecord
 		$criteria->compare('repuesto',$this->repuesto,true);
 		$criteria->compare('descripcion',$this->descripcion,true);
 		$criteria->compare('idsubTipoRepuesto',$this->idsubTipoRepuesto);
+		$criteria->compare('idunidad',$this->idunidad);
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
 		));

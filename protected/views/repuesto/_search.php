@@ -31,6 +31,11 @@
 		<?php echo $form->textField($model,'idsubTipoRepuesto'); ?>
 	</div>
 
+	<div class="row">
+		<?php echo $form->label($model,'idunidad'); ?>
+		<?php echo $form->textField($model,'idunidad'); ?>
+	</div>
+
 	<div class="row buttons">
 		<?php echo CHtml::submitButton('Search'); ?>
 	</div>

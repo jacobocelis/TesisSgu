@@ -51,7 +51,13 @@
 		<?php echo $form->dropDownList($model,'idsubTipoRepuesto',array()); ?>
 		<?php echo $form->error($model,'idsubTipoRepuesto'); ?>
 	</div>
-
+	
+	<div class="row">
+		<?php echo $form->labelEx($model,'idunidad'); ?>
+		<?php echo $form->textField($model,'idunidad'); ?>
+		<?php echo $form->error($model,'idunidad'); ?>
+	</div>
+	
 	<div class="row buttons">
 		<?php echo CHtml::submitButton($model->isNewRecord ? 'Registrar' : 'Guardar'); ?>
 	</div>

@@ -21,6 +21,8 @@ return array(
 		'application.components.validators.*',
 		'application.extensions.eeditable.*',
 		'application.extensions.SilcomTreeGridView.*',
+		'application.extensions.EFullCalendar.*',
+		
 		
     ),
     'modules' => array(

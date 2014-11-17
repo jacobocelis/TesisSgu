@@ -1,7 +1,7 @@
 <?php 
 	$this->breadcrumbs=array(
 	'Mantenimiento preventivo'=>array('mttoPreventivo/index'),
-	'Crear plan',
+	'Crear programa asociado',
 );
 	$this->menu=array(
 	array('label'=>'Ver planes de mantenimiento', 'url'=>array('')),
@@ -9,9 +9,9 @@
 ?>
 <div class='form'>
 <div class='crugepanel user-assignments-role-list'>
-	<h1><?php echo ucfirst(CrugeTranslator::t("crear un plan asociado a un grupo de vehiculos"));?></h1>
-	<p><?php echo ucfirst(CrugeTranslator::t("Haz click en un grupo para crear un plan de mantenimiento"));?></p>
-	<strong><p><?php echo ucfirst(CrugeTranslator::t("Grupos registrados:"));?></p></strong>
+	
+	<div class='letra'><p>Seleccione un grupo para crear un programa de mantenimiento</p></div>
+	<strong><p>Grupos registrados:</p></strong>
 	<ul class='auth-item'>
 	<?php 
 		$loader = "<span class='loader'></span>";		
@@ -44,6 +44,11 @@
 <input id="grupo" type="hidden" name="grupo" />
 </form>
 <style type="text/css">
+.letra{
+	margin-top:10px;
+	font-size:260%;
+	font-weight: bold;
+}
 .grid-view table.items th a {
     color: rgba(0, 0, 0, 1);
     font-weight: bold;
@@ -73,12 +78,12 @@
 .crugepanel {
     background-color: white;
     border: 1px dotted #aaa;
-    border-radius: 5px;
+    border-radius: 1px;
     box-shadow: 3px 3px 5px #eee;
     display: block;
     margin-top: 10px;
     padding: 10px;
-	max-width: 800px;
+	
 }
 .auth-item-error-msg {
     background-color: rgb(255, 200, 200);

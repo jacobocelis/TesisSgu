@@ -17,9 +17,8 @@
 ?>
 <div class='form'>
 <div class='crugepanel user-assignments-role-list'>
-	<h1><?php echo ucfirst(CrugeTranslator::t("Asignación de piezas a grupo de vehiculos"));?></h1>
-	<p><?php echo ucfirst(CrugeTranslator::t("Haz click en un grupo para asignar las partes y repuestos correspondientes"));?></p>
-	<strong><p><?php echo ucfirst(CrugeTranslator::t("Grupos registrados:"));?></p></strong>
+	<div class='letra'><p>Seleccione un grupo para asignar las piezas que posee</p></div>
+	<strong><p>Grupos registrados:</p></strong>
 	<ul class='auth-item'>
 	<?php 
 		$loader = "<span class='loader'></span>";		
@@ -74,6 +73,12 @@
 					'name'=>'cantidad',
 					'htmlOptions'=>array('style'=>'text-align:center;width:20px'),
 				),
+				array(
+					'header'=>'Unidad',
+					'name'=>'unidad',
+					
+					//'footer'=>'',
+				),
 			),
 		));
 	?>	
@@ -121,6 +126,12 @@
 					'type'=>'raw',
 					'htmlOptions'=>array('style'=>'width: 50px;'),
 				),
+				array(
+					'header'=>'Unidad',
+					'value'=>'$data->idunidad0->unidad',
+					'type'=>'raw',
+					'htmlOptions'=>array('style'=>'width: 50px;'),
+				),
 				
 			),
 		));
@@ -129,7 +140,12 @@
 </div>
 </div>
 <style type="text/css">
-
+.letra{
+	margin-top:10px;
+	margin-bottom:20px;
+	font-size:260%;
+	font-weight: bold;
+}
 .code {
     color: #666;
     font-family: monospace;
@@ -154,7 +170,7 @@
     display: block;
     margin-top: 10px;
     padding: 10px;
-	max-width: 800px;
+	
 }
 .auth-item-error-msg {
     background-color: rgb(255, 200, 200);

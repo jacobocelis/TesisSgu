@@ -16,10 +16,12 @@
 			)
         ));
 ?>
-<?php $this->widget('ext.SilcomTreeGridView.SilcomTreeGridView', array(
+<?php $this->widget('application.extensions.SilcomTreeGridView.SilcomTreeGridView', array(
                 'id'=>'plan',
 				'summaryText' => '',
 				'hideHeader'=>true,
+				//'htmlOptions'=>array('style'=>'border: 1px solid #94A8FF;'),
+				
 				'selectionChanged'=>'mostrarDetalles',
                 'treeViewOptions'=>array(
 				'clickableNodeNames'=>false,
@@ -137,7 +139,7 @@ $('#plan > table > tbody > tr').live('click',function(){
           url: dir,
         })
   	.done(function( result ) {    	
-    	     $('#pieza').text("Parte seleccionada: "+result);
+    	     $('#pieza').text("Selección: "+result);
   	});
       }
 </script>
@@ -197,7 +199,7 @@ $('#dialog').dialog('open');
 function mostrarDetalles(){
 ObtenerParte();
 var altura = $(document).height();
-$("html, body").animate({scrollTop:altura+"px"},500);
+//$("html, body").animate({scrollTop:altura+"px"},500);
 $('#ocultar').show(500);
 	var grupoSel="<?php echo $grupoSel; ?>" ;
 	var idPlan = $.fn.yiiGridView.getSelection('plan');
@@ -224,14 +226,15 @@ $('#ocultar').show(500);
 	border-radius: 3px;
 	text-align: left;
 	padding: 5px;
+	color: rgba(255, 0, 0, 1);
+	font-size:120%;
 	
-	color: #000;
 	background-color: #EFEFEF;
 }
 .grid-view {
     padding: 10px 0px;
     overflow-x: auto;
-    height: 150px;
+    max-height: 350px;
 }
 
 </style>
@@ -255,6 +258,7 @@ $('#ocultar').show(500);
 	font-size: 0.9em;
 	border: 1px white solid;
 	padding: 0.3em;
+	border: 1px solid #94A8FF;
 }
 
 .vista table.items th
