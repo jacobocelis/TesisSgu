@@ -40,11 +40,12 @@ class AsignarPiezaGrupoController extends Controller
 			),
 		);
 	}
-	public function actionAsignarPieza()
-    {
+	public function actionAsignarPieza(){
+	
 		$actualizar=0;
 		$authItemName = "";	
 		$grupo=Grupo::model()->findAll();
+		//$rep=Repuesto::model()->findAll(array('condition'=>'t.id>=1'));
 		$pieza_=Repuesto::model();
 		
 		$pieza=$pieza_->buscar($authItemName);
@@ -133,9 +134,7 @@ class AsignarPiezaGrupoController extends Controller
 						/*falta aqui arreglar que si se cambia el tipo del grupo se actualice el nombre*/
 					}//file_put_contents('pruebaa.txt', print_r($ids,true));
 					 foreach ($ids as $parte) {
-					 //arreglar esto para que los consumibles no se agreguen para el plan de mantenimiento
-						if($parte<=73){
-							
+					 		
 						$categoria=Yii::app()->db->createCommand('select tr.tipo from sgu_subTipoRepuesto str, sgu_TipoRepuesto tr, sgu_repuesto r where r.idsubTipoRepuesto=str.id and str.idTipoRepuesto=tr.id and r.id="'.$parte.'"')->queryRow();
 						
 						$idplanGrupo1=Yii::app()->db->createCommand('select id from sgu_planGrupo where parte="'.$tipo["tipo"].'" and idgrupo="'.$idGrupo["id"].'" and idplanGrupo is NULL')->queryRow();
@@ -151,7 +150,7 @@ class AsignarPiezaGrupoController extends Controller
 						$repu=Yii::app()->db->createCommand('select r.repuesto from sgu_repuesto r where r.id="'.$parte.'"')->queryRow();
 						Yii::app()->db->createCommand("INSERT ignore INTO `tsg`.`sgu_planGrupo` (`parte`,`idgrupo`,`idplanGrupo`)
 						VALUES ('".$repu["repuesto"]."',".$idGrupo["id"].",".$idplanGrupo3["id"].")")->query();
-						} 
+						
 					} // and r.id not in (select re.id from sgu_repuesto re, sgu_subTipoRepuesto str, sgu_TipoRepuesto tr where re.idsubTipoRepuesto=str.id and str.idTipoRepuesto= tr.id and tr.id=4)
 			}
 			if ($mode == 'revoke'){
@@ -207,6 +206,7 @@ class AsignarPiezaGrupoController extends Controller
 				'grupo'=>$grupo,
 				'model'=>$pieza_,
 				'actualizar'=>$actualizar,
+				
             )
         );
 	

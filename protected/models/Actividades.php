@@ -104,21 +104,21 @@ class Actividades extends CActiveRecord
 	/**
 	 * @return array validation rules for model attributes.
 	 */
-	public function rules()
-	{
+	public function rules(){
+	
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
 			array('actividad, frecuenciaKm, duracion, idprioridad, idplan, idtiempod, idtiempof, idactividadesGrupo,ultimoKm,ultimoFecha,idestatus', 'required'),
 			array('ultimoKm, frecuenciaKm, frecuenciaMes, proximoKm, duracion, atraso, idprioridad, idplan, idtiempod, idtiempof, idactividadesGrupo,idestatus', 'numerical', 'integerOnly'=>true),
 			array('actividad', 'length', 'max'=>80),
+			array('procedimiento', 'length', 'max'=>200),
 			array('ultimoFecha, proximoFecha', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, actividad, ultimoKm, ultimoFecha, frecuenciaKm, frecuenciaMes, proximoKm, proximoFecha, duracion, atraso, idprioridad, idplan, idtiempod, idtiempof, idactividadesGrupo,idestatus', 'safe', 'on'=>'search'),
+			array('id, actividad, ultimoKm, ultimoFecha, frecuenciaKm, frecuenciaMes, proximoKm, proximoFecha, duracion, atraso, idprioridad, idplan, idtiempod, idtiempof, idactividadesGrupo,idestatus,procedimiento', 'safe', 'on'=>'search'),
 		);
 	}
-
 	/**
 	 * @return array relational rules.
 	 */
@@ -133,6 +133,8 @@ class Actividades extends CActiveRecord
 			'idtiempod0' => array(self::BELONGS_TO, 'Tiempo', 'idtiempod'),
 			'idtiempof0' => array(self::BELONGS_TO, 'Tiempo', 'idtiempof'),
 			'idestatus0' => array(self::BELONGS_TO, 'Estatus', 'idestatus'),
+			'sguActividadrecursos' => array(self::HAS_MANY, 'Actividadrecurso', 'idactividades'),
+		
 		);
 	}
 
@@ -158,6 +160,7 @@ class Actividades extends CActiveRecord
 			'idtiempof' => 'Idtiempof',
 			'idactividadesGrupo' => 'Idactividades Grupo',
 			'idestatus' => 'Idestatus',
+			'procedimiento' => 'Procedimiento',
 		);
 	}
 
@@ -195,7 +198,7 @@ class Actividades extends CActiveRecord
 		$criteria->compare('idtiempof',$this->idtiempof);
 		$criteria->compare('idactividadesGrupo',$this->idactividadesGrupo);
 		$criteria->compare('idestatus',$this->idestatus);
-	
+		$criteria->compare('procedimiento',$this->procedimiento,true);
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
 		));

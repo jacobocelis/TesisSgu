@@ -44,10 +44,10 @@ class Actividadesgrupo extends CActiveRecord
 			array('actividad, frecuenciaKm, duracion, idplan, idprioridad, idtiempod, idtiempof', 'required'),
 			array('frecuenciaKm, frecuenciaMes, duracion, diasParo, idplan, idprioridad, idtiempod, idtiempof', 'numerical', 'integerOnly'=>true),
 			array('actividad', 'length', 'max'=>80),
-			array('frecuencia', 'length', 'max'=>45),
+			array('procedimiento', 'length', 'max'=>200),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, actividad, frecuenciaKm, frecuenciaMes, frecuencia, duracion, diasParo, idplan, idprioridad, idtiempod, idtiempof', 'safe', 'on'=>'search'),
+			array('id, actividad,procedimiento, frecuenciaKm, frecuenciaMes, frecuencia, duracion, diasParo, idplan, idprioridad, idtiempod, idtiempof', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -64,6 +64,7 @@ class Actividadesgrupo extends CActiveRecord
 			'idtiempod0' => array(self::BELONGS_TO, 'Tiempo', 'idtiempod'),
 			'idtiempof0' => array(self::BELONGS_TO, 'Tiempo', 'idtiempof'),
 			'idplan0' => array(self::BELONGS_TO, 'Plangrupo', 'idplan'),
+			'Actividadrecursogrupos' => array(self::HAS_MANY, 'Actividadrecursogrupo', 'idactividadesGrupo'),
 		);
 	}
 
@@ -75,9 +76,9 @@ class Actividadesgrupo extends CActiveRecord
 		return array(
 			'id' => 'ID',
 			'actividad' => 'Actividad',
+			'procedimiento' => 'Procedimiento',
 			'frecuenciaKm' => 'Frecuencia',
 			'frecuenciaMes' => 'o máximo cada',
-			'frecuencia' => 'Frecuencia',
 			'duracion' => 'Duración',
 			'diasParo' => 'Dias Paro',
 			'idplan' => 'Idplan',
@@ -109,7 +110,7 @@ class Actividadesgrupo extends CActiveRecord
 		$criteria->compare('actividad',$this->actividad,true);
 		$criteria->compare('frecuenciaKm',$this->frecuenciaKm);
 		$criteria->compare('frecuenciaMes',$this->frecuenciaMes);
-		$criteria->compare('frecuencia',$this->frecuencia,true);
+		$criteria->compare('procedimiento',$this->procedimiento,true);
 		$criteria->compare('duracion',$this->duracion);
 		$criteria->compare('diasParo',$this->diasParo);
 		$criteria->compare('idplan',$this->idplan);

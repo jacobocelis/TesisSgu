@@ -58,6 +58,8 @@ class Repuesto extends CActiveRecord
 			'sguSinonimos' => array(self::HAS_MANY, 'Sinonimo', 'idrepuesto1'),
 			'sguSinonimos1' => array(self::HAS_MANY, 'Sinonimo', 'idrepuesto2'),
 			'idunidad0' => array(self::BELONGS_TO, 'Unidad', 'idunidad'),
+			'sguActividadrecursogrupos' => array(self::HAS_MANY, 'Actividadrecursogrupo', 'idrepuesto'),
+			'sguActividadrecursos' => array(self::HAS_MANY, 'Actividadrecursos', 'idrepuesto'),
 		);
 	}
 
@@ -108,7 +110,7 @@ class Repuesto extends CActiveRecord
 		$criteria=new CDbCriteria;
 		if($grupo!=""){
 			//$criteria->compare('id',$this->id);
-			$criteria->compare('t.id not in (select re.id from sgu_CaracteristicaVehGrupo cg, 
+			$criteria->compare('t.id not in (select re.id from sgu_CaracteristicaVehGrupo cg,
 			sgu_grupo gu, sgu_repuesto re where cg.idgrupo=gu.id and gu.grupo="'.$grupo.'" and re.id=cg.idrepuesto) and t.repuesto',$this->repuesto,true);
 			$criteria->order = 'idsubTipoRepuesto ASC';
 			$criteria->addCondition('t.id not in (select re.id from sgu_CaracteristicaVehGrupo cg, 
@@ -123,7 +125,7 @@ class Repuesto extends CActiveRecord
 		if($grupo==""){
 			$criteria->compare('repuesto',$this->repuesto,true);
 			$criteria->order = 'idsubTipoRepuesto ASC';
-			 $dataProvider=new CActiveDataProvider($this, array(
+			$dataProvider=new CActiveDataProvider($this, array(
 				'criteria'=>$criteria,
 				));
 			$dataProvider->pagination->pageSize=$dataProvider->totalItemCount;
@@ -140,7 +142,7 @@ class Repuesto extends CActiveRecord
 		$criteria->compare('repuesto',$this->repuesto,true);
 		$criteria->compare('descripcion',$this->descripcion,true);
 		$criteria->compare('idsubTipoRepuesto',$this->idsubTipoRepuesto);*/
-		$criteria->addCondition('id not in (select re.id from sgu_CaracteristicaVehGrupo cg, 
+		$criteria->addCondition('id not in (select re.id from sgu_CaracteristicaVehGrupo cg,
 		sgu_grupo gu, sgu_repuesto re where cg.idgrupo=gu.id and gu.grupo="'.$grupo.'"
 		and re.id=cg.idrepuesto)');
 		$criteria->order = 'idsubTipoRepuesto ASC';

@@ -28,7 +28,7 @@ class MttoPreventivoController extends Controller
 	{
 		return array(
 			array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array('index','view','crearPlan','planes','agregarActividad','obtenerParte','mttopVehiculo','mttopIniciales','calendario'),
+				'actions'=>array('index','view','crearPlan','planes','agregarActividad','obtenerParte','mttopVehiculo','mttopIniciales','calendario','agregarRecurso'),
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
@@ -111,6 +111,56 @@ class MttoPreventivoController extends Controller
 	 * Creates a new model.
 	 * If creation is successful, the browser will be redirected to the 'view' page.
 	 */
+	public function actionAgregarRecurso($id){
+                $model=new Actividadesgrupo;
+        // Uncomment the following line if AJAX validation is needed
+         //$this->performAjaxValidation($model);
+ 
+    if(isset($_POST['Actividadesgrupo'])){
+            $model->attributes=$_POST['Actividadesgrupo'];
+            if($model->save()){
+                if (Yii::app()->request->isAjaxRequest){
+				   /*inserts por debajo del plan de mantenimiento a cada vehiculo del grupo*/
+				$modelo=Plangrupo::model()->findByPk($id);
+				$totalVeh=Yii::app()->db->createCommand('select id from sgu_vehiculo where idgrupo="'.$modelo->idgrupo.'"')->queryAll();
+				$total=count($totalVeh);
+				
+				for($i=0;$i<$total;$i++){
+					
+					$existe=Yii::app()->db->createCommand('select id from sgu_plan where idvehiculo="'.$totalVeh[$i]['id'].'" and idplanGrupo="'.$id.'"')->queryAll();
+					
+					if(count($existe)==0){
+						$retorno=Yii::app()->db->createCommand("INSERT INTO `tsg`.`sgu_plan` (`idvehiculo`,`idplanGrupo`)
+						VALUES (".$totalVeh[$i]['id'].",".$id.")")->query();
+						
+						$ultimo=Yii::app()->db->createCommand('select id from sgu_plan order by id desc limit 1')->queryRow();
+					
+					//-------------//
+						Yii::app()->db->createCommand("INSERT INTO `tsg`.`sgu_actividades` (`actividad`,`frecuenciaKm`,`frecuenciaMes`,`duracion`,`idprioridad`,`idplan`,`idtiempod`,`idtiempof`,`idactividadesGrupo`,`idestatus`,`procedimiento`)
+						VALUES ('".$model->actividad."',".$model->frecuenciaKm.",".$model->frecuenciaMes.",".$model->duracion.",".$model->idprioridad.",".$ultimo["id"].",".$model->idtiempod.",".$model->idtiempof.",".$model->id.",1,'".$model->procedimiento."')")->query();
+					}else{
+							//file_put_contents('prueba.txt', print_r($existe,true));
+							Yii::app()->db->createCommand("INSERT  INTO `tsg`.`sgu_actividades` (`actividad`,`frecuenciaKm`,`frecuenciaMes`,`duracion`,`idprioridad`,`idplan`,`idtiempod`,`idtiempof`,`idactividadesGrupo`,`idestatus`,`procedimiento`)
+						VALUES ('".$model->actividad."',".$model->frecuenciaKm.",".$model->frecuenciaMes.",".$model->duracion.",".$model->idprioridad.",".$existe[0]["id"].",".$model->idtiempod.",".$model->idtiempof.",".$model->id.",1,'".$model->procedimiento."')")->query();
+					}
+				}
+                    echo CJSON::encode(array(
+                        'status'=>'success', 
+                        'div'=>"se agregó la actividad correctamente"
+                        ));
+                    exit;
+                }
+            }
+        }
+        if (Yii::app()->request->isAjaxRequest){
+            echo CJSON::encode(array(
+                'status'=>'failure', 
+                'div'=>$this->renderPartial('_formActGrupo', array('model'=>$model,'id'=>$id), true)));
+            exit;               
+        }
+        /*else
+            $this->render('create',array('model'=>$model,));*/
+	}
 	public function actionAgregarActividad($id){
                 $model=new Actividadesgrupo;
         // Uncomment the following line if AJAX validation is needed
@@ -126,20 +176,22 @@ class MttoPreventivoController extends Controller
 				$total=count($totalVeh);
 				
 				for($i=0;$i<$total;$i++){
+					
 					$existe=Yii::app()->db->createCommand('select id from sgu_plan where idvehiculo="'.$totalVeh[$i]['id'].'" and idplanGrupo="'.$id.'"')->queryAll();
+					
 					if(count($existe)==0){
-						Yii::app()->db->createCommand("INSERT INTO `tsg`.`sgu_plan` (`idvehiculo`,`idplanGrupo`)
+						$retorno=Yii::app()->db->createCommand("INSERT INTO `tsg`.`sgu_plan` (`idvehiculo`,`idplanGrupo`)
 						VALUES (".$totalVeh[$i]['id'].",".$id.")")->query();
 						
 						$ultimo=Yii::app()->db->createCommand('select id from sgu_plan order by id desc limit 1')->queryRow();
-					/**/
-					//file_put_contents('pruebaa.txt', print_r($model,true));
-						Yii::app()->db->createCommand("INSERT INTO `tsg`.`sgu_actividades` (`actividad`,`frecuenciaKm`,`frecuenciaMes`,`duracion`,`idprioridad`,`idplan`,`idtiempod`,`idtiempof`,`idactividadesGrupo`,`idestatus`)
-						VALUES ('".$model->actividad."',".$model->frecuenciaKm.",'".$model->frecuenciaMes."',".$model->duracion.",".$model->idprioridad.",".$ultimo["id"].",".$model->idtiempod.",".$model->idtiempof.",".$model->id.",1)")->query();
+					
+					//-------------//
+						Yii::app()->db->createCommand("INSERT INTO `tsg`.`sgu_actividades` (`actividad`,`frecuenciaKm`,`frecuenciaMes`,`duracion`,`idprioridad`,`idplan`,`idtiempod`,`idtiempof`,`idactividadesGrupo`,`idestatus`,`procedimiento`)
+						VALUES ('".$model->actividad."',".$model->frecuenciaKm.",".$model->frecuenciaMes.",".$model->duracion.",".$model->idprioridad.",".$ultimo["id"].",".$model->idtiempod.",".$model->idtiempof.",".$model->id.",1,'".$model->procedimiento."')")->query();
 					}else{
-							//file_put_contents('prueba.txt', print_r($model,true));
-							Yii::app()->db->createCommand("INSERT  INTO `tsg`.`sgu_actividades` (`actividad`,`frecuenciaKm`,`frecuenciaMes`,`duracion`,`idprioridad`,`idplan`,`idtiempod`,`idtiempof`,`idactividadesGrupo`,`idestatus`)
-						VALUES ('".$model->actividad."',".$model->frecuenciaKm.",'".$model->frecuenciaMes."',".$model->duracion.",".$model->idprioridad.",".$existe[0]["id"].",".$model->idtiempod.",".$model->idtiempof.",".$model->id.",1)")->query();
+							//file_put_contents('prueba.txt', print_r($existe,true));
+							Yii::app()->db->createCommand("INSERT  INTO `tsg`.`sgu_actividades` (`actividad`,`frecuenciaKm`,`frecuenciaMes`,`duracion`,`idprioridad`,`idplan`,`idtiempod`,`idtiempof`,`idactividadesGrupo`,`idestatus`,`procedimiento`)
+						VALUES ('".$model->actividad."',".$model->frecuenciaKm.",".$model->frecuenciaMes.",".$model->duracion.",".$model->idprioridad.",".$existe[0]["id"].",".$model->idtiempod.",".$model->idtiempof.",".$model->id.",1,'".$model->procedimiento."')")->query();
 					}
 				}
                     echo CJSON::encode(array(

@@ -9,6 +9,8 @@
  * @property string $corto
  *
  * The followings are the available model relations:
+ * @property SguActividadrecurso[] $sguActividadrecursos
+ * @property SguActividadrecursogrupo[] $sguActividadrecursogrupos
  * @property SguRepuesto[] $sguRepuestos
  */
 class Unidad extends CActiveRecord
@@ -47,6 +49,8 @@ class Unidad extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
+			'sguActividadrecursos' => array(self::HAS_MANY, 'Actividadrecurso', 'idunidad'),
+			'sguActividadrecursogrupos' => array(self::HAS_MANY, 'Actividadrecursogrupo', 'idunidad'),
 			'sguRepuestos' => array(self::HAS_MANY, 'Repuesto', 'idunidad'),
 		);
 	}
@@ -59,7 +63,7 @@ class Unidad extends CActiveRecord
 		return array(
 			'id' => 'ID',
 			'unidad' => 'Unidad',
-			'corto' => 'Corto',
+			'corto' => 'Unidad',
 		);
 	}
 

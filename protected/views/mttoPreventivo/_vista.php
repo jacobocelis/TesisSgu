@@ -37,7 +37,7 @@
         ));
 ?>
 </div>
-<div id='ocultar' class='crugepanel user-assignments-detail'>
+<div id='activ' class='crugepanel user-assignments-detail'>
 			<div id='actividades'>Actividades</div>
 			<div id='pieza'></div>
 			<?php 
@@ -49,6 +49,7 @@
 			'template'=>"{items}{summary}{pager}",
 			'emptyText' => 'no hay actividades agregadas',
 			'summaryText' => '',
+			'selectionChanged'=>'mostrarRecursos',
 			'columns'=>array(	
 				array(
 					'headerHtmlOptions'=>array('style'=>'text-align:left;'),
@@ -57,10 +58,11 @@
 					//'footer'=>'',
 				),
 				array(
+					'type'=>'raw',
 					'headerHtmlOptions'=>array('style'=>'text-align:left;'),
 					'header'=>'Frecuencia',
-					'name'=>'frecuencia',
-					'value'=>'$data->frecuencia.\' \'.($data->frecuenciaMes ? \'ó \'.$data->frecuenciaMes.\' \'.$data->idtiempof0->tiempo :\'\')',
+					'name'=>'frecuenciaKm',
+					'value'=>'number_format($data->frecuenciaKm).\' Km \'.($data->frecuenciaMes ? \'<br>ó máximo cada \'.$data->frecuenciaMes.\' \'.$data->idtiempof0->tiempo :\'\')',
 					//'footer'=>'',
 				),
 				array(
@@ -101,7 +103,6 @@
 						),
 					),
 				),
-
 			),
 		));?>
 <?php echo CHtml::link('agregar actividad(+)', "",  // the link for open the dialog
@@ -110,16 +111,26 @@
         'onclick'=>"{agregarActividad(); }"));
 		?>	
 	</div>
+<div id='recur' class='crugepanel user-assignments-detail'>
+			<div id='recursos'>Recursos</div>
+			<div id='recurso'></div>
+			
+<?php echo CHtml::link('agregar recurso(+)', "",  // the link for open the dialog
+    array(
+        'style'=>'cursor: pointer; text-decoration: underline;',
+        'onclick'=>"{agregarRecurso(); }"));
+		?>	
+</div>
 <?php
-/*ventana agregar informacion*/
+/*ventana agregar actividad*/
 $this->beginWidget('zii.widgets.jui.CJuiDialog', array( // the dialog
     'id'=>'dialog',
     'options'=>array(
         'title'=>'Agregar actividad',
         'autoOpen'=>false,
         'modal'=>true,
-        'width'=>500,
-        'height'=>380,
+        'width'=>550,
+        'height'=>480,
 		'resizable'=>false
     ),
 ));?>
@@ -132,7 +143,7 @@ $('#plan > table > tbody > tr').live('click',function(){
 									if($(this).hasClass('selected'))
                                        $(this).addClass('selected') 
                                 });*/
-     function ObtenerParte(){
+function ObtenerParte(){
 	var id = $.fn.yiiGridView.getSelection('plan');
 	var dir="<?php echo Yii::app()->baseUrl;?>"+"/mttoPreventivo/ObtenerParte/"+id;
 	$.ajax({  		
@@ -142,9 +153,21 @@ $('#plan > table > tbody > tr').live('click',function(){
     	     $('#pieza').text("Selección: "+result);
   	});
       }
+	  
+function ObtenerActividad(){
+	var id = $.fn.yiiGridView.getSelection('plan');
+	var dir="<?php echo Yii::app()->baseUrl;?>"+"/mttoPreventivo/ObtenerParte/"+id;
+	$.ajax({  		
+          url: dir,
+        })
+  	.done(function( result ) {    	
+    	     $('#recurso').text("Selección: "+result);
+  	});
+      }
 </script>
 <script>
-$('#ocultar').hide();
+$('#activ').hide();
+$('#recur').hide();
 var Uurl;
 function editarActividad(id){
 $('#dialog').dialog('open');
@@ -196,16 +219,78 @@ $('#dialog').dialog('open');
                 'cache':false});
     return false; 
 }
+var Uurl;
+function editarRecurso(id){
+$('#dialog').dialog('open');
+	 if (typeof(id)=='string')
+                Uurl=id;
+	jQuery.ajax({
+                url: Uurl,
+                'data':$(this).serialize(),
+                'type':'post',
+                'dataType':'json',
+                'success':function(data)
+                        {
+                                if (data.status == 'failure')
+                                {
+                                        $('#dialog div.divForForm').html(data.div);
+                                        // Here is the trick: on submit-> once again this function!
+                                        $('#dialog div.divForForm form').submit(editarActividad); // updatePaymentComment
+                                }
+                                else
+                                {
+                                        $('#dialog div.divForForm').html(data.div);
+                                        setTimeout("$('#dialog').dialog('close') ",1000);
+                                        $.fn.yiiGridView.update('act');
+                                }
+                        } ,
+                'cache':false});
+    return false; 
+}
+function agregarRecurso(){
+$('#dialog').dialog('open');
+	var idPlan = $.fn.yiiGridView.getSelection('plan');
+	jQuery.ajax({
+                url: "agregarActividad/"+idPlan,
+                'data':$(this).serialize(),
+                'type':'post',
+                'dataType':'json',
+                'success':function(data){
+                                if (data.status == 'failure'){
+                                        $('#dialog div.divForForm').html(data.div);
+                                        // Here is the trick: on submit-> once again this function!
+                                        $('#dialog div.divForForm form').submit(agregarActividad); // updatePaymentComment
+                                }
+                                else{
+                                        $('#dialog div.divForForm').html(data.div);
+                                        setTimeout("$('#dialog').dialog('close') ",1000);
+                                        $.fn.yiiGridView.update('act');
+                                }
+                        } ,
+                'cache':false});
+    return false; 
+}
 function mostrarDetalles(){
 ObtenerParte();
 var altura = $(document).height();
 //$("html, body").animate({scrollTop:altura+"px"},500);
-$('#ocultar').show(500);
+$('#activ').show(500);
 	var grupoSel="<?php echo $grupoSel; ?>" ;
 	var idPlan = $.fn.yiiGridView.getSelection('plan');
 	if(idPlan=="")
-		$('#ocultar').hide();
+		$('#activ').hide();
 	$.fn.yiiGridView.update('act',{ data : "idPlan="+idPlan+"&grupoSel="+grupoSel});
+}
+function mostrarRecursos(){
+//ObtenerActividad();
+var altura = $(document).height();
+//$("html, body").animate({scrollTop:altura+"px"},500);
+$('#recur').show(500);
+	var grupoSel="<?php echo $grupoSel; ?>" ;
+	var idAct = $.fn.yiiGridView.getSelection('act');
+	if(idAct=="")
+		$('#recur').hide();
+	//$.fn.yiiGridView.update('act',{ data : "idPlan="+idPlan+"&grupoSel="+grupoSel});
 }
 </script>
 <style>
@@ -228,7 +313,27 @@ $('#ocultar').show(500);
 	padding: 5px;
 	color: rgba(255, 0, 0, 1);
 	font-size:120%;
-	
+	background-color: #EFEFEF;
+}
+#recursos{
+	font-weight: bold;
+	font-size: 14px !important;
+	font-family: "Carrois Gothic",sans-serif;
+	border-radius: 3px;
+	text-align: center;
+	padding: 5px;
+	margin-bottom: 10px;
+	color: #000;
+	background: none repeat scroll 0% 0% #C6DDED;
+	text-align: center;
+}
+#recurso{
+	font-weight: bold;
+	border-radius: 3px;
+	text-align: left;
+	padding: 5px;
+	color: rgba(255, 0, 0, 1);
+	font-size:120%;
 	background-color: #EFEFEF;
 }
 .grid-view {

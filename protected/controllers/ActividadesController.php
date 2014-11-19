@@ -98,7 +98,7 @@ class ActividadesController extends Controller
 				$proximoFecha = new DateTime($model->ultimoFecha);
 				$proximoKm=$model->ultimoKm+$model->frecuenciaKm;
 				$proximoFecha->add(new DateInterval('P'.$model->frecuenciaMes.$model->idtiempof0->sqlTimevalues));
-				file_put_contents('prueba.txt', print_r($proximoFecha,true));
+				//file_put_contents('prueba.txt', print_r($proximoFecha,true));
 				
 				Yii::app()->db->createCommand("update `tsg`.`sgu_actividades` set proximoKm='".$proximoKm."', proximoFecha='".$proximoFecha->format("Y-m-d")."', idestatus='".$model->idestatus."'
 				where id = '".$id."'")->query();

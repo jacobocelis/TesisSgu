@@ -10,7 +10,7 @@
 <div class='form'>
 <div class='crugepanel user-assignments-role-list'>
 	
-	<div class='letra'><p>Seleccione un grupo para crear un programa de mantenimiento</p></div>
+	<h1>Seleccione un grupo para crear un programa de mantenimiento</h1>
 	<strong><p>Grupos registrados:</p></strong>
 	<ul class='auth-item'>
 	<?php 
@@ -44,10 +44,9 @@
 <input id="grupo" type="hidden" name="grupo" />
 </form>
 <style type="text/css">
-.letra{
-	margin-top:10px;
-	font-size:260%;
-	font-weight: bold;
+h1 {
+    font-size: 32px;
+    line-height: 40px;
 }
 .grid-view table.items th a {
     color: rgba(0, 0, 0, 1);

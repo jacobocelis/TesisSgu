@@ -109,6 +109,12 @@
 		<?php echo $form->error($model,'idestatus'); ?>
 	</div>
 
+	<div class="row">
+		<?php echo $form->labelEx($model,'procedimiento'); ?>
+		<?php echo $form->textField($model,'procedimiento',array('size'=>60,'maxlength'=>200)); ?>
+		<?php echo $form->error($model,'procedimiento'); ?>
+	</div>
+
 	<div class="row buttons">
 		<?php echo CHtml::submitButton($model->isNewRecord ? 'Create' : 'Save'); ?>
 	</div>

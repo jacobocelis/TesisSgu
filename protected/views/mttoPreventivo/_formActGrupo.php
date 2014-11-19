@@ -21,7 +21,7 @@
 
 	<div class="row">
 		<?php echo $form->labelEx($model,'actividad'); ?>
-		<?php echo $form->textField($model,'actividad',array('size'=>60,'maxlength'=>80)); ?>
+		<?php echo $form->textField($model,'actividad',array('size'=>60,'maxlength'=>80,'style' => 'width:370px;')); ?>
 		<?php echo $form->error($model,'actividad'); ?>
 	</div>
 
@@ -31,22 +31,15 @@
 		<?php echo $form->error($model,'frecuenciaKm'); ?>
 	
 		<?php echo $form->labelEx($model,'frecuenciaMes'); ?>
-		<?php echo $form->textField($model,'frecuenciaMes',array('style' => 'width:50px;')); ?>
+		<?php echo $form->textField($model,'frecuenciaMes',array('style' => 'width:60px;')); ?>
 		<?php echo $form->dropDownList($model,'idtiempof',CHtml::listData(Tiempo::model()->findAll(array("condition"=>"id <> 2 and id <> 5")),'id','tiempo'),array('id'=>'tiempo','style' => 'width:90px;')); ?>
 		<?php echo $form->error($model,'frecuenciaMes'); ?>
 	</div>
-
-	<div class="row">
-		<?php //echo $form->labelEx($model,'frecuencia'); ?>
-		<?php echo $form->hiddenField($model,'frecuencia',array('size'=>45,'maxlength'=>45)); ?>
-		<?php //echo $form->error($model,'frecuencia'); ?>
-	</div>
-
-
+	
 	<div class="row">
 		<?php echo $form->labelEx($model,'duracion'); ?>
 		<?php echo $form->textField($model,'duracion',array('style' => 'width:60px;')); ?>
-		<?php echo $form->dropDownList($model,'idtiempod',CHtml::listData(Tiempo::model()->findAll(array("condition"=>"id = 5 or id = 2 or id = 1 order by id DESC")),'id','tiempo'),array('style' => 'width:90px;')); ?>
+		<?php echo $form->dropDownList($model,'idtiempod',CHtml::listData(Tiempo::model()->findAll(array("condition"=>"id = 5 or id = 2 or id = 1 order by id DESC")),'id','tiempo'),array('style' => 'width:100px;')); ?>
 		<?php echo $form->error($model,'duracion'); ?>
 	</div>
 
@@ -67,7 +60,13 @@
 		<?php echo $form->dropDownList($model,'idprioridad',CHtml::listData(Prioridad::model()->findAll(),'id','prioridad'),array('id'=>'prioridad','style' => 'width:100px;')); ?>
 		<?php echo $form->error($model,'idprioridad'); ?>
 	</div>
-
+	
+	<div class="row">
+		<?php echo $form->labelEx($model,'procedimiento'); ?>
+		<?php echo $form->textArea($model,'procedimiento',array('size'=>60,'maxlength'=>200,'style'=>'width: 348px; height: 67px;resize: none;')); ?>
+		<?php echo $form->error($model,'procedimiento'); ?>
+	</div>
+	
 	<div class="row buttons">
 		<?php 
 		echo CHtml::submitButton($model->isNewRecord ? 'Registrar' : 'Guardar'); ?>
@@ -76,14 +75,3 @@
 <?php $this->endWidget(); ?>
 
 </div><!-- form -->
-<script>
-$("#actividadesgrupo-form").submit(function(event){
-event.preventDefault();
-agregar();
-});
-function agregar(){
-	$('#Actividadesgrupo_frecuencia').val($('#Actividadesgrupo_frecuenciaKm').val()+" Km");
-
-return true
-}
-</script>

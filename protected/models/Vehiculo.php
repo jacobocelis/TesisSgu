@@ -50,14 +50,14 @@ class Vehiculo extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('numeroUnidad, serialCarroceria,serialMotor, placa, anno, cantidadRuedas, capTanque, idmodelo, idgrupo, idcombustible, idcolor,idpropiedad', 'required'),
-			array('numeroUnidad, anno, nroPuestos, nroEjes, capCarga, cantidadRuedas, capTanque, idmodelo, idgrupo, idcombustible,idcolor,idpropiedad', 'numerical', 'integerOnly'=>true),
+			array('numeroUnidad, serialCarroceria,serialMotor, placa, anno, cantidadRuedas, capTanque, idmodelo, idgrupo, idcombustible, idcolor,idpropiedad,KmInicial', 'required'),
+			array('numeroUnidad, anno, nroPuestos, nroEjes, capCarga, cantidadRuedas, capTanque, idmodelo, idgrupo, idcombustible,idcolor,idpropiedad,KmInicial', 'numerical', 'integerOnly'=>true),
 			array('serialCarroceria', 'length', 'max'=>45),
 			array('placa', 'length', 'max'=>7),
 			array('comentario', 'length', 'max'=>200),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, numeroUnidad, serialCarroceria, serialChasis, placa, anno, nroPuestos, nroEjes, capCarga, comentario, cantidadRuedas, capTanque, idmodelo, idgrupo, idcombustible,idcolor,idpropiedad, idtipo, fechaRegistro', 'safe', 'on'=>'search'),
+			array('id, numeroUnidad, serialCarroceria, serialChasis, placa, anno, nroPuestos, nroEjes, capCarga, comentario, cantidadRuedas, capTanque, idmodelo, idgrupo, idcombustible,idcolor,idpropiedad, idtipo, fechaRegistro,KmInicial', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -109,6 +109,7 @@ class Vehiculo extends CActiveRecord
 			'fechaRegistro' => 'Fecha de registro',
 			'idcolor' => 'Color',
 			'idpropiedad' => 'Propiedad',
+			'KmInicial' => 'Km Inicial',
 		);
 	}
 
@@ -148,6 +149,8 @@ class Vehiculo extends CActiveRecord
 		$criteria->compare('fechaRegistro',$this->fechaRegistro,true);
 		$criteria->compare('idcolor',$this->idcolor);
 		$criteria->compare('idpropiedad',$this->idpropiedad);
+		$criteria->compare('fechaRegistro',$this->fechaRegistro,true);
+		$criteria->compare('KmInicial',$this->KmInicial);
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
 		));
