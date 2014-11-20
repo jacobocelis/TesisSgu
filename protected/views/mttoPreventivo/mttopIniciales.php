@@ -30,7 +30,8 @@ $this->breadcrumbs=array(
 				),
 				array(
 					'header'=>'Actividad',
-					'name'=>'actividad',
+					'name'=>'idactividadMtto',
+					'value'=>'$data->idactividadMtto0->actividad',
 					'htmlOptions'=>array('style'=>'text-align:center;width:150px;'),
 				),
 				array(

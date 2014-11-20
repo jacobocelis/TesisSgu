@@ -16,9 +16,6 @@
 )); ?>
 
 	<p class="note">Campos con <span class="required">*</span> obligatorios.</p>
-	<div class="row">
-		<?php echo $form->hiddenField($model,'actividad',array('size'=>60,'maxlength'=>80)); ?>
-	</div>
 
 	<div class="row">
 		<?php echo $form->labelEx($model,'ultimoKm'); ?>
@@ -79,6 +76,8 @@
 		
 		<?php echo $form->hiddenField($model,'idactividadesGrupo'); ?>
 		<?php echo $form->hiddenField($model,'idestatus',array('value'=>$idestatus?2:$idestatus)); ?>
+		<?php echo $form->hiddenField($model,'idactividadMtto'); ?>
+		<?php echo $form->hiddenField($model,'procedimiento'); ?>
 	</div>
 	<div class="row buttons">
 		<?php echo CHtml::submitButton($model->isNewRecord ? 'Registrar' : 'Actualizar'); ?>

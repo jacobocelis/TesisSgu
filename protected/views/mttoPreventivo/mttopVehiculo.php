@@ -35,7 +35,8 @@ $this->widget('zii.widgets.grid.CGridView', array(
 				),
 				array(
 					'header'=>'Actividad',
-					'name'=>'actividad',
+					'name'=>'idactividadMtto',
+					'value'=>'$data->idactividadMtto0->actividad',
 					'htmlOptions'=>array('style'=>'text-align:center;width:100px'),
 				),
 				array(
@@ -99,6 +100,9 @@ $this->widget('zii.widgets.grid.CGridView', array(
 		?>
 
 <style>
+.ui-progressbar .ui-widget-header {
+	background: #FFF;
+}
 .grid-view table.items th {
     text-align: center;
     background: none repeat scroll 0% 0% rgba(0, 138, 255, 0.15);

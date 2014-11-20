@@ -48,10 +48,10 @@ class Provserv extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-			'sguActividadrecursos' => array(self::HAS_MANY, 'SguActividadrecurso', 'idprovServ'),
-			'sguActividadrecursogrupos' => array(self::HAS_MANY, 'SguActividadrecursogrupo', 'idprovServ'),
-			'idproveedor0' => array(self::BELONGS_TO, 'SguProveedor', 'idproveedor'),
-			'idservicio0' => array(self::BELONGS_TO, 'SguServicio', 'idservicio'),
+			'sguActividadrecursos' => array(self::HAS_MANY, 'Actividadrecurso', 'idprovServ'),
+			'sguActividadrecursogrupos' => array(self::HAS_MANY, 'Actividadrecursogrupo', 'idprovServ'),
+			'idproveedor0' => array(self::BELONGS_TO, 'Proveedor', 'idproveedor'),
+			'idservicio0' => array(self::BELONGS_TO, 'Servicio', 'idservicio'),
 		);
 	}
 

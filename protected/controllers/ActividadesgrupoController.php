@@ -110,7 +110,7 @@ class ActividadesgrupoController extends Controller
 				//$total=count($totalVeh);
 				
 				//for($i=0;$i<$total;$i++){
-					Yii::app()->db->createCommand('UPDATE `tsg`.`sgu_actividades` SET `actividad` = "'.$model->actividad.'", `frecuenciaKm` = "'.$model->frecuenciaKm.'", `frecuenciaMes` = "'.$model->frecuenciaMes.'", `duracion` = "'.$model->duracion.'", `idprioridad` = "'.$model->idprioridad.'", `idtiempod` = "'.$model->idtiempod.'", `idtiempof` = "'.$model->idtiempof.'"  WHERE `sgu_actividades`.`idactividadesGrupo` = '.$id)->query();
+					Yii::app()->db->createCommand('UPDATE `tsg`.`sgu_actividades` SET `idactividadMtto` = "'.$model->idactividadMtto.'", `frecuenciaKm` = "'.$model->frecuenciaKm.'", `frecuenciaMes` = "'.$model->frecuenciaMes.'", `duracion` = "'.$model->duracion.'", `idprioridad` = "'.$model->idprioridad.'", `idtiempod` = "'.$model->idtiempod.'", `idtiempof` = "'.$model->idtiempof.'", `procedimiento` = "'.$model->procedimiento.'"  WHERE `sgu_actividades`.`idactividadesGrupo` = '.$id)->query();
 					
 				//}
 					/*-----------------------------------------------------------------------------------------------*/

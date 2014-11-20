@@ -9,21 +9,68 @@
 ?>
 <div class='form'>
 <div class='crugepanel user-assignments-role-list'>
-	<h1><?php echo ucfirst(CrugeTranslator::t("Planes de mantenimiento preventivo"));?></h1>
-	<p><?php echo ucfirst(CrugeTranslator::t("Haz click en un grupo para ver el plan de mantenimiento asociado"));?></p>
+	<h1>Programas de mantenimiento preventivo</h1>
 	<strong><p><?php echo ucfirst(CrugeTranslator::t("Grupos registrados:"));?></p></strong>
 	<ul class='auth-item'>
 	<?php 
 		$loader = "<span class='loader'></span>";		
 		foreach($grupo as $datos){
-			echo "<strong><li alt='".$datos->grupo."'>".$datos->grupo.$loader."</li></strong>";
+			echo "<strong><li alt='".$datos->grupo."' id='".$datos->id."'>".$datos->grupo.$loader."</li></strong>";
 		}
 	?>
 	</ul>
 <h6><div id='mostrarSeleccion'>Seleccione un grupo</div></h6>
 	</div>
 
+<div class='crugepanel user-assignments-role-list'>
+<?php
+	$this->widget('zii.widgets.grid.CGridView', array(
+                'id'=>'plan',
+				'summaryText'=>'',
+			    'enableSorting' => true,
+				'emptyText'=>'no existen actividades registradas en este grupo',
+                'dataProvider'=>$dataProvider,
+					
+				'columns'=>array(
+				array(
+					'header'=>'Parte',
+					'name'=>'idplan',
+					'value'=>'Plangrupo::model()->parte($data->idplan)',
+					//'value'=>'$data->idplan0->idplanGrupo0->CompiledColour->$data-id.\' \'.$data->CompiledColour',
+					'htmlOptions'=>array('style'=>'text-align:center;width:150px;'),
+				),
+				array(
+					'header'=>'Actividad',
+					'name'=>'idactividadMtto',
+					'value'=>'$data->idactividadMtto0->actividad',
+					'htmlOptions'=>array('style'=>'text-align:center;width:150px;'),
+					//'footer'=>'Total actividades: 10',
+				),
+				array(
+					'type'=>'raw',
+					'headerHtmlOptions'=>array('style'=>'text-align:left;width:25%'),
+					'header'=>'Frecuencia',
+					'name'=>'frecuenciaKm',
+					'value'=>'number_format($data->frecuenciaKm).\' Km \'.($data->frecuenciaMes ? \'ó máximo cada \'.$data->frecuenciaMes.\' \'.$data->idtiempof0->tiempo :\'\')',
+					//'footer'=>'',
+				),
+				array(
+					'header'=>'Duración',
+					'name'=>'duracion',
+					'value'=>'$data->duracion.\' \'.$data->idtiempod0->tiempo',
+					'htmlOptions'=>array('style'=>'width:100px;text-align:center;'),
+				),
+				array(
+					'header'=>'Prioridad',
+					'name'=>'idprioridad',
+					'value'=>'$data->idprioridad0->prioridad',
+					'htmlOptions'=>array('style'=>'width:100px;text-align:center;'),
+				),
+			)
+        ));
+?>
 
+</div>
 </div>
 <style type="text/css">
 .grid-view table.items th a {
@@ -300,6 +347,12 @@ div.user-assignments-detail #lista2 .boton {
 }
 </style>
 <script>
+function actualizar(lista,itemName){
+			$.fn.yiiGridView.update('_lista1',{ data : "itemName="+itemName+"&mode=select" });
+			$.fn.yiiGridView.update('_lista2',{ data : "itemName="+itemName+"&mode=select" });
+		}
+</script>
+<script>
 	<?php /* a cada LI del div de roles le anexa un evento click y le pone un cursor */ ?>
 	//$('#_lista2').find('input[type=text],textarea,select').filter(':visible:first').attr('placeholder', 'Búsqueda..');
 
@@ -325,14 +378,14 @@ div.user-assignments-detail #lista2 .boton {
 		var itemName = $(this).attr('alt');
 			_setSelectedItemName("");
 			$('#grupo').val(itemName);
-			$('#formulario').submit();
 			$('.user-assignments-role-list ul').find('li').each(function(){
 				$(this).removeClass('selected');
 			});
 			$(this).addClass('selected');
 			_setSelectedItemName(itemName);
-			// actualiza la lista1, que contiene los usuarios que tienen la asignacion	
-			//$.fn.yiiGridView.update('_lista2',{ data : "itemName="+itemName+"&mode=select" });
+			// actualiza para ver las actividades asociadas al grupo
+			var id = $(this).attr('id');
+			$.fn.yiiGridView.update('plan',{ data : "seleccion="+id});
 		});
 	});
 </script>

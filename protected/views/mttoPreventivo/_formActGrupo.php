@@ -20,9 +20,9 @@
 	<?php //echo $form->errorSummary($model); ?>
 
 	<div class="row">
-		<?php echo $form->labelEx($model,'actividad'); ?>
-		<?php echo $form->textField($model,'actividad',array('size'=>60,'maxlength'=>80,'style' => 'width:370px;')); ?>
-		<?php echo $form->error($model,'actividad'); ?>
+		<?php echo $form->labelEx($model,'idactividadMtto'); ?>
+		<?php echo $form->dropDownList($model,'idactividadMtto',CHtml::listData(Actividadmtto::model()->findAll(),'id','actividad'),array('id'=>'actividad','style' => 'width:345px;')) ?>
+		<?php echo $form->error($model,'idactividadMtto'); ?>
 	</div>
 
 	<div class="row">

@@ -25,7 +25,7 @@
 	<?php 
 		if(isset($seleccion)){
 			
-				$this->renderPartial('_vista', array('dataProvider'=>$dataProvider,'actividades'=>$actividades,'vacio'=>$vacio,'grupoSel'=>$seleccion));
+				$this->renderPartial('_vista', array('dataProvider'=>$dataProvider,'actividades'=>$actividades,'vacio'=>$vacio,'grupoSel'=>$seleccion,'recurso'=>$recurso));
 				//print_r($dataProvider);
 				//print_r( $actividades);
 				//print_r($vacio);

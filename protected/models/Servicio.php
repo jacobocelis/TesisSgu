@@ -45,7 +45,7 @@ class Servicio extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-			'sguProvservs' => array(self::HAS_MANY, 'SguProvserv', 'idservicio'),
+			'sguProvservs' => array(self::HAS_MANY, 'Provserv', 'idservicio'),
 		);
 	}
 

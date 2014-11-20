@@ -29,12 +29,15 @@ class Plangrupo extends CActiveRecord
 	{
 		return 'Green';
     }
-	public static function parte($id){
+	public function parte($id){
 		$parte=Yii::app()->db->createCommand('select concat_ws(" => ",(select parte from sgu_plangrupo c1 where c1.id=c2.idplanGrupo),c2.parte) as parte from sgu_plangrupo c2
 		where c2.id="'.$id.'"')->queryRow();
 		return $parte["parte"];
 	}
-
+	public function totalActividades($id){
+		$total=Yii::app()->db->createCommand('select count(*) as total from sgu_planGrupo pg, sgu_actividadesGrupo ag where ag.idplan=pg.id and pg.id="'.$id.'"')->queryRow();
+		return $total["total"];
+	}
 	/**
 	 * @return array validation rules for model attributes.
 	 */

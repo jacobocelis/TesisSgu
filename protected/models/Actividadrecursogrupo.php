@@ -27,9 +27,8 @@ class Actividadrecursogrupo extends CActiveRecord
 	 */
 	public function tableName()
 	{
-		return 'sgu_actividadrecursogrupo';
+		return 'sgu_actividadRecursoGrupo';
 	}
-
 	/**
 	 * @return array validation rules for model attributes.
 	 */
@@ -38,12 +37,12 @@ class Actividadrecursogrupo extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('id, cantidad, idactividadesGrupo, idunidad', 'required'),
-			array('id, cantidad, idactividadesGrupo, idinsumo, idprovServ, idrepuesto, idunidad', 'numerical', 'integerOnly'=>true),
-			array('detalle', 'length', 'max'=>100),
+			array('cantidad, idactividadesGrupo, idunidad, recurso', 'required'),
+			array('cantidad, idactividadesGrupo, idinsumo, idprovServ, idrepuesto, idunidad', 'numerical', 'integerOnly'=>true),
+			array('detalle,recurso', 'length', 'max'=>100),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, cantidad, idactividadesGrupo, idinsumo, idprovServ, idrepuesto, idunidad, detalle', 'safe', 'on'=>'search'),
+			array('cantidad, idactividadesGrupo, idinsumo, idprovServ, idrepuesto, idunidad, detalle, recurso', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -55,11 +54,11 @@ class Actividadrecursogrupo extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-			'idactividadesGrupo0' => array(self::BELONGS_TO, 'SguActividadesgrupo', 'idactividadesGrupo'),
-			'idinsumo0' => array(self::BELONGS_TO, 'SguInsumo', 'idinsumo'),
-			'idprovServ0' => array(self::BELONGS_TO, 'SguProvserv', 'idprovServ'),
-			'idrepuesto0' => array(self::BELONGS_TO, 'SguRepuesto', 'idrepuesto'),
-			'idunidad0' => array(self::BELONGS_TO, 'SguUnidad', 'idunidad'),
+			'idactividadesGrupo0' => array(self::BELONGS_TO, 'Actividadesgrupo', 'idactividadesGrupo'),
+			'idinsumo0' => array(self::BELONGS_TO, 'Insumo', 'idinsumo'),
+			'idprovServ0' => array(self::BELONGS_TO, 'Provserv', 'idprovServ'),
+			'idrepuesto0' => array(self::BELONGS_TO, 'Repuesto', 'idrepuesto'),
+			'idunidad0' => array(self::BELONGS_TO, 'Unidad', 'idunidad'),
 			'sguActividadrecursos' => array(self::HAS_MANY, 'Actividadrecurso', 'idactividadRecursoGrupo'),
 			
 		);
@@ -71,14 +70,14 @@ class Actividadrecursogrupo extends CActiveRecord
 	public function attributeLabels()
 	{
 		return array(
-			'id' => 'ID',
 			'cantidad' => 'Cantidad',
 			'idactividadesGrupo' => 'Idactividades Grupo',
-			'idinsumo' => 'Idinsumo',
-			'idprovServ' => 'Idprov Serv',
-			'idrepuesto' => 'Idrepuesto',
-			'idunidad' => 'Idunidad',
-			'detalle' => 'Detalle',
+			'idinsumo' => 'Insumo',
+			'idprovServ' => 'Servicio',
+			'idrepuesto' => 'Repuesto',
+			'idunidad' => 'Unidad',
+			'detalle' => 'Información adicional',
+			'recurso' => 'Recurso',
 		);
 	}
 
@@ -99,8 +98,6 @@ class Actividadrecursogrupo extends CActiveRecord
 		// @todo Please modify the following code to remove attributes that should not be searched.
 
 		$criteria=new CDbCriteria;
-
-		$criteria->compare('id',$this->id);
 		$criteria->compare('cantidad',$this->cantidad);
 		$criteria->compare('idactividadesGrupo',$this->idactividadesGrupo);
 		$criteria->compare('idinsumo',$this->idinsumo);
@@ -108,7 +105,7 @@ class Actividadrecursogrupo extends CActiveRecord
 		$criteria->compare('idrepuesto',$this->idrepuesto);
 		$criteria->compare('idunidad',$this->idunidad);
 		$criteria->compare('detalle',$this->detalle,true);
-
+		$criteria->compare('recurso',$this->recurso,true);
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
 		));

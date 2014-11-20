@@ -109,14 +109,13 @@ class Actividades extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('actividad, frecuenciaKm, duracion, idprioridad, idplan, idtiempod, idtiempof, idactividadesGrupo,ultimoKm,ultimoFecha,idestatus', 'required'),
+			array('idactividadMtto, frecuenciaKm, duracion, idprioridad, idplan, idtiempod, idtiempof, idactividadesGrupo,ultimoKm,ultimoFecha,idestatus', 'required'),
 			array('ultimoKm, frecuenciaKm, frecuenciaMes, proximoKm, duracion, atraso, idprioridad, idplan, idtiempod, idtiempof, idactividadesGrupo,idestatus', 'numerical', 'integerOnly'=>true),
-			array('actividad', 'length', 'max'=>80),
 			array('procedimiento', 'length', 'max'=>200),
 			array('ultimoFecha, proximoFecha', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, actividad, ultimoKm, ultimoFecha, frecuenciaKm, frecuenciaMes, proximoKm, proximoFecha, duracion, atraso, idprioridad, idplan, idtiempod, idtiempof, idactividadesGrupo,idestatus,procedimiento', 'safe', 'on'=>'search'),
+			array('id, idactividadMtto, ultimoKm, ultimoFecha, frecuenciaKm, frecuenciaMes, proximoKm, proximoFecha, duracion, atraso, idprioridad, idplan, idtiempod, idtiempof, idactividadesGrupo,idestatus,procedimiento', 'safe', 'on'=>'search'),
 		);
 	}
 	/**
@@ -134,7 +133,8 @@ class Actividades extends CActiveRecord
 			'idtiempof0' => array(self::BELONGS_TO, 'Tiempo', 'idtiempof'),
 			'idestatus0' => array(self::BELONGS_TO, 'Estatus', 'idestatus'),
 			'sguActividadrecursos' => array(self::HAS_MANY, 'Actividadrecurso', 'idactividades'),
-		
+			'idactividadesGrupo0' => array(self::BELONGS_TO, 'Actividadesgrupo', 'idactividadesGrupo'),
+			'idactividadMtto0' => array(self::BELONGS_TO, 'Actividadmtto', 'idactividadMtto'),
 		);
 	}
 
@@ -145,7 +145,7 @@ class Actividades extends CActiveRecord
 	{
 		return array(
 			'id' => 'ID',
-			'actividad' => 'Actividad',
+			'idactividadMtto' => 'Actividade',
 			'ultimoKm' => 'Ultimo mantenimiento',
 			'ultimoFecha' => 'Fecha del último mantenimiento',
 			'frecuenciaKm' => 'Frecuencia Km',
@@ -183,7 +183,7 @@ class Actividades extends CActiveRecord
 		$criteria=new CDbCriteria;
 
 		$criteria->compare('id',$this->id);
-		$criteria->compare('actividad',$this->actividad,true);
+		$criteria->compare('idactividadMtto',$this->idactividadMtto);
 		$criteria->compare('ultimoKm',$this->ultimoKm);
 		$criteria->compare('ultimoFecha',$this->ultimoFecha,true);
 		$criteria->compare('frecuenciaKm',$this->frecuenciaKm);

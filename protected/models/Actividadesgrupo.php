@@ -32,7 +32,10 @@ class Actividadesgrupo extends CActiveRecord
 	{
 		return 'sgu_actividadesGrupo';
 	}
-
+	public function totalRecursos($id){
+		$total=Yii::app()->db->createCommand('select count(*) as total from sgu_actividadesGrupo ag, sgu_actividadRecursoGrupo arg where arg.idactividadesGrupo=ag.id and ag.id="'.$id.'"')->queryRow();
+		return $total["total"];
+	}
 	/**
 	 * @return array validation rules for model attributes.
 	 */
@@ -41,13 +44,12 @@ class Actividadesgrupo extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('actividad, frecuenciaKm, duracion, idplan, idprioridad, idtiempod, idtiempof', 'required'),
+			array('idactividadMtto, frecuenciaKm, duracion, idplan, idprioridad, idtiempod, idtiempof', 'required'),
 			array('frecuenciaKm, frecuenciaMes, duracion, diasParo, idplan, idprioridad, idtiempod, idtiempof', 'numerical', 'integerOnly'=>true),
-			array('actividad', 'length', 'max'=>80),
 			array('procedimiento', 'length', 'max'=>200),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, actividad,procedimiento, frecuenciaKm, frecuenciaMes, frecuencia, duracion, diasParo, idplan, idprioridad, idtiempod, idtiempof', 'safe', 'on'=>'search'),
+			array('id,procedimiento, frecuenciaKm, frecuenciaMes, frecuencia, duracion, diasParo, idplan, idprioridad, idtiempod, idtiempof,idactividadMtto', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -65,6 +67,8 @@ class Actividadesgrupo extends CActiveRecord
 			'idtiempof0' => array(self::BELONGS_TO, 'Tiempo', 'idtiempof'),
 			'idplan0' => array(self::BELONGS_TO, 'Plangrupo', 'idplan'),
 			'Actividadrecursogrupos' => array(self::HAS_MANY, 'Actividadrecursogrupo', 'idactividadesGrupo'),
+			'idactividadMtto0' => array(self::BELONGS_TO, 'Actividadmtto', 'idactividadMtto'),
+			
 		);
 	}
 
@@ -75,7 +79,6 @@ class Actividadesgrupo extends CActiveRecord
 	{
 		return array(
 			'id' => 'ID',
-			'actividad' => 'Actividad',
 			'procedimiento' => 'Procedimiento',
 			'frecuenciaKm' => 'Frecuencia',
 			'frecuenciaMes' => 'o máximo cada',
@@ -85,9 +88,9 @@ class Actividadesgrupo extends CActiveRecord
 			'idprioridad' => 'Prioridad',
 			'idtiempod' => 'Idtiempod',
 			'idtiempof' => 'Idtiempof',
+			'idactividadMtto' => 'Actividad',
 		);
 	}
-
 	/**
 	 * Retrieves a list of models based on the current search/filter conditions.
 	 *
@@ -107,7 +110,7 @@ class Actividadesgrupo extends CActiveRecord
 		$criteria=new CDbCriteria;
 
 		$criteria->compare('id',$this->id);
-		$criteria->compare('actividad',$this->actividad,true);
+		$criteria->compare('idactividadMtto',$this->idactividadMtto);
 		$criteria->compare('frecuenciaKm',$this->frecuenciaKm);
 		$criteria->compare('frecuenciaMes',$this->frecuenciaMes);
 		$criteria->compare('procedimiento',$this->procedimiento,true);

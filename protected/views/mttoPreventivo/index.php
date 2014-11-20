@@ -5,10 +5,10 @@
 $this->breadcrumbs=array(
 	'Mantenimiento preventivo',
 );
-
 $this->menu=array(
 	array('label'=>'Crear planes', 'url'=>array('crearPlan')),
 	array('label'=>'Ver planes', 'url'=>array('planes')),
+	array('label'=>'Registrar matenimientos iniciales <span class="badge badge-'.$color.' pull-right">'.$mi.'</span>', 'url'=>array('mttoPreventivo/iniciales/')),
 	array('label'=>'mantenimientos abiertos', 'url'=>array('planes')),
 	array('label'=>'Ajuste de fechas', 'url'=>array('calendario')),
 	array('label'=>'Histórico de mantenimientos', 'url'=>array('planes')),
@@ -40,7 +40,8 @@ $this->widget('zii.widgets.grid.CGridView', array(
 				),
 				array(
 					'header'=>'Actividad',
-					'name'=>'actividad',
+					'name'=>'idactividadMtto',
+					'value'=>'$data->idactividadMtto0->actividad',
 					'htmlOptions'=>array('style'=>'text-align:center;width:100px'),
 				),
 				array(
@@ -103,6 +104,9 @@ $this->widget('zii.widgets.grid.CGridView', array(
         ));
 		?>
 <style>
+.ui-progressbar .ui-widget-header {
+	background: #FFF;
+}
 .ui-widget-header {
     border: 1px solid #AAA;
     background-image: url("<?php echo Yii::app()->request->baseUrl;?>/imagenes/imagen.png");
