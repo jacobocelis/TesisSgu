@@ -135,6 +135,7 @@ class Actividades extends CActiveRecord
 			'sguActividadrecursos' => array(self::HAS_MANY, 'Actividadrecurso', 'idactividades'),
 			'idactividadesGrupo0' => array(self::BELONGS_TO, 'Actividadesgrupo', 'idactividadesGrupo'),
 			'idactividadMtto0' => array(self::BELONGS_TO, 'Actividadmtto', 'idactividadMtto'),
+			'sguDetallleordens' => array(self::HAS_MANY, 'Detallleorden', 'idactividades'),
 		);
 	}
 
@@ -144,8 +145,8 @@ class Actividades extends CActiveRecord
 	public function attributeLabels()
 	{
 		return array(
-			'id' => 'ID',
-			'idactividadMtto' => 'Actividade',
+			
+			'idactividadMtto' => 'Actividad',
 			'ultimoKm' => 'Ultimo mantenimiento',
 			'ultimoFecha' => 'Fecha del último mantenimiento',
 			'frecuenciaKm' => 'Frecuencia Km',

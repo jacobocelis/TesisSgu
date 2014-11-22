@@ -17,7 +17,7 @@
 ?>
 <div class='form'>
 <div class='crugepanel user-assignments-role-list'>
-	<div class='letra'><p>Seleccione un grupo para asignar las piezas que posee</p></div>
+	<h1>Seleccione un grupo para asignar las piezas que posee</h1>
 	<strong><p>Grupos registrados:</p></strong>
 	<ul class='auth-item'>
 	<?php 

@@ -4,7 +4,7 @@
 	'Crear programa asociado',
 );
 	$this->menu=array(
-	array('label'=>'Ver planes de mantenimiento', 'url'=>array('')),
+	array('label'=>'Ver programas de mantenimiento', 'url'=>array('planes')),
 );
 ?>
 <div class='form'>

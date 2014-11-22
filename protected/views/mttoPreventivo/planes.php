@@ -1,10 +1,10 @@
 <?php 
 	$this->breadcrumbs=array(
 	'Mantenimiento preventivo'=>array('mttoPreventivo/index'),
-	'Crear plan',
+	'Programas de mantenimiento',
 );
 	$this->menu=array(
-	array('label'=>'Editar planes de mantenimiento', 'url'=>array('crearPlan')),
+	array('label'=>'Editar programas de mantenimiento', 'url'=>array('crearPlan')),
 );
 ?>
 <div class='form'>

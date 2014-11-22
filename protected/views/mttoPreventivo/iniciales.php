@@ -21,6 +21,13 @@ $this->breadcrumbs=array(
 				'htmlOptions'=>array('style'=>'max-width:800px;'),
 				'columns'=>array(
 				array(
+					'header'=>'Unidad',
+					'name'=>'idplan',
+					'value'=>'$data->idplan0->idvehiculo0->numeroUnidad',
+					//'value'=>'$data->idplan0->idplanGrupo0->CompiledColour->$data-id.\' \'.$data->CompiledColour',
+					'htmlOptions'=>array('style'=>'text-align:center;width:150px;'),
+				),
+				array(
 					'header'=>'Parte',
 					'name'=>'idplan',
 					'value'=>'Plangrupo::model()->parte($data->idplan0->idplanGrupo)',

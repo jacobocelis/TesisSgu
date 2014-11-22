@@ -28,7 +28,7 @@ class MttoPreventivoController extends Controller
 	{
 		return array(
 			array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array('index','view','crearPlan','planes','agregarActividad','obtenerParte','mttopVehiculo','mttopIniciales','calendario','obtenerActividad','agregarRecurso','iniciales'),
+				'actions'=>array('index','view','crearPlan','planes','agregarActividad','obtenerParte','mttopVehiculo','mttopIniciales','calendario','obtenerActividad','agregarRecurso','iniciales','Crearordenpreventiva'),
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
@@ -83,6 +83,20 @@ class MttoPreventivoController extends Controller
 			return $color='important';
 		else	
 			return $color='';
+	}
+	public function actionCrearOrdenPreventiva(){
+		$modeloOrdenMtto=new Ordenmtto;
+		$dataProvider=new CActiveDataProvider('Actividades',array('criteria' => array(
+			'condition' =>'idplan in (select id from sgu_plan) and idestatus<>1 and idestatus<>3',
+			'order'=>'proximoFecha'
+			)));
+		//$mi=Yii::app()->db->createCommand("select count(*) as total from sgu_actividades where idestatus=1")->queryRow();
+		$this->render('crearOrdenPreventiva',array(
+			'dataProvider'=>$dataProvider,
+			'modeloOrdenMtto'=>$modeloOrdenMtto
+			//'mi'=>$mi['total'],
+			//'color'=>$this->getColor($mi["total"]),
+			));
 	}
 	public function actionMttopVehiculo($id){
 	
@@ -211,11 +225,11 @@ class MttoPreventivoController extends Controller
 	}
 	public function actionPlanes(){
 		$idplan=0;
+		$data=new CActiveDataProvider('Actividadesgrupo',array('criteria'=>array('condition'=>'idplan="'.$idplan.'"')));
 		if(isset($_GET['seleccion'])){
 			$idplan=$_GET['seleccion'];
-			$data=new CActiveDataProvider('Actividadesgrupo',array('criteria'=>array('condition'=>'idplan="'.$idplan.'"')));
+			$data=new CActiveDataProvider('Actividadesgrupo',array('criteria'=>array('condition'=>'idplan in (select id from sgu_planGrupo where idgrupo="'.$idplan.'")')));
 		}	
-		$data=new CActiveDataProvider('Actividadesgrupo',array('criteria'=>array('condition'=>'idplan="'.$idplan.'"')));
 		$grupo=Grupo::model()->findAll();
 		$this->render('planes',array(
 			'grupo'=>$grupo,

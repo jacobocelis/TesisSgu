@@ -11,6 +11,7 @@
  * @property string $telefono
  *
  * The followings are the available model relations:
+ * @property SguFactura[] $sguFacturas
  * @property SguProvserv[] $sguProvservs
  * @property SguRueda[] $sguRuedas
  */
@@ -32,8 +33,7 @@ class Proveedor extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('id, nombre, RIF', 'required'),
-			array('id', 'numerical', 'integerOnly'=>true),
+			array('nombre, RIF', 'required'),
 			array('nombre', 'length', 'max'=>100),
 			array('RIF', 'length', 'max'=>15),
 			array('direccion', 'length', 'max'=>80),
@@ -52,6 +52,7 @@ class Proveedor extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
+			'sguFacturas' => array(self::HAS_MANY, 'SguFactura', 'idproveedor'),
 			'sguProvservs' => array(self::HAS_MANY, 'SguProvserv', 'idproveedor'),
 			'sguRuedas' => array(self::HAS_MANY, 'SguRueda', 'idproveedor'),
 		);

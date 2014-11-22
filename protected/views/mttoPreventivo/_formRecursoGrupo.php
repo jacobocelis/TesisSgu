@@ -79,14 +79,35 @@
 
 </div><!-- form -->
 <script>
+$("#actividadrecursogrupo-form").submit(function(event){
+	event.preventDefault();
+	validar();
+});
+function validar(){
+	if($("#lista").val()==1){
+		$("#Actividadrecursogrupo_idprovServ option:selected").val('');
+		$("#Actividadrecursogrupo_idrepuesto option:selected").val('');
+	}
+		if($("#lista").val()==2){
+		$("#Actividadrecursogrupo_idprovServ option:selected").val('');
+		$("#Actividadrecursogrupo_idinsumo option:selected").val('');
+	}
+		if($("#lista").val()==3){
+		$("#Actividadrecursogrupo_idinsumo option:selected").val('');
+		$("#Actividadrecursogrupo_idrepuesto option:selected").val('');
+	}
+	return true
+}
+</script>
+<script>
 $("#servicio").hide();
 $("#repuesto").hide();
 $("#Actividadrecursogrupo_recurso").val($("#Actividadrecursogrupo_idinsumo option:selected").text());
 $("#lista").change(function() {
 	if($("#lista").val()==1){
-		$("#insumo").show();
 		$("#servicio").hide();
 		$("#repuesto").hide();
+		$("#insumo").show();
 		$("#Actividadrecursogrupo_recurso").val($("#Actividadrecursogrupo_idinsumo option:selected").text());
 		//alert($('#Actividadrecursogrupo_idinsumo').is(':visible'));
 	} 

@@ -6,10 +6,12 @@ $this->breadcrumbs=array(
 	'Mantenimiento preventivo',
 );
 $this->menu=array(
-	array('label'=>'Crear planes', 'url'=>array('crearPlan')),
-	array('label'=>'Ver planes', 'url'=>array('planes')),
+	array('label'=>'Crear programa de mantenimiento', 'url'=>array('crearPlan')),
+	array('label'=>'Ver programas de mantenimiento', 'url'=>array('planes')),
 	array('label'=>'Registrar matenimientos iniciales <span class="badge badge-'.$color.' pull-right">'.$mi.'</span>', 'url'=>array('mttoPreventivo/iniciales/')),
-	array('label'=>'mantenimientos abiertos', 'url'=>array('planes')),
+	array('label'=>'Crear orden de mantenimiento', 'url'=>array('crearOrdenPreventiva')),
+	array('label'=>'Registrar mantenimiento realizado', 'url'=>array('')),
+	array('label'=>'Ver órdenes abiertas <span class="badge badge- pull-right">0</span>', 'url'=>array('')),
 	array('label'=>'Ajuste de fechas', 'url'=>array('calendario')),
 	array('label'=>'Histórico de mantenimientos', 'url'=>array('planes')),
 );
