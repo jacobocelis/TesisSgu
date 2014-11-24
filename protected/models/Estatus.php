@@ -9,6 +9,7 @@
  *
  * The followings are the available model relations:
  * @property SguActividades[] $sguActividades
+ * @property SguOrdenmtto[] $sguOrdenmttos
  */
 class Estatus extends CActiveRecord
 {
@@ -28,8 +29,7 @@ class Estatus extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('id, estatus', 'required'),
-			array('id', 'numerical', 'integerOnly'=>true),
+			array('estatus', 'required'),
 			array('estatus', 'length', 'max'=>45),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
@@ -45,7 +45,8 @@ class Estatus extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-			'sguActividades' => array(self::HAS_MANY, 'SguActividades', 'idestatus'),
+			'sguActividades' => array(self::HAS_MANY, 'Actividades', 'idestatus'),
+			'sguOrdenmttos' => array(self::HAS_MANY, 'Ordenmtto', 'idestatus'),
 		);
 	}
 

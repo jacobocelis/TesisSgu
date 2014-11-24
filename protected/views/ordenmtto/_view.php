@@ -17,5 +17,9 @@
 	<?php echo CHtml::encode($data->responsable); ?>
 	<br />
 
+	<b><?php echo CHtml::encode($data->getAttributeLabel('idestatus')); ?>:</b>
+	<?php echo CHtml::encode($data->idestatus); ?>
+	<br />
+
 
 </div>

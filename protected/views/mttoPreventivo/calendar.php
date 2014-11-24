@@ -13,6 +13,7 @@ $this->menu=array(
 ?>
 <?php $this->widget('ext.EFullCalendar.EFullCalendar', array(
      'lang'=>'es',
+	 'id'=>'calendar',
     // remove to use without theme
     // this is relative path to:
     // themes/<path>
@@ -29,7 +30,8 @@ $this->menu=array(
         'header'=>array(
             'left'=>'prev,next',
             'center'=>'title',
-            'right'=>'today'
+            'right'=>'today',
+			'droppable'=>true,
         ),
 		//'weekends'=>false,
         'lazyFetching'=>true,
@@ -37,8 +39,33 @@ $this->menu=array(
         //'events'=>array() // pass array of events directly
  
         // event handling
-        // mouseover for example
-        //'eventMouseover'=>new CJavaScriptExpression(""),
-    )
+		'eventDrop'=>'js:function(calEvent, dayDelta, minuteDelta, allDay, revertFunc, jsEvent, ui, view){
+				var m = moment();
+				var fecha = $.datepicker.formatDate("yy-mm-dd",calEvent.start);
+				
+				
+				if(calEvent.start<m){
+					alert("No puede mover un evento a una fecha que ya pasó");
+					revertFunc();
+				}else{
+				if (!confirm("¿Está seguro?")) {
+					revertFunc();
+				}else{
+					$.ajax({
+					url: "cambiarFecha/"+calEvent.id,
+					"data":$(this).serialize()+ "&fecha=" + fecha,
+					"type":"post",
+					"dataType":"json",
+					"cache":false});
+					}
+				}
+        }',
+    ),
+	
 ));
+
 ?>
+
+<script>
+
+</script>

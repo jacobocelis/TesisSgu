@@ -7,9 +7,11 @@
  * @property integer $id
  * @property string $fecha
  * @property string $responsable
+ * @property integer $idestatus
  *
  * The followings are the available model relations:
- * @property SguDetallleorden[] $sguDetallleordens
+ * @property SguDetalleorden[] $sguDetalleordens
+ * @property SguEstatus $idestatus0
  */
 class Ordenmtto extends CActiveRecord
 {
@@ -29,11 +31,12 @@ class Ordenmtto extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('fecha, responsable', 'required'),
+			array('fecha, responsable, idestatus', 'required'),
+			array('idestatus', 'numerical', 'integerOnly'=>true),
 			array('responsable', 'length', 'max'=>45),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, fecha, responsable', 'safe', 'on'=>'search'),
+			array('id, fecha, responsable, idestatus', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -45,7 +48,8 @@ class Ordenmtto extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-			'sguDetallleordens' => array(self::HAS_MANY, 'Detallleorden', 'idordenMtto'),
+			'sguDetalleordens' => array(self::HAS_MANY, 'Detalleorden', 'idordenMtto'),
+			'idestatus0' => array(self::BELONGS_TO, 'Estatus', 'idestatus'),
 		);
 	}
 
@@ -58,6 +62,7 @@ class Ordenmtto extends CActiveRecord
 			'id' => 'ID',
 			'fecha' => 'Fecha',
 			'responsable' => 'Responsable',
+			'idestatus' => 'Estatus',
 		);
 	}
 
@@ -82,6 +87,7 @@ class Ordenmtto extends CActiveRecord
 		$criteria->compare('id',$this->id);
 		$criteria->compare('fecha',$this->fecha,true);
 		$criteria->compare('responsable',$this->responsable,true);
+		$criteria->compare('idestatus',$this->idestatus);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,

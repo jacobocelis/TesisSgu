@@ -4,12 +4,14 @@ $this->breadcrumbs=array(
 	'Mantenimientos iniciales',
 );
 	$this->menu=array(
-	array('label'=>'Regresar', 'url'=>array('mttoPreventivo/')),
+	array('label'=>'Ver programas de mantenimiento', 'url'=>array('planes')),
+	array('label'=>'Crear programa de mantenimiento', 'url'=>array('crearPlan')),
+	array('label'=>'Histórico de mantenimientos', 'url'=>array('')),
+	array('label'=>'Regresar', 'url'=>array('index')),
 );
 ?>
 <div class='crugepanel user-assignments-role-list'>
 	<h1>Registrar mantenimientos iniciales</h1>
-
 </div>
 <?php
 	$this->widget('zii.widgets.grid.CGridView', array(

@@ -5,15 +5,16 @@
 );
 	$this->menu=array(
 	array('label'=>'Registrar mantenimiento realizado', 'url'=>array('')),
-	array('label'=>'Ver órdenes abiertas <span class="badge badge- pull-right">0</span>', 'url'=>array('')),
+	array('label'=>'Ver órdenes abiertas <span class="badge badge-'.$Colorabi.' pull-right">'.$abiertas.'</span>', 'url'=>array('verOrdenes')),
 	array('label'=>'Actualizar órdenes <span class="badge badge- pull-right">0</span>', 'url'=>array('')),
 	array('label'=>'Cerrar órdenes', 'url'=>array('')),
-	array('label'=>'Regresar', 'url'=>array('mttoPreventivo')),
+	array('label'=>'Regresar', 'url'=>array('index')),
 );
 ?>
 
 <div class='crugepanel user-assignments-role-list'>
 	<h1>Seleccione las actividades a incluir en la orden de mantenimiento</h1>
+	<p><b>Nota: </b><i>Sólo se mostrarán las actividades con menos de 5 dias restantes o que posean atraso</p></i>
 <?php
 $this->widget('zii.widgets.grid.CGridView', array(
                 'id'=>'actividades',
@@ -88,7 +89,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
 		</div>
 <div id='formulario' class='crugepanel user-assignments-role-list'>
 <?php 
-	$this->renderPartial('_formCrearOrden',array('model'=>$modeloOrdenMtto));?>
+	/*$this->renderPartial('_formCrearOrden',array('model'=>$modeloOrdenMtto));*/?>
 </div>
 <style>
 .crugepanel {
@@ -125,7 +126,38 @@ h1 {
     padding: 0.3em;
 }
 </style>
-
+<style>
+.ui-progressbar .ui-widget-header {
+	background: #FFF;
+}
+.ui-widget-header {
+    border: 1px solid #AAA;
+    background-image: url("<?php echo Yii::app()->request->baseUrl;?>/imagenes/imagen.png");
+    color: #222;
+    font-weight: bold;
+}
+.ui-progressbar {
+    border: 0px none;
+    border-radius: 0px;
+    clear: both;
+	margin-bottom: 0px;
+}
+.progress, .ui-progressbar {
+    height: 10px;
+}
+.ui-corner-all, .ui-corner-bottom, .ui-corner-right, .ui-corner-br {
+    border-bottom-right-radius: 0px;
+}
+.ui-corner-all, .ui-corner-bottom, .ui-corner-left, .ui-corner-bl {
+    border-bottom-left-radius: 0px;
+}
+.ui-corner-all, .ui-corner-top, .ui-corner-right, .ui-corner-tr {
+    border-top-right-radius: 0px;
+}
+.ui-corner-all, .ui-corner-top, .ui-corner-left, .ui-corner-tl {
+    border-top-left-radius: 0px;
+}
+</style>
 <script>
 $('#formulario').hide();
 function validar(){
@@ -134,7 +166,27 @@ var idAct = $.fn.yiiGridView.getSelection('actividades');
 		$('#formulario').hide(500);
 	else
 		$('#formulario').show(500);
+		
+jQuery.ajax({
+                url: "crearOrden",
+                'data':$(this).serialize()+ '&idAct=' + idAct,
+                'type':'post',
+                'dataType':'json',
+                'success':function(data){
+                                if (data.status == 'failure'){
+                                        $('#formulario').html(data.div);
+                                        // Here is the trick: on submit-> once again this function!
+                                        $('#formulario form').submit(validar); // 
+                                }
+                                else{
+                                        $('#formulario').html(data.div);
+										window.setTimeout('location.reload()', 1000);
+                                }
+                        } ,
+                'cache':false});
+	
 
+		return false; 
 }
 
 </script>

@@ -135,7 +135,7 @@ class Actividades extends CActiveRecord
 			'sguActividadrecursos' => array(self::HAS_MANY, 'Actividadrecurso', 'idactividades'),
 			'idactividadesGrupo0' => array(self::BELONGS_TO, 'Actividadesgrupo', 'idactividadesGrupo'),
 			'idactividadMtto0' => array(self::BELONGS_TO, 'Actividadmtto', 'idactividadMtto'),
-			'sguDetallleordens' => array(self::HAS_MANY, 'Detallleorden', 'idactividades'),
+			'sguDetallleordens' => array(self::HAS_MANY, 'Detalleorden', 'idactividades'),
 		);
 	}
 

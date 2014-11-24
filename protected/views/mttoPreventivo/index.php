@@ -11,7 +11,7 @@ $this->menu=array(
 	array('label'=>'Registrar matenimientos iniciales <span class="badge badge-'.$color.' pull-right">'.$mi.'</span>', 'url'=>array('mttoPreventivo/iniciales/')),
 	array('label'=>'Crear orden de mantenimiento', 'url'=>array('crearOrdenPreventiva')),
 	array('label'=>'Registrar mantenimiento realizado', 'url'=>array('')),
-	array('label'=>'Ver órdenes abiertas <span class="badge badge- pull-right">0</span>', 'url'=>array('')),
+	array('label'=>'Ver órdenes abiertas <span class="badge badge-'.$Colorabi.' pull-right">'.$abiertas.'</span>', 'url'=>array('verOrdenes')),
 	array('label'=>'Ajuste de fechas', 'url'=>array('calendario')),
 	array('label'=>'Histórico de mantenimientos', 'url'=>array('planes')),
 );
@@ -24,12 +24,13 @@ $this->widget('zii.widgets.grid.CGridView', array(
 			    'enableSorting' => true,
 				'emptyText'=>'No hay mantenimientos registrados',
                 'dataProvider'=>$dataProvider,
+				'rowCssClassExpression'=>'$this->dataProvider->data[$row]->diasRestantes($this->dataProvider->data[$row]->proximoFecha)>=5?"":"rojo"',
 				'ajaxUpdate'=>false,
 				'columns'=>array(
 				array(
 					'header'=>'Unidad',
 					'name'=>'idplan',
-					'value'=>'$data->idplan0->idvehiculo0->numeroUnidad',
+					'value'=>'str_pad((int) $data->idplan0->idvehiculo0->numeroUnidad,2,"0",STR_PAD_LEFT);',
 					//'value'=>'$data->idplan0->idplanGrupo0->CompiledColour->$data-id.\' \'.$data->CompiledColour',
 					'htmlOptions'=>array('style'=>'text-align:center;width:60px'),
 				),
@@ -106,6 +107,9 @@ $this->widget('zii.widgets.grid.CGridView', array(
         ));
 		?>
 <style>
+.rojo{
+background: none repeat scroll 0% 0% #FFD6D6;
+}
 .ui-progressbar .ui-widget-header {
 	background: #FFF;
 }
@@ -119,7 +123,6 @@ $this->widget('zii.widgets.grid.CGridView', array(
     border: 0px none;
     border-radius: 0px;
     clear: both;
-    margin-bottom: 20px;
 }
 .progress, .ui-progressbar {
     height: 10px;

@@ -246,7 +246,6 @@ $this->beginWidget('zii.widgets.jui.CJuiDialog', array( // the dialog
                         $('#act tbody :checkbox[value=' + itemGridSelection[i] + ']').attr('checked', true);
         }
 </script>
-
 <script>
 /*
 $('#plan > table > tbody > tr').live('click',function(){
@@ -382,6 +381,7 @@ $('#recurso').dialog('open');
     return false; 
 }
 function mostrarDetalles(){
+$('#recur').hide();
 ObtenerParte();
 var altura = $(document).height();
 //$("html, body").animate({scrollTop:altura+"px"},500);

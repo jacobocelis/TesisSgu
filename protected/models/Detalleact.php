@@ -47,7 +47,7 @@ class Detalleact extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-			'iddetallleOrden0' => array(self::BELONGS_TO, 'Detallleorden', 'iddetallleOrden'),
+			'iddetallleOrden0' => array(self::BELONGS_TO, 'Detalleorden', 'iddetalleOrden'),
 			'idfactura0' => array(self::BELONGS_TO, 'Factura', 'idfactura'),
 			'sguDetallegastos' => array(self::HAS_MANY, 'Detallegasto', 'iddetalleAct'),
 		);

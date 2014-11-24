@@ -31,6 +31,12 @@
 		<?php echo $form->error($model,'responsable'); ?>
 	</div>
 
+	<div class="row">
+		<?php echo $form->labelEx($model,'idestatus'); ?>
+		<?php echo $form->textField($model,'idestatus'); ?>
+		<?php echo $form->error($model,'idestatus'); ?>
+	</div>
+
 	<div class="row buttons">
 		<?php echo CHtml::submitButton($model->isNewRecord ? 'Create' : 'Save'); ?>
 	</div>

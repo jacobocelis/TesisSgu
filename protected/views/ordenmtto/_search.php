@@ -26,6 +26,11 @@
 		<?php echo $form->textField($model,'responsable',array('size'=>45,'maxlength'=>45)); ?>
 	</div>
 
+	<div class="row">
+		<?php echo $form->label($model,'idestatus'); ?>
+		<?php echo $form->textField($model,'idestatus'); ?>
+	</div>
+
 	<div class="row buttons">
 		<?php echo CHtml::submitButton('Search'); ?>
 	</div>
