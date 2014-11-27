@@ -91,7 +91,7 @@ class ActividadrecursoController extends Controller
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
 
-		if(isset($_POST['Actividadrecurso']))
+		/*if(isset($_POST['Actividadrecurso']))
 		{
 			$model->attributes=$_POST['Actividadrecurso'];
 			if($model->save())
@@ -100,7 +100,25 @@ class ActividadrecursoController extends Controller
 
 		$this->render('update',array(
 			'model'=>$model,
-		));
+		));*/
+		if(isset($_POST['Actividadrecurso'])){
+            $model->attributes=$_POST['Actividadrecurso'];
+            if($model->save()){
+                if (Yii::app()->request->isAjaxRequest){
+                    echo CJSON::encode(array(
+                        'status'=>'success', 
+                        'div'=>"se agregó el costo correctamente"
+                        ));
+                    exit;               
+                }
+            }
+        }
+        if (Yii::app()->request->isAjaxRequest){
+            echo CJSON::encode(array(
+                'status'=>'failure', 
+                'div'=>$this->renderPartial('_form', array('model'=>$model,'id'=>$id), true)));
+            exit;               
+        }
 	}
 
 	/**

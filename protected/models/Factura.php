@@ -10,8 +10,8 @@
  * @property integer $idproveedor
  *
  * The followings are the available model relations:
- * @property SguDetalleact[] $sguDetalleacts
  * @property SguProveedor $idproveedor0
+ * @property SguFacturaact[] $sguFacturaacts
  */
 class Factura extends CActiveRecord
 {
@@ -31,11 +31,11 @@ class Factura extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('fechaFactura, codigo, idproveedor', 'required'),
-			array('codigo, idproveedor', 'numerical', 'integerOnly'=>true),
+			array('fechaFactura, codigo, idproveedor, idordenMtto', 'required'),
+			array('codigo, idproveedor,idordenMtto', 'numerical', 'integerOnly'=>true),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, fechaFactura, codigo, idproveedor', 'safe', 'on'=>'search'),
+			array('id, fechaFactura, codigo, idproveedor,idordenMtto', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -47,8 +47,9 @@ class Factura extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-			'sguDetalleacts' => array(self::HAS_MANY, 'Detalleact', 'idfactura'),
+			'idordenMtto0' => array(self::BELONGS_TO, 'Ordenmtto', 'idordenMtto'),
 			'idproveedor0' => array(self::BELONGS_TO, 'Proveedor', 'idproveedor'),
+			'sguFacturaacts' => array(self::HAS_MANY, 'Facturaact', 'idfactura'),
 		);
 	}
 
@@ -59,9 +60,10 @@ class Factura extends CActiveRecord
 	{
 		return array(
 			'id' => 'ID',
-			'fechaFactura' => 'Fecha Factura',
-			'codigo' => 'Codigo',
-			'idproveedor' => 'Idproveedor',
+			'fechaFactura' => 'Fecha de factura',
+			'codigo' => 'Código de factura',
+			'idproveedor' => 'Proveedor',
+			'idordenMtto' => 'Idorden Mtto',
 		);
 	}
 

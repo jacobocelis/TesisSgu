@@ -47,12 +47,11 @@ class Detalleorden extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-			'sguDetalleacts' => array(self::HAS_MANY, 'Detalleact', 'iddetalleOrden'),
+			'sguFacturaacts' => array(self::HAS_MANY, 'Facturaact', 'iddetalleOrden'),
 			'idactividades0' => array(self::BELONGS_TO, 'Actividades', 'idactividades'),
 			'idordenMtto0' => array(self::BELONGS_TO, 'Ordenmtto', 'idordenMtto'),
 		);
 	}
-
 	/**
 	 * @return array customized attribute labels (name=>label)
 	 */

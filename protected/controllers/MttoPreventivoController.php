@@ -28,7 +28,7 @@ class MttoPreventivoController extends Controller
 	{
 		return array(
 			array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array('index','view','crearPlan','planes','agregarActividad','obtenerParte','mttopVehiculo','mttopIniciales','calendario','obtenerActividad','agregarRecurso','iniciales','crearordenpreventiva','crearOrden','verOrdenes','cambiarFecha'),
+				'actions'=>array('index','view','crearPlan','planes','agregarActividad','obtenerParte','mttopVehiculo','mttopIniciales','calendario','obtenerActividad','agregarRecurso','iniciales','crearordenpreventiva','crearOrden','verOrdenes','cambiarFecha','mttopRealizados','registrarFacturacion','agregarFactura'),
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
@@ -59,8 +59,6 @@ class MttoPreventivoController extends Controller
 		if(isset($_POST['fecha'])){
 			Yii::app()->db->createCommand("update `tsg`.`sgu_actividades` set `proximoFecha` = '".$_POST['fecha']."' where `sgu_actividades`.`id` = ".$id."")->query();
 		}
-	
-	
 	}
 	public function actionCalendario(){
 	$act=Yii::app()->db->createCommand("select concat('Unidad ',v.numeroUnidad ,' ', pg.parte,'=>',am.actividad) as titulo, a.proximoFecha, a.id from sgu_actividadMtto am, sgu_actividades a, sgu_plan p, sgu_vehiculo v, sgu_planGrupo pg where a.idplan=p.id and p.idvehiculo=v.id and p.idplanGrupo=pg.id and am.id=a.idactividadMtto")->queryAll();
@@ -111,14 +109,64 @@ class MttoPreventivoController extends Controller
 			'abiertas'=>$this->getOrdenesAbiertas(),
 			'color'=>$this->getColor($this->getOrdenesAbiertas()),
 			));
-		
+	}
+	public function actionAgregarFactura($id){
+		$model=new Factura;
+		if(isset($_POST['Factura'])){
+            $model->attributes=$_POST['Factura'];
+            if($model->save()){
+			
+                if (Yii::app()->request->isAjaxRequest){
+				  
+                    echo CJSON::encode(array(
+                        'status'=>'success', 
+                        'div'=>"Información de factura agregado"
+                        ));
+					exit;
+                }
+            }
+        }
+		 if (Yii::app()->request->isAjaxRequest){	
+            echo CJSON::encode(array(
+                'status'=>'failure', 
+                'div'=>$this->renderPartial('_formFactura', array('model'=>$model,'id'=>$id), true)
+				));
+            exit;               
+        }
+	}
+	public function actionRegistrarFacturacion($id){
+		$model = new Factura;
+		$idrecurso=0;
+		$recurso=new CActiveDataProvider('Actividadrecurso',array('criteria'=>array('condition'=>'idactividades="'.$idrecurso.'"')));
+		if(isset($_GET['idAct'])){	
+			$idrecurso=$_GET['idAct'];
+			$recurso=new CActiveDataProvider('Actividadrecurso',array('criteria'=>array('condition'=>'idactividades="'.$idrecurso.'"')));	
+		}
+		$dataProvider=new CActiveDataProvider('Actividades',array('criteria' => array(
+			'order'=>'proximoFecha asc',
+			'condition'=>'id in (select idactividades from sgu_detalleOrden where idordenMtto="'.$id.'")')
+			,'pagination'=>array('pageSize'=>9999999)));
+			
+		$factura=new CActiveDataProvider('Factura',array('criteria' => array(
+			'condition'=>'idordenMtto="'.$id.'"'),
+			'pagination'=>array('pageSize'=>9999999)));
+		$tot=Yii::app()->db->createCommand('select * from sgu_factura where idordenMtto="'.$id.'"')->queryAll();
+		$total=count($tot);
+		$this->render('registrarFacturacion',array(
+			'dataProvider'=>$dataProvider,
+			'modelofactura'=>$model,
+			'factura'=>$factura,
+			'id'=>$id,
+			'recurso'=>$recurso,
+			'total'=>$total,
+			));
+	
 	}
 	public function actionCrearOrden(){
 		$model=new Ordenmtto;
 		if(isset($_POST['Ordenmtto'])){
             $model->attributes=$_POST['Ordenmtto'];
             if($model->save()){
-
 			if(isset($_POST['idAct'])){
 				$act = explode(",", $_POST['idAct']);
 				foreach($act as $idact){
@@ -163,7 +211,7 @@ class MttoPreventivoController extends Controller
 			'dataProvider'=>$dataProvider,
 			'abiertas'=>$this->getOrdenesAbiertas(),
 			'Colorabi'=>$this->getColor($this->getOrdenesAbiertas()),
-			));
+		));
 	}
 	public function actionMttopVehiculo($id){
 	
@@ -182,11 +230,24 @@ class MttoPreventivoController extends Controller
 	}
 	public function actionIniciales(){
 		$dataProvider=new CActiveDataProvider('Actividades',array('criteria' => array(
-			'order'=>'proximoFecha asc',
-			'condition' =>'idestatus <>3 ')
-			,'pagination'=>array('pageSize'=>9999999)));
-		$this->render('iniciales',array(
+		'order'=>'proximoFecha asc',
+		'condition' =>'idestatus <>3'),
+		'pagination'=>array('pageSize'=>9999999)));
+			$this->render('iniciales',array(
 			'dataProvider'=>$dataProvider,
+		));
+	}
+	public function actionMttopRealizados($id){
+		$orden=new CActiveDataProvider('Ordenmtto',array('criteria' => array(
+			'condition' =>'id='.$id."")
+			,'pagination'=>array('pageSize'=>9999999)));
+		$dataProvider=new CActiveDataProvider('Actividades',array('criteria' => array(
+			'order'=>'proximoFecha asc',
+			'condition'=>'id in (select idactividades from sgu_detalleOrden where idordenMtto="'.$id.'")')
+			,'pagination'=>array('pageSize'=>9999999)));
+		$this->render('mttopRealizados',array(
+			'dataProvider'=>$dataProvider,
+			'orden'=>$orden
 		));
 	}
 	public function actionMttopIniciales($id){
@@ -209,12 +270,19 @@ class MttoPreventivoController extends Controller
          //$this->performAjaxValidation($model);
  
     if(isset($_POST['Actividadrecursogrupo'])){
-			//file_put_contents('prueba.txt', print_r($_POST['Actividadrecursogrupo'],true));
+			$null='NULL';
             $model->attributes=$_POST['Actividadrecursogrupo'];
             if($model->save()){
                 if (Yii::app()->request->isAjaxRequest){
 				   /*inserts por debajo del plan de mantenimiento a cada vehiculo del grupo*/
-                    echo CJSON::encode(array(
+				   $totalAct=Yii::app()->db->createCommand('select id from sgu_actividades where idactividadesGrupo="'.$id.'" and idestatus<>3')->queryAll();
+                    $total=count($totalAct);
+					//file_put_contents('prueba.txt', print_r($model,true));
+				for($i=0;$i<$total;$i++){
+					Yii::app()->db->createCommand("INSERT INTO `tsg`.`sgu_actividadRecurso` (`cantidad`,`idactividades`,`idinsumo`,`idrepuesto`,`idservicio`,`idunidad`,`detalle`,`idactividadRecursoGrupo`)
+						VALUES (".$model->cantidad.",".$totalAct[$i]["id"].",".($model->idinsumo==null?$null:$model->idinsumo).",".($model->idrepuesto==null?$null:$model->idrepuesto).",".($model->idservicio==null?$null:$model->idservicio).",".$model->idunidad.",'".$model->detalle."',".$model->id.")")->query();
+					}
+					echo CJSON::encode(array(
                         'status'=>'success', 
                         'div'=>"se agregó el recurso correctamente"
                         ));

@@ -16,6 +16,7 @@ $this->menu=array(
 	array('label'=>'Histórico de mantenimientos', 'url'=>array('planes')),
 );
 ?>
+<div class='crugepanel user-assignments-role-list'>
 <h1>Próximos mantenimientos a realizarse</h1>
 <?php
 $this->widget('zii.widgets.grid.CGridView', array(
@@ -106,7 +107,19 @@ $this->widget('zii.widgets.grid.CGridView', array(
 			)
         ));
 		?>
+</div>
 <style>
+
+.crugepanel {
+    background-color: #FFF;
+    border: 1px dotted #AAA;
+    border-radius: 1px;
+    box-shadow: 3px 3px 5px #EEE;
+    display: block;
+    margin-top: 10px;
+    padding: 10px;
+}
+
 .rojo{
 background: none repeat scroll 0% 0% #FFD6D6;
 }

@@ -20,12 +20,6 @@
 	<?php echo $form->errorSummary($model); ?>
 
 	<div class="row">
-		<?php echo $form->labelEx($model,'actividad'); ?>
-		<?php echo $form->textField($model,'actividad',array('size'=>60,'maxlength'=>80)); ?>
-		<?php echo $form->error($model,'actividad'); ?>
-	</div>
-
-	<div class="row">
 		<?php echo $form->labelEx($model,'ultimoKm'); ?>
 		<?php echo $form->textField($model,'ultimoKm'); ?>
 		<?php echo $form->error($model,'ultimoKm'); ?>
@@ -107,6 +101,24 @@
 		<?php echo $form->labelEx($model,'idestatus'); ?>
 		<?php echo $form->textField($model,'idestatus'); ?>
 		<?php echo $form->error($model,'idestatus'); ?>
+	</div>
+
+	<div class="row">
+		<?php echo $form->labelEx($model,'idactividadMtto'); ?>
+		<?php echo $form->textField($model,'idactividadMtto'); ?>
+		<?php echo $form->error($model,'idactividadMtto'); ?>
+	</div>
+
+	<div class="row">
+		<?php echo $form->labelEx($model,'fechaRealizada'); ?>
+		<?php echo $form->textField($model,'fechaRealizada'); ?>
+		<?php echo $form->error($model,'fechaRealizada'); ?>
+	</div>
+
+	<div class="row">
+		<?php echo $form->labelEx($model,'kmRealizada'); ?>
+		<?php echo $form->textField($model,'kmRealizada'); ?>
+		<?php echo $form->error($model,'kmRealizada'); ?>
 	</div>
 
 	<div class="row">

@@ -16,11 +16,9 @@
 )); ?>
 
 	<p class="note">Los campos con <span class="required">*</span> son obligatorios.</p>
-
 	<div class="row">
 		<?php echo $form->hiddenField($model,'idactividadesGrupo',array('value'=>$id)); ?>
 	</div>
-	
 	<div class="row">
 		<?php echo $form->labelEx($model,'Tipo de recurso: '); ?>
 		<select id="lista" >
@@ -29,7 +27,6 @@
 			<option value="3">Servicio</option>
 		</select>
 	</div>
-	
 	<div id="insumo" class="row">
 		<?php echo $form->labelEx($model,'idinsumo'); ?>
 		<?php echo $form->dropDownList($model,'idinsumo',CHtml::listData(Insumo::model()->findAll(),'id','insumo'),array('style' => 'width:300px;')); ?>
@@ -37,9 +34,9 @@
 	</div>
 
 	<div id="servicio"class="row">
-		<?php echo $form->labelEx($model,'idprovServ'); ?>
-		<?php echo $form->dropDownList($model,'idprovServ',CHtml::listData(Provserv::model()->findAll(),'id','idservicio'),array('style' => 'width:300px;')); ?>
-		<?php echo $form->error($model,'idprovServ'); ?>
+		<?php echo $form->labelEx($model,'idservicio'); ?>
+		<?php echo $form->dropDownList($model,'idservicio',CHtml::listData(Servicio::model()->findAll(),'id','servicio'),array('style' => 'width:300px;')); ?>
+		<?php echo $form->error($model,'idservicio'); ?>
 	</div>
 
 	<div id="repuesto"class="row">
@@ -58,13 +55,6 @@
 		
 		<?php echo $form->error($model,'idunidad'); ?>
 	</div>
-	
-	<div class="row">
-		
-		<?php echo $form->hiddenField($model,'recurso',array('size'=>60,'maxlength'=>100)); ?>
-		
-	</div>
-	
 	<div class="row">
 		<?php echo $form->labelEx($model,'detalle'); ?>
 		<?php echo $form->textArea($model,'detalle',array('size'=>60,'maxlength'=>100, 'style' =>'width: 298px; height: 55px;')); ?>
@@ -85,11 +75,11 @@ $("#actividadrecursogrupo-form").submit(function(event){
 });
 function validar(){
 	if($("#lista").val()==1){
-		$("#Actividadrecursogrupo_idprovServ option:selected").val('');
+		$("#Actividadrecursogrupo_idservicio option:selected").val('');
 		$("#Actividadrecursogrupo_idrepuesto option:selected").val('');
 	}
 		if($("#lista").val()==2){
-		$("#Actividadrecursogrupo_idprovServ option:selected").val('');
+		$("#Actividadrecursogrupo_idservicio option:selected").val('');
 		$("#Actividadrecursogrupo_idinsumo option:selected").val('');
 	}
 		if($("#lista").val()==3){
@@ -102,28 +92,28 @@ function validar(){
 <script>
 $("#servicio").hide();
 $("#repuesto").hide();
-$("#Actividadrecursogrupo_recurso").val($("#Actividadrecursogrupo_idinsumo option:selected").text());
+//$("#Actividadrecursogrupo_recurso").val($("#Actividadrecursogrupo_idinsumo option:selected").text());
 $("#lista").change(function() {
 	if($("#lista").val()==1){
 		$("#servicio").hide();
 		$("#repuesto").hide();
 		$("#insumo").show();
-		$("#Actividadrecursogrupo_recurso").val($("#Actividadrecursogrupo_idinsumo option:selected").text());
-		//alert($('#Actividadrecursogrupo_idinsumo').is(':visible'));
+		
 	} 
 	if($("#lista").val()==2){
 		$("#insumo").hide();
 		$("#servicio").hide();
 		$("#repuesto").show();
-		$("#Actividadrecursogrupo_recurso").val($("#Actividadrecursogrupo_idrepuesto option:selected").text());
+		
 	} 
 	if($("#lista").val()==3){
 		$("#insumo").hide();
 		$("#servicio").show();
 		$("#repuesto").hide();
-		$("#Actividadrecursogrupo_recurso").val($("#Actividadrecursogrupo_idprovServ option:selected").text());
+		//$("#Actividadrecursogrupo_recurso").val($("#Actividadrecursogrupo_idprovServ option:selected").text());
 	} 
 });
+/*
 $("#insumo").change(function() {
 	$("#Actividadrecursogrupo_recurso").val($("#Actividadrecursogrupo_idinsumo option:selected").text());
 });
@@ -132,5 +122,5 @@ $("#repuesto").change(function() {
 });
 $("#servicio").change(function() {
 	$("#Actividadrecursogrupo_recurso").val($("#Actividadrecursogrupo_idprovServ option:selected").text());
-});
+});*/
 </script>

@@ -15,62 +15,80 @@
 	'enableAjaxValidation'=>false,
 )); ?>
 
-	<p class="note">Fields with <span class="required">*</span> are required.</p>
+	<p class="note">Campos con <span class="required">*</span> obligatorios.</p>
 
-	<?php echo $form->errorSummary($model); ?>
-
-	<div class="row">
-		<?php echo $form->labelEx($model,'id'); ?>
-		<?php echo $form->textField($model,'id'); ?>
-		<?php echo $form->error($model,'id'); ?>
-	</div>
 
 	<div class="row">
 		<?php echo $form->labelEx($model,'cantidad'); ?>
-		<?php echo $form->textField($model,'cantidad'); ?>
+		<?php echo $form->textField($model,'cantidad',array('style' => 'width:100px;')); ?>
+		<?php echo $form->dropDownList($model,'idunidad',CHtml::listData(Unidad::model()->findAll(),'id','corto'),array('style' => 'width:100px;')); ?>
 		<?php echo $form->error($model,'cantidad'); ?>
 	</div>
 
 	<div class="row">
-		<?php echo $form->labelEx($model,'idactividades'); ?>
-		<?php echo $form->textField($model,'idactividades'); ?>
-		<?php echo $form->error($model,'idactividades'); ?>
+		
+		<?php echo $form->hiddenField($model,'idactividades'); ?>
+		
 	</div>
 
 	<div class="row">
-		<?php echo $form->labelEx($model,'idinsumo'); ?>
-		<?php echo $form->textField($model,'idinsumo'); ?>
-		<?php echo $form->error($model,'idinsumo'); ?>
+	
+		<?php echo $form->hiddenField($model,'idinsumo'); ?>
+		
 	</div>
 
 	<div class="row">
-		<?php echo $form->labelEx($model,'idprovServ'); ?>
-		<?php echo $form->textField($model,'idprovServ'); ?>
-		<?php echo $form->error($model,'idprovServ'); ?>
+		
+		<?php echo $form->hiddenField($model,'idrepuesto'); ?>
+		
 	</div>
 
 	<div class="row">
-		<?php echo $form->labelEx($model,'idrepuesto'); ?>
-		<?php echo $form->textField($model,'idrepuesto'); ?>
-		<?php echo $form->error($model,'idrepuesto'); ?>
+		
+		<?php echo $form->hiddenField($model,'idservicio'); ?>
+		
 	</div>
 
 	<div class="row">
-		<?php echo $form->labelEx($model,'idunidad'); ?>
-		<?php echo $form->textField($model,'idunidad'); ?>
-		<?php echo $form->error($model,'idunidad'); ?>
+		
+		<?php echo $form->hiddenField($model,'detalle',array('size'=>60,'maxlength'=>100)); ?>
+	
 	</div>
 
 	<div class="row">
-		<?php echo $form->labelEx($model,'detalle'); ?>
-		<?php echo $form->textField($model,'detalle',array('size'=>60,'maxlength'=>100)); ?>
-		<?php echo $form->error($model,'detalle'); ?>
+	
+		<?php echo $form->hiddenField($model,'idactividadRecursoGrupo'); ?>
+		
+	</div>
+
+	<div class="row">
+		<?php echo $form->labelEx($model,'costoUnitario'); ?>
+		<?php echo $form->textField($model,'costoUnitario',array('style' => 'width:100px;')); ?>  BsF.
+		<?php echo $form->error($model,'costoUnitario'); ?>
+	</div>
+
+	<div class="row">
+		
+		<?php echo $form->hiddenField($model,'costoTotal'); ?>
+		
 	</div>
 
 	<div class="row buttons">
-		<?php echo CHtml::submitButton($model->isNewRecord ? 'Create' : 'Save'); ?>
+		<?php echo CHtml::submitButton($model->isNewRecord ? 'Agregar' : 'Guardar'); ?>
 	</div>
 
 <?php $this->endWidget(); ?>
 
 </div><!-- form -->
+<script>
+$("#actividadrecurso-form").submit(function(event){
+	event.preventDefault();
+	validar();
+});
+function validar(){
+	var cantidad=$("#Actividadrecurso_cantidad").val();
+	var costo=$("#Actividadrecurso_costoUnitario").val();
+	var total=(parseFloat(cantidad) * parseFloat(costo));
+	$("#Actividadrecurso_costoTotal").val(total);
+}
+</script>

@@ -22,8 +22,6 @@ return array(
 		'application.extensions.eeditable.*',
 		'application.extensions.SilcomTreeGridView.*',
 		'application.extensions.EFullCalendar.*',
-		
-		
     ),
     'modules' => array(
         // uncomment the following to enable the Gii tool
@@ -165,3 +163,4 @@ return array(
 		
       
 );
+?>

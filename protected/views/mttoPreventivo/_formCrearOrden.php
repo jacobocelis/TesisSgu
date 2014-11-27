@@ -16,11 +16,11 @@
 )); ?>
 
 <div class="row">
-		<?php echo $form->labelEx($model,'fecha'); ?>
-		<?php echo $form->textField($model,'fecha',array('size'=>20,'maxlength'=>10,'style'=>'width:80px;')); ?>
-		<?php echo $form->error($model,'fecha'); ?>
+		<?php //echo $form->labelEx($model,'fecha'); ?>
+		<?php echo $form->hiddenField($model,'fecha',array('size'=>20,'maxlength'=>10,'style'=>'width:80px;')); ?>
+		<?php //echo $form->error($model,'fecha'); ?>
 		
-		<?php echo $form->labelEx($model,'responsable',array('style'=>'margin-left:42px')); ?>
+		<?php echo $form->labelEx($model,'responsable',array('style'=>'margin-left:2px')); ?>
 		<?php echo $form->textField($model,'responsable',array('size'=>45,'maxlength'=>45)); ?>
 		<?php echo $form->error($model,'responsable'); ?>
 		

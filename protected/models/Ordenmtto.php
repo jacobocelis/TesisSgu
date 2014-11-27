@@ -31,7 +31,7 @@ class Ordenmtto extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('fecha, responsable, idestatus', 'required'),
+			array('responsable, idestatus', 'required'),
 			array('idestatus', 'numerical', 'integerOnly'=>true),
 			array('responsable', 'length', 'max'=>45),
 			// The following rule is used by search().
@@ -50,6 +50,7 @@ class Ordenmtto extends CActiveRecord
 		return array(
 			'sguDetalleordens' => array(self::HAS_MANY, 'Detalleorden', 'idordenMtto'),
 			'idestatus0' => array(self::BELONGS_TO, 'Estatus', 'idestatus'),
+			'sguFacturas' => array(self::HAS_MANY, 'Factura', 'idordenMtto'),
 		);
 	}
 

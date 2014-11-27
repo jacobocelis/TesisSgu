@@ -20,14 +20,14 @@ $this->breadcrumbs=array(
 			    'enableSorting' => true,
 				'emptyText'=>'no existen mantenimientos preventivos registrados',
                 'dataProvider'=>$dataProvider,
-				'htmlOptions'=>array('style'=>'max-width:800px;'),
+				//'htmlOptions'=>array('style'=>'max-width:800px;'),
 				'columns'=>array(
 				array(
 					'header'=>'Unidad',
 					'name'=>'idplan',
 					'value'=>'$data->idplan0->idvehiculo0->numeroUnidad',
 					//'value'=>'$data->idplan0->idplanGrupo0->CompiledColour->$data-id.\' \'.$data->CompiledColour',
-					'htmlOptions'=>array('style'=>'text-align:center;width:150px;'),
+					'htmlOptions'=>array('style'=>'text-align:center;width:50px;'),
 				),
 				array(
 					'header'=>'Parte',
@@ -46,7 +46,7 @@ $this->breadcrumbs=array(
 					'header'=>'Prioridad',
 					'name'=>'idprioridad',
 					'value'=>'$data->idprioridad0->prioridad',
-					'htmlOptions'=>array('style'=>'width:100px;text-align:center;'),
+					'htmlOptions'=>array('style'=>'width:50px;text-align:center;'),
 				),
 				array(
 					'header'=>'Fecha de último mantenimiento realizado',

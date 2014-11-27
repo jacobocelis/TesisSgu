@@ -37,6 +37,12 @@
 		<?php echo $form->error($model,'idproveedor'); ?>
 	</div>
 
+	<div class="row">
+		<?php echo $form->labelEx($model,'idordenMtto'); ?>
+		<?php echo $form->textField($model,'idordenMtto'); ?>
+		<?php echo $form->error($model,'idordenMtto'); ?>
+	</div>
+
 	<div class="row buttons">
 		<?php echo CHtml::submitButton($model->isNewRecord ? 'Create' : 'Save'); ?>
 	</div>

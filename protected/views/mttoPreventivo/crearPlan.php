@@ -322,7 +322,8 @@ div.user-assignments-detail #lista2 .boton {
 }
 </style>
 <script>
-	<?php /* a cada LI del div de roles le anexa un evento click y le pone un cursor */ ?>
+	<?php
+	/* a cada LI del div de roles le anexa un evento click y le pone un cursor */ ?>
 	//$('#_lista2').find('input[type=text],textarea,select').filter(':visible:first').attr('placeholder', 'Búsqueda..');
 
 	//aqui se agrega el grupo seleccionado al label y se muestra en la vista

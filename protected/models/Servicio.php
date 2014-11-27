@@ -8,7 +8,8 @@
  * @property string $servicio
  *
  * The followings are the available model relations:
- * @property SguProvserv[] $sguProvservs
+ * @property SguActividadrecurso[] $sguActividadrecursos
+ * @property SguActividadrecursogrupo[] $sguActividadrecursogrupos
  */
 class Servicio extends CActiveRecord
 {
@@ -28,8 +29,7 @@ class Servicio extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('id, servicio', 'required'),
-			array('id', 'numerical', 'integerOnly'=>true),
+			array('servicio', 'required'),
 			array('servicio', 'length', 'max'=>100),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
@@ -45,7 +45,8 @@ class Servicio extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-			'sguProvservs' => array(self::HAS_MANY, 'Provserv', 'idservicio'),
+			'sguActividadrecursos' => array(self::HAS_MANY, 'Actividadrecurso', 'idservicio'),
+			'sguActividadrecursogrupos' => array(self::HAS_MANY, 'Actividadrecursogrupo', 'idservicio'),
 		);
 	}
 

@@ -20,12 +20,6 @@
 	<?php echo $form->errorSummary($model); ?>
 
 	<div class="row">
-		<?php echo $form->labelEx($model,'id'); ?>
-		<?php echo $form->textField($model,'id'); ?>
-		<?php echo $form->error($model,'id'); ?>
-	</div>
-
-	<div class="row">
 		<?php echo $form->labelEx($model,'cantidad'); ?>
 		<?php echo $form->textField($model,'cantidad'); ?>
 		<?php echo $form->error($model,'cantidad'); ?>
@@ -44,15 +38,15 @@
 	</div>
 
 	<div class="row">
-		<?php echo $form->labelEx($model,'idprovServ'); ?>
-		<?php echo $form->textField($model,'idprovServ'); ?>
-		<?php echo $form->error($model,'idprovServ'); ?>
-	</div>
-
-	<div class="row">
 		<?php echo $form->labelEx($model,'idrepuesto'); ?>
 		<?php echo $form->textField($model,'idrepuesto'); ?>
 		<?php echo $form->error($model,'idrepuesto'); ?>
+	</div>
+
+	<div class="row">
+		<?php echo $form->labelEx($model,'idservicio'); ?>
+		<?php echo $form->textField($model,'idservicio'); ?>
+		<?php echo $form->error($model,'idservicio'); ?>
 	</div>
 
 	<div class="row">

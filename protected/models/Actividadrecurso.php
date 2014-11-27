@@ -8,16 +8,20 @@
  * @property integer $cantidad
  * @property integer $idactividades
  * @property integer $idinsumo
- * @property integer $idprovServ
  * @property integer $idrepuesto
+ * @property integer $idservicio
  * @property integer $idunidad
  * @property string $detalle
+ * @property integer $idactividadRecursoGrupo
+ * @property double $costoUnitario
+ * @property double $costoTotal
  *
  * The followings are the available model relations:
+ * @property SguActividadrecursogrupo $idactividadRecursoGrupo0
  * @property SguActividades $idactividades0
  * @property SguInsumo $idinsumo0
- * @property SguProvserv $idprovServ0
  * @property SguRepuesto $idrepuesto0
+ * @property SguServicio $idservicio0
  * @property SguUnidad $idunidad0
  */
 class Actividadrecurso extends CActiveRecord
@@ -27,7 +31,7 @@ class Actividadrecurso extends CActiveRecord
 	 */
 	public function tableName()
 	{
-		return 'sgu_actividadRecurso';
+		return 'sgu_actividadrecurso';
 	}
 
 	/**
@@ -38,12 +42,13 @@ class Actividadrecurso extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('cantidad, idunidad,idactividadRecursoGrupo', 'required'),
-			array('cantidad, idactividades, idinsumo, idprovServ, idrepuesto, idunidad, idactividadRecursoGrupo', 'numerical', 'integerOnly'=>true),
+			array('cantidad, idactividades, idunidad, idactividadRecursoGrupo,costoUnitario', 'required'),
+			array('cantidad, idactividades, idinsumo, idrepuesto, idservicio, idunidad, idactividadRecursoGrupo', 'numerical', 'integerOnly'=>true),
+			array('costoUnitario, costoTotal', 'numerical'),
 			array('detalle', 'length', 'max'=>100),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('cantidad, idactividades, idinsumo, idprovServ, idrepuesto, idunidad, detalle,idactividadRecursoGrupo', 'safe', 'on'=>'search'),
+			array('id, cantidad, idactividades, idinsumo, idrepuesto, idservicio, idunidad, detalle, idactividadRecursoGrupo, costoUnitario, costoTotal', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -55,13 +60,12 @@ class Actividadrecurso extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
+			'idactividadRecursoGrupo0' => array(self::BELONGS_TO, 'Actividadrecursogrupo', 'idactividadRecursoGrupo'),
 			'idactividades0' => array(self::BELONGS_TO, 'Actividades', 'idactividades'),
 			'idinsumo0' => array(self::BELONGS_TO, 'Insumo', 'idinsumo'),
-			'idprovServ0' => array(self::BELONGS_TO, 'Provserv', 'idprovServ'),
 			'idrepuesto0' => array(self::BELONGS_TO, 'Repuesto', 'idrepuesto'),
+			'idservicio0' => array(self::BELONGS_TO, 'Servicio', 'idservicio'),
 			'idunidad0' => array(self::BELONGS_TO, 'Unidad', 'idunidad'),
-			'idactividadRecursoGrupo0' => array(self::BELONGS_TO, 'Actividadrecursogrupo', 'idactividadRecursoGrupo'),
-			
 		);
 	}
 
@@ -71,13 +75,17 @@ class Actividadrecurso extends CActiveRecord
 	public function attributeLabels()
 	{
 		return array(
+			'id' => 'ID',
 			'cantidad' => 'Cantidad',
-			'idactividades' => 'Idactividades',
-			'idinsumo' => 'Idinsumo',
-			'idprovServ' => 'Idprov Serv',
-			'idrepuesto' => 'Idrepuesto',
-			'idunidad' => 'Idunidad',
+			'idactividades' => 'Actividades',
+			'idinsumo' => 'Insumo',
+			'idrepuesto' => 'Repuesto',
+			'idservicio' => 'Servicio',
+			'idunidad' => 'Unidad',
 			'detalle' => 'Detalle',
+			'idactividadRecursoGrupo' => 'Idactividad Recurso Grupo',
+			'costoUnitario' => 'Costo unitario',
+			'costoTotal' => 'Costo total',
 		);
 	}
 
@@ -98,13 +106,18 @@ class Actividadrecurso extends CActiveRecord
 		// @todo Please modify the following code to remove attributes that should not be searched.
 
 		$criteria=new CDbCriteria;
+
+		$criteria->compare('id',$this->id);
 		$criteria->compare('cantidad',$this->cantidad);
 		$criteria->compare('idactividades',$this->idactividades);
 		$criteria->compare('idinsumo',$this->idinsumo);
-		$criteria->compare('idprovServ',$this->idprovServ);
 		$criteria->compare('idrepuesto',$this->idrepuesto);
+		$criteria->compare('idservicio',$this->idservicio);
 		$criteria->compare('idunidad',$this->idunidad);
 		$criteria->compare('detalle',$this->detalle,true);
+		$criteria->compare('idactividadRecursoGrupo',$this->idactividadRecursoGrupo);
+		$criteria->compare('costoUnitario',$this->costoUnitario);
+		$criteria->compare('costoTotal',$this->costoTotal);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,

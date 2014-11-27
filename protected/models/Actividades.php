@@ -109,13 +109,13 @@ class Actividades extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('idactividadMtto, frecuenciaKm, duracion, idprioridad, idplan, idtiempod, idtiempof, idactividadesGrupo,ultimoKm,ultimoFecha,idestatus', 'required'),
-			array('ultimoKm, frecuenciaKm, frecuenciaMes, proximoKm, duracion, atraso, idprioridad, idplan, idtiempod, idtiempof, idactividadesGrupo,idestatus', 'numerical', 'integerOnly'=>true),
+			array('idactividadMtto, frecuenciaKm, duracion, idprioridad, idplan, idtiempod, idtiempof, idactividadesGrupo,ultimoKm,ultimoFecha,idestatus, fechaRealizada, kmRealizada', 'required'),
+			array('ultimoKm, frecuenciaKm, frecuenciaMes, proximoKm, duracion, atraso, idprioridad, idplan, idtiempod, idtiempof, idactividadesGrupo,idestatus, kmRealizada,', 'numerical', 'integerOnly'=>true),
 			array('procedimiento', 'length', 'max'=>200),
-			array('ultimoFecha, proximoFecha', 'safe'),
+			array('ultimoFecha, proximoFecha, fechaRealizada, kmRealizada,', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, idactividadMtto, ultimoKm, ultimoFecha, frecuenciaKm, frecuenciaMes, proximoKm, proximoFecha, duracion, atraso, idprioridad, idplan, idtiempod, idtiempof, idactividadesGrupo,idestatus,procedimiento', 'safe', 'on'=>'search'),
+			array('id, idactividadMtto, ultimoKm, ultimoFecha, frecuenciaKm, frecuenciaMes, proximoKm, proximoFecha, duracion, atraso, idprioridad, idplan, idtiempod, idtiempof, idactividadesGrupo,idestatus,procedimiento, fechaRealizada, kmRealizada,', 'safe', 'on'=>'search'),
 		);
 	}
 	/**
@@ -145,7 +145,7 @@ class Actividades extends CActiveRecord
 	public function attributeLabels()
 	{
 		return array(
-			
+			'id'=>'Id',
 			'idactividadMtto' => 'Actividad',
 			'ultimoKm' => 'Ultimo mantenimiento',
 			'ultimoFecha' => 'Fecha del último mantenimiento',
@@ -162,6 +162,9 @@ class Actividades extends CActiveRecord
 			'idactividadesGrupo' => 'Idactividades Grupo',
 			'idestatus' => 'Idestatus',
 			'procedimiento' => 'Procedimiento',
+			'idactividadMtto' => 'Idactividad Mtto',
+			'fechaRealizada' => 'Fecha Realizada',
+			'kmRealizada' => 'Km Realizada',
 		);
 	}
 
@@ -199,6 +202,10 @@ class Actividades extends CActiveRecord
 		$criteria->compare('idtiempof',$this->idtiempof);
 		$criteria->compare('idactividadesGrupo',$this->idactividadesGrupo);
 		$criteria->compare('idestatus',$this->idestatus);
+		$criteria->compare('idestatus',$this->idestatus);
+		$criteria->compare('idactividadMtto',$this->idactividadMtto);
+		$criteria->compare('fechaRealizada',$this->fechaRealizada,true);
+		$criteria->compare('kmRealizada',$this->kmRealizada);
 		$criteria->compare('procedimiento',$this->procedimiento,true);
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,

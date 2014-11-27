@@ -22,7 +22,7 @@
 			)
         ));
 ?>
-<?php $this->widget('application.extensions.SilcomTreeGridView.SilcomTreeGridView', array(
+<?php $this->widget('ext.SilcomTreeGridView.SilcomTreeGridView', array(
                 'id'=>'plan',
 				'summaryText' => '',
 				'hideHeader'=>true,
@@ -155,16 +155,9 @@
 				array(
 					'headerHtmlOptions'=>array('style'=>'text-align:left;'),
 					'header'=>'Recurso',
-					'name'=>'recurso',
-					'value'=>'$data->recurso',
+					'name'=>'idservicio',
+					'value'=>'(($data->idinsumo == null?\'\':$data->idinsumo0->insumo).\'\'.($data->idrepuesto == null?\'\':$data->idrepuesto0->repuesto).\'\'.($data->idservicio == null?\'\':$data->idservicio0->servicio)).\'\'.$data->detalle',
 					'htmlOptions'=>array('style'=>'width:350px;'),
-					//'footer'=>'',
-				),
-				array(
-					'headerHtmlOptions'=>array('style'=>'text-align:left;'),
-					'header'=>'Informacíon adicional',
-					'name'=>'detalle',
-					'htmlOptions'=>array('style'=>'width:150px;'),
 					//'footer'=>'',
 				),
 				array(

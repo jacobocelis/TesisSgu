@@ -1,7 +1,7 @@
 <?php 
 	$this->breadcrumbs=array(
 	'Mantenimiento preventivo'=>array('mttoPreventivo/index'),
-	'Crear orden preventiva',
+	'Órdenes abiertas',
 );
 	$this->menu=array(
 	array('label'=>'Registrar mantenimiento realizado', 'url'=>array('')),
@@ -34,10 +34,16 @@ $this->widget('zii.widgets.grid.CGridView', array(
 				),
 				
 				array(
-					'header'=>'Fecha',
+					'header'=>'Fecha de creada',
 					'name'=>'fecha',
 					
 					'htmlOptions'=>array('style'=>'text-align:center;width:100px'),
+				),
+				array(
+					'header'=>'Estado',
+					'name'=>'idestatus',
+					'value'=>'$data->idestatus0->estatus',
+					'htmlOptions'=>array('style'=>'text-align:center;width:50px'),
 				),
 				array(
 					'header'=>'Responsable',
@@ -48,7 +54,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
 				array(
 						'headerHtmlOptions'=>array('style'=>'text-align:center;width:50px;'),
 						'htmlOptions'=>array('style'=>'text-align:center;'),
-						'header'=>'Detalle',
+						'header'=>'Ver orden',
 						'type'=>'raw',
 						'value'=>'CHtml::link(
                         CHtml::image(Yii::app()->request->baseUrl."/imagenes/ver.png",
@@ -68,10 +74,10 @@ $this->widget('zii.widgets.grid.CGridView', array(
 						'value'=>'CHtml::link(
                         CHtml::image(Yii::app()->request->baseUrl."/imagenes/agregar.png",
                                           "Agregar",array("title"=>"Editar")),
-                        "",
+										  
+                        Yii::app()->createUrl("mttoPreventivo/mttopRealizados", array("id"=>$data->id)),
                         array(
                                 \'style\'=>\'cursor: pointer;text-decoration: underline;text-align:center;\',
-                                \'onclick\'=>\'{editarActividad("\'.Yii::app()->createUrl("actividadesgrupo/update",array("id"=>$data["id"])).\'"); $("#dialog").dialog("open");}\'
                         )
                 );',),
 					array(
@@ -87,9 +93,9 @@ $this->widget('zii.widgets.grid.CGridView', array(
 			)
         ));
 		?>
-		</div>
+		
+</div>
 <style>
-
 .crugepanel {
     background-color: #FFF;
     border: 1px dotted #AAA;

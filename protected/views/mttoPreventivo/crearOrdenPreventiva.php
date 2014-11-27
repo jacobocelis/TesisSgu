@@ -23,7 +23,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
 			    'enableSorting' => true,
 				'template'=>"{items}\n{summary}\n{pager}",
 				'selectableRows'=>2,
-				'emptyText'=>'No hay mantenimientos registrados',
+				'emptyText'=>'No hay actividades a tiempo de mantenimiento',
                 'dataProvider'=>$dataProvider,
 				'ajaxUpdate'=>false,
 				'columns'=>array(
@@ -180,7 +180,7 @@ jQuery.ajax({
                                 }
                                 else{
                                         $('#formulario').html(data.div);
-										window.setTimeout('location.reload()', 1000);
+										window.setTimeout('location.reload()', 1);
                                 }
                         } ,
                 'cache':false});

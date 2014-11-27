@@ -32,7 +32,7 @@ class ActividadesController extends Controller
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create','update'),
+				'actions'=>array('create','update','actualizarMR'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -120,7 +120,7 @@ class ActividadesController extends Controller
         }
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
-		
+		/*
 		if(isset($_POST['Actividades']))
 		{
 			$model->attributes=$_POST['Actividades'];
@@ -130,8 +130,63 @@ class ActividadesController extends Controller
 
 		$this->render('update',array(
 			'model'=>$model,
-		));
+		));*/
 	}
+	
+	public function actionActualizarMR($id){
+	
+		$model=$this->loadModel($id);
+		if($model->kmRealizada==-1 or $model->fechaRealizada=='0000-01-01')
+			$var=1;
+		else
+			$var=0;
+			if(isset($_POST['Actividades'])){
+            $model->attributes=$_POST['Actividades'];
+            if($model->save()){
+			if (Yii::app()->request->isAjaxRequest){
+			Yii::app()->db->createCommand("update `tsg`.`sgu_actividades` set idestatus='3' where id = '".$id."'")->query();
+			//se crea y calcula la nueva actividad
+			$proximoFecha = new DateTime($model->fechaRealizada);
+			$proximoKm=$model->kmRealizada+$model->frecuenciaKm;
+			$proximoFecha->add(new DateInterval('P'.$model->frecuenciaMes.$model->idtiempof0->sqlTimevalues));	
+			Yii::app()->db->createCommand("INSERT INTO `tsg`.`sgu_actividades` (`ultimoKm`,`ultimoFecha`,`frecuenciaKm`,`frecuenciaMes`,`proximoKm`,`proximoFecha`,`duracion`,`idprioridad`,`idplan`,`idestatus`,`procedimiento`,`idtiempod`,`idtiempof`,`idactividadesGrupo`,`idactividadMtto`)
+			VALUES (".$model->kmRealizada.",'".$model->fechaRealizada."',".$model->frecuenciaKm.",".$model->frecuenciaMes.",".$proximoKm.",'".$proximoFecha->format("Y-m-d")."',".$model->duracion.",".$model->idprioridad.",".$model->idplan.",2,'".$model->procedimiento."',".$model->idtiempod.",".$model->idtiempof.",".$model->idactividadesGrupo.",".$model->idactividadMtto.")")->query();
+			
+			//inserto el recurso de la actividad
+				$totalRec=Yii::app()->db->createCommand('select * from sgu_actividadRecurso where idactividades="'.$id.'"')->queryAll();
+                $total=count($totalRec);
+				$null='NULL';
+				for($i=0;$i<$total;$i++){
+					Yii::app()->db->createCommand("INSERT INTO `tsg`.`sgu_actividadRecurso` (`cantidad`,`idactividades`,`idinsumo`,`idrepuesto`,`idservicio`,`idunidad`,`detalle`,`idactividadRecursoGrupo`)
+						VALUES (".$totalRec[$i]["cantidad"].",".$model->id.",".($totalRec[$i]["idinsumo"]==null?$null:$totalRec[$i]["idinsumo"]).",".($totalRec[$i]["idrepuesto"]==null?$null:$totalRec[$i]["idrepuesto"]).",".($totalRec[$i]["idservicio"]==null?$null:$totalRec[$i]["idservicio"]).",".$totalRec[$i]["idunidad"].",'".$totalRec[$i]["detalle"]."',".$totalRec[$i]["idactividadRecursoGrupo"].")")->query();
+				}
+			//calculo del proximo mantenimiento a realizarse en base al ultimo ingresado
+				/*$proximoFecha = new DateTime($model->ultimoFecha);
+				$proximoKm=$model->ultimoKm+$model->frecuenciaKm;
+				$proximoFecha->add(new DateInterval('P'.$model->frecuenciaMes.$model->idtiempof0->sqlTimevalues));
+				//file_put_contents('prueba.txt', print_r($proximoFecha,true));
+				
+				Yii::app()->db->createCommand("update `tsg`.`sgu_actividades` set proximoKm='".$proximoKm."', proximoFecha='".$proximoFecha->format("Y-m-d")."', idestatus='".$model->idestatus."'
+				where id = '".$id."'")->query();*/
+				
+                
+                    echo CJSON::encode(array(
+                        'status'=>'success', 
+                        'div'=>"se registró el mantenimiento correctamente"
+                        ));
+                    exit;               
+                }
+            }
+        }
+        if (Yii::app()->request->isAjaxRequest){
+            echo CJSON::encode(array(
+                'status'=>'failure', 
+                'div'=>$this->renderPartial('_formRegistrarMR', array('model'=>$model,'id'=>$var), true)));
+            exit;               
+        }
+
+	}
+	
 		/*public function actionUpdate($id,$idestatus){
 		
 		$model=$this->loadModel($id);

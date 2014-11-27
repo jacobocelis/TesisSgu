@@ -37,18 +37,18 @@ $this->menu=array(
         'lazyFetching'=>true,
         'events'=>$items, // action URL for dynamic events, or
         //'events'=>array() // pass array of events directly
- 
         // event handling
+		'eventAfterRender'=>'js:function(event, element, view) {
+			//$(element).css("width","100%");
+		}',
 		'eventDrop'=>'js:function(calEvent, dayDelta, minuteDelta, allDay, revertFunc, jsEvent, ui, view){
 				var m = moment();
 				var fecha = $.datepicker.formatDate("yy-mm-dd",calEvent.start);
-				
-				
-				if(calEvent.start<m){
-					alert("No puede mover un evento a una fecha que ya pasó");
+				if(calEvent.start<=m){
+					alert("No puede mover un evento a una fecha anterior al día de hoy");
 					revertFunc();
 				}else{
-				if (!confirm("¿Está seguro?")) {
+				if (!confirm("¿Está seguro?")){
 					revertFunc();
 				}else{
 					$.ajax({
