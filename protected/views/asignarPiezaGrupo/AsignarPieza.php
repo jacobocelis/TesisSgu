@@ -140,6 +140,27 @@
 </div>
 </div>
 <style type="text/css">
+.grid-view table.items td {
+    font-size: 0.9em;
+    border: 1px solid #A8C5F0;
+    padding: 0.3em;
+}
+.grid-view table.items th {
+    color: #000;
+    background: none repeat scroll 0% 0% #D9EDFF;
+    text-align: center;
+    border: 1px solid #A8C5F0;
+}
+.crugepanel {
+    background-color: #FFF;
+    border: 1px dotted #AAA;
+    border-radius: 1px;
+    box-shadow: 3px 3px 5px #EEE;
+    display: block;
+    margin-top: 10px;
+    padding: 10px;
+}
+
 .letra{
 	margin-top:10px;
 	margin-bottom:20px;
@@ -162,16 +183,7 @@
     text-align: center;
     top: 0;
 }
-.crugepanel {
-    background-color: white;
-    border: 1px dotted #aaa;
-    border-radius: 5px;
-    box-shadow: 3px 3px 5px #eee;
-    display: block;
-    margin-top: 10px;
-    padding: 10px;
-	
-}
+
 .auth-item-error-msg {
     background-color: rgb(255, 200, 200);
     border: 2px solid white;

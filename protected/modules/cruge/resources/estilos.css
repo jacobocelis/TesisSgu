@@ -15,7 +15,16 @@
 	top: 0px;
 	box-shadow: 3px 3px 5px #eee;
 }
-
+.crugepanel {
+    background-color: #FFF;
+    border: 1px dotted #AAA;
+    border-radius: 1px;
+    box-shadow: 3px 3px 5px #EEE;
+    display: block;
+    margin-top: 10px;
+    padding: 10px;
+}
+/*
 .crugepanel {
 	background-color: white;
 	padding: 10px;
@@ -25,7 +34,7 @@
 	display: block;
 	margin-top: 10px;
 }
-
+*/
 .auth-item-error-msg{
 	background-color: rgb(255,200,200);
 	color: red;

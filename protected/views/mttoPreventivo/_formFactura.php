@@ -3,9 +3,7 @@
 /* @var $model Factura */
 /* @var $form CActiveForm */
 ?>
-
 <div class="form">
-
 <?php $form=$this->beginWidget('CActiveForm', array(
 	'id'=>'factura-form',
 	// Please note: When you enable ajax validation, make sure the corresponding
@@ -16,13 +14,12 @@
 )); ?>
 <h1>Registrar facturación</h1>
 	<p class="note">Campos con <span class="required">*</span> obligatorios.</p>
-
 	<div class="row">
 		<?php echo $form->labelEx($model,'fechaFactura'); ?>
 		<?php echo $form->textField($model,'fechaFactura',array('style' => 'width:100px;')); ?>
 		<?php echo $form->error($model,'fechaFactura'); ?>
 	</div>
-
+	
 	<div class="row">
 		<?php echo $form->labelEx($model,'codigo'); ?>
 		<?php echo $form->textField($model,'codigo'); ?>
@@ -46,3 +43,32 @@
 <?php $this->endWidget(); ?>
 
 </div><!-- form -->
+
+<script>
+	$(function($){
+	    $.datepicker.regional['es'] = {
+	        closeText: 'Cerrar',
+	        prevText: 'Anterior',
+	        nextText: 'Siguiente',
+	        currentText: 'Hoy',
+	        monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+	        monthNamesShort: ['Ene','Feb','Mar','Abr', 'May','Jun','Jul','Ago','Sep', 'Oct','Nov','Dic'],
+	        dayNames: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
+	        dayNamesShort: ['Dom','Lun','Mar','Mié','Juv','Vie','Sáb'],
+	        dayNamesMin: ['Do','Lu','Ma','Mi','Ju','Vi','Sá'],
+	        weekHeader: 'Sm',
+	        dateFormat: 'yy-mm-dd',
+	        firstDay: 1,
+	        isRTL: false,
+			changeMonth: true,
+            changeYear: true,
+	        showMonthAfterYear: false,
+	        yearSuffix: '',
+	        maxDate: '0d',
+	        //minDate: '0d',
+	    };
+	    $.datepicker.setDefaults($.datepicker.regional['es']);
+	});      		
+
+	$("#Factura_fechaFactura").datepicker();
+</script>

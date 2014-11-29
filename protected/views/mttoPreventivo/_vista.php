@@ -156,7 +156,7 @@
 					'headerHtmlOptions'=>array('style'=>'text-align:left;'),
 					'header'=>'Recurso',
 					'name'=>'idservicio',
-					'value'=>'(($data->idinsumo == null?\'\':$data->idinsumo0->insumo).\'\'.($data->idrepuesto == null?\'\':$data->idrepuesto0->repuesto).\'\'.($data->idservicio == null?\'\':$data->idservicio0->servicio)).\'\'.$data->detalle',
+					'value'=>'(($data->idinsumo == null?\'\':$data->idinsumo0->insumo).\'\'.($data->idrepuesto == null?\'\':$data->idrepuesto0->repuesto).\'\'.($data->idservicio == null?\'\':$data->idservicio0->servicio)).\' \'.$data->detalle',
 					'htmlOptions'=>array('style'=>'width:350px;'),
 					//'footer'=>'',
 				),
@@ -203,7 +203,7 @@ $this->beginWidget('zii.widgets.jui.CJuiDialog', array( // the dialog
         'autoOpen'=>false,
         'modal'=>true,
         'width'=>550,
-        'height'=>480,
+        //'height'=>480,
 		'resizable'=>false
     ),
 ));?>
@@ -449,6 +449,11 @@ var grupoSel="<?php echo $grupoSel; ?>" ;
 
 </style>
 <style>
+.grid-view table.items th, .grid-view table.items td {
+    font-size: 0.9em;
+    border: 1px solid #94A8FF;
+    padding: 0.3em;
+}
 .vista
 {
 	padding: 0px 0px;

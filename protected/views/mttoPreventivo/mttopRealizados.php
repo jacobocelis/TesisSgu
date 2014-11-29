@@ -1,7 +1,8 @@
 <?php 
 $this->breadcrumbs=array(
 	'Mantenimiento preventivo'=>array('mttoPreventivo/index'),
-	'Mantenimientos iniciales',
+	'Órdenes abiertas'=>array('mttoPreventivo/verOrdenes'),
+	'Actualizar órden de mantenimiento',
 );
 	$this->menu=array(
 	array('label'=>'Ver programas de mantenimiento', 'url'=>array('planes')),
@@ -16,43 +17,42 @@ $this->breadcrumbs=array(
 <?php
 $this->widget('zii.widgets.grid.CGridView', array(
                 'id'=>'ordenes',
-				//'selectionChanged'=>'validar',
 				'summaryText'=>'',
-			    'enableSorting' => true,
+			   // 'enableSorting' => false,
 				'template'=>"{items}\n{summary}\n{pager}",
-				'selectableRows'=>1,
+				'selectableRows'=>0,
 				'emptyText'=>'',
                 'dataProvider'=>$orden,
-				'htmlOptions'=>array('style'=>'cursor:pointer'),
+				//'htmlOptions'=>array('style'=>'cursor:pointer'),
 				'columns'=>array(
 				array(
 					'headerHtmlOptions'=>array('style'=>'width:7%'),
 					'header'=>'Orden #',
-					'name'=>'id',
+					//'name'=>'id',
 					'value'=>'str_pad((int) $data->id,6,"0",STR_PAD_LEFT);',
 					//'value'=>'$data->idplan0->idplanGrupo0->CompiledColour->$data-id.\' \'.$data->CompiledColour',
 					'htmlOptions'=>array('style'=>'text-align:center;width:150px'),
 				),
 				
 				array(
-					'header'=>'Fecha',
-					'name'=>'fecha',
-					
+					'header'=>'Fecha y hora',
+					//'name'=>'fecha',
+					'value'=>'date("d/m/Y h:i A",strtotime($data->fecha))',
 					'htmlOptions'=>array('style'=>'text-align:center;width:100px'),
 				),
 				array(
 					'header'=>'Estado',
-					'name'=>'idestatus',
+					//'name'=>'idestatus',
 					'value'=>'$data->idestatus0->estatus',
 					'htmlOptions'=>array('style'=>'text-align:center;width:100px'),
 				),
 				array(
 					'header'=>'Responsable',
 					'name'=>'responsable',
+					'value'=>'$data->responsable',
 					//'value'=>'$data->idplan0->idplanGrupo0->CompiledColour->$data-id.\' \'.$data->CompiledColour',
 					'htmlOptions'=>array('style'=>'text-align:center;width:150px'),
 				),
-
 				array(
 						'headerHtmlOptions'=>array('style'=>'text-align:left;width:10px;text-align:center;'),
 						'htmlOptions'=>array('style'=>'text-align:center;width:10px;'),
@@ -67,6 +67,12 @@ $this->widget('zii.widgets.grid.CGridView', array(
                                 \'style\'=>\'cursor: pointer;text-decoration: underline;text-align:center;\',
                         )
                 );',),
+				array(
+					'header'=>'Lista para cerrar',
+					'value'=>'CHTML::checkBox("campo",$data->estado($data->idestatus),array(\'id\'=>"campo1",\'width\'=>4,\'maxlength\'=>2,\'onchange\'=>"return validar($data->id)"))',
+					'type'=>'raw',
+					'htmlOptions'=>array('style'=>'width: 50px;text-align: center'),
+				),
 			)
         ));?>
 	</div>
@@ -74,7 +80,8 @@ $this->widget('zii.widgets.grid.CGridView', array(
 <strong><p>Listado de actividades a realizar:</p></strong>
 	<?php
 	$this->widget('zii.widgets.grid.CGridView', array(
-                'id'=>'inicial',
+                'id'=>'final',
+				'selectableRows'=>0,
 				'summaryText'=>'',
 			    'enableSorting' => true,
 				'emptyText'=>'no existen mantenimientos preventivos registrados',
@@ -138,6 +145,13 @@ $this->widget('zii.widgets.grid.CGridView', array(
                                 \'onclick\'=>\'{registrarMR("\'.Yii::app()->createUrl("actividades/actualizarMR",array("id"=>$data["id"])).\'"); $("#dialog").dialog("open");}\'
                         )
                 );',),
+				array(
+					'header'=>'Estado',
+					'name'=>'idestatus',
+					'type'=>'raw',
+					'value'=>'$data->color($data->idestatus,$data->idestatus0->estatus)',
+					'htmlOptions'=>array('style'=>'width:80px;text-align:center;'),
+				),
 			)
         ));
 ?>
@@ -160,6 +174,9 @@ $this->beginWidget('zii.widgets.jui.CJuiDialog', array( // the dialog
 <?php $this->endWidget();?>
 
 <style>
+.grid-view table.items tr.selected {
+    background: none repeat scroll 0% 0% rgba(0, 249, 3, 0.3);
+}
 .grid-view {
     padding: 0px 0px;
 }
@@ -220,10 +237,27 @@ function registrarMR(id){
                                 {
                                         $('#dialog div.divForForm').html(data.div);
                                         setTimeout("$('#dialog').dialog('close') ",1000);
-                                        $.fn.yiiGridView.update('inicial');
+                                        $.fn.yiiGridView.update('final');
                                 }
                         } ,
                 'cache':false});
     return false; 
+}
+function validar(){
+
+var id="<?php echo $id?>";
+	var dir="<?php echo Yii::app()->baseUrl."/mttoPreventivo/estatusOrden"?>";
+	var x = document.getElementById("campo1").checked;
+	if(x==true)
+		x=1;
+	else
+		x=0;
+	jQuery.ajax({
+                url: dir+"/"+x,
+                'data':$(this).serialize()+ '&id=' + id,
+                'type':'post',
+                'dataType':'json',
+                'cache':false});			
+	$.fn.yiiGridView.update('ordenes');
 }
 </script>

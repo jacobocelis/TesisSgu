@@ -109,19 +109,14 @@
 	        dateFormat: 'yy-mm-dd',
 	        firstDay: 1,
 	        isRTL: false,
+			changeMonth: true,
+            changeYear: true,
 	        showMonthAfterYear: false,
 	        yearSuffix: '',
-	        
+	        maxDate: '0d',
+	        minDate: '-30d',
 	    };
 	    $.datepicker.setDefaults($.datepicker.regional['es']);
 	});      		
-
-	$("#Actividades_fechaRealizada").datepicker({
-		onSelect: function(selected) {
-			$("#findate").datepicker("option","minDate", selected+" +1d");
-		}
-	});
-	//$("#Actividades_fechaRealizada").datepicker("option","minDate", selected+" +1d");
-	
-
+	$("#Actividades_fechaRealizada").datepicker();
 </script>

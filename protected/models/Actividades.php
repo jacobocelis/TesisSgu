@@ -32,6 +32,12 @@ class Actividades extends CActiveRecord
 	/**
 	 * @return string the associated database table name
 	 */
+	public function color($id,$estatus){
+		if($id==4)
+			return '<strong><span style="color:orange">'.$estatus.'</span></strong>';
+		if($id==3)
+			return '<strong><span style="color:green">'.$estatus.'</span></strong>';
+    }
 	public function tableName()
 	{
 		return 'sgu_actividades';

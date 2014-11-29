@@ -18,6 +18,12 @@ class Ordenmtto extends CActiveRecord
 	/**
 	 * @return string the associated database table name
 	 */
+	public function estado($id){
+		if($id==5)
+			return 0;
+		if($id==6)
+			return 1;
+	}
 	public function tableName()
 	{
 		return 'sgu_ordenMtto';

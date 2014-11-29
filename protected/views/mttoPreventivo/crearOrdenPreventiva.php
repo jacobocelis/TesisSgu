@@ -92,6 +92,9 @@ $this->widget('zii.widgets.grid.CGridView', array(
 	/*$this->renderPartial('_formCrearOrden',array('model'=>$modeloOrdenMtto));*/?>
 </div>
 <style>
+.grid-view table.items tr.selected {
+    background: none repeat scroll 0% 0% rgba(0, 249, 3, 0.3);
+}
 .crugepanel {
     background-color: #FFF;
     border: 1px dotted #AAA;

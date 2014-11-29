@@ -1,13 +1,14 @@
 <?php 
 $this->breadcrumbs=array(
 	'Mantenimiento preventivo'=>array('mttoPreventivo/index'),
-	'Mantenimientos iniciales',
+	'Órdenes abiertas'=>array('mttoPreventivo/verOrdenes'),
+	'Actualizar órden'=>array('mttoPreventivo/mttopRealizados/'.$id),
+	'Facturación',
 );
 	$this->menu=array(
 	array('label'=>'Ver programas de mantenimiento', 'url'=>array('planes')),
 	array('label'=>'Crear programa de mantenimiento', 'url'=>array('crearPlan')),
 	array('label'=>'Histórico de mantenimientos', 'url'=>array('')),
-	array('label'=>'Regresar', 'url'=>array('index')),
 );
 ?>
 <div id="factura" class='crugepanel user-assignments-role-list'>
@@ -15,10 +16,10 @@ $this->breadcrumbs=array(
 <div id="detalle" class='crugepanel user-assignments-role-list'>
 <h1>Información de facturación</h1>
 <?php
-
 $this->widget('zii.widgets.grid.CGridView', array(
                 'id'=>'factura',
 				'summaryText'=>'',
+				'selectableRows'=>0,
 			    'enableSorting' => false,
 				'emptyText'=>'no existen mantenimientos preventivos registrados',
                 'dataProvider'=>$factura,
@@ -47,7 +48,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
 				array(
 						'headerHtmlOptions'=>array('style'=>'text-align:left;width:20px;text-align:center;'),
 						'htmlOptions'=>array('style'=>'text-align:center;width:30px;'),
-						'header'=>'Modificar',
+						'header'=>'Modificar datos de factura',
 						'type'=>'raw',
 						'value'=>'CHtml::link(
                         CHtml::image(Yii::app()->request->baseUrl."/imagenes/agregar.png",

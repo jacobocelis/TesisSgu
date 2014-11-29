@@ -17,6 +17,7 @@ $this->breadcrumbs=array(
 	$this->widget('zii.widgets.grid.CGridView', array(
                 'id'=>'inicial',
 				'summaryText'=>'',
+				'selectableRows'=>0,
 			    'enableSorting' => true,
 				'emptyText'=>'no existen mantenimientos preventivos registrados',
                 'dataProvider'=>$dataProvider,

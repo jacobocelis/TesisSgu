@@ -3,10 +3,10 @@
 	'Mantenimiento preventivo'=>array('mttoPreventivo/index'),
 	'Órdenes abiertas',
 );
-	$this->menu=array(
-	array('label'=>'Registrar mantenimiento realizado', 'url'=>array('')),
-	array('label'=>'Cerrar órdenes', 'url'=>array('')),
-	array('label'=>'Regresar', 'url'=>array('index')),
+$this->menu=array(
+	array('label'=>'<div id="menu"><strong>Órdenes de mantenimiento</strong></div>'),
+	array('label'=>'      Crear orden de mantenimiento', 'url'=>array('crearOrdenPreventiva')),
+	
 );
 ?>
 
@@ -34,12 +34,12 @@ $this->widget('zii.widgets.grid.CGridView', array(
 				),
 				
 				array(
-					'header'=>'Fecha de creada',
+					'header'=>'Fecha y hora de creada',
 					'name'=>'fecha',
-					
+					'value'=>'date("d/m/Y h:i A",strtotime($data->fecha))',
 					'htmlOptions'=>array('style'=>'text-align:center;width:100px'),
 				),
-				array(
+				array( 
 					'header'=>'Estado',
 					'name'=>'idestatus',
 					'value'=>'$data->idestatus0->estatus',
@@ -96,6 +96,12 @@ $this->widget('zii.widgets.grid.CGridView', array(
 		
 </div>
 <style>
+#menu{
+	font-size:15px;
+}
+.grid-view table.items tr.selected {
+    background: none repeat scroll 0% 0% rgba(0, 249, 3, 0.3);
+}
 .crugepanel {
     background-color: #FFF;
     border: 1px dotted #AAA;

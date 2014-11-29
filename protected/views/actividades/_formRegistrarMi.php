@@ -25,7 +25,7 @@
 
 	<div class="row">
 		<?php echo $form->labelEx($model,'ultimoFecha'); ?>
-		<?php echo $form->textField($model,'ultimoFecha',array('value'=>$id?'':$model->ultimoFecha,'style' => 'width:100px;')); ?>
+		<?php echo $form->textField($model,'ultimoFecha',array('value'=>$id?'':$model->ultimoFecha,'readonly'=>'readonly','style' => 'width:100px;')); ?>
 		<?php echo $form->error($model,'ultimoFecha'); ?>
 	</div>
 	
@@ -102,19 +102,15 @@
 	        dateFormat: 'yy-mm-dd',
 	        firstDay: 1,
 	        isRTL: false,
+			changeMonth: true,
+            changeYear: true,
 	        showMonthAfterYear: false,
 	        yearSuffix: '',
-	        
+	        maxDate: '0d',
+	        //minDate: '0d',
 	    };
 	    $.datepicker.setDefaults($.datepicker.regional['es']);
 	});      		
 
-	$("#inidate").datepicker({
-		onSelect: function(selected) {
-			$("#findate").datepicker("option","minDate", selected+" +1d");
-		}
-	});
 	$("#Actividades_ultimoFecha").datepicker();
-	
-
 </script>
