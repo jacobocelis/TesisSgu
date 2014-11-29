@@ -62,12 +62,13 @@ $this->widget('zii.widgets.grid.CGridView', array(
 						'type'=>'raw',
 						'value'=>'CHtml::link(
                         CHtml::image(Yii::app()->request->baseUrl."/imagenes/ver.png",
-                                          "Ver detalle",array("title"=>"Editar")),
-                        "",
+                                          "Ver detalle",array("title"=>"Ver")),
+										  
+                        Yii::app()->createUrl("mttoPreventivo/vistaPrevia", array("id"=>$data->id)),
                         array(
 								
                                 \'style\'=>\'cursor: pointer;text-decoration: underline;text-align:center;\',
-                                \'onclick\'=>\'{registrarMi("\'.Yii::app()->createUrl("actividades/update",array("id"=>$data["id"],"idestatus"=>1)).\'"); $("#dialog").dialog("open");}\'
+                                
                         )
                 );',),
 

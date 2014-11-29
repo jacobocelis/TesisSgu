@@ -23,7 +23,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
 			    'enableSorting' => true,
 				'emptyText'=>'No hay mantenimientos realizados',
                 'dataProvider'=>$dataProvider,
-				'rowCssClassExpression'=>'$this->dataProvider->data[$row]->diasRestantes($this->dataProvider->data[$row]->proximoFecha)>=5?"":"rojo"',
+				
 				
 				'columns'=>array(
 				array(
@@ -101,9 +101,6 @@ $this->widget('zii.widgets.grid.CGridView', array(
     padding: 10px;
 }
 
-.rojo{
-background: none repeat scroll 0% 0% #CDFBCC;
-}
 .ui-progressbar .ui-widget-header {
 	background: #FFF;
 }

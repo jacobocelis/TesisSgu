@@ -1,12 +1,12 @@
 <?php 
 	$this->breadcrumbs=array(
 	'Mantenimiento preventivo'=>array('mttoPreventivo/index'),
-	'Cerrar órdenes',
+	'Detalle de orden',
 );
 $this->menu=array(
 	array('label'=>'<div id="menu"><strong>Órdenes de mantenimiento</strong></div>'),
 	array('label'=>'      Crear orden de mantenimiento', 'url'=>array('crearOrdenPreventiva')),
-	
+	array('label'=>'      Histórico de ordenes', 'url'=>array('historicoOrdenes')),
 );
 ?>
 
@@ -61,21 +61,22 @@ $this->widget('zii.widgets.grid.CGridView', array(
 for($i=0;$i<$totalVeh;$i++){
 $this->widget('zii.widgets.grid.CGridView', array(
                 'id'=>'vehiculos',
+				'hideHeader'=>true,
 				//'selectionChanged'=>'validar',
 				'summaryText'=>'',
 			    'enableSorting' => true,
 				'template'=>"{items}\n{summary}\n{pager}",
-				'selectableRows'=>1,
+				'selectableRows'=>0,
 				'emptyText'=>'No hay ordenes listas para cerrar',
                 'dataProvider'=>$vehiculos[$i],
-				'htmlOptions'=>array('style'=>'cursor:pointer'),
 				'columns'=>array(
 				array(
-					'headerHtmlOptions'=>array('style'=>'width:7%;text-align:left;'),
+					'type'=>'raw',
+					'headerHtmlOptions'=>array('style'=>'width:7%;text-align:left;background:#F3FDA4'),
 					'header'=>'Vehiculo',
-					'value'=>'\' # 0\'.$data->numeroUnidad',
+					'value'=>'\'<strong>Unidad: </strong> #0\'.$data->numeroUnidad.\' \'.$data->idmodelo0->idmarca0->marca.\'  \'.$data->idmodelo0->modelo.\' \'.$data->anno.\' \'.$data->idcolor0->color',
 					//'value'=>'$data->idplan0->idplanGrupo0->CompiledColour->$data-id.\' \'.$data->CompiledColour',
-					'htmlOptions'=>array('style'=>'text-align:left;width:100px'
+					'htmlOptions'=>array('style'=>'text-align:left;width:100px;background:#F3FDA4'
 				),
 			),
 		)
@@ -85,75 +86,98 @@ $this->widget('zii.widgets.grid.CGridView', array(
                 'id'=>'actividades',
 				//'selectionChanged'=>'validar',
 				'summaryText'=>'',
+				'hideHeader'=>true,
 			    'enableSorting' => true,
 				'template'=>"{items}\n{summary}\n{pager}",
-				'selectableRows'=>1,
+				'selectableRows'=>0,
 				'emptyText'=>'No hay ordenes listas para cerrar',
                 'dataProvider'=>$actividades[$i][$j],
-				'htmlOptions'=>array('style'=>'cursor:pointer'),
 				'columns'=>array(
 					array(
 						'type'=>'raw',
-						'headerHtmlOptions'=>array('style'=>'width:40%;text-align:left;'),
+						//'headerHtmlOptions'=>array('style'=>'width:10%;text-align:left;'),
 						'header'=>'         Actividad',
-						'value'=>'\'               \'.Plangrupo::model()->parte($data->idplan0->idplanGrupo).\' : \'.$data->idactividadMtto0->actividad.\'  \'.$data->color($data->idestatus,$data->idestatus0->estatus).\'  el \'.date("d/M/Y",strtotime($data->fechaRealizada))',
-						'htmlOptions'=>array('style'=>'text-align:left;width:100px'),
+						'value'=>'\'<strong>Actividad:</strong> \'.Plangrupo::model()->parte($data->idplan0->idplanGrupo).\' : \'.$data->idactividadMtto0->actividad',
+						'htmlOptions'=>array('style'=>'text-align:left'),
 					),
+					array(
+						'type'=>'raw',
+						//'headerHtmlOptions'=>array('style'=>'text-align:right;'),
+						'header'=>'         Actividad',
+						'value'=>'$data->color($data->idestatus,$data->idestatus0->estatus).\'  \'.date("d/m/Y",strtotime($data->fechaRealizada))',
+						'htmlOptions'=>array('style'=>'text-align:left;width:150px'),
+					),
+					
 				)
     ));
+	if(count($recursos[$i][$j]->getData())>0){
 	$this->widget('zii.widgets.grid.CGridView', array(
                 'id'=>'recursos',
 				//'selectionChanged'=>'validar',
 				'summaryText'=>'',
 			    'enableSorting' => true,
 				'template'=>"{items}\n{summary}\n{pager}",
-				'selectableRows'=>1,
-				'emptyText'=>'No hay ordenes listas para cerrar',
+				'selectableRows'=>0,
+				'emptyText'=>'Esta actividad no tiene recursos asociados',
                 'dataProvider'=>$recursos[$i][$j],
-				'htmlOptions'=>array('style'=>'cursor:pointer'),
 				'columns'=>array(
 					array(
-						'headerHtmlOptions'=>array('style'=>'width:30%;text-align:left;'),
-						'header'=>'                 Recursos',
-						'value'=>'\'                              \'.(($data->idinsumo == null?\'\':$data->idinsumo0->insumo).\'\'.($data->idrepuesto == null?\'\':$data->idrepuesto0->repuesto).\'\'.($data->idservicio == null?\'\':$data->idservicio0->servicio)).\'\'.$data->detalle',
+						'headerHtmlOptions'=>array('style'=>'width:40%;text-align:left;'),
+						'header'=>'<PRE>Recursos',
+						'value'=>'\'\'.(($data->idinsumo == null?\'\':$data->idinsumo0->insumo).\'\'.($data->idrepuesto == null?\'\':$data->idrepuesto0->repuesto).\'\'.($data->idservicio == null?\'\':$data->idservicio0->servicio)).\'\'.$data->detalle',
 						'htmlOptions'=>array('style'=>'text-align:left;width:200px'),
 					),
 					array(
 					'headerHtmlOptions'=>array('style'=>'text-align:left;'),
-					'header'=>'Cantidad',
-					'name'=>'cantidad',
+					'header'=>'<PRE>Cantidad',
+			
+					'value'=>'$data->cantidad',
 					'htmlOptions'=>array('style'=>'width:50px;'),
 					
 					//'footer'=>'',
 				),
 					array(
 					'headerHtmlOptions'=>array('style'=>'text-align:left;'),
-					'header'=>'Precio unitario',
-					'value'=>'$data->costoUnitario.\' BsF.\'',
-					'name'=>'costoUnitario',
+					'header'=>'<PRE>Precio unitario',
+					'value'=>'$data->costoUnitario.\' Bs.\'',
+					
 					
 					'htmlOptions'=>array('style'=>'width:50px;'),
 					//'footer'=>'',
 				),
 				array(
-					'headerHtmlOptions'=>array('style'=>'text-align:left;'),
-					'header'=>'Total',
-					'name'=>'costoTotal',
+					'headerHtmlOptions'=>array('style'=>'text-align:right;'),
+					'header'=>'<PRE>Total',
+					'value'=>'$data->costoTotal',
 					'value'=>'$data->costoTotal.\' BsF.\'',
-					'htmlOptions'=>array('style'=>'width:50px;'),
+					'htmlOptions'=>array('style'=>'width:50px;text-align:right;'),
 					//'footer'=>'',
 				),
 			)
     ));
-	
 	}
 }
-
-
-?>
+}?>
 		
 </div>
 <style>
+strong {
+    font-weight: bold;
+    font-size: 115%;
+}
+pre {
+    display: block;
+    padding: 5.5px;
+    margin: 0px 0px 10px;
+    font-size: 13px;
+    line-height: 20px;
+    word-break: break-all;
+    word-wrap: break-word;
+    white-space: pre-wrap;
+    background-color: #F5F5F5;
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    border-radius: 4px;
+}
 .grid-view {
     padding: 0px 0px;
 }
