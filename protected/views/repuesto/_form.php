@@ -33,8 +33,7 @@
 
 	<div class="row">
 		<?php echo $form->labelEx($tipo,'tipo'); ?>
-		<?php echo $form->dropDownList($tipo,'id',
-		CHtml::listData(Tiporepuesto::model()->findAll(array('order' => 'id ASC')), 'id', 'tipo'),
+		<?php echo $form->dropDownList($tipo,'id',CHtml::listData(Tiporepuesto::model()->findAll(array('order' => 'id ASC')), 'id', 'tipo'),
 		array(
 			'ajax'=>array(
 			'type'=>'POST',
@@ -54,7 +53,7 @@
 	
 	<div class="row">
 		<?php echo $form->labelEx($model,'idunidad'); ?>
-		<?php echo $form->textField($model,'idunidad'); ?>
+		<?php echo $form->dropDownList($model,'idunidad',CHtml::listData(Unidad::model()->findAll(), 'id', 'unidad')); ?>
 		<?php echo $form->error($model,'idunidad'); ?>
 	</div>
 	

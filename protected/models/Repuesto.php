@@ -73,7 +73,7 @@ class Repuesto extends CActiveRecord
 			'repuesto' => 'Repuesto',
 			'descripcion' => 'Descripcion',
 			'idsubTipoRepuesto' => 'Sub-tipo',
-			'idunidad' => 'Idunidad',
+			'idunidad' => 'Unidad',
 		);
 	}
 

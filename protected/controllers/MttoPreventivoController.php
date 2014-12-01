@@ -28,7 +28,7 @@ class MttoPreventivoController extends Controller
 	{
 		return array(
 			array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array('index','view','crearPlan','planes','agregarActividad','obtenerParte','mttopVehiculo','mttopIniciales','calendario','obtenerActividad','agregarRecurso','iniciales','crearordenpreventiva','crearOrden','verOrdenes','cambiarFecha','mttopRealizados','registrarFacturacion','agregarFactura','estatusOrden','cerrarOrdenes','historicoPreventivo','historicoOrdenes','historicoGastos','vistaPrevia'),
+				'actions'=>array('index','view','crearPlan','planes','agregarActividad','obtenerParte','mttopVehiculo','mttopIniciales','calendario','obtenerActividad','agregarRecurso','iniciales','crearordenpreventiva','crearOrden','verOrdenes','cambiarFecha','mttopRealizados','registrarFacturacion','agregarFactura','estatusOrden','cerrarOrdenes','historicoPreventivo','historicoOrdenes','historicoGastos','vistaPrevia','vistaPreviaPDF','generarPdf'),
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
@@ -49,7 +49,70 @@ class MttoPreventivoController extends Controller
 	 * Displays a particular model.
 	 * @param integer $id the ID of the model to be displayed
 	 */
+	 public function actionGenerarPdf($id){
 	 
+  //Consulta para buscar todos los registros
+		 $mPDF1 = Yii::app()->ePdf->mpdf('utf-8','A4','','',15,15,35,25,9,9,'P'); //Esto lo pueden configurar como quieren, para eso deben de entrar en la web de MPDF para ver todo lo que permite.
+		 $mPDF1->useOnlyCoreFonts = true;
+		 $mPDF1->SetTitle("JuzgadoSys - Reporte");
+		 $mPDF1->SetAuthor("S.G.U.");
+		 $mPDF1->SetWatermarkText("U.N.E.T.");
+		 $mPDF1->showWatermarkText = true;
+		 $mPDF1->watermark_font = 'DejaVuSansCondensed';
+		 $mPDF1->watermarkTextAlpha = 0.1;
+		 $mPDF1->SetDisplayMode('fullpage');
+		 $mPDF1->WriteHTML("Pruebaaa"); //hacemos un render partial a una vista preparada, en este caso es la vista pdfReport
+		 $mPDF1->Output('Orden'.date('YmdHis'),'I');  //Nombre del pdf y parámetro para ver pdf o descargarlo directamente.
+		 exit;
+	}
+	
+	public function actionVistaPreviaPDF($id){
+		$orden=new CActiveDataProvider('Ordenmtto',array('criteria' => array(
+			'condition' =>'id='.$id."")
+			,'pagination'=>array('pageSize'=>9999999)));
+			
+		$idvehiculo=Yii::app()->db->createCommand("select distinct( p.idvehiculo), count(*) as  totAct from sgu_plan p, sgu_actividades a, sgu_detalleorden d where d.idactividades=a.id and a.idplan=p.id and d.idordenMtto=".$id." group by p.idvehiculo")->queryAll();
+		$totalVeh=count($idvehiculo);
+		
+		//$actividades=Yii::app()->db->createCommand("select idactividades from sgu_detalleorden where idordenMtto=".$id."")->queryAll();
+		
+		for($i=0;$i<$totalVeh;$i++){
+			$vehiculos[]=new CActiveDataProvider('Vehiculo',array('criteria' => array(
+			'condition' =>'id="'.$idvehiculo[$i]["idvehiculo"].'"',
+			)));
+			
+		$totAct=Yii::app()->db->createCommand('select idactividades as id from sgu_detalleOrden where idordenMtto="'.$id.'" and idactividades in(select a.id from sgu_actividades a, sgu_plan p where a.idplan=p.id and p.idvehiculo="'.$idvehiculo[$i]["idvehiculo"].'")')->queryAll();
+		for($j=0;$j<$idvehiculo[$i]["totAct"];$j++){		
+				$actividades[$i][$j]=new CActiveDataProvider('Actividades',array('criteria' => array(
+				'condition' =>'id="'.$totAct[$j]["id"].'"',
+				)));
+				$recursos[$i][$j]=new CActiveDataProvider('ActividadRecurso',array('criteria' => array(
+				'condition' =>'idactividades="'.$totAct[$j]["id"].'"',
+				)));
+			}
+		}
+		 $mPDF1 = Yii::app()->ePdf->mpdf('utf-8','letter','','',15,15,15,15,9,9,'P'); //Esto lo pueden configurar como quieren, para eso deben de entrar en la web de MPDF para ver todo lo que permite.
+		 //$mPDF1->useOnlyCoreFonts = true;
+		 $mPDF1->SetTitle("Solicitud de servicio SIRCA");
+		 $mPDF1->SetAuthor("J&M");
+		 //$mPDF1->SetWatermarkText("U.N.E.T.");
+		 $mPDF1->showWatermarkText = true;
+		 $mPDF1->watermark_font = 'DejaVuSansCondensed';
+		 $mPDF1->watermarkTextAlpha = 0.1;
+		 $mPDF1->SetDisplayMode('fullpage');
+		 $mPDF1->WriteHTML($this->renderPartial('vistaPreviaPDF',array(
+			'vehiculos'=>$vehiculos,
+			'totalVeh'=>$totalVeh,
+			'actividades'=>$actividades,
+			'idvehiculo'=>$idvehiculo,
+			'recursos'=>$recursos,
+			'orden'=>$orden,
+		),true)); //hacemos un render partial a una vista preparada, en este caso es la vista pdfReport
+		 $mPDF1->Output('Orden'.date('YmdHis'),'I');  //Nombre del pdf y parámetro para ver pdf o descargarlo directamente.
+		 
+		 exit;
+		
+	}	 
 	public function actionVistaPrevia($id){
 		$orden=new CActiveDataProvider('Ordenmtto',array('criteria' => array(
 			'condition' =>'id='.$id."")
@@ -75,6 +138,13 @@ class MttoPreventivoController extends Controller
 				)));
 			}
 		}
+		$totFactura=Yii::app()->db->createCommand('select (round(sum(ar.costoTotal),2)) as Total from sgu_actividadrecurso ar, sgu_detalleorden d where d.idactividades=ar.idactividades and d.idordenMtto="'.$id.'"')->queryRow();
+		
+
+		$factura=new CActiveDataProvider('Factura',array('criteria' => array(
+			'condition'=>'idordenMtto="'.$id.'"'),
+			'pagination'=>array('pageSize'=>9999999)));
+			
 		$this->render('vistaPrevia',array(
 			'vehiculos'=>$vehiculos,
 			'totalVeh'=>$totalVeh,
@@ -82,6 +152,8 @@ class MttoPreventivoController extends Controller
 			'idvehiculo'=>$idvehiculo,
 			'recursos'=>$recursos,
 			'orden'=>$orden,
+			'factura'=>$factura,
+			'totFactura'=>$totFactura
 		));
 	
 	}

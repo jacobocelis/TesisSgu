@@ -51,19 +51,36 @@ $this->widget('zii.widgets.grid.CGridView', array(
 					//'value'=>'$data->idplan0->idplanGrupo0->CompiledColour->$data-id.\' \'.$data->CompiledColour',
 					'htmlOptions'=>array('style'=>'text-align:center;width:150px'),
 				),
-				array(
+						array(
 						'headerHtmlOptions'=>array('style'=>'text-align:center;width:50px;'),
 						'htmlOptions'=>array('style'=>'text-align:center;'),
-						'header'=>'Ver orden',
+						'header'=>'Ver PDF',
 						'type'=>'raw',
 						'value'=>'CHtml::link(
-                        CHtml::image(Yii::app()->request->baseUrl."/imagenes/ver.png",
-                                          "Ver detalle",array("title"=>"Editar")),
-                        "",
+                        CHtml::image(Yii::app()->request->baseUrl."/imagenes/pdf.png",
+                                          "Ver detalle",array("title"=>"Ver")),
+										  
+                        Yii::app()->createUrl("mttoPreventivo/vistaPreviaPDF", array("id"=>$data->id)),
                         array(
 								
                                 \'style\'=>\'cursor: pointer;text-decoration: underline;text-align:center;\',
-                                \'onclick\'=>\'{registrarMi("\'.Yii::app()->createUrl("actividades/update",array("id"=>$data["id"],"idestatus"=>1)).\'"); $("#dialog").dialog("open");}\'
+                                
+                        )
+                );',),
+				array(
+						'headerHtmlOptions'=>array('style'=>'text-align:center;width:50px;'),
+						'htmlOptions'=>array('style'=>'text-align:center;'),
+						'header'=>'Detalle',
+						'type'=>'raw',
+						'value'=>'CHtml::link(
+                        CHtml::image(Yii::app()->request->baseUrl."/imagenes/ver.png",
+                                          "Ver detalle",array("title"=>"Ver")),
+										  
+                        Yii::app()->createUrl("mttoPreventivo/vistaPrevia", array("id"=>$data->id)),
+                        array(
+								
+                                \'style\'=>\'cursor: pointer;text-decoration: underline;text-align:center;\',
+                                
                         )
                 );',),
 				array(

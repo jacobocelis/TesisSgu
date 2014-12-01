@@ -75,7 +75,6 @@ $this->widget('zii.widgets.grid.CGridView', array(
 					'headerHtmlOptions'=>array('style'=>'width:7%;text-align:left;background:#F3FDA4'),
 					'header'=>'Vehiculo',
 					'value'=>'\'<strong>Unidad: </strong> #0\'.$data->numeroUnidad.\' \'.$data->idmodelo0->idmarca0->marca.\'  \'.$data->idmodelo0->modelo.\' \'.$data->anno.\' \'.$data->idcolor0->color',
-					//'value'=>'$data->idplan0->idplanGrupo0->CompiledColour->$data-id.\' \'.$data->CompiledColour',
 					'htmlOptions'=>array('style'=>'text-align:left;width:100px;background:#F3FDA4'
 				),
 			),
@@ -103,11 +102,9 @@ $this->widget('zii.widgets.grid.CGridView', array(
 					array(
 						'type'=>'raw',
 						//'headerHtmlOptions'=>array('style'=>'text-align:right;'),
-						'header'=>'         Actividad',
-						'value'=>'$data->color($data->idestatus,$data->idestatus0->estatus).\'  \'.date("d/m/Y",strtotime($data->fechaRealizada))',
-						'htmlOptions'=>array('style'=>'text-align:left;width:150px'),
+						'value'=>'$data->color($data->idestatus,$data->idestatus0->estatus).\'  \'.(date("d/m/Y",strtotime($data->fechaRealizada))=="31/12/1969"?"":date("d/m/Y",strtotime($data->fechaRealizada)))',
+						'htmlOptions'=>array('style'=>'text-align:center;width:20%;margin-left:10px;'),
 					),
-					
 				)
     ));
 	if(count($recursos[$i][$j]->getData())>0){
@@ -135,29 +132,71 @@ $this->widget('zii.widgets.grid.CGridView', array(
 					'htmlOptions'=>array('style'=>'width:50px;'),
 					
 					//'footer'=>'',
-				),
+					),
 					array(
 					'headerHtmlOptions'=>array('style'=>'text-align:left;'),
-					'header'=>'<PRE>Precio unitario',
-					'value'=>'$data->costoUnitario.\' Bs.\'',
-					
-					
+					'header'=>'<PRE>Unidad',
+					'value'=>'$data->idunidad0->unidad',
 					'htmlOptions'=>array('style'=>'width:50px;'),
 					//'footer'=>'',
-				),
+					),
+					array(
+					'headerHtmlOptions'=>array('style'=>'text-align:left; width:50px;'),
+					'header'=>'<PRE>Precio unitario',
+					'value'=>'$data->costoUnitario.\' Bs.\'',
+					'htmlOptions'=>array('style'=>'width:50px;'),
+					//'footer'=>'',
+					),
 				array(
 					'headerHtmlOptions'=>array('style'=>'text-align:right;'),
 					'header'=>'<PRE>Total',
 					'value'=>'$data->costoTotal',
-					'value'=>'$data->costoTotal.\' BsF.\'',
+					'value'=>'$data->costoTotal.\' Bs.\'',
 					'htmlOptions'=>array('style'=>'width:50px;text-align:right;'),
 					//'footer'=>'',
 				),
 			)
     ));
 	}
-}
-}?>
+}}
+$this->widget('zii.widgets.grid.CGridView', array(
+                'id'=>'factura',
+				'summaryText'=>'',
+				'selectableRows'=>0,
+			    'enableSorting' => false,
+				'emptyText'=>'no hay una factura registrada',
+                'dataProvider'=>$factura,
+				'columns'=>array(
+					array(
+					'header'=>'Fecha de factura',
+					'name'=>'fechaFactura',
+					'type'=>'raw',
+					'value'=>'date("d/m/Y",strtotime($data->fechaFactura))',
+					'htmlOptions'=>array('style'=>'width:80px;text-align:center;'),
+				),
+				array(
+					'header'=>'Código de factura',
+					'name'=>'codigo',
+					'type'=>'raw',
+					//'value'=>'',
+					'htmlOptions'=>array('style'=>'width:80px;text-align:center;'),
+				),
+				array(
+					'header'=>'Proveedor',
+					'name'=>'idproveedor',
+					'type'=>'raw',
+					'value'=>'$data->idproveedor0->nombre',
+					'htmlOptions'=>array('style'=>'width:80px;text-align:center;'),
+				),
+					array(
+					'header'=>'Total gastado en órden',
+					//'type'=>'raw',
+					'value'=>$totFactura["Total"],
+					'htmlOptions'=>array('style'=>'width:80px;text-align:center;'),
+				),
+			)
+    ));
+?>
 		
 </div>
 <style>

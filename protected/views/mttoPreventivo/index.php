@@ -32,7 +32,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
 			    'enableSorting' => true,
 				'emptyText'=>'No hay mantenimientos registrados',
                 'dataProvider'=>$dataProvider,
-				'rowCssClassExpression'=>'$this->dataProvider->data[$row]->diasRestantes($this->dataProvider->data[$row]->proximoFecha)>=5?"":"rojo"',
+				'rowCssClassExpression'=>'$this->dataProvider->data[$row]->diasRestantes($this->dataProvider->data[$row]->proximoFecha)>=5?"even":"rojo"',
 				'ajaxUpdate'=>false,
 				'columns'=>array(
 				array(
