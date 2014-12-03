@@ -102,7 +102,6 @@ class ActividadrecursogrupoController extends Controller
 			'model'=>$model,
 		));
 	}
-
 	/**
 	 * Deletes a particular model.
 	 * If deletion is successful, the browser will be redirected to the 'admin' page.
@@ -110,13 +109,14 @@ class ActividadrecursogrupoController extends Controller
 	 */
 	public function actionDelete($id)
 	{
+		Yii::app()->db->createCommand("DELETE FROM `tsg`.`sgu_actividadRecurso` WHERE `sgu_actividadRecurso`.`idactividadRecursoGrupo` = '".$id."' and costoUnitario=0")->query();
 		$this->loadModel($id)->delete();
-
+		
 		// if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
 		if(!isset($_GET['ajax']))
 			$this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));
 	}
-
+	
 	/**
 	 * Lists all models.
 	 */
@@ -131,8 +131,8 @@ class ActividadrecursogrupoController extends Controller
 	/**
 	 * Manages all models.
 	 */
-	public function actionAdmin()
-	{
+	public function actionAdmin(){
+	
 		$model=new Actividadrecursogrupo('search');
 		$model->unsetAttributes();  // clear any default values
 		if(isset($_GET['Actividadrecursogrupo']))
@@ -142,7 +142,6 @@ class ActividadrecursogrupoController extends Controller
 			'model'=>$model,
 		));
 	}
-
 	/**
 	 * Returns the data model based on the primary key given in the GET variable.
 	 * If the data model is not found, an HTTP exception will be raised.
@@ -150,6 +149,7 @@ class ActividadrecursogrupoController extends Controller
 	 * @return Actividadrecursogrupo the loaded model
 	 * @throws CHttpException
 	 */
+	
 	public function loadModel($id)
 	{
 		$model=Actividadrecursogrupo::model()->findByPk($id);

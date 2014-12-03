@@ -16,7 +16,7 @@
 	<p class="note">Campos con <span class="required">*</span> obligatorios.</p>
 	<div class="row">
 		<?php echo $form->labelEx($model,'fechaFactura'); ?>
-		<?php echo $form->textField($model,'fechaFactura',array('style' => 'width:100px;')); ?>
+		<?php echo $form->textField($model,'fechaFactura',array('readonly'=>'readonly','style' => 'width:100px;')); ?>
 		<?php echo $form->error($model,'fechaFactura'); ?>
 	</div>
 	
@@ -32,9 +32,7 @@
 		<?php echo $form->error($model,'idproveedor'); ?>
 	</div>
 	<div class="row">
-	
 		<?php echo $form->hiddenField($model,'idordenMtto',array('value'=>$id)); ?>
-
 	</div>
 	<div class="row buttons">
 		<?php echo CHtml::submitButton($model->isNewRecord ? 'Continuar' : 'Actualizar'); ?>
@@ -69,6 +67,5 @@
 	    };
 	    $.datepicker.setDefaults($.datepicker.regional['es']);
 	});      		
-
 	$("#Factura_fechaFactura").datepicker();
 </script>

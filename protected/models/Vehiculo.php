@@ -109,7 +109,7 @@ class Vehiculo extends CActiveRecord
 			'fechaRegistro' => 'Fecha de registro',
 			'idcolor' => 'Color',
 			'idpropiedad' => 'Propiedad',
-			'KmInicial' => 'Km Inicial',
+			'KmInicial' => 'Kilometraje inicial',
 		);
 	}
 

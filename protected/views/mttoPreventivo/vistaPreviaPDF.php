@@ -43,12 +43,6 @@ $this->widget('zii.widgets.grid.CGridView', array(
 					'htmlOptions'=>array('style'=>'text-align:center;width:100px'),
 				),
 				array(
-					'header'=>'Estado',
-					//'name'=>'idestatus',
-					'value'=>'$data->idestatus0->estatus',
-					'htmlOptions'=>array('style'=>'text-align:center;width:100px'),
-				),
-				array(
 					'header'=>'Responsable',
 					
 					'value'=>'$data->responsable',
@@ -123,6 +117,14 @@ $this->widget('zii.widgets.grid.CGridView', array(
 						'value'=>'\'\'.(($data->idinsumo == null?\'\':$data->idinsumo0->insumo).\'\'.($data->idrepuesto == null?\'\':$data->idrepuesto0->repuesto).\'\'.($data->idservicio == null?\'\':$data->idservicio0->servicio)).\'\'.$data->detalle',
 						'htmlOptions'=>array('style'=>'text-align:left;width:200px'),
 					),
+					
+					array(
+					'headerHtmlOptions'=>array('style'=>'text-align:center;'),
+					'header'=>'<PRE>Tipo',
+					'value'=>'(($data->idinsumo == null?\'\':\'Insumo\').\'\'.($data->idrepuesto == null?\'\':\'Repuesto\').\'\'.($data->idservicio == null?\'\':\'Servicio\')).\' \'.$data->detalle',
+					'htmlOptions'=>array('style'=>'width:100px;text-align:center;'),
+					//'footer'=>'',
+				),
 					array(
 					'headerHtmlOptions'=>array('style'=>'text-align:center;'),
 					'header'=>'<PRE>Cantidad',
@@ -202,7 +204,7 @@ h1 {
 }
 .grid-view table.items td {
     font-size: 0.9em;
-    border: 1px solid #5877C3;
+    border: 1px solid #000;
     padding: 0.3em;
 }
 .grid-view table.items th, .grid-view table.items td {

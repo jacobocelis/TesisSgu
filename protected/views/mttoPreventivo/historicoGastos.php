@@ -61,7 +61,7 @@ $this->menu=array(
 				array(
 					'headerHtmlOptions'=>array('style'=>'text-align:left;'),
 					'header'=>'Precio unitario',
-					'value'=>'$data->costoUnitario.\' BsF.\'',
+					'value'=>'number_format($data->costoUnitario, 2,",",".").\' BsF.\'',
 					'name'=>'costoUnitario',
 					
 					'htmlOptions'=>array('style'=>'width:50px;'),
@@ -71,7 +71,7 @@ $this->menu=array(
 					'headerHtmlOptions'=>array('style'=>'text-align:left;'),
 					'header'=>'Total',
 					'name'=>'costoTotal',
-					'value'=>'$data->costoTotal.\' BsF.\'',
+					'value'=>'number_format($data->costoUnitario, 2,",",".").\' BsF.\'',
 					'htmlOptions'=>array('style'=>'width:50px;'),
 					//'footer'=>'',
 				),

@@ -4,11 +4,11 @@
 	'Calendario de mantenimientos',
 );
 $this->menu=array(
-	array('label'=>'Crear planes', 'url'=>array('crearPlan')),
-	array('label'=>'Ver planes', 'url'=>array('planes')),
-	array('label'=>'mantenimientos abiertos', 'url'=>array('planes')),
-	array('label'=>'Histórico de mantenimientos', 'url'=>array('planes')),
-	array('label'=>'Regresar', 'url'=>array('index')),
+	array('label'=>'<div id="menu"><strong>Opciones de mantenimiento</strong></div>'),
+	array('label'=>'      Crear programa de mantenimiento', 'url'=>array('crearPlan')),
+	array('label'=>'      Ver programas de mantenimiento', 'url'=>array('planes')),
+	
+	 
 );
 ?>
 <?php $this->widget('ext.EFullCalendar.EFullCalendar', array(

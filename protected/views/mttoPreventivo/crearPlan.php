@@ -4,7 +4,11 @@
 	'Crear programa asociado',
 );
 	$this->menu=array(
-	array('label'=>'Ver programas de mantenimiento', 'url'=>array('planes')),
+	array('label'=>'<div id="menu"><strong>Opciones de mantenimiento</strong></div>'),
+	array('label'=>'      Crear programa de mantenimiento', 'url'=>array('crearPlan')),
+	array('label'=>'      Ver programas de mantenimiento', 'url'=>array('planes')),
+	array('label'=>'      Ajuste de fechas', 'url'=>array('calendario')),
+	
 );
 ?>
 <div class='form'>
@@ -54,7 +58,7 @@ h1 {
     text-decoration: none;
 }
 .grid-view table.items th {
-    color: #AAA;
+    color: #000;
     background: none repeat scroll 0% 0% #C6DDED;
     text-align: center;
 }

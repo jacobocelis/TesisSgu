@@ -1,8 +1,4 @@
 
-
-* seleccionar de un list marca modelo y año, o escribir todo en un texto que repuesto 
-le sirve a que carros.
-
 *la especificacion de lo que debe usar un vehiculo. por ejemplo
 para un 2015.(aceite 15w40). se debe especificar en algun lado o se
 puede obviar?

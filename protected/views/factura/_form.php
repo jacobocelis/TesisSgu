@@ -43,6 +43,12 @@
 		<?php echo $form->error($model,'idordenMtto'); ?>
 	</div>
 
+	<div class="row">
+		<?php echo $form->labelEx($model,'total'); ?>
+		<?php echo $form->textField($model,'total'); ?>
+		<?php echo $form->error($model,'total'); ?>
+	</div>
+
 	<div class="row buttons">
 		<?php echo CHtml::submitButton($model->isNewRecord ? 'Create' : 'Save'); ?>
 	</div>

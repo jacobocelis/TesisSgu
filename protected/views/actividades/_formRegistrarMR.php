@@ -24,17 +24,21 @@
 
 		<?php echo $form->hiddenField($model,'ultimoFecha'); ?>
 	
-	<div class="row">
-		<?php echo $form->labelEx($model,'fechaRealizada'); ?>
-		<?php echo $form->textField($model,'fechaRealizada',array('value'=>$id?'':$model->fechaRealizada,'style' => 'width:100px;')); ?>
-		<?php echo $form->error($model,'fechaRealizada'); ?>
-	</div>
-
+	
 	<div class="row">
 		<?php echo $form->labelEx($model,'kmRealizada'); ?>
 		<?php echo $form->textField($model,'kmRealizada',array('value'=>$id?'':$model->kmRealizada,'style' => 'width:100px;')); ?> Km
 		<?php echo $form->error($model,'kmRealizada'); ?>
 	</div>
+	
+	
+	<div class="row">
+		<?php echo $form->labelEx($model,'fechaRealizada'); ?>
+		<?php echo $form->textField($model,'fechaRealizada',array('value'=>$id?'':$model->fechaRealizada,'readonly'=>'readonly','style' => 'width:100px;')); ?>
+		<?php echo $form->error($model,'fechaRealizada'); ?>
+	</div>
+
+	
 	
 	<div class="row">
 		<?php echo $form->hiddenField($model,'frecuenciaKm'); ?>

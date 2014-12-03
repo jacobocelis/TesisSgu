@@ -15,7 +15,6 @@ $this->menu=array(
 <?php
 $this->widget('zii.widgets.grid.CGridView', array(
                 'id'=>'ordenes',
-				'selectionChanged'=>'validar',
 				'summaryText'=>'',
 			    'enableSorting' => true,
 				'template'=>"{items}\n{summary}\n{pager}",
@@ -51,7 +50,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
 					//'value'=>'$data->idplan0->idplanGrupo0->CompiledColour->$data-id.\' \'.$data->CompiledColour',
 					'htmlOptions'=>array('style'=>'text-align:center;width:150px'),
 				),
-						array(
+				array(
 						'headerHtmlOptions'=>array('style'=>'text-align:center;width:50px;'),
 						'htmlOptions'=>array('style'=>'text-align:center;'),
 						'header'=>'Ver PDF',
@@ -65,6 +64,20 @@ $this->widget('zii.widgets.grid.CGridView', array(
 								
                                 \'style\'=>\'cursor: pointer;text-decoration: underline;text-align:center;\',
                                 
+                        )
+                );',),
+						array(
+					'headerHtmlOptions'=>array('style'=>'text-align:center;width:30px;'),
+					'htmlOptions'=>array('style'=>'text-align:center;'),
+					'header'=>'Enviar',
+					'type'=>'raw',
+					'value'=>'CHtml::link(
+                     CHtml::image(Yii::app()->request->baseUrl."/imagenes/correo.png",
+                                          "Agregar",array("title"=>"Editar")),
+                        "",
+                        array(
+                                \'style\'=>\'cursor: pointer;text-decoration: underline;text-align:center;\',
+                                \'onclick\'=>\'{enviar("\'.Yii::app()->createUrl("mttoPreventivo/correo",array("id"=>$data["id"])).\'"); $("#dialog").dialog("open");}\'
                         )
                 );',),
 				array(
@@ -110,7 +123,22 @@ $this->widget('zii.widgets.grid.CGridView', array(
 			)
         ));
 		?>
-		
+<?php
+/*ventana agregar informacion*/
+$this->beginWidget('zii.widgets.jui.CJuiDialog', array( // the dialog
+    'id'=>'dialog',
+    'options'=>array(
+        'title'=>'Enviar orden por correo electrónico',
+        'autoOpen'=>false,
+        'modal'=>true,
+        'width'=>400,
+        //'height'=>255,
+		'resizable'=>false
+    ),
+));?>
+<div class="divForForm"></div>
+ 
+<?php $this->endWidget();?>
 </div>
 <style>
 #menu{
@@ -186,33 +214,31 @@ h1 {
 }
 </style>
 <script>
-$('#formulario').hide();
-function validar(){
-var idAct = $.fn.yiiGridView.getSelection('actividades');
-	if(idAct=="")
-		$('#formulario').hide(500);
-	else
-		$('#formulario').show(500);
-		
-jQuery.ajax({
-                url: "crearOrden",
-                'data':$(this).serialize()+ '&idAct=' + idAct,
+var Uurl;
+function enviar(id){
+	 if (typeof(id)=='string')
+                Uurl=id;
+	jQuery.ajax({
+                url: Uurl,
+                'data':$(this).serialize(),
                 'type':'post',
                 'dataType':'json',
-                'success':function(data){
-                                if (data.status == 'failure'){
-                                        $('#formulario').html(data.div);
+                'success':function(data)
+                        {
+                                if (data.status == 'failure')
+                                {
+                                        $('#dialog div.divForForm').html(data.div);
                                         // Here is the trick: on submit-> once again this function!
-                                        $('#formulario form').submit(validar); // 
+                                        $('#dialog div.divForForm form').submit(enviar); // updatePaymentComment
                                 }
-                                else{
-                                        $('#formulario').html(data.div);
+                                else
+                                {
+                                        $('#dialog div.divForForm').html(data.div);
+                                        setTimeout("$('#dialog').dialog('close') ",1000);
+                                        $.fn.yiiGridView.update('final');
                                 }
                         } ,
                 'cache':false});
-	
-
-		return false; 
+    return false; 
 }
-
 </script>

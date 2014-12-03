@@ -162,14 +162,18 @@
 				),
 				array(
 					'headerHtmlOptions'=>array('style'=>'text-align:left;'),
-					'header'=>'Cantidad',
-					'name'=>'cantidad',
-					'htmlOptions'=>array('style'=>'width:50px;'),
-					
-					//'footer'=>'',
+					'header'=>'Tipo',
+					'value'=>'(($data->idinsumo == null?\'\':\'Insumo\').\'\'.($data->idrepuesto == null?\'\':\'Repuesto\').\'\'.($data->idservicio == null?\'\':\'Servicio\')).\' \'.$data->detalle',
+					'htmlOptions'=>array('style'=>'width:70px;'),
 				),
 				array(
 					'headerHtmlOptions'=>array('style'=>'text-align:left;'),
+					'header'=>'Cantidad',
+					'name'=>'cantidad',
+					'htmlOptions'=>array('style'=>'width:50px;'),
+				),
+				array(
+					'headerHtmlOptions'=>array('style'=>'text-align:left;width:50px;'),
 					'header'=>'Unidad',
 					'name'=>'idunidad',
 					'value'=>'$data->idunidad0->corto',
@@ -187,7 +191,7 @@
 					),
 				),
 			),
-	));?>
+	));?>		
 <?php echo CHtml::link('agregar recurso(+)', "",  // the link for open the dialog
     array(
         'style'=>'cursor: pointer; text-decoration: underline;',
@@ -403,42 +407,45 @@ var grupoSel="<?php echo $grupoSel; ?>" ;
 	font-weight: bold;
 	font-size: 14px !important;
 	font-family: "Carrois Gothic",sans-serif;
-	border-radius: 3px;
+	
 	text-align: center;
 	padding: 5px;
 	margin-bottom: 10px;
 	color: #000;
 	background: none repeat scroll 0% 0% #C6DDED;
 	text-align: center;
+	border: 1px solid #94A8FF;
 }
 #pieza{
 	font-weight: bold;
-	border-radius: 3px;
 	text-align: left;
 	padding: 5px;
 	color: rgba(255, 0, 0, 1);
 	font-size:120%;
 	background-color: #EFEFEF;
+	border: 1px solid #F2B3B3;
 }
 #recursos{
 	font-weight: bold;
 	font-size: 14px !important;
 	font-family: "Carrois Gothic",sans-serif;
-	border-radius: 3px;
+	
 	text-align: center;
 	padding: 5px;
 	margin-bottom: 10px;
 	color: #000;
 	background: none repeat scroll 0% 0% #C6DDED;
 	text-align: center;
+	border: 1px solid #94A8FF;
 }
 #activi{
 	font-weight: bold;
-	border-radius: 3px;
+	
 	text-align: left;
 	padding: 5px;
 	color: rgba(255, 0, 0, 1);
 	font-size:120%;
+	border: 1px solid #F2B3B3;
 	background-color: #EFEFEF;
 }
 .grid-view {
@@ -450,6 +457,7 @@ var grupoSel="<?php echo $grupoSel; ?>" ;
 </style>
 <style>
 .grid-view table.items th, .grid-view table.items td {
+	color: #000;
     font-size: 0.9em;
     border: 1px solid #94A8FF;
     padding: 0.3em;
@@ -470,6 +478,7 @@ var grupoSel="<?php echo $grupoSel; ?>" ;
 
 .vista table.items th, .grid-view table.items td
 {
+	color: #000;
 	font-size: 0.9em;
 	border: 1px white solid;
 	padding: 0.3em;
@@ -575,6 +584,9 @@ var grupoSel="<?php echo $grupoSel; ?>" ;
 {
 	width: 100%;
 	border: 1px solid #ccc;
+}
+.vista table.items th {
+	color: #000;
 }
 .grid-view table.items {
     border-collapse: collapse;

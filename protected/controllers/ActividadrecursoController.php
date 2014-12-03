@@ -105,6 +105,11 @@ class ActividadrecursoController extends Controller
             $model->attributes=$_POST['Actividadrecurso'];
             if($model->save()){
                 if (Yii::app()->request->isAjaxRequest){
+					if(isset($_POST['idfac'])){
+						$factura=Factura::model()->findByPk($_POST['idfac']);
+						
+						Yii::app()->db->createCommand("update `tsg`.`sgu_factura` set `total` = ".(($model->costoTotal+$factura->total))." where `sgu_factura`.`id` = ".$_POST['idfac']."")->query();
+					}
                     echo CJSON::encode(array(
                         'status'=>'success', 
                         'div'=>"se agregó el costo correctamente"

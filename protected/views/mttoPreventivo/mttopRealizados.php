@@ -13,7 +13,6 @@ $this->breadcrumbs=array(
 ?>
 <div class='crugepanel user-assignments-role-list'>
 	<h1>Actualizar orden de mantenimiento</h1>
-
 <?php
 $this->widget('zii.widgets.grid.CGridView', array(
                 'id'=>'ordenes',
@@ -86,7 +85,6 @@ $this->widget('zii.widgets.grid.CGridView', array(
 			    'enableSorting' => true,
 				'emptyText'=>'no existen mantenimientos preventivos registrados',
                 'dataProvider'=>$dataProvider,
-			
 				'columns'=>array(
 				array(
 					'header'=>'Unidad',
@@ -118,7 +116,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
 					'header'=>'Fecha de realizada',
 					'name'=>'fechaRealizada',
 					'type'=>'raw',
-					'value'=>'$data->valores($data->fechaRealizada)?date("d/M/Y",strtotime($data->fechaRealizada)):$data->noasignado()',
+					'value'=>'$data->valores($data->fechaRealizada)?date("d/m/Y",strtotime($data->fechaRealizada)):$data->noasignado()',
 					'htmlOptions'=>array('style'=>'width:80px;text-align:center;'),
 				),
 				array(

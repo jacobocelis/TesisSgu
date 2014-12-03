@@ -14,6 +14,7 @@ return array(
     // autoloading model and component classes
     'import' => array(
         'application.models.*',
+		'application.controllers.*',
         'application.components.*',
         'application.modules.cruge.components.*',
         'application.modules.cruge.extensions.crugemailer.*',
@@ -23,6 +24,9 @@ return array(
 		'application.extensions.SilcomTreeGridView.*',
 		'application.extensions.EFullCalendar.*',
 		'application.extensions.EYiiPdf.*',
+		'application.extensions.includes.*',
+		'application.extensions.yii-mail.YiiMailMessage',
+		'application.extensions.yii-mail.*',
     ),
     'modules' => array(
         // uncomment the following to enable the Gii tool
@@ -86,6 +90,20 @@ return array(
     ),
     // application components
     'components' => array(
+		'mail' => array(
+		 'class' => 'ext.yii-mail.YiiMail',
+		 'transportType'=>'smtp',
+		 'transportOptions'=>array(
+		 'host'=>'smtp.gmail.com',
+		 'username'=>'jacobo.celis@gmail.com',
+		 'password'=>'91234652',
+		 'port'=>'465',
+		 'encryption'=>'ssl',
+		 ),
+		 'viewPath' => 'application.views.mail',
+		 'logging' => true,
+		 'dryRun' => false
+		 ),
 //
         //  IMPORTANTE:  asegurate de que la entrada 'user' (y format) que por defecto trae Yii
         //               sea sustituida por estas a continuación:
@@ -118,6 +136,7 @@ return array(
 			'orientation' => 'P', // landscape or portrait orientation
 			)*/
 		),),),
+		
         'authManager' => array(
             'class' => 'application.modules.cruge.components.CrugeAuthManager',
         ),

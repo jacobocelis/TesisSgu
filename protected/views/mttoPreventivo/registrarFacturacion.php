@@ -17,10 +17,10 @@ $this->breadcrumbs=array(
 <h1>Información de facturación</h1>
 <?php
 $this->widget('zii.widgets.grid.CGridView', array(
-                'id'=>'factura',
+                'id'=>'factu',
 				'summaryText'=>'',
 				'selectableRows'=>0,
-			    'enableSorting' => false,
+			    //'enableSorting' => false,
 				'emptyText'=>'no existen mantenimientos preventivos registrados',
                 'dataProvider'=>$factura,
 				'columns'=>array(
@@ -28,7 +28,8 @@ $this->widget('zii.widgets.grid.CGridView', array(
 					'header'=>'Fecha de factura',
 					'name'=>'fechaFactura',
 					'type'=>'raw',
-					//'value'=>'',
+					
+					'value'=>'date("d/m/Y",strtotime($data->fechaFactura))',
 					'htmlOptions'=>array('style'=>'width:80px;text-align:center;'),
 				),
 				array(
@@ -43,10 +44,18 @@ $this->widget('zii.widgets.grid.CGridView', array(
 					'name'=>'idproveedor',
 					'type'=>'raw',
 					'value'=>'$data->idproveedor0->nombre',
-					'htmlOptions'=>array('style'=>'width:80px;text-align:center;'),
+					'htmlOptions'=>array('style'=>'width:120px;text-align:center;'),
 				),
 				array(
-						'headerHtmlOptions'=>array('style'=>'text-align:left;width:20px;text-align:center;'),
+					'headerHtmlOptions'=>array('style'=>'width:10px;text-align:center;'),
+					'header'=>'Total facturado',
+					'name'=>'total',
+					'type'=>'raw',
+					'value'=>'number_format($data->total, 2,",",".").\' Bs.\'',
+					'htmlOptions'=>array('style'=>'width:10px;text-align:center;'),
+				),
+				array(
+						'headerHtmlOptions'=>array('style'=>'width:20px;text-align:center;'),
 						'htmlOptions'=>array('style'=>'text-align:center;width:30px;'),
 						'header'=>'Modificar datos de factura',
 						'type'=>'raw',
@@ -105,7 +114,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
 					'header'=>'Fecha de realizada',
 					'name'=>'fechaRealizada',
 					'type'=>'raw',
-					'value'=>'$data->valores($data->fechaRealizada)?date("d/M/Y",strtotime($data->fechaRealizada)):$data->noasignado()',
+					'value'=>'$data->valores($data->fechaRealizada)?date("d/m/Y",strtotime($data->fechaRealizada)):$data->noasignado()',
 					'htmlOptions'=>array('style'=>'width:80px;text-align:center;'),
 				),
 				array(
@@ -160,7 +169,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
 				array(
 					'headerHtmlOptions'=>array('style'=>'text-align:left;'),
 					'header'=>'Precio unitario',
-					'value'=>'$data->costoUnitario.\' BsF.\'',
+					'value'=>'number_format($data->costoUnitario, 2,",",".").\' BsF.\'',
 					'name'=>'costoUnitario',
 					
 					'htmlOptions'=>array('style'=>'width:50px;'),
@@ -170,7 +179,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
 					'headerHtmlOptions'=>array('style'=>'text-align:left;'),
 					'header'=>'Total',
 					'name'=>'costoTotal',
-					'value'=>'$data->costoTotal.\' BsF.\'',
+					'value'=>'number_format($data->costoTotal, 2,",",".").\' BsF.\'',
 					'htmlOptions'=>array('style'=>'width:50px;'),
 					//'footer'=>'',
 				),
@@ -292,12 +301,19 @@ $('#recur').show(500);
 }
 var Uurl;
 function editarActividad(id){
+<?php $factura=$factura->getData();
+	if(isset($factura[0]["id"]))
+		$idfac=$factura[0]["id"];
+	else
+		$idfac=0;
+?>;
+var idfac=<?php echo $idfac?>;
 $('#dialog').dialog('open');
 	 if (typeof(id)=='string')
                 Uurl=id;
 	jQuery.ajax({
                 url: Uurl,
-                'data':$(this).serialize(),
+                'data':$(this).serialize()+'&idfac='+idfac,
                 'type':'post',
                 'dataType':'json',
                 'success':function(data)
@@ -313,6 +329,7 @@ $('#dialog').dialog('open');
                                         $('#dialog div.divForForm').html(data.div);
                                         setTimeout("$('#dialog').dialog('close') ",1000);
                                         $.fn.yiiGridView.update('rec');
+										$.fn.yiiGridView.update('factu');
                                 }
                         } ,
                 'cache':false});

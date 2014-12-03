@@ -33,6 +33,7 @@ class Factura extends CActiveRecord
 		return array(
 			array('fechaFactura, codigo, idproveedor, idordenMtto', 'required'),
 			array('codigo, idproveedor,idordenMtto', 'numerical', 'integerOnly'=>true),
+			array('total', 'numerical'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
 			array('id, fechaFactura, codigo, idproveedor,idordenMtto', 'safe', 'on'=>'search'),
@@ -64,6 +65,7 @@ class Factura extends CActiveRecord
 			'codigo' => 'Código de factura',
 			'idproveedor' => 'Proveedor',
 			'idordenMtto' => 'Idorden Mtto',
+			'total' => 'Total',
 		);
 	}
 
@@ -89,7 +91,8 @@ class Factura extends CActiveRecord
 		$criteria->compare('fechaFactura',$this->fechaFactura,true);
 		$criteria->compare('codigo',$this->codigo);
 		$criteria->compare('idproveedor',$this->idproveedor);
-
+		$criteria->compare('idordenMtto',$this->idordenMtto);
+		$criteria->compare('total',$this->total);
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
 		));

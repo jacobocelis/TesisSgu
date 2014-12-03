@@ -1,6 +1,7 @@
 <?php 
 	$this->breadcrumbs=array(
 	'Mantenimiento preventivo'=>array('mttoPreventivo/index'),
+	'Órdenes abiertas'=>array('mttoPreventivo/verOrdenes'),
 	'Detalle de orden',
 );
 $this->menu=array(
@@ -9,7 +10,6 @@ $this->menu=array(
 	array('label'=>'      Histórico de ordenes', 'url'=>array('historicoOrdenes')),
 );
 ?>
-
 <div class='crugepanel user-assignments-role-list'>
 	<h1>Detalle de orden de mantenimiento</h1>
 <?php
@@ -119,17 +119,23 @@ $this->widget('zii.widgets.grid.CGridView', array(
                 'dataProvider'=>$recursos[$i][$j],
 				'columns'=>array(
 					array(
-						'headerHtmlOptions'=>array('style'=>'width:40%;text-align:left;'),
+						'headerHtmlOptions'=>array('style'=>'width:35%;text-align:left;'),
 						'header'=>'<PRE>Recursos',
 						'value'=>'\'\'.(($data->idinsumo == null?\'\':$data->idinsumo0->insumo).\'\'.($data->idrepuesto == null?\'\':$data->idrepuesto0->repuesto).\'\'.($data->idservicio == null?\'\':$data->idservicio0->servicio)).\'\'.$data->detalle',
-						'htmlOptions'=>array('style'=>'text-align:left;width:200px'),
+						'htmlOptions'=>array('style'=>'text-align:left;width:150px'),
 					),
 					array(
 					'headerHtmlOptions'=>array('style'=>'text-align:left;'),
+					'header'=>'<PRE>Tipo',
+					'value'=>'(($data->idinsumo == null?\'\':\'Insumo\').\'\'.($data->idrepuesto == null?\'\':\'Repuesto\').\'\'.($data->idservicio == null?\'\':\'Servicio\')).\' \'.$data->detalle',
+					'htmlOptions'=>array('style'=>'width:40px;'),
+					//'footer'=>'',
+				),
+					array(
+					'headerHtmlOptions'=>array('style'=>'text-align:left;'),
 					'header'=>'<PRE>Cantidad',
-			
 					'value'=>'$data->cantidad',
-					'htmlOptions'=>array('style'=>'width:50px;'),
+					'htmlOptions'=>array('style'=>'width:40px;'),
 					
 					//'footer'=>'',
 					),
@@ -137,13 +143,13 @@ $this->widget('zii.widgets.grid.CGridView', array(
 					'headerHtmlOptions'=>array('style'=>'text-align:left;'),
 					'header'=>'<PRE>Unidad',
 					'value'=>'$data->idunidad0->unidad',
-					'htmlOptions'=>array('style'=>'width:50px;'),
+					'htmlOptions'=>array('style'=>'width:40px;'),
 					//'footer'=>'',
 					),
 					array(
 					'headerHtmlOptions'=>array('style'=>'text-align:left; width:50px;'),
 					'header'=>'<PRE>Precio unitario',
-					'value'=>'$data->costoUnitario.\' Bs.\'',
+					'value'=>'number_format($data->costoUnitario, 2,",",".").\' Bs.\'',
 					'htmlOptions'=>array('style'=>'width:50px;'),
 					//'footer'=>'',
 					),
@@ -151,7 +157,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
 					'headerHtmlOptions'=>array('style'=>'text-align:right;'),
 					'header'=>'<PRE>Total',
 					'value'=>'$data->costoTotal',
-					'value'=>'$data->costoTotal.\' Bs.\'',
+					'value'=>'number_format($data->costoTotal, 2,",",".").\' Bs.\'',
 					'htmlOptions'=>array('style'=>'width:50px;text-align:right;'),
 					//'footer'=>'',
 				),
@@ -159,6 +165,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
     ));
 	}
 }}
+
 $this->widget('zii.widgets.grid.CGridView', array(
                 'id'=>'factura',
 				'summaryText'=>'',
@@ -189,9 +196,9 @@ $this->widget('zii.widgets.grid.CGridView', array(
 					'htmlOptions'=>array('style'=>'width:80px;text-align:center;'),
 				),
 					array(
-					'header'=>'Total gastado en órden',
+					'header'=>'Total facturado',
 					//'type'=>'raw',
-					'value'=>$totFactura["Total"],
+					'value'=>'number_format($data->total, 2,",",".").\' Bs. \'',
 					'htmlOptions'=>array('style'=>'width:80px;text-align:center;'),
 				),
 			)

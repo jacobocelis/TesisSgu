@@ -4,7 +4,11 @@
 	'Programas de mantenimiento',
 );
 	$this->menu=array(
-	array('label'=>'Editar programas de mantenimiento', 'url'=>array('crearPlan')),
+	array('label'=>'<div id="menu"><strong>Opciones de mantenimiento</strong></div>'),
+	array('label'=>'      Crear programa de mantenimiento', 'url'=>array('crearPlan')),
+	array('label'=>'      Ver programas de mantenimiento', 'url'=>array('planes')),
+	array('label'=>'      Ajuste de fechas', 'url'=>array('calendario')),
+	
 );
 ?>
 <div class='form'>

@@ -28,7 +28,7 @@ class MttoPreventivoController extends Controller
 	{
 		return array(
 			array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array('index','view','crearPlan','planes','agregarActividad','obtenerParte','mttopVehiculo','mttopIniciales','calendario','obtenerActividad','agregarRecurso','iniciales','crearordenpreventiva','crearOrden','verOrdenes','cambiarFecha','mttopRealizados','registrarFacturacion','agregarFactura','estatusOrden','cerrarOrdenes','historicoPreventivo','historicoOrdenes','historicoGastos','vistaPrevia','vistaPreviaPDF','generarPdf'),
+				'actions'=>array('index','view','crearPlan','planes','agregarActividad','obtenerParte','mttopVehiculo','mttopIniciales','calendario','obtenerActividad','agregarRecurso','iniciales','crearordenpreventiva','crearOrden','verOrdenes','cambiarFecha','mttopRealizados','registrarFacturacion','agregarFactura','estatusOrden','cerrarOrdenes','historicoPreventivo','historicoOrdenes','historicoGastos','vistaPrevia','vistaPreviaPDF','generarPdf','correo'),
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
@@ -66,6 +66,23 @@ class MttoPreventivoController extends Controller
 		 exit;
 	}
 	
+	public function actionCorreo($id){
+		//se envia desde la vista mail
+			$model = new Mail;
+		if(isset($_POST['Mail'])){
+				$model->attributes=$_POST['Mail'];
+				if($model->validate()){	
+					$correo = PublicoController::enviarMail($model->to,$model->from,$model->subject,$model->body);
+				}
+		}
+			if (Yii::app()->request->isAjaxRequest){	
+            echo CJSON::encode(array(
+                'status'=>'failure', 
+                'div'=>$this->renderPartial('_formMail', array('model'=>$model), true)
+				));
+            exit;               
+        }
+	}
 	public function actionVistaPreviaPDF($id){
 		$orden=new CActiveDataProvider('Ordenmtto',array('criteria' => array(
 			'condition' =>'id='.$id."")
@@ -91,12 +108,12 @@ class MttoPreventivoController extends Controller
 				)));
 			}
 		}
-		 $mPDF1 = Yii::app()->ePdf->mpdf('utf-8','letter','','',15,15,15,15,9,9,'P'); //Esto lo pueden configurar como quieren, para eso deben de entrar en la web de MPDF para ver todo lo que permite.
+		 $mPDF1 = Yii::app()->ePdf->mpdf(); //Esto lo pueden configurar como quieren, para eso deben de entrar en la web de MPDF para ver todo lo que permite.
 		 //$mPDF1->useOnlyCoreFonts = true;
 		 $mPDF1->SetTitle("Solicitud de servicio SIRCA");
 		 $mPDF1->SetAuthor("J&M");
 		 //$mPDF1->SetWatermarkText("U.N.E.T.");
-		 $mPDF1->showWatermarkText = true;
+		 $mPDF1->showWatermarkText = false;
 		 $mPDF1->watermark_font = 'DejaVuSansCondensed';
 		 $mPDF1->watermarkTextAlpha = 0.1;
 		 $mPDF1->SetDisplayMode('fullpage');
@@ -108,7 +125,7 @@ class MttoPreventivoController extends Controller
 			'recursos'=>$recursos,
 			'orden'=>$orden,
 		),true)); //hacemos un render partial a una vista preparada, en este caso es la vista pdfReport
-		 $mPDF1->Output('Orden'.date('YmdHis'),'I');  //Nombre del pdf y parámetro para ver pdf o descargarlo directamente.
+		 $mPDF1->Output('Orden'.date('YmdHis'),'D');  //Nombre del pdf y parámetro para ver pdf o descargarlo directamente.
 		 
 		 exit;
 		
@@ -169,17 +186,27 @@ class MttoPreventivoController extends Controller
 		}
 	}
 	public function actionCalendario(){
-	$act=Yii::app()->db->createCommand("select concat('Unidad ',v.numeroUnidad ,' ', pg.parte,'=>',am.actividad) as titulo, a.proximoFecha, a.id from sgu_actividadMtto am, sgu_actividades a, sgu_plan p, sgu_vehiculo v, sgu_planGrupo pg where a.idplan=p.id and p.idvehiculo=v.id and p.idplanGrupo=pg.id and am.id=a.idactividadMtto")->queryAll();
+	$act=Yii::app()->db->createCommand("select concat('Unidad ',v.numeroUnidad ,' ', pg.parte,'=>',am.actividad) as titulo, a.proximoFecha, a.id, a.idestatus, a.fechaRealizada from sgu_actividadMtto am, sgu_actividades a, sgu_plan p, sgu_vehiculo v, sgu_planGrupo pg where a.idplan=p.id and p.idvehiculo=v.id and p.idplanGrupo=pg.id and am.id=a.idactividadMtto")->queryAll();
     $tot=count($act);
 	for($i=0;$i<$tot;$i++){
+	if($act[$i]["idestatus"]==3){
+		$color='#21831B';
+		$editable=false;
+		$fecha=$act[$i]["fechaRealizada"];
+	}
+	else{
+		$fecha=$act[$i]["proximoFecha"];
+		$color='#CC0000';
+		$editable=true;
+	}
 	$items[]=array(
 		'id'=>$act[$i]["id"],
         'title'=>$act[$i]["titulo"],
-        'start'=>$act[$i]["proximoFecha"],
-        'color'=>'#CC0000',
+        'start'=>$fecha,
+        'color'=>$color,
         'allDay'=>true,
         //'url'=>'',
-		'editable'=>true,
+		'editable'=>$editable,
 		'selectable' => true,
     );}
 	$this->render('calendar',array(
@@ -409,7 +436,6 @@ class MttoPreventivoController extends Controller
 				   /*inserts por debajo del plan de mantenimiento a cada vehiculo del grupo*/
 				   $totalAct=Yii::app()->db->createCommand('select id from sgu_actividades where idactividadesGrupo="'.$id.'" and idestatus<>3')->queryAll();
                     $total=count($totalAct);
-					//file_put_contents('prueba.txt', print_r($model,true));
 				for($i=0;$i<$total;$i++){
 					Yii::app()->db->createCommand("INSERT INTO `tsg`.`sgu_actividadRecurso` (`cantidad`,`idactividades`,`idinsumo`,`idrepuesto`,`idservicio`,`idunidad`,`detalle`,`idactividadRecursoGrupo`)
 						VALUES (".$model->cantidad.",".$totalAct[$i]["id"].",".($model->idinsumo==null?$null:$model->idinsumo).",".($model->idrepuesto==null?$null:$model->idrepuesto).",".($model->idservicio==null?$null:$model->idservicio).",".$model->idunidad.",'".$model->detalle."',".$model->id.")")->query();
