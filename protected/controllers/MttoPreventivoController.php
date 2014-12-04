@@ -61,8 +61,8 @@ class MttoPreventivoController extends Controller
 		 $mPDF1->watermark_font = 'DejaVuSansCondensed';
 		 $mPDF1->watermarkTextAlpha = 0.1;
 		 $mPDF1->SetDisplayMode('fullpage');
-		 $mPDF1->WriteHTML("Pruebaaa"); //hacemos un render partial a una vista preparada, en este caso es la vista pdfReport
-		 $mPDF1->Output('Orden'.date('YmdHis'),'I');  //Nombre del pdf y parámetro para ver pdf o descargarlo directamente.
+		 $mPDF1->WriteHTML("Pruebaaa");
+		 $mPDF1->Output('Orden'.date('YmdHis'),'I');
 		 exit;
 	}
 	
@@ -108,6 +108,16 @@ class MttoPreventivoController extends Controller
 				)));
 			}
 		}
+		
+		$a=$this->renderPartial('vistaPreviaPDF',array(
+			'vehiculos'=>$vehiculos,
+			'totalVeh'=>$totalVeh,
+			'actividades'=>$actividades,
+			'idvehiculo'=>$idvehiculo,
+			'recursos'=>$recursos,
+			'orden'=>$orden,
+		),true);
+		
 		 $mPDF1 = Yii::app()->ePdf->mpdf(); //Esto lo pueden configurar como quieren, para eso deben de entrar en la web de MPDF para ver todo lo que permite.
 		 //$mPDF1->useOnlyCoreFonts = true;
 		 $mPDF1->SetTitle("Solicitud de servicio SIRCA");
@@ -124,11 +134,9 @@ class MttoPreventivoController extends Controller
 			'idvehiculo'=>$idvehiculo,
 			'recursos'=>$recursos,
 			'orden'=>$orden,
-		),true)); //hacemos un render partial a una vista preparada, en este caso es la vista pdfReport
-		 $mPDF1->Output('Orden'.date('YmdHis'),'D');  //Nombre del pdf y parámetro para ver pdf o descargarlo directamente.
-		 
+		),true));
+		 $mPDF1->Output('Orden-'.$id.'.pdf','D');
 		 exit;
-		
 	}	 
 	public function actionVistaPrevia($id){
 		$orden=new CActiveDataProvider('Ordenmtto',array('criteria' => array(
@@ -220,7 +228,7 @@ class MttoPreventivoController extends Controller
 		$this->render('calendar');
 	}*/
 	public function getOrdenesAbiertas(){
-		$abiertas=Yii::app()->db->createCommand("select count(*) as total from sgu_ordenMtto where idestatus=5")->queryRow();
+		$abiertas=Yii::app()->db->createCommand("select count(*) as total from sgu_ordenMtto where idestatus=5 or idestatus=6")->queryRow();
 		return $abiertas["total"];
 	}
 	public function getOrdenesListas(){
@@ -251,8 +259,8 @@ class MttoPreventivoController extends Controller
 	}
 	public function actionVerOrdenes(){
 		$dataProvider=new CActiveDataProvider('Ordenmtto',array('criteria' => array(
-			'condition' =>'id in (select id from sgu_ordenMtto where idestatus=5)',
-			'order'=>'fecha'
+			'condition' =>'id in (select id from sgu_ordenMtto where idestatus=5 or idestatus=6)',
+			'order'=>'idestatus '
 			)));
 		$this->render('verOrdenes',array(
 			'dataProvider'=>$dataProvider,

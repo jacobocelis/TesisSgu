@@ -76,7 +76,38 @@ $this->menu=array(
 					//'footer'=>'',
 				),
 			),
-	));?></div>
+	));
+			
+$this->Widget('ext.highcharts.HighchartsWidget', array(
+   'options'=>array(
+		'chart'=>array(
+			'type'=>'column'
+		),
+		'title' => array(
+			'text' => 'Gastos por mes realizados en todas las unidades'
+		),
+		'xAxis' => array(
+			'categories' => array('Enero', 'Febrero', 'Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre')
+		),
+		'yAxis' => array(
+			'title' => array('text' => 'Costo(Bs.)')
+		),
+		'series' => array(
+			array('name' => 'Preventivo', 'data' => array(57480, 74850, 25321,11227.77)),
+			array('name' => 'Correctivo', 'data' => array(14150, 9480, 8142,7324.77))
+      ),
+	    'tooltip'=>array(
+            'headerFormat'=>'<span style="font-size:10px">{point.key}</span><table>',
+            'pointFormat'=>'<tr><td style="color:{series.color};padding:0">{series.name}: </td><td style="padding:0"><b>{point.y:.1f} Bs.</b></td></tr>',
+            'footerFormat'=> '</table>',
+            'shared'=> true,
+            'useHTML'=> true,
+        ),
+   )
+));
+
+	?>
+	</div>
 <style>
 .grid-view table.items th {
     color: #000;

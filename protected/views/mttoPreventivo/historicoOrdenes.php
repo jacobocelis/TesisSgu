@@ -9,9 +9,9 @@ $this->breadcrumbs=array(
 $this->menu=array(
 	array('label'=>'<div id="menu"><strong>Historial</strong></div>'),
 	
-	array('label'=>'      Histórico de mantenimientos', 'url'=>array('')),
-	array('label'=>'      Histórico de gastos', 'url'=>array('')),
-	array('label'=>'      Histórico de ordenes', 'url'=>array('')),
+	array('label'=>'      Histórico de mantenimientos', 'url'=>array('historicoPreventivo')),
+	array('label'=>'      Histórico de gastos', 'url'=>array('historicoGastos')),
+	array('label'=>'      Histórico de ordenes', 'url'=>array('historicoOrdenes')),
 );
 ?>
 <div class='crugepanel user-assignments-role-list'>

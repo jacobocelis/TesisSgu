@@ -34,7 +34,7 @@
 	
 	<div class="row">
 		<?php echo $form->labelEx($model,'fechaRealizada'); ?>
-		<?php echo $form->textField($model,'fechaRealizada',array('value'=>$id?'':$model->fechaRealizada,'readonly'=>'readonly','style' => 'width:100px;')); ?>
+		<?php echo $form->textField($model,'fechaRealizada',array('value'=>$id?'':$model->fechaRealizada,'readonly'=>'readonly','style' => 'width:100px;cursor:pointer;')); ?>
 		<?php echo $form->error($model,'fechaRealizada'); ?>
 	</div>
 

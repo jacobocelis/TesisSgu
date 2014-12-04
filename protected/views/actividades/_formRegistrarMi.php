@@ -25,7 +25,7 @@
 
 	<div class="row">
 		<?php echo $form->labelEx($model,'ultimoFecha'); ?>
-		<?php echo $form->textField($model,'ultimoFecha',array('value'=>$id?'':$model->ultimoFecha,'readonly'=>'readonly','style' => 'width:100px;')); ?>
+		<?php echo $form->textField($model,'ultimoFecha',array('value'=>$id?'':$model->ultimoFecha,'readonly'=>'readonly','style' => 'width:100px;cursor:pointer;')); ?>
 		<?php echo $form->error($model,'ultimoFecha'); ?>
 	</div>
 	

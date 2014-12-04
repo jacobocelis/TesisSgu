@@ -85,6 +85,8 @@ $this->widget('zii.widgets.grid.CGridView', array(
 			)
         ));
 		?>
+		
+		
 </div>
 <style>
 #menu{
