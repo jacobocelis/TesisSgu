@@ -82,6 +82,7 @@ class Vehiculo extends CActiveRecord
 			'Vehitems' => array(self::HAS_MANY, 'Vehitem', 'idvehiculo'),
 			'sguInformacions' => array(self::HAS_MANY, 'Informacion', 'idvehiculo'),
 			'sguPlans' => array(self::HAS_MANY, 'Plan', 'idvehiculo'),
+			'sguKilometrajes' => array(self::HAS_MANY, 'Kilometraje', 'idvehiculo'),
 		);
 	}
 
@@ -102,7 +103,7 @@ class Vehiculo extends CActiveRecord
 			'capCarga' => 'Capacidad de carga',
 			'comentario' => 'Comentarios',
 			'cantidadRuedas' => 'Cantidad de ruedas',
-			'capTanque' => 'Capacidad de tanque',
+			'capTanque' => 'Capacidad de tanque',	
 			'idmodelo' => 'Modelo',
 			'idgrupo' => 'Grupo',
 			'idcombustible' => 'Combustible',

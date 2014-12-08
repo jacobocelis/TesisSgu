@@ -1,0 +1,74 @@
+CActiveDataProvider Object
+(
+    [modelClass] => Plangrupo
+    [model] => Plangrupo Object
+        (
+            [_new:CActiveRecord:private] => 
+            [_attributes:CActiveRecord:private] => Array
+                (
+                )
+
+            [_related:CActiveRecord:private] => Array
+                (
+                )
+
+            [_c:CActiveRecord:private] => 
+            [_pk:CActiveRecord:private] => 
+            [_alias:CActiveRecord:private] => t
+            [_errors:CModel:private] => Array
+                (
+                )
+
+            [_validators:CModel:private] => 
+            [_scenario:CModel:private] => 
+            [_e:CComponent:private] => 
+            [_m:CComponent:private] => 
+        )
+
+    [keyAttribute] => 
+    [_criteria:CActiveDataProvider:private] => CDbCriteria Object
+        (
+            [select] => *
+            [distinct] => 
+            [condition] => idgrupo=(select id from sgu_grupo where grupo="Aveo 2012 A/AC")
+            [params] => Array
+                (
+                )
+
+            [limit] => -1
+            [offset] => -1
+            [order] => 
+            [group] => 
+            [join] => 
+            [having] => 
+            [with] => 
+            [alias] => 
+            [together] => 
+            [index] => 
+            [scopes] => 
+            [_e:CComponent:private] => 
+            [_m:CComponent:private] => 
+        )
+
+    [_countCriteria:CActiveDataProvider:private] => 
+    [_id:CDataProvider:private] => Plangrupo
+    [_data:CDataProvider:private] => 
+    [_keys:CDataProvider:private] => 
+    [_totalItemCount:CDataProvider:private] => 
+    [_sort:CDataProvider:private] => 
+    [_pagination:CDataProvider:private] => CPagination Object
+        (
+            [pageVar] => Plangrupo_page
+            [route] => 
+            [params] => 
+            [validateCurrentPage] => 1
+            [_pageSize:CPagination:private] => 9999999
+            [_itemCount:CPagination:private] => 0
+            [_currentPage:CPagination:private] => 
+            [_e:CComponent:private] => 
+            [_m:CComponent:private] => 
+        )
+
+    [_e:CComponent:private] => 
+    [_m:CComponent:private] => 
+)

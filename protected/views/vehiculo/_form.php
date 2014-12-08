@@ -40,6 +40,13 @@
 		<?php echo $form->error($model,'numeroUnidad'); ?>
 	</div>
 
+
+	<div class="row">
+		<?php echo $form->labelEx($model,'KmInicial'); ?>
+		<?php echo $form->textField($model,'KmInicial'); ?>
+		<?php echo $form->error($model,'KmInicial'); ?>
+		
+		
 	<div class="row">
 		<?php echo $form->labelEx($model,'serialCarroceria'); ?>
 		<?php echo $form->textField($model,'serialCarroceria',array('size'=>45,'maxlength'=>45)); ?>

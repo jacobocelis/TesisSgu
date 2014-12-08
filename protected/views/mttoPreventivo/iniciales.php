@@ -53,7 +53,7 @@ $this->breadcrumbs=array(
 					'header'=>'Fecha de último mantenimiento realizado',
 					'name'=>'ultimoFecha',
 					'type'=>'raw',
-					'value'=>'$data->valores($data->ultimoFecha)?date("d/M/Y",strtotime($data->ultimoFecha)):$data->noasignado()',
+					'value'=>'$data->valores($data->ultimoFecha)?date("d/m/Y",strtotime($data->ultimoFecha)):$data->noasignado()',
 					'htmlOptions'=>array('style'=>'width:100px;text-align:center;'),
 					'headerHtmlOptions'=>array('style'=>'width:100px;font-size: 5px;line-height: 15px;'),
 				),

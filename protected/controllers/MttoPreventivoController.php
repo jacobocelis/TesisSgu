@@ -228,7 +228,7 @@ class MttoPreventivoController extends Controller
 		$this->render('calendar');
 	}*/
 	public function getOrdenesAbiertas(){
-		$abiertas=Yii::app()->db->createCommand("select count(*) as total from sgu_ordenMtto where idestatus=5 or idestatus=6")->queryRow();
+		$abiertas=Yii::app()->db->createCommand("select count(*) as total from sgu_ordenMtto where idestatus=5")->queryRow();
 		return $abiertas["total"];
 	}
 	public function getOrdenesListas(){

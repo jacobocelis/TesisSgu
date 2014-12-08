@@ -165,7 +165,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
     ));
 	}
 }}
-
+if(count($factura->getData())>0){
 $this->widget('zii.widgets.grid.CGridView', array(
                 'id'=>'factura',
 				'summaryText'=>'',
@@ -203,6 +203,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
 				),
 			)
     ));
+}
 ?>
 		
 </div>

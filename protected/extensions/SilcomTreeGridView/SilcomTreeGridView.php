@@ -22,7 +22,6 @@
 *   stringExpand        string  "Expand"                For internationalization.
 *
 */
-
 Yii::import('zii.widgets.grid.CGridView');
 
 class SilcomTreeGridView extends CGridView

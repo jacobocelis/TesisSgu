@@ -22,7 +22,10 @@
 			)
         ));
 ?>
-<?php $this->widget('ext.SilcomTreeGridView.SilcomTreeGridView', array(
+
+<?php 
+file_put_contents('prueba.txt', print_r($dataProvider,true));
+$this->widget('ext.SilcomTreeGridView.SilcomTreeGridView', array(
                 'id'=>'plan',
 				'summaryText' => '',
 				'hideHeader'=>true,

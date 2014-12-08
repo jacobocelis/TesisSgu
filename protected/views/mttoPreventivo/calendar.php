@@ -11,7 +11,9 @@ $this->menu=array(
 	 
 );
 ?>
-<?php $this->widget('ext.EFullCalendar.EFullCalendar', array(
+<?php 
+	echo phpversion();
+$this->widget('ext.EFullCalendar.EFullCalendar', array(
      'lang'=>'es',
 	 'id'=>'calendar',
     // remove to use without theme
@@ -44,7 +46,7 @@ $this->menu=array(
 		'eventDrop'=>'js:function(calEvent, dayDelta, minuteDelta, allDay, revertFunc, jsEvent, ui, view){
 				var m = moment();
 				var fecha = $.datepicker.formatDate("yy-mm-dd",calEvent.start);
-				if(calEvent.start<=m){
+				if(fecha<=m){
 					alert("No puede mover un evento a una fecha anterior al día de hoy");
 					revertFunc();
 				}else{
