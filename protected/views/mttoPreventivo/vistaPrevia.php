@@ -1,7 +1,7 @@
 <?php 
 	$this->breadcrumbs=array(
 	'Mantenimiento preventivo'=>array('mttoPreventivo/index'),
-	'Órdenes abiertas'=>array('mttoPreventivo/verOrdenes'),
+	$nom=>array($dir),
 	'Detalle de orden',
 );
 $this->menu=array(
@@ -96,7 +96,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
 						'type'=>'raw',
 						//'headerHtmlOptions'=>array('style'=>'width:10%;text-align:left;'),
 						'header'=>'         Actividad',
-						'value'=>'\'<strong>Actividad:</strong> \'.Plangrupo::model()->parte($data->idplan0->idplanGrupo).\' : \'.$data->idactividadMtto0->actividad',
+						'value'=>'\'<strong>Actividad:</strong> \'.$data->idactividadMtto0->actividad',
 						'htmlOptions'=>array('style'=>'text-align:left'),
 					),
 					array(
@@ -148,7 +148,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
 					),
 					array(
 					'headerHtmlOptions'=>array('style'=>'text-align:left; width:50px;'),
-					'header'=>'<PRE>Precio unitario',
+					'header'=>'<PRE>Costo unitario',
 					'value'=>'number_format($data->costoUnitario, 2,",",".").\' Bs.\'',
 					'htmlOptions'=>array('style'=>'width:50px;'),
 					//'footer'=>'',
@@ -195,11 +195,29 @@ $this->widget('zii.widgets.grid.CGridView', array(
 					'value'=>'$data->idproveedor0->nombre',
 					'htmlOptions'=>array('style'=>'width:80px;text-align:center;'),
 				),
-					array(
-					'header'=>'Total facturado',
-					//'type'=>'raw',
-					'value'=>'number_format($data->total, 2,",",".").\' Bs. \'',
-					'htmlOptions'=>array('style'=>'width:80px;text-align:center;'),
+				array(
+					'headerHtmlOptions'=>array('style'=>'width:10px;text-align:center;'),
+					'header'=>'Sub-Total',
+					'name'=>'total',
+					'type'=>'raw',
+					'value'=>'number_format($data->total, 2,",",".").\' Bs.\'',
+					'htmlOptions'=>array('style'=>'width:10px;text-align:center;'),
+				),
+				array(
+					'headerHtmlOptions'=>array('style'=>'width:10px;text-align:center;'),
+					'header'=>'IVA',
+					'name'=>'iva',
+					'type'=>'raw',
+					'value'=>'number_format($data->iva, 2,",",".").\' Bs.\'',
+					'htmlOptions'=>array('style'=>'width:10px;text-align:center;'),
+				),
+				array(
+					'headerHtmlOptions'=>array('style'=>'width:10px;text-align:center;'),
+					'header'=>'Total Facturado',
+					'name'=>'totalFactura',
+					'type'=>'raw',
+					'value'=>'number_format($data->totalFactura, 2,",",".").\' Bs.\'',
+					'htmlOptions'=>array('style'=>'width:10px;text-align:center;'),
 				),
 			)
     ));

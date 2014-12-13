@@ -121,37 +121,6 @@ class AsignarPiezaGrupoController extends Controller
 						$k++;
 					}
 				}
-					/*llenado por debajo de tabla plan de grupo*/
-					$tipo=Yii::app()->db->createCommand('select t.tipo  from sgu_tipo t, sgu_grupo g where t.id=g.idtipo and g.grupo="'.$itemName.'"')->queryRow();
-					
-					$validar=Yii::app()->db->createCommand('select * from sgu_planGrupo where parte="'.$tipo["tipo"].'" and idgrupo="'.$idGrupo["id"].'" and idplanGrupo is NULL')->queryAll();
-					
-					if(count($validar)==0){
-						Yii::app()->db->createCommand("INSERT INTO `tsg`.`sgu_planGrupo` (`parte`,`idgrupo`,`idplanGrupo`)
-						VALUES ('".$tipo["tipo"]."','".$idGrupo["id"]."',null)")->query();
-					}
-					else{
-						/*falta aqui arreglar que si se cambia el tipo del grupo se actualice el nombre*/
-					}//file_put_contents('pruebaa.txt', print_r($ids,true));
-					 foreach ($ids as $parte) {
-					 		
-						$categoria=Yii::app()->db->createCommand('select tr.tipo from sgu_subTipoRepuesto str, sgu_TipoRepuesto tr, sgu_repuesto r where r.idsubTipoRepuesto=str.id and str.idTipoRepuesto=tr.id and r.id="'.$parte.'"')->queryRow();
-						
-						$idplanGrupo1=Yii::app()->db->createCommand('select id from sgu_planGrupo where parte="'.$tipo["tipo"].'" and idgrupo="'.$idGrupo["id"].'" and idplanGrupo is NULL')->queryRow();
-						Yii::app()->db->createCommand("INSERT ignore INTO `tsg`.`sgu_planGrupo` (`parte`,`idgrupo`,`idplanGrupo`)
-						VALUES ('".$categoria["tipo"]."',".$idGrupo["id"].",".$idplanGrupo1["id"].")")->query();
-						
-						$idplanGrupo2=Yii::app()->db->createCommand('select id from sgu_planGrupo where parte="'.$categoria["tipo"].'" and idgrupo="'.$idGrupo["id"].'" and idplanGrupo="'.$idplanGrupo1['id'].'"')->queryRow();
-						$Subcategoria=Yii::app()->db->createCommand('select str.subTipo from sgu_subTipoRepuesto str, sgu_repuesto r where r.idsubTipoRepuesto=str.id and r.id="'.$parte.'"')->queryRow();
-						Yii::app()->db->createCommand("INSERT ignore INTO `tsg`.`sgu_planGrupo` (`parte`,`idgrupo`,`idplanGrupo`)
-						VALUES ('".$Subcategoria["subTipo"]."',".$idGrupo["id"].",".$idplanGrupo2["id"].")")->query();
-						
-						$idplanGrupo3=Yii::app()->db->createCommand('select id from sgu_planGrupo where parte="'.$Subcategoria["subTipo"].'" and idgrupo="'.$idGrupo["id"].'" and idplanGrupo="'.$idplanGrupo2['id'].'"')->queryRow();
-						$repu=Yii::app()->db->createCommand('select r.repuesto from sgu_repuesto r where r.id="'.$parte.'"')->queryRow();
-						Yii::app()->db->createCommand("INSERT ignore INTO `tsg`.`sgu_planGrupo` (`parte`,`idgrupo`,`idplanGrupo`)
-						VALUES ('".$repu["repuesto"]."',".$idGrupo["id"].",".$idplanGrupo3["id"].")")->query();
-						
-					} // and r.id not in (select re.id from sgu_repuesto re, sgu_subTipoRepuesto str, sgu_TipoRepuesto tr where re.idsubTipoRepuesto=str.id and str.idTipoRepuesto= tr.id and tr.id=4)
 			}
 			if ($mode == 'revoke'){
 				/*eliminando cada vehiculo del grupo*/
@@ -163,23 +132,8 @@ class AsignarPiezaGrupoController extends Controller
 						WHERE `sgu_CaracteristicaVeh`.`idvehiculo` = ".$totalVeh[$i]['id']." and `sgu_CaracteristicaVeh`.`idrepuesto`=".$uid)->query();
 					}
 				}
-				/*eliminando en cantidadGrupo cantidad veces el repuesto
-				(drop in cascade lo hace la bd)*/
-				
-				/*eliminando por debajo de plangrupo las piezas*/
-				foreach ($ids as $parte) {
-					$parte=Yii::app()->db->createCommand('select parte from sgu_planGrupo where parte=(select repuesto from sgu_repuesto where id="'.$parte.'") and idgrupo="'.$idGrupo["id"].'"')->queryRow();
-					Yii::app()->db->createCommand("DELETE FROM `tsg`.`sgu_planGrupo` 
-					WHERE parte = '".$parte["parte"]."' and idgrupo='".$idGrupo["id"]."'")->query();
-				}
-				/*aqui falta eliminar si queda la ultima pieza de una categoria eliminar la part y la subparte
-				y manejar la execpcion de que no elimine si hay actividades de mantenimiento asociadas.
-				*/
 			}
         }
-        // entrega los repuestos asignados a este grupo
-        //
-        
 		if (isset($_GET['itemName'])) {
             $authItemName = $_GET['itemName'];
 			$pieza=$pieza_->ActualizarRepuestos($authItemName);

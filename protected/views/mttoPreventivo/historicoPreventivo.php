@@ -28,17 +28,10 @@ $this->widget('zii.widgets.grid.CGridView', array(
 				'columns'=>array(
 				array(
 					'header'=>'Unidad',
-					'name'=>'idplan',
-					'value'=>'str_pad((int) $data->idplan0->idvehiculo0->numeroUnidad,2,"0",STR_PAD_LEFT);',
+					'name'=>'idvehiculo',
+					'value'=>'str_pad((int) $data->idvehiculo0->numeroUnidad,2,"0",STR_PAD_LEFT);',
 					//'value'=>'$data->idplan0->idplanGrupo0->CompiledColour->$data-id.\' \'.$data->CompiledColour',
 					'htmlOptions'=>array('style'=>'text-align:center;width:60px'),
-				),
-				array(
-					'header'=>'Parte',
-					'name'=>'idplan',
-					'value'=>'Plangrupo::model()->parte($data->idplan0->idplanGrupo)',
-					//'value'=>'$data->idplan0->idplanGrupo0->CompiledColour->$data-id.\' \'.$data->CompiledColour',
-					'htmlOptions'=>array('style'=>'text-align:center;width:150px'),
 				),
 				array(
 					'header'=>'Actividad',

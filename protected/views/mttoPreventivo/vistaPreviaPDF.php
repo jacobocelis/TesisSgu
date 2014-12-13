@@ -46,7 +46,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
 						'type'=>'raw',
 						//'headerHtmlOptions'=>array('style'=>'width:80%;text-align:left;'),
 						'header'=>'         Actividad',
-						'value'=>'\'<strong>Actividad:</strong> \'.Plangrupo::model()->parte($data->idplan0->idplanGrupo).\' : \'.$data->idactividadMtto0->actividad',
+						'value'=>'\'<strong>Actividad:</strong> \'.$data->idactividadMtto0->actividad',
 						'htmlOptions'=>array('style'=>'text-align:left'),
 					),
 				)

@@ -226,6 +226,10 @@ $this->beginWidget('zii.widgets.jui.CJuiDialog', array( // the dialog
 </div>
 </div>
 <style>
+ul, ol {
+    padding: 0px;
+    margin: 0px 0px 10px 0px;
+}		
 .buscar{
 	display: inline-block;
 height: 20px;
@@ -513,12 +517,10 @@ max-width:350px;
 .crugepanel {
     background-color: white;
     border: 1px dotted #aaa;
-    border-radius: 5px;
     box-shadow: 3px 3px 5px #eee;
     display: block;
     margin-top: 10px;
-    padding: 10px;
-	max-width: 820px;
+    padding: 10px;	
 }
 .auth-item-error-msg {
     background-color: rgb(255, 200, 200);
@@ -670,7 +672,7 @@ ul.auth-item input {
 }
 ul.auth-item li {
     border: 1px dotted #aaa;
-    border-radius: 5px;
+    border-radius: 1px;
     box-shadow: 3px 3px 5px #eee;
     float: left;
     margin-bottom: 10px;
@@ -682,6 +684,7 @@ ul.auth-item li {
 ul.auth-item li .loader {
     float: right;
 }
+
 ul.auth-item li.checked {
     background-color: rgb(200, 255, 240);
 }

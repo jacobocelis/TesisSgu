@@ -5,14 +5,13 @@
 );
 $this->menu=array(
 	array('label'=>'<div id="menu"><strong>Opciones de mantenimiento</strong></div>'),
-	array('label'=>'      Crear programa de mantenimiento', 'url'=>array('crearPlan')),
-	array('label'=>'      Ver programas de mantenimiento', 'url'=>array('planes')),
-	
-	 
+		array('label'=>'      Registrar actividades de mantenimiento', 'url'=>array('planes')),
+		array('label'=>'<div id="menu"><strong>Órdenes de mantenimiento</strong></div>'),
+	array('label'=>'      Crear orden de mantenimiento', 'url'=>array('crearOrdenPreventiva')),
+
 );
 ?>
-<?php 
-	echo phpversion();
+<?php
 $this->widget('ext.EFullCalendar.EFullCalendar', array(
      'lang'=>'es',
 	 'id'=>'calendar',

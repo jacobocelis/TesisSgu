@@ -51,7 +51,7 @@
 
 	<div class="row">
 		
-		<?php echo $form->hiddenField($model,'idplan',array('value'=>$id)); ?>
+		<?php echo $form->hiddenField($model,'idgrupo',array('value'=>$id)); ?>
 	
 	</div>
 

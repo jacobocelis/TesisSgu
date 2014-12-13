@@ -28,7 +28,7 @@ class MttoPreventivoController extends Controller
 	{
 		return array(
 			array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array('index','view','crearPlan','planes','agregarActividad','obtenerParte','mttopVehiculo','mttopIniciales','calendario','obtenerActividad','agregarRecurso','iniciales','crearordenpreventiva','crearOrden','verOrdenes','cambiarFecha','mttopRealizados','registrarFacturacion','agregarFactura','estatusOrden','cerrarOrdenes','historicoPreventivo','historicoOrdenes','historicoGastos','vistaPrevia','vistaPreviaPDF','generarPdf','correo'),
+				'actions'=>array('index','view','crearPlan','planes','agregarActividad','obtenerParte','mttopVehiculo','mttopIniciales','calendario','obtenerActividad','agregarRecurso','iniciales','crearordenpreventiva','crearOrden','verOrdenes','cambiarFecha','mttopRealizados','registrarFacturacion','agregarFactura','estatusOrden','cerrarOrdenes','historicoPreventivo','historicoOrdenes','historicoGastos','vistaPrevia','vistaPreviaPDF','generarPdf','correo','actualizarSpan','agregarRecursoAdicional'),
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
@@ -49,6 +49,14 @@ class MttoPreventivoController extends Controller
 	 * Displays a particular model.
 	 * @param integer $id the ID of the model to be displayed
 	 */
+	 public function actionActualizarSpan(){
+		$mi=Yii::app()->db->createCommand("select count(*) as total from sgu_actividades where idestatus=1")->queryRow();
+		
+		echo CJSON::encode(array(
+			'total'=>$mi["total"],
+			'color'=>$this->getColor($mi["total"]),
+		));
+	 }
 	 public function actionGenerarPdf($id){
 	 
   //Consulta para buscar todos los registros
@@ -88,7 +96,7 @@ class MttoPreventivoController extends Controller
 			'condition' =>'id='.$id."")
 			,'pagination'=>array('pageSize'=>9999999)));
 			
-		$idvehiculo=Yii::app()->db->createCommand("select distinct( p.idvehiculo), count(*) as  totAct from sgu_plan p, sgu_actividades a, sgu_detalleorden d where d.idactividades=a.id and a.idplan=p.id and d.idordenMtto=".$id." group by p.idvehiculo")->queryAll();
+		$idvehiculo=Yii::app()->db->createCommand("select distinct( a.idvehiculo), count(*) as totAct from sgu_actividades a, sgu_detalleOrden d where d.idactividades=a.id and d.idordenMtto=".$id." group by a.idvehiculo")->queryAll();
 		$totalVeh=count($idvehiculo);
 		
 		//$actividades=Yii::app()->db->createCommand("select idactividades from sgu_detalleorden where idordenMtto=".$id."")->queryAll();
@@ -98,7 +106,7 @@ class MttoPreventivoController extends Controller
 			'condition' =>'id="'.$idvehiculo[$i]["idvehiculo"].'"',
 			)));
 			
-		$totAct=Yii::app()->db->createCommand('select idactividades as id from sgu_detalleOrden where idordenMtto="'.$id.'" and idactividades in(select a.id from sgu_actividades a, sgu_plan p where a.idplan=p.id and p.idvehiculo="'.$idvehiculo[$i]["idvehiculo"].'")')->queryAll();
+		$totAct=Yii::app()->db->createCommand('select idactividades as id from sgu_detalleOrden where idordenMtto="'.$id.'" and idactividades in(select a.id from sgu_actividades a where a.idvehiculo="'.$idvehiculo[$i]["idvehiculo"].'")')->queryAll();
 		for($j=0;$j<$idvehiculo[$i]["totAct"];$j++){		
 				$actividades[$i][$j]=new CActiveDataProvider('Actividades',array('criteria' => array(
 				'condition' =>'id="'.$totAct[$j]["id"].'"',
@@ -138,12 +146,12 @@ class MttoPreventivoController extends Controller
 		 $mPDF1->Output('Orden-'.$id.'.pdf','D');
 		 exit;
 	}	 
-	public function actionVistaPrevia($id){
+	public function actionVistaPrevia($id,$nom,$dir){
 		$orden=new CActiveDataProvider('Ordenmtto',array('criteria' => array(
 			'condition' =>'id='.$id."")
 			,'pagination'=>array('pageSize'=>9999999)));
 			
-		$idvehiculo=Yii::app()->db->createCommand("select distinct( p.idvehiculo), count(*) as  totAct from sgu_plan p, sgu_actividades a, sgu_detalleorden d where d.idactividades=a.id and a.idplan=p.id and d.idordenMtto=".$id." group by p.idvehiculo")->queryAll();
+		$idvehiculo=Yii::app()->db->createCommand("select distinct( a.idvehiculo), count(*) as totAct from sgu_actividades a, sgu_detalleOrden d where d.idactividades=a.id and d.idordenMtto=".$id." group by a.idvehiculo")->queryAll();
 		$totalVeh=count($idvehiculo);
 		
 		//$actividades=Yii::app()->db->createCommand("select idactividades from sgu_detalleorden where idordenMtto=".$id."")->queryAll();
@@ -153,7 +161,8 @@ class MttoPreventivoController extends Controller
 			'condition' =>'id="'.$idvehiculo[$i]["idvehiculo"].'"',
 			)));
 			
-		$totAct=Yii::app()->db->createCommand('select idactividades as id from sgu_detalleOrden where idordenMtto="'.$id.'" and idactividades in(select a.id from sgu_actividades a, sgu_plan p where a.idplan=p.id and p.idvehiculo="'.$idvehiculo[$i]["idvehiculo"].'")')->queryAll();
+		$totAct=Yii::app()->db->createCommand('select idactividades as id from sgu_detalleOrden where idordenMtto="'.$id.'" and idactividades in(select a.id from sgu_actividades a where a.idvehiculo="'.$idvehiculo[$i]["idvehiculo"].'")')->queryAll();
+		
 		for($j=0;$j<$idvehiculo[$i]["totAct"];$j++){		
 				$actividades[$i][$j]=new CActiveDataProvider('Actividades',array('criteria' => array(
 				'condition' =>'id="'.$totAct[$j]["id"].'"',
@@ -178,7 +187,9 @@ class MttoPreventivoController extends Controller
 			'recursos'=>$recursos,
 			'orden'=>$orden,
 			'factura'=>$factura,
-			'totFactura'=>$totFactura
+			'totFactura'=>$totFactura,
+			'nom'=>$nom,
+			'dir'=>$dir,
 		));
 	
 	}
@@ -194,7 +205,7 @@ class MttoPreventivoController extends Controller
 		}
 	}
 	public function actionCalendario(){
-	$act=Yii::app()->db->createCommand("select concat('Unidad ',v.numeroUnidad ,' ', pg.parte,'=>',am.actividad) as titulo, a.proximoFecha, a.id, a.idestatus, a.fechaRealizada from sgu_actividadMtto am, sgu_actividades a, sgu_plan p, sgu_vehiculo v, sgu_planGrupo pg where a.idplan=p.id and p.idvehiculo=v.id and p.idplanGrupo=pg.id and am.id=a.idactividadMtto")->queryAll();
+	$act=Yii::app()->db->createCommand("select concat('Unidad ',v.numeroUnidad ,'=>',am.actividad) as titulo, a.proximoFecha, a.id, a.idestatus, a.fechaRealizada from sgu_actividadMtto am, sgu_actividades a, sgu_vehiculo v where a.idvehiculo=v.id and  am.id=a.idactividadMtto")->queryAll();
     $tot=count($act);
 	for($i=0;$i<$tot;$i++){
 	if($act[$i]["idestatus"]==3){
@@ -292,7 +303,7 @@ class MttoPreventivoController extends Controller
             exit;               
         }
 	}
-	public function actionRegistrarFacturacion($id){
+	public function actionRegistrarFacturacion($id,$nom,$dir){
 		$model = new Factura;
 		$idrecurso=0;
 		$recurso=new CActiveDataProvider('Actividadrecurso',array('criteria'=>array('condition'=>'idactividades="'.$idrecurso.'"')));
@@ -317,8 +328,9 @@ class MttoPreventivoController extends Controller
 			'id'=>$id,
 			'recurso'=>$recurso,
 			'total'=>$total,
-			));
-	
+			'nom'=>$nom,
+			'dir'=>$dir,
+		));
 	}
 	public function actionCrearOrden(){
 		$model=new Ordenmtto;
@@ -362,23 +374,26 @@ class MttoPreventivoController extends Controller
 		
 		$modeloOrdenMtto=new Ordenmtto;
 		$dataProvider=new CActiveDataProvider('Actividades',array('criteria' => array(
-			'condition' =>'idplan in (select id from sgu_plan) and idestatus=2 and atraso >=-5',
+			'condition' =>'idestatus=2 and atraso >=-5',
 			'order'=>'proximoFecha'
 			)));
 		$this->render('crearOrdenPreventiva',array(
 			'dataProvider'=>$dataProvider,
 			'abiertas'=>$this->getOrdenesAbiertas(),
 			'Colorabi'=>$this->getColor($this->getOrdenesAbiertas()),
+			'Colorli'=>$this->getColor($this->getOrdenesListas()),
+			'listas'=>$this->getOrdenesListas(),
+			
 		));
 	}
 	public function actionMttopVehiculo($id){
 	
 		$dataProvider=new CActiveDataProvider('Actividades',array('criteria' => array(
 			'order'=>'proximoFecha asc',
-			'condition' =>'idplan in (select id from sgu_plan where idvehiculo="'.$id.'") and idestatus<>1 and idestatus<>3')
+			'condition' =>'idvehiculo="'.$id.'" and idestatus<>1 and idestatus<>3')
 			,'pagination'=>array('pageSize'=>9999999)));
 			
-		$mi=Yii::app()->db->createCommand("select count(*) as total from sgu_actividades where idestatus=1 and idplan in(select id from sgu_plan where idvehiculo=".$id.")")->queryRow();
+		$mi=Yii::app()->db->createCommand("select count(*) as total from sgu_actividades where idestatus=1 and idvehiculo=".$id."")->queryRow();
 		$this->render('mttopVehiculo',array(
 			'id'=>$id,
 			'dataProvider'=>$dataProvider,
@@ -403,7 +418,7 @@ class MttoPreventivoController extends Controller
 			'dataProvider'=>$dataProvider,
 		));
 	}
-	public function actionMttopRealizados($id){
+	public function actionMttopRealizados($id,$nom,$dir){
 		$orden=new CActiveDataProvider('Ordenmtto',array('criteria' => array(
 			'condition' =>'id='.$id."")
 			,'pagination'=>array('pageSize'=>9999999)));
@@ -415,12 +430,14 @@ class MttoPreventivoController extends Controller
 			'dataProvider'=>$dataProvider,
 			'orden'=>$orden,
 			'id'=>$id,
+			'nom'=>$nom,
+			'dir'=>$dir,
 		));
 	}
 	public function actionMttopIniciales($id){
 		$dataProvider=new CActiveDataProvider('Actividades',array('criteria' => array(
 			'order'=>'proximoFecha asc',
-			'condition' =>'idplan in (select id from sgu_plan where idvehiculo="'.$id.'") and idestatus <>3 ')
+			'condition' =>'idvehiculo="'.$id.'" and idestatus <>3 ')
 			,'pagination'=>array('pageSize'=>9999999)));
 		$this->render('mttopIniciales',array(
 			'id'=>$id,
@@ -431,6 +448,33 @@ class MttoPreventivoController extends Controller
 	 * Creates a new model.
 	 * If creation is successful, the browser will be redirected to the 'view' page.
 	 */
+	 	public function actionAgregarRecursoAdicional($id){
+                $model=new Actividadrecurso;
+        // Uncomment the following line if AJAX validation is needed
+         //$this->performAjaxValidation($model);
+ 
+    if(isset($_POST['Actividadrecurso'])){
+            $model->attributes=$_POST['Actividadrecurso'];
+            if($model->save()){
+                if (Yii::app()->request->isAjaxRequest){
+					echo CJSON::encode(array(
+                        'status'=>'success', 
+                        'div'=>"se agregó el recurso correctamente"
+                        ));
+                    exit;
+                }
+            }
+        }
+        if (Yii::app()->request->isAjaxRequest){
+            echo CJSON::encode(array(
+                'status'=>'failure', 
+                'div'=>$this->renderPartial('_formRecursoAdicional', array('model'=>$model,'id'=>$id), true)));
+            exit;               
+        }
+        /*else
+            $this->render('create',array('model'=>$model,));*/
+	}
+	
 	public function actionAgregarRecurso($id){
                 $model=new Actividadrecursogrupo;
         // Uncomment the following line if AJAX validation is needed
@@ -474,29 +518,12 @@ class MttoPreventivoController extends Controller
             $model->attributes=$_POST['Actividadesgrupo'];
             if($model->save()){
                 if (Yii::app()->request->isAjaxRequest){
-				   /*inserts por debajo del plan de mantenimiento a cada vehiculo del grupo*/
-				$modelo=Plangrupo::model()->findByPk($id);
-				$totalVeh=Yii::app()->db->createCommand('select id from sgu_vehiculo where idgrupo="'.$modelo->idgrupo.'"')->queryAll();
+				   /*inserts por debajo de la actividad a cada vehiculo del grupo*/
+				$totalVeh=Yii::app()->db->createCommand('select id from sgu_vehiculo where idgrupo="'.$id.'"')->queryAll();
 				$total=count($totalVeh);
-				
 				for($i=0;$i<$total;$i++){
-					
-					$existe=Yii::app()->db->createCommand('select id from sgu_plan where idvehiculo="'.$totalVeh[$i]['id'].'" and idplanGrupo="'.$id.'"')->queryAll();
-					
-					if(count($existe)==0){
-						Yii::app()->db->createCommand("INSERT INTO `tsg`.`sgu_plan` (`idvehiculo`,`idplanGrupo`)
-						VALUES (".$totalVeh[$i]['id'].",".$id.")")->query();
-						
-						$ultimo=Yii::app()->db->createCommand('select id from sgu_plan order by id desc limit 1')->queryRow();
-					
-					//-------------//
-						Yii::app()->db->createCommand("INSERT INTO `tsg`.`sgu_actividades` (`idactividadMtto`,`frecuenciaKm`,`frecuenciaMes`,`duracion`,`idprioridad`,`idplan`,`idtiempod`,`idtiempof`,`idactividadesGrupo`,`idestatus`,`procedimiento`)
-						VALUES (".$model->idactividadMtto.",".$model->frecuenciaKm.",".$model->frecuenciaMes.",".$model->duracion.",".$model->idprioridad.",".$ultimo["id"].",".$model->idtiempod.",".$model->idtiempof.",".$model->id.",1,'".$model->procedimiento."')")->query();
-					}else{
-							//file_put_contents('prueba.txt', print_r($existe,true));
-							Yii::app()->db->createCommand("INSERT  INTO `tsg`.`sgu_actividades` (`idactividadMtto`,`frecuenciaKm`,`frecuenciaMes`,`duracion`,`idprioridad`,`idplan`,`idtiempod`,`idtiempof`,`idactividadesGrupo`,`idestatus`,`procedimiento`)
-						VALUES (".$model->idactividadMtto.",".$model->frecuenciaKm.",".$model->frecuenciaMes.",".$model->duracion.",".$model->idprioridad.",".$existe[0]["id"].",".$model->idtiempod.",".$model->idtiempof.",".$model->id.",1,'".$model->procedimiento."')")->query();
-					}
+					Yii::app()->db->createCommand("INSERT  INTO `tsg`.`sgu_actividades` (`idactividadMtto`,`frecuenciaKm`,`frecuenciaMes`,`duracion`,`idprioridad`,`idvehiculo`,`idtiempod`,`idtiempof`,`idactividadesGrupo`,`idestatus`,`procedimiento`)
+					VALUES (".$model->idactividadMtto.",".$model->frecuenciaKm.",".$model->frecuenciaMes.",".$model->duracion.",".$model->idprioridad.",".$totalVeh[$i]["id"].",".$model->idtiempod.",".$model->idtiempof.",".$model->id.",1,'".$model->procedimiento."')")->query();
 				}
                     echo CJSON::encode(array(
                         'status'=>'success', 
@@ -515,76 +542,40 @@ class MttoPreventivoController extends Controller
         /*else
             $this->render('create',array('model'=>$model,));*/
 	}
-	public function actionObtenerParte($id){
+	/*public function actionObtenerParte($id){
 		$parte=Yii::app()->db->createCommand('select concat_ws(" / ",(select parte from sgu_plangrupo c1 where c1.id=c2.idplanGrupo),c2.parte) as parte from 	sgu_plangrupo c2
 		where c2.id="'.$id.'"')->queryRow();
 		echo $parte["parte"];
-	}
+	}*/
 	public function actionObtenerActividad($id){
 		$parte=Yii::app()->db->createCommand('select am.actividad from sgu_actividadMtto am, sgu_actividadesGrupo ag where ag.idactividadMtto=am.id and ag.id="'.$id.'"')->queryRow();
 		echo $parte["actividad"];
 	}
+	
 	public function actionPlanes(){
-		$idplan=0;
-		$data=new CActiveDataProvider('Actividadesgrupo',array('criteria'=>array('condition'=>'idplan="'.$idplan.'"')));
-		if(isset($_GET['seleccion'])){
-			$idplan=$_GET['seleccion'];
-			$data=new CActiveDataProvider('Actividadesgrupo',array('criteria'=>array('condition'=>'idplan in (select id from sgu_planGrupo where idgrupo="'.$idplan.'")')));
-		}	
+		$idGrupo=0;
+		$idAct=0;
 		$grupo=Grupo::model()->findAll();
+		
+		if(isset($_GET['idGrupo'])||isset($_GET['idAct'])){
+			if(isset($_GET['idGrupo'])){
+				
+				$idGrupo=$_GET['idGrupo'];
+			}
+			if(isset($_GET['idAct'])){
+				$idAct=$_GET['idAct'];
+			}
+		}
+			$actividades=new CActiveDataProvider('Actividadesgrupo',array('criteria'=>array('condition'=>'idgrupo="'.$idGrupo.'"')));
+			$recurso=new CActiveDataProvider('Actividadrecursogrupo',array('criteria'=>array('condition'=>'idactividadesGrupo="'.$idAct.'"')));
+		$mi=Yii::app()->db->createCommand("select count(*) as total from sgu_actividades where idestatus=1")->queryRow();
 		$this->render('planes',array(
 			'grupo'=>$grupo,
-			'dataProvider'=>$data
+			'actividades'=>$actividades,
+			'recurso'=>$recurso,
+			'color'=>$this->getColor($mi["total"]),
+			'mi'=>$mi["total"],
 		));
-	}
-	public function actionCrearPlan()
-	{
-		//file_put_contents('pruebaa.txt', print_r("hola",true));
-	$idplan=0;
-	$idrecurso=0;
-	$info=new CActiveDataProvider('Actividadesgrupo',array('criteria'=>array('condition'=>'idplan="'.$idplan.'"')));
-	$recurso=new CActiveDataProvider('Actividadrecursogrupo',array('criteria'=>array('condition'=>'idactividadesGrupo="'.$idrecurso.'"')));
-	$dataProvider=new CActiveDataProvider('Plangrupo');
-	$vacio=new CActiveDataProvider('Plangrupo',array('criteria'=>array('condition'=>'id="0"')));
-	$grupo=Grupo::model()->findAll();
-	if(isset($_GET['idPlan'])){
-		$idplan=$_GET['idPlan'];
-		$info=new CActiveDataProvider('Actividadesgrupo',array('criteria'=>array('condition'=>'idplan="'.$idplan.'"')));
-	}
-	if(isset($_GET['idAct'])){	
-		$idrecurso=$_GET['idAct'];
-		$recurso=new CActiveDataProvider('Actividadrecursogrupo',array('criteria'=>array('condition'=>'idactividadesGrupo="'.$idrecurso.'"')));	
-	}
-		if(isset($_POST['grupo'])||isset($_GET['idPlan'])||isset($_GET['idAct'])){
-			if(isset($_POST['grupo'])){
-				$g=$_POST['grupo'];
-			}
-			if(isset($_GET['idPlan'])||isset($_GET['idAct'])){
-				$g=$_GET['grupoSel'];
-			}
-			
-			$dataProvider=new CActiveDataProvider('Plangrupo',array('criteria' => array(
-			'condition' =>'idgrupo=(select id from sgu_grupo where grupo="'.$g.'")')
-			,'pagination'=>array('pageSize'=>9999999)));
-			
-			$this->render('crearPlan',array(
-			'grupo'=>$grupo,
-			'dataProvider'=>$dataProvider,
-			'seleccion'=>$g,
-			'actividades'=>$info,
-			'vacio'=>$vacio,
-			'recurso'=>$recurso
-		));	
-		}
-		else{
-		$this->render('crearPlan',array('criteria' => array('pagination'=>array('pageSize'=>9999999)),
-			'vacio'=>$vacio,
-			'grupo'=>$grupo,
-			'dataProvider'=>$dataProvider,
-			'actividades'=>$info,
-			'recurso'=>$recurso
-		));
-		}
 	}
 
 	/**
@@ -666,7 +657,7 @@ class MttoPreventivoController extends Controller
 	public function actionIndex(){
 	
 			$dataProvider=new CActiveDataProvider('Actividades',array('criteria' => array(
-			'condition' =>'idplan in (select id from sgu_plan) and idestatus<>1 and idestatus<>3',
+			'condition' =>'idestatus<>1 and idestatus<>3',
 			'order'=>'proximoFecha'
 			)));
 			$mi=Yii::app()->db->createCommand("select count(*) as total from sgu_actividades where idestatus=1")->queryRow();

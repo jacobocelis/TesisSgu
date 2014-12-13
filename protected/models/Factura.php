@@ -8,8 +8,13 @@
  * @property string $fechaFactura
  * @property integer $codigo
  * @property integer $idproveedor
+ * @property integer $idordenMtto
+ * @property double $total
+ * @property double $iva
+ * @property double $totalFactura
  *
  * The followings are the available model relations:
+ * @property SguOrdenmtto $idordenMtto0
  * @property SguProveedor $idproveedor0
  * @property SguFacturaact[] $sguFacturaacts
  */
@@ -32,14 +37,13 @@ class Factura extends CActiveRecord
 		// will receive user inputs.
 		return array(
 			array('fechaFactura, codigo, idproveedor, idordenMtto', 'required'),
-			array('codigo, idproveedor,idordenMtto', 'numerical', 'integerOnly'=>true),
-			array('total', 'numerical'),
+			array('codigo, idproveedor, idordenMtto', 'numerical', 'integerOnly'=>true),
+			array('total, iva, totalFactura', 'numerical'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, fechaFactura, codigo, idproveedor,idordenMtto', 'safe', 'on'=>'search'),
+			array('id, fechaFactura, codigo, idproveedor, idordenMtto, total, iva, totalFactura', 'safe', 'on'=>'search'),
 		);
 	}
-
 	/**
 	 * @return array relational rules.
 	 */
@@ -53,7 +57,6 @@ class Factura extends CActiveRecord
 			'sguFacturaacts' => array(self::HAS_MANY, 'Facturaact', 'idfactura'),
 		);
 	}
-
 	/**
 	 * @return array customized attribute labels (name=>label)
 	 */
@@ -62,10 +65,12 @@ class Factura extends CActiveRecord
 		return array(
 			'id' => 'ID',
 			'fechaFactura' => 'Fecha de factura',
-			'codigo' => 'Código de factura',
+			'codigo' => 'Factura número',
 			'idproveedor' => 'Proveedor',
 			'idordenMtto' => 'Idorden Mtto',
-			'total' => 'Total',
+			'total' => 'SubTotal',
+			'iva' => 'IVA',
+			'totalFactura' => 'Total facturado',
 		);
 	}
 
@@ -93,6 +98,9 @@ class Factura extends CActiveRecord
 		$criteria->compare('idproveedor',$this->idproveedor);
 		$criteria->compare('idordenMtto',$this->idordenMtto);
 		$criteria->compare('total',$this->total);
+		$criteria->compare('iva',$this->iva);
+		$criteria->compare('totalFactura',$this->totalFactura);
+
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
 		));

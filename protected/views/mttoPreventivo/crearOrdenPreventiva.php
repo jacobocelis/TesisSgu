@@ -4,11 +4,12 @@
 	'Crear orden preventiva',
 );
 	$this->menu=array(
-	array('label'=>'Registrar mantenimiento realizado', 'url'=>array('')),
-	array('label'=>'Ver órdenes abiertas <span class="badge badge-'.$Colorabi.' pull-right">'.$abiertas.'</span>', 'url'=>array('verOrdenes')),
-	array('label'=>'Actualizar órdenes <span class="badge badge- pull-right">0</span>', 'url'=>array('')),
-	array('label'=>'Cerrar órdenes', 'url'=>array('')),
-	array('label'=>'Regresar', 'url'=>array('index')),
+	array('label'=>'<div id="menu"><strong>Órdenes de mantenimiento</strong></div>'),
+	array('label'=>'      Crear orden de mantenimiento', 'url'=>array('crearOrdenPreventiva')),
+	array('label'=>'      Ver órdenes abiertas <span class="badge badge-'.$Colorabi.' pull-right">'.$abiertas.'</span>', 'url'=>array('verOrdenes')),
+	array('label'=>'      Órdenes listas para cerrar <span class="badge badge-'.$Colorli.' pull-right">'.$listas.'</span>', 'url'=>array('cerrarOrdenes')),
+	
+	
 );
 ?>
 
@@ -36,16 +37,9 @@ $this->widget('zii.widgets.grid.CGridView', array(
 					'headerHtmlOptions'=>array('style'=>'width:7%'),
 					'header'=>'Unidad',
 					'name'=>'idplan',
-					'value'=>'$data->idplan0->idvehiculo0->numeroUnidad',
+					'value'=>'$data->idvehiculo0->numeroUnidad',
 					//'value'=>'$data->idplan0->idplanGrupo0->CompiledColour->$data-id.\' \'.$data->CompiledColour',
 					'htmlOptions'=>array('style'=>'text-align:center;width:10px'),
-				),
-				array(
-					'header'=>'Parte',
-					'name'=>'idplan',
-					'value'=>'Plangrupo::model()->parte($data->idplan0->idplanGrupo)',
-					//'value'=>'$data->idplan0->idplanGrupo0->CompiledColour->$data-id.\' \'.$data->CompiledColour',
-					'htmlOptions'=>array('style'=>'text-align:center;width:150px'),
 				),
 				array(
 					'header'=>'Actividad',
@@ -166,9 +160,9 @@ $('#formulario').hide();
 function validar(){
 var idAct = $.fn.yiiGridView.getSelection('actividades');
 	if(idAct=="")
-		$('#formulario').hide(500);
+		$('#formulario').hide();
 	else
-		$('#formulario').show(500);
+		$('#formulario').show();
 		
 jQuery.ajax({
                 url: "crearOrden",

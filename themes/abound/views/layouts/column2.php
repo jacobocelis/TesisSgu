@@ -8,7 +8,7 @@
         
 	<?php
   		$this->beginWidget('zii.widgets.CPortlet', array(
-			'title'=>'Menu',
+			'title'=>'Menú',
 		));
 		$this->widget('zii.widgets.CMenu', array(
 			'encodeLabel' => false,
@@ -24,9 +24,11 @@
           <div class="span9">
     
     <?php if(isset($this->breadcrumbs)):?>
-		<?php $this->widget('zii.widgets.CBreadcrumbs', array(
+		<?php 
+		
+		$this->widget('zii.widgets.CBreadcrumbs', array(
             'links'=>$this->breadcrumbs,
-			'homeLink'=>CHtml::link('S.G.U'),
+			'homeLink'=>CHtml::link('S.G.U',Yii::app()->baseUrl),
 			'htmlOptions'=>array('class'=>'breadcrumb')
         )); ?><!-- breadcrumbs -->
     <?php endif?>

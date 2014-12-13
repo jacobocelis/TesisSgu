@@ -1,14 +1,15 @@
 <?php 
 $this->breadcrumbs=array(
 	'Mantenimiento preventivo'=>array('mttoPreventivo/index'),
-	'Órdenes abiertas'=>array('mttoPreventivo/verOrdenes'),
+	$nom=>array($dir),
 	'Actualizar órden de mantenimiento',
 );
 	$this->menu=array(
-	array('label'=>'Ver programas de mantenimiento', 'url'=>array('planes')),
-	array('label'=>'Crear programa de mantenimiento', 'url'=>array('crearPlan')),
-	array('label'=>'Histórico de mantenimientos', 'url'=>array('')),
-	array('label'=>'Regresar', 'url'=>array('index')),
+	array('label'=>'<div id="menu"><strong>Opciones de mantenimiento</strong></div>'),
+		array('label'=>'      Registrar actividades de mantenimiento', 'url'=>array('planes')),
+		
+	array('label'=>'      Crear orden de mantenimiento', 'url'=>array('crearOrdenPreventiva')),
+
 );
 ?>
 <div class='crugepanel user-assignments-role-list'>
@@ -61,7 +62,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
                         CHtml::image(Yii::app()->request->baseUrl."/imagenes/agregar.png",
                                           "Agregar",array("title"=>"Editar")),
 										  
-                        Yii::app()->createUrl("mttoPreventivo/registrarFacturacion", array("id"=>$data->id)),
+                        Yii::app()->createUrl("mttoPreventivo/registrarFacturacion", array("id"=>$data->id,"nom"=>"'.$nom.'","dir"=>"'.$dir.'")),
                         array(
                                 \'style\'=>\'cursor: pointer;text-decoration: underline;text-align:center;\',
                         )
@@ -88,17 +89,10 @@ $this->widget('zii.widgets.grid.CGridView', array(
 				'columns'=>array(
 				array(
 					'header'=>'Unidad',
-					'name'=>'idplan',
-					'value'=>'str_pad((int) $data->idplan0->idvehiculo0->numeroUnidad,2,"0",STR_PAD_LEFT)',
+					'name'=>'idvehiculo',
+					'value'=>'str_pad((int) $data->idvehiculo0->numeroUnidad,2,"0",STR_PAD_LEFT)',
 					//'value'=>'$data->idplan0->idplanGrupo0->CompiledColour->$data-id.\' \'.$data->CompiledColour',
 					'htmlOptions'=>array('style'=>'text-align:center;width:50px;'),
-				),
-				array(
-					'header'=>'Parte',
-					'name'=>'idplan',
-					'value'=>'Plangrupo::model()->parte($data->idplan0->idplanGrupo)',
-					//'value'=>'$data->idplan0->idplanGrupo0->CompiledColour->$data-id.\' \'.$data->CompiledColour',
-					'htmlOptions'=>array('style'=>'text-align:center;width:150px;'),
 				),
 				array(
 					'header'=>'Actividad',

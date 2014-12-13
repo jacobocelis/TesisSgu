@@ -31,6 +31,26 @@
 		<?php echo $form->textField($model,'idproveedor'); ?>
 	</div>
 
+	<div class="row">
+		<?php echo $form->label($model,'idordenMtto'); ?>
+		<?php echo $form->textField($model,'idordenMtto'); ?>
+	</div>
+
+	<div class="row">
+		<?php echo $form->label($model,'total'); ?>
+		<?php echo $form->textField($model,'total'); ?>
+	</div>
+
+	<div class="row">
+		<?php echo $form->label($model,'iva'); ?>
+		<?php echo $form->textField($model,'iva'); ?>
+	</div>
+
+	<div class="row">
+		<?php echo $form->label($model,'totalFactura'); ?>
+		<?php echo $form->textField($model,'totalFactura'); ?>
+	</div>
+
 	<div class="row buttons">
 		<?php echo CHtml::submitButton('Search'); ?>
 	</div>

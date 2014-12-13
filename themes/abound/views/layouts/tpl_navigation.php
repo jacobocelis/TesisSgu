@@ -48,7 +48,7 @@ if (isset($_GET['nrol']))
             </a>
 
             <!-- Be sure to leave the brand out there if you want it shown -->
-            <a class="brand" href="#"><img src=" <?php echo Yii::app()->theme->baseUrl; ?>/img/logo-unet-blanco.png "  width="20px" height="20px"> FlotaUNET <small>Sistema para la gestión de flotas</small></a>
+            <a class="brand" href="www.unet.edu.ve"><img src=" <?php echo Yii::app()->theme->baseUrl; ?>/img/logo-unet-blanco.png "  width="20px" height="20px"> FlotaUNET <small>Sistema para la gestión de flotas</small></a>
 
             <div class="nav-collapse">
                 <?php

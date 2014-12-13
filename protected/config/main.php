@@ -21,7 +21,6 @@ return array(
         'application.modules.rights.components.dataproviders.*',
 		'application.components.validators.*',
 		'application.extensions.eeditable.*',
-		'application.extensions.SilcomTreeGridView.*',
 		'application.extensions.EFullCalendar.*',
 		'application.extensions.EYiiPdf.*',
 		'application.extensions.includes.*',
@@ -204,7 +203,5 @@ return array(
     'theme' => 'abound',
     'language' => 'es',
     'sourceLanguage' => 'es',
-		
-      
 );
 ?>

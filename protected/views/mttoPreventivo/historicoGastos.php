@@ -30,7 +30,7 @@ $this->menu=array(
 				array(
 					'headerHtmlOptions'=>array('style'=>'text-align:left;'),
 					'header'=>'Unidad',
-					'value'=>'str_pad((int) $data->idactividades0->idplan0->idvehiculo0->numeroUnidad,2,"0",STR_PAD_LEFT)',
+					'value'=>'str_pad((int) $data->idactividades0->idvehiculo0->numeroUnidad,2,"0",STR_PAD_LEFT)',
 					'htmlOptions'=>array('style'=>'width:50px;'),
 					//'footer'=>'',
 				),	

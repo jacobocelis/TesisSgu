@@ -1,20 +1,18 @@
 <?php 
 	$this->breadcrumbs=array(
 	'Mantenimiento preventivo'=>array('mttoPreventivo/index'),
-	'Programas de mantenimiento',
+	'Actividades de mantenimiento preventivo',
 );
 	$this->menu=array(
 	array('label'=>'<div id="menu"><strong>Opciones de mantenimiento</strong></div>'),
-	array('label'=>'      Crear programa de mantenimiento', 'url'=>array('crearPlan')),
-	array('label'=>'      Ver programas de mantenimiento', 'url'=>array('planes')),
-	array('label'=>'      Ajuste de fechas', 'url'=>array('calendario')),
-	
+	array('label'=>'      Registrar matenimientos iniciales <span id="mi" class="badge badge-'.$color.' pull-right">'.$mi.'</span>', 'url'=>array('mttoPreventivo/iniciales/')),
+	array('label'=>'      Ajuste de fechas en calendario', 'url'=>array('calendario')),
 );
 ?>
 <div class='form'>
 <div class='crugepanel user-assignments-role-list'>
-	<h1>Programas de mantenimiento preventivo</h1>
-	<strong><p><?php echo ucfirst(CrugeTranslator::t("Grupos registrados:"));?></p></strong>
+	<h1>Actividades para el mantenimiento preventivo</h1>
+	<strong><p>Grupos registrados:</p></strong>
 	<ul class='auth-item'>
 	<?php 
 		$loader = "<span class='loader'></span>";		
@@ -23,32 +21,32 @@
 		}
 	?>
 	</ul>
-<h6><div id='mostrarSeleccion'>Seleccione un grupo</div></h6>
+<h6><div id='mostrarSeleccion'>Seleccione un grupo para asignarle actividades de mantenimiento</div></h6>
 	</div>
+<div id='activ' class='crugepanel user-assignments-detail'>
+			<div id='actividades'>Actividades</div>
+			<?php 
+			$this->widget('zii.widgets.grid.CGridView', array(
+			'id'=>'act',
+			'selectableRows'=>1,
+			'dataProvider'=>$actividades,
+			'enablePagination' => false,
+			'template'=>"{items}{summary}{pager}",
+			'emptyText' => 'no hay actividades agregadas',
+			'summaryText' => '',
+			
+			//'selectionChanged'=>'mostrarRecursos',
+			'afterAjaxUpdate'=>'actualizarSpan',
+			//'beforeAjaxUpdate'=>'itemGridBeforeAjaxUpdate',
+			//'afterAjaxUpdate'=>'itemGridAfterAjaxUpdate',
 
-<div class='crugepanel user-assignments-role-list'>
-<?php
-	$this->widget('zii.widgets.grid.CGridView', array(
-                'id'=>'plan',
-				'summaryText'=>'',
-			    'enableSorting' => true,
-				'emptyText'=>'no existen actividades registradas en este grupo',
-                'dataProvider'=>$dataProvider,
-					
-				'columns'=>array(
+			'columns'=>array(	
 				array(
-					'header'=>'Parte',
-					'name'=>'idplan',
-					'value'=>'Plangrupo::model()->parte($data->idplan)',
-					//'value'=>'$data->idplan0->idplanGrupo0->CompiledColour->$data-id.\' \'.$data->CompiledColour',
-					'htmlOptions'=>array('style'=>'text-align:center;width:150px;'),
-				),
-				array(
+					'headerHtmlOptions'=>array('style'=>'text-align:left;'),
 					'header'=>'Actividad',
 					'name'=>'idactividadMtto',
 					'value'=>'$data->idactividadMtto0->actividad',
-					'htmlOptions'=>array('style'=>'text-align:center;width:150px;'),
-					//'footer'=>'Total actividades: 10',
+					//'footer'=>'',
 				),
 				array(
 					'type'=>'raw',
@@ -59,23 +57,224 @@
 					//'footer'=>'',
 				),
 				array(
+					'headerHtmlOptions'=>array('style'=>'text-align:left;'),
 					'header'=>'Duración',
 					'name'=>'duracion',
 					'value'=>'$data->duracion.\' \'.$data->idtiempod0->tiempo',
-					'htmlOptions'=>array('style'=>'width:100px;text-align:center;'),
+					//'footer'=>'',
 				),
 				array(
+					'headerHtmlOptions'=>array('style'=>'text-align:left;'),
 					'header'=>'Prioridad',
 					'name'=>'idprioridad',
 					'value'=>'$data->idprioridad0->prioridad',
-					'htmlOptions'=>array('style'=>'width:100px;text-align:center;'),
+					//'footer'=>'',
 				),
-			)
-        ));
-?>
+				array(
+						'headerHtmlOptions'=>array('style'=>'text-align:left;width:12px;'),
+						'htmlOptions'=>array('style'=>'text-align:center;'),
+						'header'=>'Recursos',
+						'type'=>'raw',
+						'value'=>'CHtml::link(
+                        CHtml::image(Yii::app()->request->baseUrl."/imagenes/ver.png",
+                                          "Agregar",array("title"=>"Agregar recurso")),
+                        "",
+                        array(
+                                \'style\'=>\'cursor: pointer;text-decoration: underline;text-align:center;\',
+                                \'onclick\'=>\'{mostrarRecursos("\'.$data["id"].\'");}\'
+                        )
+                );',),
+
+				array(
+						'headerHtmlOptions'=>array('style'=>'text-align:left;width:30px;'),
+						'htmlOptions'=>array('style'=>'text-align:center;'),
+						'header'=>'Editar',
+						'type'=>'raw',
+						'value'=>'CHtml::link(
+                        CHtml::image(Yii::app()->request->baseUrl."/imagenes/agregar.png",
+                                          "Agregar",array("title"=>"Editar")),
+                        "",
+                        array(
+                                \'style\'=>\'cursor: pointer;text-decoration: underline;text-align:center;\',
+                                \'onclick\'=>\'{editarActividad("\'.Yii::app()->createUrl("actividadesgrupo/update",array("id"=>$data["id"])).\'"); $("#dialog").dialog("open");}\'
+                        )
+                );',),
+				array(
+					'header'=>'Eliminar',
+					'class'=>'CButtonColumn',
+					 'template'=>'{delete}',
+					     'buttons'=>array(
+							'delete' => array(
+								'url'=>'Yii::app()->createUrl("actividadesgrupo/delete", array("id"=>$data->id))',
+						),
+					),
+				),
+			),
+		));?>
+<?php echo CHtml::link('agregar actividad(+)', "",  // the link for open the dialog
+    array(
+        'style'=>'cursor: pointer; text-decoration: underline;',
+        'onclick'=>"{agregarActividad(); }"));
+		?>	
+	</div>
+<div id='recur' class='crugepanel user-assignments-detail'>
+			<div id='recursos'>Recursos</div>
+		    <div id='activi'><negro>
+			Actividad seleccionada:
+			</negro>
+			<rojo>
+			
+			</rojo>
+			</div>
+		<?php 
+			$this->widget('zii.widgets.grid.CGridView', array(
+			'id'=>'rec',
+			'selectableRows'=>1,
+			'dataProvider'=>$recurso,
+			'enablePagination' => false,
+			'template'=>"{items}{summary}{pager}",
+			'emptyText' => 'no hay recursos agregados',
+			'summaryText' => '',
+			'columns'=>array(	
+				array(
+					'headerHtmlOptions'=>array('style'=>'text-align:left;'),
+					'header'=>'Recurso',
+					'name'=>'idservicio',
+					'value'=>'(($data->idinsumo == null?\'\':$data->idinsumo0->insumo).\'\'.($data->idrepuesto == null?\'\':$data->idrepuesto0->repuesto).\'\'.($data->idservicio == null?\'\':$data->idservicio0->servicio)).\' \'.$data->detalle',
+					'htmlOptions'=>array('style'=>'width:350px;'),
+					//'footer'=>'',
+				),
+				array(
+					'headerHtmlOptions'=>array('style'=>'text-align:left;'),
+					'header'=>'Tipo',
+					'value'=>'(($data->idinsumo == null?\'\':\'Insumo\').\'\'.($data->idrepuesto == null?\'\':\'Repuesto\').\'\'.($data->idservicio == null?\'\':\'Servicio\')).\' \'.$data->detalle',
+					'htmlOptions'=>array('style'=>'width:70px;'),
+				),
+				array(
+					'headerHtmlOptions'=>array('style'=>'text-align:left;'),
+					'header'=>'Cantidad',
+					'name'=>'cantidad',
+					'htmlOptions'=>array('style'=>'width:50px;'),
+				),
+				array(
+					'headerHtmlOptions'=>array('style'=>'text-align:left;width:50px;'),
+					'header'=>'Unidad',
+					'name'=>'idunidad',
+					'value'=>'$data->idunidad0->corto',
+					'htmlOptions'=>array('style'=>'width:50px;'),
+					//'footer'=>'',
+				),
+				array(
+					'header'=>'Eliminar',
+					'class'=>'CButtonColumn',
+					 'template'=>'{delete}',
+					     'buttons'=>array(
+							'delete' => array(
+								'url'=>'Yii::app()->createUrl("actividadrecursogrupo/delete", array("id"=>$data->id))',
+						),
+					),
+				),
+			),
+	));?>		
+<?php echo CHtml::link('agregar recurso(+)', "",  // the link for open the dialog
+    array(
+        'style'=>'cursor: pointer; text-decoration: underline;',
+        'onclick'=>"{agregarRecurso(); }"));
+		?>	
+</div>
+<?php
+/*ventana agregar actividad*/
+$this->beginWidget('zii.widgets.jui.CJuiDialog', array( // the dialog
+    'id'=>'dialog',
+    'options'=>array(
+        'title'=>'Agregar actividad',
+        'autoOpen'=>false,
+        'modal'=>true,
+        'width'=>550,
+        //'height'=>480,
+		'resizable'=>false,	
+		'position'=>array(400,100),
+    ),
+));?>
+<div class="divForForm"></div>
+ 
+<?php $this->endWidget();?>
+<?php
+/*ventana agregar recurso*/
+$this->beginWidget('zii.widgets.jui.CJuiDialog', array( // the dialog
+    'id'=>'recurso',
+    'options'=>array(
+        'title'=>'Agregar recurso',
+        'autoOpen'=>false,
+        'modal'=>true,
+        'width'=>390,
+        'height'=>360,
+		'resizable'=>false
+    ),
+));?>
+<div class="divForForm"></div>
+ 
+<?php $this->endWidget();?>
 
 </div>
-</div>
+<style>
+negro{
+	color: rgba(0, 0, 0, 1);
+}
+rojo{
+	color: rgba(255, 0, 0, 1);
+}
+ul, ol {
+    padding: 0px;
+    margin: 0px 0px 10px 0px;
+}
+#actividades{
+	font-weight: bold;
+	font-size: 14px !important;
+	font-family: "Carrois Gothic",sans-serif;
+	text-align: center;
+	padding: 3px;
+	margin-bottom: 0px;
+	color: #000;
+	background: none repeat scroll 0% 0% #C6DDED;
+	text-align: center;
+	border: 1px solid #94A8FF;
+}
+#recursos{
+	font-weight: bold;
+	font-size: 14px !important;
+	font-family: "Carrois Gothic",sans-serif;
+	
+	text-align: center;
+	padding: 5px;
+	margin-bottom: 10px;
+	color: #000;
+	background: none repeat scroll 0% 0% #C6DDED;
+	text-align: center;
+	border: 1px solid #94A8FF;
+}
+#activi{
+	font-weight: bold;
+	
+	text-align: left;
+	padding: 5px;
+	color: rgba(255, 0, 0, 1);
+	font-size:120%;
+	border: 1px solid #F2B3B3;
+	background-color: #EFEFEF;
+}
+.grid-view {
+    padding: 10px 0px;
+    overflow-x: auto;
+    max-height: 350px;
+}
+.grid-view table.items th, .grid-view table.items td {
+	color: #000;
+    font-size: 0.9em;
+    border: 1px solid #94A8FF;
+    padding: 0.3em;
+}
+</style>
 <style type="text/css">
 .grid-view table.items th a {
     color: rgba(0, 0, 0, 1);
@@ -83,7 +282,7 @@
     text-decoration: none;
 }
 .grid-view table.items th {
-    color: #AAA;
+    color: #000;
     background: none repeat scroll 0% 0% #C6DDED;
     text-align: center;
 }
@@ -106,12 +305,10 @@
 .crugepanel {
     background-color: white;
     border: 1px dotted #aaa;
-    border-radius: 5px;
     box-shadow: 3px 3px 5px #eee;
     display: block;
     margin-top: 10px;
-    padding: 10px;
-	
+    padding: 10px;	
 }
 .auth-item-error-msg {
     background-color: rgb(255, 200, 200);
@@ -154,7 +351,7 @@ div.form .form-group .col {
 }
 div.form h6 {
     background-color: #efefef;
-    border-radius: 3px;
+    border-radius: 0px;
     margin-bottom: 10px;
     padding: 5px 5px 5px 10px;
 }
@@ -263,11 +460,11 @@ ul.auth-item input {
 }
 ul.auth-item li {
     border: 1px dotted #aaa;
-    border-radius: 5px;
+    border-radius: 0px;
     box-shadow: 3px 3px 5px #eee;
     float: left;
     margin-bottom: 10px;
-    margin-left: 10px;
+    margin-right: 10px;
     min-width: 150px;
     padding: 5px;
 	text-align: center;
@@ -351,12 +548,7 @@ div.user-assignments-detail #lista2 .boton {
 }
 </style>
 <script>
-function actualizar(lista,itemName){
-			$.fn.yiiGridView.update('_lista1',{ data : "itemName="+itemName+"&mode=select" });
-			$.fn.yiiGridView.update('_lista2',{ data : "itemName="+itemName+"&mode=select" });
-		}
-</script>
-<script>
+var idGrupo;
 	<?php /* a cada LI del div de roles le anexa un evento click y le pone un cursor */ ?>
 	//$('#_lista2').find('input[type=text],textarea,select').filter(':visible:first').attr('placeholder', 'Búsqueda..');
 
@@ -389,7 +581,163 @@ function actualizar(lista,itemName){
 			_setSelectedItemName(itemName);
 			// actualiza para ver las actividades asociadas al grupo
 			var id = $(this).attr('id');
-			$.fn.yiiGridView.update('plan',{ data : "seleccion="+id});
+			idGrupo=id;
+			$('#activ').show(400);
+			$.fn.yiiGridView.update('act',{ data : "idGrupo="+id});
 		});
 	});
+</script>
+
+<script>
+/*
+$('#plan > table > tbody > tr').live('click',function(){
+									if($(this).hasClass('selected'))
+                                       $(this).addClass('selected') 
+                                });*/
+function actualizarSpan(){
+	var dir="<?php echo Yii::app()->baseUrl;?>"+"/mttoPreventivo/actualizarSpan";
+	$.ajax({
+		url: dir,
+		'data':$(this).serialize(),
+        'dataType':'json',
+         'success':function( result ) {
+    	     $('#mi').removeClass($('#mi').attr('class')).addClass('badge badge-'+result.color+' pull-right');
+			 $('#mi').text(result.total);
+		},});
+var total="<?php  echo count($actividades->getData());?>";
+if(total==0)
+	$('#recur').hide();
+		
+}
+function ObtenerActividad(id){
+
+	//var id = $.fn.yiiGridView.getSelection('act');
+	var dir="<?php echo Yii::app()->baseUrl;?>"+"/mttoPreventivo/ObtenerActividad/"+id;
+	$.ajax({  		
+          url: dir,
+        })
+  	.done(function( result ) {    	
+    	     $('rojo').text(result);
+  	});
+      }
+</script>
+<script>
+var ida;
+$('#activ').hide();
+$('#recur').hide();
+var Uurl;
+function editarActividad(id){
+$('#dialog').dialog('open');
+	 if (typeof(id)=='string')
+                Uurl=id;
+	jQuery.ajax({
+                url: Uurl,
+                'data':$(this).serialize(),
+                'type':'post',
+                'dataType':'json',
+                'success':function(data)
+                        {
+                                if (data.status == 'failure')
+                                {
+                                        $('#dialog div.divForForm').html(data.div);
+                                        // Here is the trick: on submit-> once again this function!
+                                        $('#dialog div.divForForm form').submit(editarActividad); // updatePaymentComment
+                                }
+                                else
+                                {
+                                        $('#dialog div.divForForm').html(data.div);
+                                        setTimeout("$('#dialog').dialog('close') ",1000);
+                                        $.fn.yiiGridView.update('act');
+                                }
+                        } ,
+                'cache':false});
+    return false; 
+}
+function agregarActividad(){
+$('#dialog').dialog('open');
+	jQuery.ajax({
+                url: "agregarActividad/"+idGrupo,
+                'data':$(this).serialize(),
+                'type':'post',
+                'dataType':'json',
+                'success':function(data){
+                                if (data.status == 'failure'){
+                                        $('#dialog div.divForForm').html(data.div);
+                                        // Here is the trick: on submit-> once again this function!
+                                        $('#dialog div.divForForm form').submit(agregarActividad); // updatePaymentComment
+                                }
+                                else{
+                                        $('#dialog div.divForForm').html(data.div);
+                                        setTimeout("$('#dialog').dialog('close') ",1000);
+                                        $.fn.yiiGridView.update('act');
+                                }
+                        } ,
+                'cache':false});
+    return false; 
+}
+var Uurl;
+function editarRecurso(id){
+$('#dialog').dialog('open');
+	 if (typeof(id)=='string')
+                Uurl=id;
+	jQuery.ajax({
+                url: Uurl,
+                'data':$(this).serialize(),
+                'type':'post',
+                'dataType':'json',
+                'success':function(data)
+                        {
+                                if (data.status == 'failure')
+                                {
+                                        $('#dialog div.divForForm').html(data.div);
+                                        // Here is the trick: on submit-> once again this function!
+                                        $('#dialog div.divForForm form').submit(editarRecurso); // updatePaymentComment
+                                }
+                                else
+                                {
+                                        $('#dialog div.divForForm').html(data.div);
+                                        setTimeout("$('#dialog').dialog('close') ",1000);
+                                        $.fn.yiiGridView.update('rec');
+										
+                                }
+                        } ,
+                'cache':false});
+    return false; 
+}
+function agregarRecurso(){
+$('#recurso').dialog('open');
+	var idAct = $.fn.yiiGridView.getSelection('act');
+	jQuery.ajax({
+                url: "agregarRecurso/"+ida,
+                'data':$(this).serialize(),
+                'type':'post',
+                'dataType':'json',
+                'success':function(data){
+                                if (data.status == 'failure'){
+                                        $('#recurso div.divForForm').html(data.div);
+                                        $('#recurso div.divForForm form').submit(agregarRecurso); // updatePaymentComment
+                                }
+                                else{
+                                        $('#recurso div.divForForm').html(data.div);
+                                        setTimeout("$('#recurso').dialog('close') ",1000);
+                                        $.fn.yiiGridView.update('rec');
+										
+                                }
+                        },
+                'cache':false});
+    return false; 
+}
+function mostrarRecursos(id){
+ida=id;
+ObtenerActividad(ida);
+var altura = $(document).height();
+//$("html, body").animate({scrollTop:altura+"px"},500);
+//$('#recur').show(500);
+	//var idAct = $.fn.yiiGridView.getSelection('act');
+	$('#recur').show(500);
+	//if(idAct=="")
+	//	$('#recur').hide();
+	$.fn.yiiGridView.update('rec',{ data : "idAct="+ida});
+	$("html, body").animate({scrollTop:altura+"px"},1000);
+}
 </script>

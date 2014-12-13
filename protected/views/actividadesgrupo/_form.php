@@ -52,7 +52,7 @@
 
 	<div class="row">
 		
-		<?php echo $form->hiddenField($model,'idplan'); ?>
+		<?php echo $form->hiddenField($model,'idgrupo'); ?>
 	
 	</div>
 

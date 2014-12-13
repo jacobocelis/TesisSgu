@@ -25,5 +25,9 @@ $this->menu=array(
 		'fechaFactura',
 		'codigo',
 		'idproveedor',
+		'idordenMtto',
+		'total',
+		'iva',
+		'totalFactura',
 	),
 )); ?>

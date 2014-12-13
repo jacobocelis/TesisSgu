@@ -149,8 +149,8 @@ class ActividadesController extends Controller
 			$proximoFecha = new DateTime($model->fechaRealizada);
 			$proximoKm=$model->kmRealizada+$model->frecuenciaKm;
 			$proximoFecha->add(new DateInterval('P'.$model->frecuenciaMes.$model->idtiempof0->sqlTimevalues));
-			Yii::app()->db->createCommand("INSERT INTO `tsg`.`sgu_actividades` (`ultimoKm`,`ultimoFecha`,`frecuenciaKm`,`frecuenciaMes`,`proximoKm`,`proximoFecha`,`duracion`,`idprioridad`,`idplan`,`idestatus`,`procedimiento`,`idtiempod`,`idtiempof`,`idactividadesGrupo`,`idactividadMtto`)
-			VALUES (".$model->kmRealizada.",'".$model->fechaRealizada."',".$model->frecuenciaKm.",".$model->frecuenciaMes.",".$proximoKm.",'".$proximoFecha->format("Y-m-d")."',".$model->duracion.",".$model->idprioridad.",".$model->idplan.",2,'".$model->procedimiento."',".$model->idtiempod.",".$model->idtiempof.",".$model->idactividadesGrupo.",".$model->idactividadMtto.")")->query();
+			Yii::app()->db->createCommand("INSERT INTO `tsg`.`sgu_actividades` (`ultimoKm`,`ultimoFecha`,`frecuenciaKm`,`frecuenciaMes`,`proximoKm`,`proximoFecha`,`duracion`,`idprioridad`,`idvehiculo`,`idestatus`,`procedimiento`,`idtiempod`,`idtiempof`,`idactividadesGrupo`,`idactividadMtto`)
+			VALUES (".$model->kmRealizada.",'".$model->fechaRealizada."',".$model->frecuenciaKm.",".$model->frecuenciaMes.",".$proximoKm.",'".$proximoFecha->format("Y-m-d")."',".$model->duracion.",".$model->idprioridad.",".$model->idvehiculo.",2,'".$model->procedimiento."',".$model->idtiempod.",".$model->idtiempof.",".$model->idactividadesGrupo.",".$model->idactividadMtto.")")->query();
 			
 			//inserto el recurso de la actividad
 				$totalRec=Yii::app()->db->createCommand('select * from sgu_actividadRecurso where idactividades="'.$id.'"')->queryAll();

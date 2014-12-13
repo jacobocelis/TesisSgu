@@ -7,47 +7,40 @@ $this->breadcrumbs=array(
 );
 $this->menu=array(
 	array('label'=>'<div id="menu"><strong>Opciones de mantenimiento</strong></div>'),
-	array('label'=>'      Crear programa de mantenimiento', 'url'=>array('crearPlan')),
-	array('label'=>'      Ver programas de mantenimiento', 'url'=>array('planes')),
-	array('label'=>'      Ajuste de fechas', 'url'=>array('calendario')),
+	array('label'=>'      Registrar actividades de mantenimiento', 'url'=>array('planes')),
 	array('label'=>'      Registrar matenimientos iniciales <span class="badge badge-'.$color.' pull-right">'.$mi.'</span>', 'url'=>array('mttoPreventivo/iniciales/')),
+	array('label'=>'      Ajuste de fechas en calendario', 'url'=>array('calendario')),
+	
 	
 	array('label'=>'<div id="menu"><strong>Órdenes de mantenimiento</strong></div>'),
 	array('label'=>'      Crear orden de mantenimiento', 'url'=>array('crearOrdenPreventiva')),
 	array('label'=>'      Ver órdenes abiertas <span class="badge badge-'.$Colorabi.' pull-right">'.$abiertas.'</span>', 'url'=>array('verOrdenes')),
 	array('label'=>'      Órdenes listas para cerrar <span class="badge badge-'.$Colorli.' pull-right">'.$listas.'</span>', 'url'=>array('cerrarOrdenes')),
-	array('label'=>'<div id="menu"><strong>Historial</strong></div>'),
 	
+	array('label'=>'<div id="menu"><strong>Historial</strong></div>'),
 	array('label'=>'      Histórico de mantenimientos', 'url'=>array('historicoPreventivo')),
 	array('label'=>'      Histórico de gastos', 'url'=>array('historicoGastos')),
 	array('label'=>'      Histórico de ordenes', 'url'=>array('historicoOrdenes')),
 );
 ?>
 <div class='crugepanel user-assignments-role-list'>
-<h1>Próximos mantenimientos a realizarse</h1>
+<h1>Próximas actividades de mantenimiento a realizarse</h1>
 <?php
 $this->widget('zii.widgets.grid.CGridView', array(
                 'id'=>'head',
 				'summaryText'=>'',
 			    'enableSorting' => true,
-				'emptyText'=>'No hay mantenimientos registrados',
+				'emptyText'=>'No hay actividades de mantenimiento registradas',
                 'dataProvider'=>$dataProvider,
 				'rowCssClassExpression'=>'$this->dataProvider->data[$row]->diasRestantes($this->dataProvider->data[$row]->proximoFecha)>=5?"even":"rojo"',
 				'ajaxUpdate'=>false,
 				'columns'=>array(
 				array(
 					'header'=>'Unidad',
-					'name'=>'idplan',
-					'value'=>'str_pad((int) $data->idplan0->idvehiculo0->numeroUnidad,2,"0",STR_PAD_LEFT);',
+					'name'=>'idvehiculo',
+					'value'=>'str_pad((int) $data->idvehiculo0->numeroUnidad,2,"0",STR_PAD_LEFT);',
 					//'value'=>'$data->idplan0->idplanGrupo0->CompiledColour->$data-id.\' \'.$data->CompiledColour',
 					'htmlOptions'=>array('style'=>'text-align:center;width:60px'),
-				),
-				array(
-					'header'=>'Parte',
-					'name'=>'idplan',
-					'value'=>'Plangrupo::model()->parte($data->idplan0->idplanGrupo)',
-					//'value'=>'$data->idplan0->idplanGrupo0->CompiledColour->$data-id.\' \'.$data->CompiledColour',
-					'htmlOptions'=>array('style'=>'text-align:center;width:150px'),
 				),
 				array(
 					'header'=>'Actividad',

@@ -334,11 +334,11 @@ ul.auth-item input {
 }
 ul.auth-item li {
     border: 1px dotted #aaa;
-    border-radius: 5px;
+    border-radius: 0px;
     box-shadow: 3px 3px 5px #eee;
     float: left;
     margin-bottom: 10px;
-    margin-left: 10px;
+    margin-right: 10px;
     min-width: 150px;
     padding: 5px;
 	text-align: center;
@@ -415,6 +415,10 @@ div.user-assignments-detail #lista2 .boton {
     color: #000;
     font-weight: bold;
     text-decoration: none;
+}
+ul, ol {
+    padding: 0px;
+    margin: 0px 0px 10px 0px;
 }
 </style>
 <script>

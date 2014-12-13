@@ -17,15 +17,15 @@
 
 	<p class="note">Campos con <span class="required">*</span> obligatorios.</p>
 	
-	<?php $veh=Plan::model()->findByPk($model->idplan);
+	<?php 
 		$km=Kilometraje::model()->findAll(array(
-			'condition'=>'t.idvehiculo ='.$veh->idvehiculo.' order by t.id desc limit 1',
+			'condition'=>'t.idvehiculo ='.$model->idvehiculo.' order by t.id desc limit 1',
 		));
 		$modelo=new Kilometraje();
 	?>
 	<div class="row">
 		
-		Última lectura registrada: <?php echo $form->textField($modelo,'lectura',array('value'=>number_format($km[0]["lectura"], 0,",","") ,'readonly'=>'readonly','style' => 'width:100px;cursor:pointer;text-align:right')); ?> Km 
+		<label>Última lectura del odómetro: </label><?php echo $form->textField($modelo,'lectura',array('value'=>number_format($km[0]["lectura"], 0,",","") ,'readonly'=>'readonly','style' => 'width:100px;cursor:pointer;text-align:right')); ?> Km 
 		
 	</div>
 	
@@ -71,7 +71,7 @@
 	</div>
 	<div class="row">
 		
-		<?php echo $form->hiddenField($model,'idplan'); ?>
+		<?php echo $form->hiddenField($model,'idvehiculo'); ?>
 		
 	</div>
 

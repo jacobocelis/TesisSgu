@@ -18,7 +18,7 @@ class Actividadmtto extends CActiveRecord
 	 */
 	public function tableName()
 	{
-		return 'sgu_actividadmtto';
+		return 'sgu_actividadMtto';
 	}
 
 	/**

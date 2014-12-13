@@ -49,6 +49,18 @@
 		<?php echo $form->error($model,'total'); ?>
 	</div>
 
+	<div class="row">
+		<?php echo $form->labelEx($model,'iva'); ?>
+		<?php echo $form->textField($model,'iva'); ?>
+		<?php echo $form->error($model,'iva'); ?>
+	</div>
+
+	<div class="row">
+		<?php echo $form->labelEx($model,'totalFactura'); ?>
+		<?php echo $form->textField($model,'totalFactura'); ?>
+		<?php echo $form->error($model,'totalFactura'); ?>
+	</div>
+
 	<div class="row buttons">
 		<?php echo CHtml::submitButton($model->isNewRecord ? 'Create' : 'Save'); ?>
 	</div>

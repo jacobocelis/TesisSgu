@@ -84,7 +84,7 @@ class FacturaController extends Controller
 	 * If update is successful, the browser will be redirected to the 'view' page.
 	 * @param integer $id the ID of the model to be updated
 	 */
-	public function actionUpdate($id)
+	/*public function actionUpdate($id)
 	{
 		$model=$this->loadModel($id);
 
@@ -101,8 +101,34 @@ class FacturaController extends Controller
 		$this->render('update',array(
 			'model'=>$model,
 		));
-	}
+	}*/
+	public function actionUpdate($id)
+	{
+		$model=$this->loadModel($id);
 
+		// Uncomment the following line if AJAX validation is needed
+		// $this->performAjaxValidation($model);
+
+		if(isset($_POST['Factura']))
+		{
+			$model->attributes=$_POST['Factura'];
+			if($model->save())
+				if (Yii::app()->request->isAjaxRequest){
+                    echo CJSON::encode(array(
+                        'status'=>'success', 
+                        'div'=>"Se actualizó la información correctamente"
+                        ));
+                    exit;               
+			}
+		}
+		 if (Yii::app()->request->isAjaxRequest){
+            echo CJSON::encode(array(
+                'status'=>'failure', 
+                'div'=>$this->renderPartial('_formFactura', array('model'=>$model), true)));
+            exit;               
+        }
+	}
+	
 	/**
 	 * Deletes a particular model.
 	 * If deletion is successful, the browser will be redirected to the 'admin' page.

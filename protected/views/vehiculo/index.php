@@ -12,6 +12,7 @@ $this->menu=array(
 	array('label'=>'Administrar vehiculos', 'url'=>array('admin')),
 );
 ?>
+<div class='crugepanel user-assignments-detail'>
 <h1>Vehiculos registrados</h1>
 <?php /*$this->widget('zii.widgets.CListView', array(
 	'dataProvider'=>$dataProvider,
@@ -77,7 +78,17 @@ $this->menu=array(
 		),
 	),
 )); ?>
+</div>
 <style>
+.crugepanel {
+    background-color: #FFF;
+    border: 1px dotted #AAA;
+    border-radius: 1px;
+    box-shadow: 3px 3px 5px #EEE;
+    display: block;
+    margin-top: 10px;
+    padding: 10px;
+}
 .grid-view table.items th {
     text-align: center;
     background: none repeat scroll 0% 0% rgba(0, 138, 255, 0.15);

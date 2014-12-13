@@ -42,7 +42,7 @@ class Actividadrecurso extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('cantidad, idactividades, idunidad, idactividadRecursoGrupo,costoUnitario', 'required'),
+			array('cantidad, idactividades, idunidad,costoUnitario', 'required'),
 			array('cantidad, idactividades, idinsumo, idrepuesto, idservicio, idunidad, idactividadRecursoGrupo', 'numerical', 'integerOnly'=>true),
 			array('costoUnitario, costoTotal', 'numerical'),
 			array('detalle', 'length', 'max'=>100),

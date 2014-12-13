@@ -87,7 +87,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
                         CHtml::image(Yii::app()->request->baseUrl."/imagenes/ver.png",
                                           "Ver detalle",array("title"=>"Ver")),
 										  
-                        Yii::app()->createUrl("mttoPreventivo/vistaPrevia", array("id"=>$data->id)),
+                        Yii::app()->createUrl("mttoPreventivo/vistaPrevia", array("id"=>$data->id,"nom"=>"Órdenes abiertas","dir"=>"mttoPreventivo/verOrdenes")),
                         array(
 								
                                 \'style\'=>\'cursor: pointer;text-decoration: underline;text-align:center;\',
@@ -103,7 +103,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
                         CHtml::image(Yii::app()->request->baseUrl."/imagenes/agregar.png",
                                           "Agregar",array("title"=>"Editar")),
 										  
-                        Yii::app()->createUrl("mttoPreventivo/mttopRealizados", array("id"=>$data->id)),
+                        Yii::app()->createUrl("mttoPreventivo/mttopRealizados", array("id"=>$data->id,"nom"=>"Órdenes abiertas","dir"=>"mttoPreventivo/verOrdenes")),
                         array(
                                 \'style\'=>\'cursor: pointer;text-decoration: underline;text-align:center;\',
                         )

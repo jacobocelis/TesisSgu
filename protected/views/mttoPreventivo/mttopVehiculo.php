@@ -15,7 +15,7 @@ $this->breadcrumbs=array(
 
 ?>
 <div class='crugepanel user-assignments-role-list'>
-	<h1><?php echo ucfirst(CrugeTranslator::t("Próximos mantenimientos a realizarse"));?></h1>
+	<h1>Próximos mantenimientos a realizarse</h1>
 </div>
 <?php
 $this->widget('zii.widgets.grid.CGridView', array(
@@ -26,13 +26,6 @@ $this->widget('zii.widgets.grid.CGridView', array(
                 'dataProvider'=>$dataProvider,
 				'ajaxUpdate'=>false,
 				'columns'=>array(
-				array(
-					'header'=>'Parte',
-					'name'=>'idplan',
-					'value'=>'Plangrupo::model()->parte($data->idplan0->idplanGrupo)',
-					//'value'=>'$data->idplan0->idplanGrupo0->CompiledColour->$data-id.\' \'.$data->CompiledColour',
-					'htmlOptions'=>array('style'=>'text-align:center;width:150px'),
-				),
 				array(
 					'header'=>'Actividad',
 					'name'=>'idactividadMtto',
@@ -93,7 +86,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
 								"value"=>intval($data->porcentaje($data->ultimoFecha,$data->proximoFecha)),
 								"htmlOptions"=>array(
 								"style"=>"width:80px; height:20px; float:right;background:#".$data->obtColor($data->diasRestantes($data->proximoFecha)))))->run()',
-					'htmlOptions'=>array('style'=>'width:110px;text-align:center;'),
+					'htmlOptions'=>array('style'=>'width:100px;text-align:center;'),
 				),
 			)
         ));

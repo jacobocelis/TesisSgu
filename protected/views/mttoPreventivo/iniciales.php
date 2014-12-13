@@ -4,15 +4,14 @@ $this->breadcrumbs=array(
 	'Mantenimientos iniciales',
 );
 	$this->menu=array(
-	array('label'=>'Ver programas de mantenimiento', 'url'=>array('planes')),
-	array('label'=>'Crear programa de mantenimiento', 'url'=>array('crearPlan')),
-	array('label'=>'Histórico de mantenimientos', 'url'=>array('')),
-	array('label'=>'Regresar', 'url'=>array('index')),
+	array('label'=>'<div id="menu"><strong>Opciones de mantenimiento</strong></div>'),
+	array('label'=>'      Registrar actividades de mantenimiento', 'url'=>array('planes')),
+	array('label'=>'      Ajuste de fechas en calendario', 'url'=>array('calendario')),
 );
 ?>
 <div class='crugepanel user-assignments-role-list'>
 	<h1>Registrar mantenimientos iniciales</h1>
-</div>
+
 <?php
 	$this->widget('zii.widgets.grid.CGridView', array(
                 'id'=>'inicial',
@@ -25,17 +24,10 @@ $this->breadcrumbs=array(
 				'columns'=>array(
 				array(
 					'header'=>'Unidad',
-					'name'=>'idplan',
-					'value'=>'$data->idplan0->idvehiculo0->numeroUnidad',
+					'name'=>'idvehiculo',
+					'value'=>'$data->idvehiculo0->numeroUnidad',
 					//'value'=>'$data->idplan0->idplanGrupo0->CompiledColour->$data-id.\' \'.$data->CompiledColour',
 					'htmlOptions'=>array('style'=>'text-align:center;width:50px;'),
-				),
-				array(
-					'header'=>'Parte',
-					'name'=>'idplan',
-					'value'=>'Plangrupo::model()->parte($data->idplan0->idplanGrupo)',
-					//'value'=>'$data->idplan0->idplanGrupo0->CompiledColour->$data-id.\' \'.$data->CompiledColour',
-					'htmlOptions'=>array('style'=>'text-align:center;width:150px;'),
 				),
 				array(
 					'header'=>'Actividad',
@@ -85,6 +77,7 @@ $this->breadcrumbs=array(
 			)
         ));
 ?>
+</div>
 <?php
 /*ventana agregar informacion*/
 $this->beginWidget('zii.widgets.jui.CJuiDialog', array( // the dialog
@@ -102,7 +95,15 @@ $this->beginWidget('zii.widgets.jui.CJuiDialog', array( // the dialog
  
 <?php $this->endWidget();?>
 <style>
-
+.crugepanel {
+    background-color: #FFF;
+    border: 1px dotted #AAA;
+    border-radius: 1px;
+    box-shadow: 3px 3px 5px #EEE;
+    display: block;
+    margin-top: 10px;
+    padding: 10px;
+}
 .grid-view table.items th {
 	color: rgba(0, 0, 0, 1);
     text-align: center;

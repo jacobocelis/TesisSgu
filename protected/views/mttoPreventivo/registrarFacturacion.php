@@ -1,14 +1,15 @@
 <?php 
 $this->breadcrumbs=array(
 	'Mantenimiento preventivo'=>array('mttoPreventivo/index'),
-	'Órdenes abiertas'=>array('mttoPreventivo/verOrdenes'),
-	'Actualizar órden'=>array('mttoPreventivo/mttopRealizados/'.$id),
+	$nom=>array($dir),
+	'Actualizar órden'=>array('mttoPreventivo/mttopRealizados/','id'=>$id,'nom'=>$nom,'dir'=>$dir),
 	'Facturación',
 );
 	$this->menu=array(
-	array('label'=>'Ver programas de mantenimiento', 'url'=>array('planes')),
-	array('label'=>'Crear programa de mantenimiento', 'url'=>array('crearPlan')),
-	array('label'=>'Histórico de mantenimientos', 'url'=>array('')),
+	array('label'=>'<div id="menu"><strong>Historial</strong></div>'),
+	array('label'=>'      Histórico de mantenimientos', 'url'=>array('historicoPreventivo')),
+	array('label'=>'      Histórico de gastos', 'url'=>array('historicoGastos')),
+	array('label'=>'      Histórico de ordenes', 'url'=>array('historicoOrdenes')),	
 );
 ?>
 <div id="factura" class='crugepanel user-assignments-role-list'>
@@ -28,15 +29,13 @@ $this->widget('zii.widgets.grid.CGridView', array(
 					'header'=>'Fecha de factura',
 					'name'=>'fechaFactura',
 					'type'=>'raw',
-					
 					'value'=>'date("d/m/Y",strtotime($data->fechaFactura))',
 					'htmlOptions'=>array('style'=>'width:80px;text-align:center;'),
 				),
 				array(
-					'header'=>'Código de factura',
 					'name'=>'codigo',
 					'type'=>'raw',
-					//'value'=>'',
+					'value'=>'str_pad((int) $data->codigo,8,"0",STR_PAD_LEFT);',
 					'htmlOptions'=>array('style'=>'width:80px;text-align:center;'),
 				),
 				array(
@@ -48,24 +47,40 @@ $this->widget('zii.widgets.grid.CGridView', array(
 				),
 				array(
 					'headerHtmlOptions'=>array('style'=>'width:10px;text-align:center;'),
-					'header'=>'Total facturado',
+					'header'=>'Sub-Total',
 					'name'=>'total',
 					'type'=>'raw',
 					'value'=>'number_format($data->total, 2,",",".").\' Bs.\'',
 					'htmlOptions'=>array('style'=>'width:10px;text-align:center;'),
 				),
 				array(
-						'headerHtmlOptions'=>array('style'=>'width:20px;text-align:center;'),
-						'htmlOptions'=>array('style'=>'text-align:center;width:30px;'),
+					'headerHtmlOptions'=>array('style'=>'width:10px;text-align:center;'),
+					'header'=>'IVA',
+					'name'=>'iva',
+					'type'=>'raw',
+					'value'=>'number_format($data->iva, 2,",",".").\' Bs.\'',
+					'htmlOptions'=>array('style'=>'width:10px;text-align:center;'),
+				),
+				array(
+					'headerHtmlOptions'=>array('style'=>'width:10px;text-align:center;'),
+					'header'=>'Total Facturado',
+					'name'=>'totalFactura',
+					'type'=>'raw',
+					'value'=>'number_format($data->totalFactura, 2,",",".").\' Bs.\'',
+					'htmlOptions'=>array('style'=>'width:10px;text-align:center;'),
+				),
+					array(
+						'headerHtmlOptions'=>array('style'=>'text-align:center;width:30px;'),
+						'htmlOptions'=>array('style'=>'text-align:center;'),
 						'header'=>'Modificar datos de factura',
 						'type'=>'raw',
 						'value'=>'CHtml::link(
                         CHtml::image(Yii::app()->request->baseUrl."/imagenes/agregar.png",
                                           "Agregar",array("title"=>"Editar")),
-										  
-                        Yii::app()->createUrl("mttoPreventivo/mttopRealizados", array("id"=>$data->id)),
+                        "",
                         array(
                                 \'style\'=>\'cursor: pointer;text-decoration: underline;text-align:center;\',
+                                \'onclick\'=>\'{editarFactura("\'.Yii::app()->createUrl("factura/update",array("id"=>$data["id"],"idorden"=>$data["idordenMtto"])).\'");}\'
                         )
                 );',),
 			)
@@ -86,17 +101,10 @@ $this->widget('zii.widgets.grid.CGridView', array(
 				'columns'=>array(
 				array(
 					'header'=>'Unidad',
-					'name'=>'idplan',
-					'value'=>'str_pad((int) $data->idplan0->idvehiculo0->numeroUnidad,2,"0",STR_PAD_LEFT)',
+					'name'=>'idvehiculo',
+					'value'=>'str_pad((int) $data->idvehiculo0->numeroUnidad,2,"0",STR_PAD_LEFT)',
 					//'value'=>'$data->idplan0->idplanGrupo0->CompiledColour->$data-id.\' \'.$data->CompiledColour',
 					'htmlOptions'=>array('style'=>'text-align:center;width:50px;'),
-				),
-				array(
-					'header'=>'Parte',
-					'name'=>'idplan',
-					'value'=>'Plangrupo::model()->parte($data->idplan0->idplanGrupo)',
-					//'value'=>'$data->idplan0->idplanGrupo0->CompiledColour->$data-id.\' \'.$data->CompiledColour',
-					'htmlOptions'=>array('style'=>'text-align:center;width:150px;'),
 				),
 				array(
 					'header'=>'Actividad',
@@ -135,7 +143,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
 <?php 
 			$this->widget('zii.widgets.grid.CGridView', array(
 			'id'=>'rec',
-			'selectableRows'=>1,
+			'selectableRows'=>0,
 			'dataProvider'=>$recurso,
 			'enablePagination' => false,
 			'template'=>"{items}{summary}{pager}",
@@ -179,7 +187,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
 					'headerHtmlOptions'=>array('style'=>'text-align:left;'),
 					'header'=>'Total',
 					'name'=>'costoTotal',
-					'value'=>'number_format($data->costoTotal, 2,",",".").\' BsF.\'',
+					'value'=>'number_format($data->costoTotal, 2,",",".").\' Bs.\'',
 					'htmlOptions'=>array('style'=>'width:50px;'),
 					//'footer'=>'',
 				),
@@ -209,7 +217,27 @@ $this->widget('zii.widgets.grid.CGridView', array(
 				),*/
 			),
 	));?>
+	<?php echo CHtml::link('Agregar recurso adicional', "",  // the link for open the dialog
+    array(
+        'style'=>'cursor: pointer; text-decoration: underline;',
+        'onclick'=>"{agregarRecurso(); }"));
+		?>	
 </div>
+<?php
+/*ventana agregar recurso*/
+$this->beginWidget('zii.widgets.jui.CJuiDialog', array( // the dialog
+    'id'=>'ModFactura',
+    'options'=>array(
+        'title'=>'Editar información de factura',
+        'autoOpen'=>false,
+        'modal'=>true,
+        'width'=>490,
+		'resizable'=>false
+    ),
+));?>
+<div class="divForForm"></div> 
+<?php $this->endWidget();?>
+
 <?php
 /*ventana agregar recurso*/
 $this->beginWidget('zii.widgets.jui.CJuiDialog', array( // the dialog
@@ -226,6 +254,22 @@ $this->beginWidget('zii.widgets.jui.CJuiDialog', array( // the dialog
 <div class="divForForm"></div> 
 <?php $this->endWidget();?>
 
+<?php
+/*ventana agregar recurso*/
+$this->beginWidget('zii.widgets.jui.CJuiDialog', array( // the dialog
+    'id'=>'recurso',
+    'options'=>array(
+        'title'=>'Agregar recurso adicional',
+        'autoOpen'=>false,
+        'modal'=>true,
+        'width'=>390,
+		'position'=>array(500,100),
+		'resizable'=>false
+    ),
+));?>
+<div class="divForForm"></div>
+ 
+<?php $this->endWidget();?>
 <style>
 .crugepanel {
     background-color: #FFF;
@@ -255,6 +299,9 @@ $this->beginWidget('zii.widgets.jui.CJuiDialog', array( // the dialog
     font-size: 0.9em;
     border: 1px solid #A8C5F0;
     padding: 0.3em;
+}
+.grid-view {
+    padding: 10px 0;
 }
 </style>
 <script>
@@ -332,6 +379,57 @@ $('#dialog').dialog('open');
 										$.fn.yiiGridView.update('factu');
                                 }
                         } ,
+                'cache':false});
+    return false; 
+}
+function editarFactura(id){
+$('#ModFactura').dialog('open');
+	 if (typeof(id)=='string')
+                Uurl=id;
+	jQuery.ajax({
+                url: Uurl,
+                'data':$(this).serialize(),
+                'type':'post',
+                'dataType':'json',
+                'success':function(data)
+                        {
+                                if (data.status == 'failure')
+                                {
+                                        $('#ModFactura div.divForForm').html(data.div);
+                                        // Here is the trick: on submit-> once again this function!
+                                        $('#ModFactura div.divForForm form').submit(editarFactura); // updatePaymentComment
+                                }
+                                else
+                                {
+                                        $('#ModFactura div.divForForm').html(data.div);
+                                        setTimeout("$('#ModFactura').dialog('close') ",1000);
+										$.fn.yiiGridView.update('factu');
+                                }
+                        } ,
+                'cache':false});
+    return false; 
+}
+function agregarRecurso(){
+$('#recurso').dialog('open');
+	var idAct = $.fn.yiiGridView.getSelection('actividad');
+	var url="<?php echo Yii::app()->baseUrl."/mttoPreventivo/agregarRecursoAdicional/"?>";
+	jQuery.ajax({
+                url: url+idAct,
+                'data':$(this).serialize(),
+                'type':'post',
+                'dataType':'json',
+                'success':function(data){
+                                if (data.status == 'failure'){
+                                        $('#recurso div.divForForm').html(data.div);
+                                        $('#recurso div.divForForm form').submit(agregarRecurso); // updatePaymentComment
+                                }
+                                else{
+                                        $('#recurso div.divForForm').html(data.div);
+                                        setTimeout("$('#recurso').dialog('close') ",1000);
+                                        $.fn.yiiGridView.update('rec');
+										
+                                }
+                        },
                 'cache':false});
     return false; 
 }

@@ -43,6 +43,7 @@
 		
 		<link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->request->baseUrl; ?>/css/jquery.galleryview-3.0-dev.css" />
 		<link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->request->baseUrl; ?>/css/jquery.galleryview-3.0-dev.css" />
+		<link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->request->baseUrl; ?>/css/jquery-ui-timepicker-addon.css" />
 
 		
         <?php
@@ -66,6 +67,7 @@
 	<?php Yii::app()->clientScript->registerScriptFile($ruta.'/js/jquery.timers-1.2.js'); ?>
 	<?php Yii::app()->clientScript->registerScriptFile($ruta.'/js/responsiveslides.js'); ?>
 	<?php Yii::app()->clientScript->registerScriptFile($ruta.'/js/responsiveslides.min.js'); ?>
+	<?php Yii::app()->clientScript->registerScriptFile($ruta.'/js/jquery-ui-timepicker.js'); ?>
     </head>
 
     <body>

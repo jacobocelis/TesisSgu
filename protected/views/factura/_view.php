@@ -21,5 +21,23 @@
 	<?php echo CHtml::encode($data->idproveedor); ?>
 	<br />
 
+	<b><?php echo CHtml::encode($data->getAttributeLabel('idordenMtto')); ?>:</b>
+	<?php echo CHtml::encode($data->idordenMtto); ?>
+	<br />
+
+	<b><?php echo CHtml::encode($data->getAttributeLabel('total')); ?>:</b>
+	<?php echo CHtml::encode($data->total); ?>
+	<br />
+
+	<b><?php echo CHtml::encode($data->getAttributeLabel('iva')); ?>:</b>
+	<?php echo CHtml::encode($data->iva); ?>
+	<br />
+
+	<?php /*
+	<b><?php echo CHtml::encode($data->getAttributeLabel('totalFactura')); ?>:</b>
+	<?php echo CHtml::encode($data->totalFactura); ?>
+	<br />
+
+	*/ ?>
 
 </div>

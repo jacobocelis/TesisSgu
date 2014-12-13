@@ -64,7 +64,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
                         CHtml::image(Yii::app()->request->baseUrl."/imagenes/ver.png",
                                           "Ver detalle",array("title"=>"Ver")),
 										  
-                        Yii::app()->createUrl("mttoPreventivo/vistaPrevia", array("id"=>$data->id)),
+                        Yii::app()->createUrl("mttoPreventivo/vistaPrevia", array("id"=>$data->id,"nom"=>"Histórico de  órdenes","dir"=>"mttoPreventivo/historicoOrdenes")),
                         array(
 								
                                 \'style\'=>\'cursor: pointer;text-decoration: underline;text-align:center;\',

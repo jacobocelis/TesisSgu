@@ -106,7 +106,7 @@ if ($rol == "Jefe Departamento") {
 				
 				</a>
 			
-				<a href="<?php echo Yii::app()->request->baseUrl;?>" id="viajes">
+				<a href="<?php echo Yii::app()->request->baseUrl;?>/viajes" id="viajes">
 				
 				</a>
 			
