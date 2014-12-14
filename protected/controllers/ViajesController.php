@@ -32,7 +32,7 @@ class ViajesController extends Controller
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create','update','agregarViaje','rutinarios','ultimosViajes','especiales'),
+				'actions'=>array('create','update','agregarViajeRutinario','agregarViajeEspecial','rutinarios','ultimosViajes','especiales','formAgregarEspecial','agregarRutaNueva'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -44,13 +44,57 @@ class ViajesController extends Controller
 			),
 		);
 	}
-
+	public function actionAgregarRutaNueva(){
+		$model=new Viaje;
+		if(isset($_POST['Viaje'])){
+            $model->attributes=$_POST['Viaje'];
+			if($model->save()){
+                if (Yii::app()->request->isAjaxRequest){
+                    echo CJSON::encode(array(
+                        'status'=>'success', 
+                        'div'=>"Viaje especial agregado"
+                        ));
+					exit;
+                }
+            }
+        }
+		 if (Yii::app()->request->isAjaxRequest){	
+            echo CJSON::encode(array(
+                'status'=>'failure', 
+                'div'=>$this->renderPartial('_formViaje', array('model'=>$model), true)
+				));
+            exit;               
+        }
+	}
 	/**
 	 * Displays a particular model.
 	 * @param integer $id the ID of the model to be displayed
 	 */
-	 
-	public function actionAgregarViaje(){
+	 public function actionFormAgregarEspecial(){
+		$model=new Historicoviajes;
+		if(isset($_POST['Historicoviajes'])){
+            $model->attributes=$_POST['Historicoviajes'];
+            $model->fecha=date("Y-m-d", strtotime(str_replace('/', '-', $_POST['Historicoviajes']['fecha'])));
+			if($model->save()){
+                if (Yii::app()->request->isAjaxRequest){
+                    echo CJSON::encode(array(
+                        'status'=>'success', 
+                        'div'=>"Viaje especial agregado"
+                        ));
+					exit;
+                }
+            }
+        }
+		 if (Yii::app()->request->isAjaxRequest){	
+            echo CJSON::encode(array(
+                'status'=>'failure', 
+                'div'=>$this->renderPartial('_formViajeEspecial', array('model'=>$model), true)
+				));
+            exit;               
+        }
+	}
+	
+	public function actionAgregarViajeRutinario(){
                 $model=new Historicoviajes;
         // Uncomment the following line if AJAX validation is needed
          //$this->performAjaxValidation($model);
@@ -78,7 +122,44 @@ class ViajesController extends Controller
         if (Yii::app()->request->isAjaxRequest){
             echo CJSON::encode(array(
                 'status'=>'failure', 
-                'div'=>$this->renderPartial('_formViaje', array('model'=>$model,'fecha'=>$fecha), true)));
+                'div'=>$this->renderPartial('_formViajeRutinario', array('model'=>$model,'fecha'=>$fecha), true)));
+            exit;               
+        }
+        /*else
+            $this->render('create',array('model'=>$model,));*/
+	}
+	
+	//especiales
+	
+	public function actionAgregarViajeEspecial(){
+                $model=new Historicoviajes;
+        // Uncomment the following line if AJAX validation is needed
+         //$this->performAjaxValidation($model);
+			if(isset($_POST['fecha']))
+				$fecha=date('Y-m-d',strtotime($_POST['fecha']));
+			else
+				$fecha='';
+				
+    if(isset($_POST['Historicoviajes'])){
+            $model->attributes=$_POST['Historicoviajes'];
+			if($_POST['Historicoviajes']['horaSalida']<>'')
+				$model->horaSalida=date("H:i", strtotime($_POST['Historicoviajes']['horaSalida']));
+			if($_POST['Historicoviajes']['horaLlegada']<>'')
+			$model->horaLlegada=date("H:i", strtotime($_POST['Historicoviajes']['horaLlegada']));
+            if($model->save()){
+                if (Yii::app()->request->isAjaxRequest){
+					echo CJSON::encode(array(
+                        'status'=>'success', 
+                        'div'=>"se registró el viaje correctamente"
+                        ));
+                    exit;
+                }
+            }
+        }
+        if (Yii::app()->request->isAjaxRequest){
+            echo CJSON::encode(array(
+                'status'=>'failure', 
+                'div'=>$this->renderPartial('_formViajeEspecial', array('model'=>$model,'fecha'=>$fecha), true)));
             exit;               
         }
         /*else
@@ -158,7 +239,7 @@ class ViajesController extends Controller
 		 if (Yii::app()->request->isAjaxRequest){
             echo CJSON::encode(array(
                 'status'=>'failure', 
-                'div'=>$this->renderPartial('_formViaje', array('model'=>$model,'fecha'=>$model->fecha), true)));
+                'div'=>$this->renderPartial('_formViajeRutinario', array('model'=>$model,'fecha'=>$model->fecha), true)));
             exit;               
         }
 	}
@@ -181,15 +262,10 @@ class ViajesController extends Controller
 	 * Lists all models.
 	 */
 	 public function actionEspeciales(){
-		$Fecha=date("Y-m-d");
+		//$Fecha=date("Y-m-d");
 		$model=new Historicoviajes();
-		if(isset($_GET['fecha'])){
-			$Fecha=date("Y-m-d", strtotime(str_replace('/', '-', $_GET['fecha'])));
-		}
-		$dataProvider=new CActiveDataProvider('Historicoviajes',
-		array('criteria' => array(
-			'condition'=>'t.fecha="'.$Fecha.'"',
-		)));
+		
+		$dataProvider=new CActiveDataProvider('Historicoviajes');
 		$tot=Yii::app()->db->createCommand("select count(*) as total from sgu_historicoViajes where fecha=(select fecha from sgu_historicoViajes order by fecha desc limit 1)order by fecha desc")->queryRow();
 		
 		$this->render('especiales',array(

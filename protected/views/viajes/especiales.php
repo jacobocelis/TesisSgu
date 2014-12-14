@@ -8,7 +8,7 @@ $this->breadcrumbs=array(
 
 $this->menu=array(
 	array('label'=>'<div id="menu"><strong>Viajes</strong></div>'),
-	array('label'=>'Registrar viajes especiales', 'url'=>array('create')),
+	array('label'=>'Registrar viajes rutinarios', 'url'=>array('rutinarios')),
 	array('label'=>'<div id="menu"><strong>Historial</strong></div>'),
 	array('label'=>'Histórico de viajes', 'url'=>array('admin')),
 	array('label'=>'Estadísticas de viajes', 'url'=>array('admin')),
@@ -16,7 +16,10 @@ $this->menu=array(
 ?>
 <div class='crugepanel user-assignments-detail'>
 <h1>Registro de viajes especiales</h1>
-<?php $this->renderPartial('_formViajeEspecial', array('model'=>$model)); ?>
+<div id="registro" class='crugepanel user-assignments-detail'>
+<?php //$this->renderPartial('_formViajeEspecial', array('model'=>$model)); ?>
+</div>
+<h1>Listado de viajes registrados</h1>
 <?php
 $this->widget('zii.widgets.grid.CGridView', array(
                 'id'=>'viajes',
@@ -166,6 +169,30 @@ $this->beginWidget('zii.widgets.jui.CJuiDialog', array( // the dialog
     padding: 0.3em;
 }
 </style>
+<script>
+viajeForm();
+function viajeForm(){
+var dir="<?php echo Yii::app()->baseUrl."/viajes/formAgregarEspecial"?>";
+jQuery.ajax({
+                url: dir,
+                'data':$(this).serialize(),
+                'type':'post',
+                'dataType':'json',
+                'success':function(data){
+                                if (data.status == 'failure'){
+                                        $('#registro').html(data.div);
+                                        $('#registro form').submit(viajeForm);
+                                }
+                                else{
+                                        $('#registro').html(data.div);
+										window.setTimeout('viajeForm()', 2000);
+										$.fn.yiiGridView.update('viajes');
+                                }
+                        } ,
+                'cache':false});
+		return false; 
+}
+</script>
 <script>
 function agregarViaje(){
 $('#viaje').dialog('open');

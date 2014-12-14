@@ -67,10 +67,10 @@ class Viaje extends CActiveRecord
 	{
 		return array(
 			'id' => 'ID',
-			'distanciaKm' => 'Distancia Km',
-			'idOrigen' => 'Id Origen',
-			'idDestino' => 'Id Destino',
-			'idtipo' => 'Idtipo',
+			'distanciaKm' => 'Distancia en Km',
+			'idOrigen' => 'Origen',
+			'idDestino' => 'Destino',
+			'idtipo' => 'Tipo',
 			'viaje' => 'Ruta',
 		);
 	}

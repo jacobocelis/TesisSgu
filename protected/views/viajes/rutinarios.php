@@ -8,7 +8,7 @@ $this->breadcrumbs=array(
 
 $this->menu=array(
 	array('label'=>'<div id="menu"><strong>Viajes</strong></div>'),
-	array('label'=>'Registrar viajes especiales', 'url'=>array('create')),
+	array('label'=>'Registrar viajes especiales', 'url'=>array('especiales')),
 	array('label'=>'<div id="menu"><strong>Historial</strong></div>'),
 	array('label'=>'Histórico de viajes', 'url'=>array('admin')),
 	array('label'=>'Estadísticas de viajes', 'url'=>array('admin')),
@@ -24,7 +24,7 @@ $this->menu=array(
  echo CHtml::link('1. Registrar nuevo viaje<br>', "", 
  array(
         'style'=>'cursor: pointer; text-decoration: underline;',
-        'onclick'=>"{agregarViaje(); }"));
+        'onclick'=>"{agregarViajeRutinario(); }"));
 		?>
 
 		<div id='etiqueta' ><?php echo CHtml::link('2. Registrar viajes de última rutina', "",  
@@ -220,10 +220,10 @@ $this->beginWidget('zii.widgets.jui.CJuiDialog', array( // the dialog
 });
 </script>
 <script>
-function agregarViaje(){
+function agregarViajeRutinario(){
 $('#viaje').dialog('open');
 	var fecha=$('#fecha').val();
-	var dir="<?php echo Yii::app()->baseUrl."/viajes/agregarViaje/"?>";
+	var dir="<?php echo Yii::app()->baseUrl."/viajes/agregarViajeRutinario/"?>";
 	jQuery.ajax({
                 url: dir,
                 'data':$(this).serialize()+"&fecha="+fecha,
@@ -232,13 +232,12 @@ $('#viaje').dialog('open');
                 'success':function(data){
                                 if (data.status == 'failure'){
                                         $('#viaje div.divForForm').html(data.div);
-                                        $('#viaje div.divForForm form').submit(agregarViaje); // updatePaymentComment
+                                        $('#viaje div.divForForm form').submit(agregarViajeRutinario);
                                 }
                                 else{
                                         $('#viaje div.divForForm').html(data.div);
                                         setTimeout("$('#viaje').dialog('close') ",1000);
                                         $.fn.yiiGridView.update('viajes');
-										
                                 }
                         },
                 'cache':false});
