@@ -49,6 +49,12 @@
 		<?php echo $form->error($model,'idvehiculo'); ?>
 	</div>
 
+	<div class="row">
+		<?php echo $form->labelEx($model,'nroPersonas'); ?>
+		<?php echo $form->textField($model,'nroPersonas'); ?>
+		<?php echo $form->error($model,'nroPersonas'); ?>
+	</div>
+
 	<div class="row buttons">
 		<?php echo CHtml::submitButton($model->isNewRecord ? 'Create' : 'Save'); ?>
 	</div>

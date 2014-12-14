@@ -43,7 +43,11 @@
 		<?php echo $form->error($model,'horaLlegada'); ?>
 	</div>
 
+	<div class="row">
+		
+		<?php echo $form->hiddenField($model,'nroPersonas',array('value'=>0)); ?>
 	
+	</div>	
 
 
 	<div class="row buttons">
@@ -54,6 +58,7 @@
 
 </div><!-- form -->
 <script>
+
 (function($) {
         $.timepicker.regional['es'] = {
                 timeOnlyTitle: 'Elegir una hora',

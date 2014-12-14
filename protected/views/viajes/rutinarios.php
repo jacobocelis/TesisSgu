@@ -32,7 +32,7 @@ $this->menu=array(
         'style'=>'cursor: pointer; text-decoration: underline;',
         'onclick'=>"{ultimosViajes(); }"));
 	?>
-	<span class="badge badge-important pull-right"><?php echo $total;?></span></div>
+	<span id="span" class="badge badge-important pull-right"><?php echo $total;?></span></div>
 	<?php
 $this->widget('zii.widgets.grid.CGridView', array(
                 'id'=>'viajes',
@@ -43,6 +43,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
 				'emptyText'=>'no hay viajes registrados para ésta fecha',
                 'dataProvider'=>$dataProvider,
 				'htmlOptions'=>array('style'=>'font-size: 1.0em;'),
+				'afterAjaxUpdate'=>'actualizarSpan',
 				'columns'=>array(
 				array(
 					'header'=>'Unidad',
@@ -183,6 +184,17 @@ $this->beginWidget('zii.widgets.jui.CJuiDialog', array( // the dialog
 }
 </style>
 <script>
+function actualizarSpan(){
+	var dir="<?php echo Yii::app()->baseUrl;?>"+"/viajes/actualizarSpan";
+	$.ajax({
+		url: dir,
+		'data':$(this).serialize(),
+        'dataType':'json',
+         'success':function( result ) {
+    	     //$('#mi').removeClass($('#mi').attr('class')).addClass('badge badge-'+result.color+' pull-right');
+			 $('#span').text(result.total);
+		},});		
+}
 	$(function($){
 	    $.datepicker.regional['es'] = {
 	        closeText: 'Cerrar',

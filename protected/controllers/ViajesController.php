@@ -32,7 +32,7 @@ class ViajesController extends Controller
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create','update','agregarViajeRutinario','agregarViajeEspecial','rutinarios','ultimosViajes','especiales','formAgregarEspecial','agregarRutaNueva'),
+				'actions'=>array('create','update','agregarViajeRutinario','agregarViajeEspecial','rutinarios','ultimosViajes','especiales','formAgregarEspecial','agregarRutaNueva','actualizarSpan'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -44,6 +44,12 @@ class ViajesController extends Controller
 			),
 		);
 	}
+public function actionActualizarSpan(){
+		$tot=Yii::app()->db->createCommand("select count(*) as total from sgu_historicoViajes hv, sgu_viaje v where hv.idviaje=v.id and v.idtipo=1 and fecha<>date(now())")->queryRow();
+		echo CJSON::encode(array(
+			'total'=>$tot["total"],
+		));
+	 }
 	public function actionAgregarRutaNueva(){
 		$model=new Viaje;
 		if(isset($_POST['Viaje'])){
@@ -99,11 +105,11 @@ class ViajesController extends Controller
         // Uncomment the following line if AJAX validation is needed
          //$this->performAjaxValidation($model);
 			if(isset($_POST['fecha']))
-				$fecha=date('Y-m-d',strtotime($_POST['fecha']));
+				$fecha=date('Y-m-d',strtotime(str_replace('/', '-', $_POST['fecha'])));
 			else
 				$fecha='';
 				
-    if(isset($_POST['Historicoviajes'])){
+		if(isset($_POST['Historicoviajes'])){
             $model->attributes=$_POST['Historicoviajes'];
 			if($_POST['Historicoviajes']['horaSalida']<>'')
 				$model->horaSalida=date("H:i", strtotime($_POST['Historicoviajes']['horaSalida']));
@@ -174,7 +180,7 @@ class ViajesController extends Controller
 	public function actionUltimosViajes(){
              
 					Yii::app()->db->createCommand("INSERT  ignore INTO `tsg`.`sgu_historicoViajes` (`fecha`,`horaSalida`,`horaLlegada`,`idviaje`,`idvehiculo`)
-					select date(now()) as fecha, horaSalida, horaLlegada, idviaje, idvehiculo from sgu_historicoViajes where fecha=(select fecha from sgu_historicoviajes order by fecha desc limit 1)order by fecha desc")->query();
+					select date(now()) as fecha, horaSalida, horaLlegada, idviaje, idvehiculo from sgu_historicoViajes where fecha=(select fecha from sgu_historicoViajes hv, sgu_viaje v where hv.idviaje=v.id and v.idtipo=1 and fecha<>date(now()) group by fecha order by fecha desc limit 1)")->query();
     
         if (Yii::app()->request->isAjaxRequest){
             echo CJSON::encode(array(
@@ -265,16 +271,17 @@ class ViajesController extends Controller
 		//$Fecha=date("Y-m-d");
 		$model=new Historicoviajes();
 		
-		$dataProvider=new CActiveDataProvider('Historicoviajes');
-		$tot=Yii::app()->db->createCommand("select count(*) as total from sgu_historicoViajes where fecha=(select fecha from sgu_historicoViajes order by fecha desc limit 1)order by fecha desc")->queryRow();
+		$dataProvider=new CActiveDataProvider('Historicoviajes',
+		array('criteria'=>array('condition'=>'id in (select hv.id as id from sgu_historicoViajes hv, sgu_viaje v where hv.idviaje=v.id and v.idtipo=2 or v.idtipo=3)'
+		)));
 		
 		$this->render('especiales',array(
 			'dataProvider'=>$dataProvider,
 			'model'=>$model,
 		));
 	}
-	public function actionRutinarios()
-	{
+	public function actionRutinarios(){
+	
 		$Fecha=date("Y-m-d");
 		
 		if(isset($_GET['fecha'])){
@@ -283,9 +290,9 @@ class ViajesController extends Controller
 		}
 		$dataProvider=new CActiveDataProvider('Historicoviajes',
 		array('criteria' => array(
-			'condition'=>'t.fecha="'.$Fecha.'"',
+			'condition'=>'t.fecha="'.$Fecha.'" and id in (select hv.id as id from sgu_historicoViajes hv, sgu_viaje v where hv.idviaje=v.id and v.idtipo=1)',
 		)));
-		$tot=Yii::app()->db->createCommand("select count(*) as total from sgu_historicoViajes where fecha=(select fecha from sgu_historicoViajes order by fecha desc limit 1)order by fecha desc")->queryRow();
+		$tot=Yii::app()->db->createCommand("select count(*) as total from sgu_historicoViajes hv, sgu_viaje v where hv.idviaje=v.id and v.idtipo=1 and fecha<>date(now())")->queryRow();
 		
 		$this->render('rutinarios',array(
 			'dataProvider'=>$dataProvider,

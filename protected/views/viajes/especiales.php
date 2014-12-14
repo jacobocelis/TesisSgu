@@ -39,6 +39,13 @@ $this->widget('zii.widgets.grid.CGridView', array(
 					'htmlOptions'=>array('style'=>'text-align:center;width:50px;'),
 				),
 				array(
+					'header'=>'Fecha',
+					'name'=>'fecha',
+					'value'=>'date("d/m/Y", strtotime($data->fecha));',
+					//'value'=>'$data->idplan0->idplanGrupo0->CompiledColour->$data-id.\' \'.$data->CompiledColour',
+					'htmlOptions'=>array('style'=>'text-align:center;width:40px;'),
+				),
+				array(
 					'header'=>'Ruta realizada',
 					'name'=>'idviaje',
 					'value'=>'$data->idviaje0->idOrigen0->lugar.\' - \'.$data->idviaje0->idDestino0->lugar',
@@ -47,22 +54,34 @@ $this->widget('zii.widgets.grid.CGridView', array(
 				),
 
 				array(
-					'header'=>'Hora de salida',
+					'header'=>'Salida',
 					'name'=>'horaSalida',
 					'value'=>'date("g:i a", strtotime($data->horaSalida));',
-					'htmlOptions'=>array('style'=>'text-align:center;width:100px;'),
+					'htmlOptions'=>array('style'=>'text-align:center;width:60px;'),
 				),
 				array(
-					'header'=>'Hora de llegada',
+					'header'=>'Llegada',
 					'name'=>'horaLlegada',
 					'value'=>'date("g:i a", strtotime($data->horaLlegada));',
-					'htmlOptions'=>array('style'=>'text-align:center;width:100px;'),
+					'htmlOptions'=>array('style'=>'text-align:center;width:60px;'),
 				),
 				array(
 					'header'=>'Distancia',
 					'value'=>'$data->idviaje0->distanciaKm.\' Km \'',
 					//'value'=>'date("g:i a", strtotime($data->horaLlegada));',
-					'htmlOptions'=>array('style'=>'text-align:center;width:100px;'),
+					'htmlOptions'=>array('style'=>'text-align:center;width:50px;'),
+				),
+				array(
+					'header'=>'Pasajeros',
+					'name'=>'nroPersonas',
+					//'value'=>'date("g:i a", strtotime($data->horaLlegada));',
+					'htmlOptions'=>array('style'=>'text-align:center;width:60px;'),
+				),
+				array(
+					'header'=>'Tipo',
+					'value'=>'$data->idviaje0->idtipo0->tipo',
+					//'value'=>'date("g:i a", strtotime($data->horaLlegada));',
+					'htmlOptions'=>array('style'=>'text-align:center;width:30px;'),
 				),
 				array(
 						'headerHtmlOptions'=>array('style'=>'text-align:center;width:10px;'),
@@ -170,6 +189,9 @@ $this->beginWidget('zii.widgets.jui.CJuiDialog', array( // the dialog
 }
 </style>
 <script>
+if( $('#Historicoviajes_idviaje').empty() ){
+	
+}
 viajeForm();
 function viajeForm(){
 var dir="<?php echo Yii::app()->baseUrl."/viajes/formAgregarEspecial"?>";
