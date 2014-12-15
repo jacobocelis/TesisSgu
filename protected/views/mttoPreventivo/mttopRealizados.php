@@ -240,9 +240,16 @@ function validar(){
 var id="<?php echo $id?>";
 	var dir="<?php echo Yii::app()->baseUrl."/mttoPreventivo/estatusOrden"?>";
 	var x = document.getElementById("campo1").checked;
-	if(x==true)
-		x=1;
-	else
+	if(x==true){
+		if(confirm('Confirma que desea poner la orden como lista?')){
+			x=1;
+			window.location = "<?php echo Yii::app()->baseUrl."/mttoPreventivo/verOrdenes"?>";
+		}else{
+			x=0;
+		}
+		
+		
+	}else
 		x=0;
 	jQuery.ajax({
                 url: dir+"/"+x,

@@ -52,7 +52,7 @@
 
 	<div id="pasajeros" class="row">
 		<?php echo $form->labelEx($model,'nroPersonas'); ?>
-		<?php echo $form->textField($model,'nroPersonas',array('style' => 'width:40px;')); ?>
+		<?php echo $form->textField($model,'nroPersonas',array('size'=>3,'maxlength'=>3,'style' => 'width:40px;')); ?>
 		<?php echo $form->error($model,'nroPersonas'); ?>
 	</div>
 	<div id="boton" class="row buttons">

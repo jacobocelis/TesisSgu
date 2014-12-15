@@ -87,7 +87,8 @@ $this->beginWidget('zii.widgets.jui.CJuiDialog', array( // the dialog
         'autoOpen'=>false,
         'modal'=>true,
         'width'=>400,
-        'height'=>255,
+        //'height'=>255,
+		'position'=>array(null,100),
 		'resizable'=>false
     ),
 ));?>

@@ -32,7 +32,7 @@ class ViajesController extends Controller
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create','update','agregarViajeRutinario','agregarViajeEspecial','rutinarios','ultimosViajes','especiales','formAgregarEspecial','agregarRutaNueva','actualizarSpan','validarRuta'),
+				'actions'=>array('create','update','agregarViajeRutinario','agregarViajeEspecial','rutinarios','ultimosViajes','especiales','formAgregarEspecial','agregarRutaNueva','actualizarSpan','validarRuta','puestos','insumos','repuesto'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -355,5 +355,21 @@ public function actionActualizarSpan(){
 				echo CHtml::tag('option',array('type'=>'text','value'=>(($li->id))),Chtml::encode(($li->lugar)),true);
 			}
 		}
+	}
+	public function actionPuestos($id){
+			$modelo=Vehiculo::model()->findByPk($id);
+			echo $modelo->nroPuestos;
+	}
+	public function actionInsumos($id){
+			$lista2=Insumo::model()->findAll('tipoInsumo = :id',array(':id'=>$id));
+			foreach($lista2 as $li){
+				echo CHtml::tag('option',array('type'=>'text','value'=>(($li->id))),Chtml::encode(($li->insumo)),true);
+			}
+	}
+	public function actionRepuesto($id){
+			$lista2=Repuesto::model()->findAll('idsubTipoRepuesto = :id',array(':id'=>$id));
+			foreach($lista2 as $li){
+				echo CHtml::tag('option',array('type'=>'text','value'=>(($li->id))),Chtml::encode(($li->repuesto)),true);
+			}
 	}
 }

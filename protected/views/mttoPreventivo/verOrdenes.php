@@ -46,7 +46,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
 					'header'=>'Responsable',
 					'name'=>'responsable',
 					//'value'=>'$data->idplan0->idplanGrupo0->CompiledColour->$data-id.\' \'.$data->CompiledColour',
-					'htmlOptions'=>array('style'=>'text-align:center;width:150px'),
+					'htmlOptions'=>array('style'=>'text-align:center;width:80px'),
 				),
 				array(
 						'headerHtmlOptions'=>array('style'=>'text-align:center;width:50px;'),

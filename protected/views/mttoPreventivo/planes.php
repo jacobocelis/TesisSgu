@@ -193,7 +193,7 @@ $this->beginWidget('zii.widgets.jui.CJuiDialog', array( // the dialog
         'width'=>550,
         //'height'=>480,
 		'resizable'=>false,	
-		'position'=>array(400,100),
+		'position'=>array(null,100),
     ),
 ));?>
 <div class="divForForm"></div>
@@ -208,7 +208,8 @@ $this->beginWidget('zii.widgets.jui.CJuiDialog', array( // the dialog
         'autoOpen'=>false,
         'modal'=>true,
         'width'=>390,
-        'height'=>360,
+        //'height'=>360,
+		'position'=>array(null,100),
 		'resizable'=>false
     ),
 ));?>

@@ -14,14 +14,14 @@
 	// See class documentation of CActiveForm for details on this.
 	'enableAjaxValidation'=>false,
 )); ?>
-
+ 
 	<p class="note">Campos con  <span class="required">*</span> son obligatorios.</p>
 	
 		<?php echo $form->hiddenField($model,'fecha',array('value'=>$fecha)); ?>
 
 	<div class="row">
 		<?php echo $form->labelEx($model,'idvehiculo'); ?>
-		<?php echo $form->dropDownList($model,'idvehiculo',CHtml::listData(Vehiculo::model()->findAll(),'id','numeroUnidad'),array('style' => 'width:70px;')); ?>
+		<?php echo $form->dropDownList($model,'idvehiculo',CHtml::listData(Vehiculo::model()->findAll(),'id','numeroUnidad'),array('prompt'=>'Seleccione: ','onchange'=>'obtenerPuestos(this.value);','style' => 'width:110px;')); ?>
 		<?php echo $form->error($model,'idvehiculo'); ?>
 	</div>
 	
@@ -45,7 +45,7 @@
 
 	<div class="row">
 		
-		<?php echo $form->hiddenField($model,'nroPersonas',array('value'=>0)); ?>
+		<?php echo $form->hiddenField($model,'nroPersonas'); ?>
 	
 	</div>	
 
@@ -57,6 +57,17 @@
 <?php $this->endWidget(); ?>
 
 </div><!-- form -->
+<script>
+function obtenerPuestos(id){
+var dir="<?php echo Yii::app()->baseUrl;?>"+"/viajes/puestos/"+id;
+	$.ajax({  		
+          url: dir,
+        })
+  	.done(function( result ) {    
+    	     $('#Historicoviajes_nroPersonas').val(result);
+  	});
+}
+</script>
 <script>
 $('#Historicoviajes_horaLlegada').attr('disabled', true);
 function validarHora(){

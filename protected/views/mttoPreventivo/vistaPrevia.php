@@ -8,6 +8,7 @@ $this->menu=array(
 	array('label'=>'<div id="menu"><strong>Órdenes de mantenimiento</strong></div>'),
 	array('label'=>'      Crear orden de mantenimiento', 'url'=>array('crearOrdenPreventiva')),
 	array('label'=>'      Histórico de ordenes', 'url'=>array('historicoOrdenes')),
+	array('label'=>'      Cerrar órdenes de mantenimiento', 'url'=>array('cerrarOrdenes')),
 );
 ?>
 <div class='crugepanel user-assignments-role-list'>

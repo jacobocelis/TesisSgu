@@ -477,6 +477,8 @@ class MttoPreventivoController extends Controller
 	
 	public function actionAgregarRecurso($id){
                 $model=new Actividadrecursogrupo;
+				$tipoInsumo=new Tipoinsumo();
+				$tipoRepuesto=new Subtiporepuesto();
         // Uncomment the following line if AJAX validation is needed
          //$this->performAjaxValidation($model);
  
@@ -503,7 +505,7 @@ class MttoPreventivoController extends Controller
         if (Yii::app()->request->isAjaxRequest){
             echo CJSON::encode(array(
                 'status'=>'failure', 
-                'div'=>$this->renderPartial('_formRecursoGrupo', array('model'=>$model,'id'=>$id), true)));
+                'div'=>$this->renderPartial('_formRecursoGrupo', array('model'=>$model,'id'=>$id,'tipoInsumo'=>$tipoInsumo,'tipoRepuesto'=>$tipoRepuesto), true)));
             exit;               
         }
         /*else
