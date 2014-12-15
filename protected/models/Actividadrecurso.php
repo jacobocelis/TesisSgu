@@ -31,7 +31,7 @@ class Actividadrecurso extends CActiveRecord
 	 */
 	public function tableName()
 	{
-		return 'sgu_actividadrecurso';
+		return 'sgu_actividadRecurso';
 	}
 
 	/**

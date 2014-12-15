@@ -104,6 +104,13 @@ $this->widget('zii.widgets.grid.CGridView', array(
 								"style"=>"width:80px; height:20px; float:right;background:#".$data->obtColor($data->diasRestantes($data->proximoFecha)))))->run()',
 					'htmlOptions'=>array('style'=>'width:110px;text-align:center;'),
 				),
+				array(
+					'type'=>'raw',
+					'header'=>'Kms restantes',
+					'name'=>'frecuenciaKm',
+					'value'=>'\'-\'',
+					'htmlOptions'=>array('style'=>'width:110px;text-align:center;'),
+				),
 			)
         ));
 		?>

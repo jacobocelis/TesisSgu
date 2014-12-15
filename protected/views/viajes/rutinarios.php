@@ -3,7 +3,8 @@
 /* @var $dataProvider CActiveDataProvider */
 
 $this->breadcrumbs=array(
-	'Viajes',
+	'Viajes'=>array('viajes/index'),
+	'Viajes rutinarios',
 );
 
 $this->menu=array(
@@ -257,7 +258,7 @@ $('#viaje').dialog('open');
 }
 function ultimosViajes(){
 var total="<?php echo $total?>";
-if(total>0){
+
 if (confirm("¿Confirma que desea agregar los ultimos viajes registrados?")){
 	var dir="<?php echo Yii::app()->baseUrl."/viajes/ultimosViajes/"?>";
 	jQuery.ajax({
@@ -272,9 +273,7 @@ if (confirm("¿Confirma que desea agregar los ultimos viajes registrados?")){
                                 }
                         },
                 'cache':false});
-	}}
-	else
-		alert('No hay viajes para registrar');
+	}
     return false; 
 }
 function editarViaje(id){

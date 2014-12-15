@@ -23,9 +23,9 @@ $this->widget('zii.widgets.grid.CGridView', array(
 					'type'=>'raw',
 					'headerHtmlOptions'=>array('style'=>'width:100%;text-align:left;background:#F3FDA4'),
 					'header'=>'Vehiculo',
-					'value'=>'\'<strong>Unidad: </strong> #0\'.$data->numeroUnidad.\' \'.$data->idmodelo0->idmarca0->marca.\'  \'.$data->idmodelo0->modelo.\' \'.$data->anno.\' \'.$data->idcolor0->color',
+					'value'=>'\'<strong>Unidad: </strong> #\'.str_pad((int) $data->numeroUnidad,2,"0",STR_PAD_LEFT).\' \'.$data->idgrupo0->idtipo0->tipo.\' \'.$data->idmodelo0->idmarca0->marca.\'  \'.$data->idmodelo0->modelo.\' Año \'.$data->anno.\' Color \'.$data->idcolor0->color.\' #puestos \'.$data->nroPuestos.\' placa:\'.$data->placa',
 					//'value'=>'$data->idplan0->idplanGrupo0->CompiledColour->$data-id.\' \'.$data->CompiledColour',
-					'htmlOptions'=>array('style'=>'text-align:left;background:#F3FDA4'
+					'htmlOptions'=>array('style'=>'text-align:left;background:#ADEAE6'
 				),
 			),
 		)
@@ -47,7 +47,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
 						//'headerHtmlOptions'=>array('style'=>'width:80%;text-align:left;'),
 						'header'=>'         Actividad',
 						'value'=>'\'<strong>Actividad:</strong> \'.$data->idactividadMtto0->actividad',
-						'htmlOptions'=>array('style'=>'text-align:left'),
+						'htmlOptions'=>array('style'=>'text-align:left;background:#F3FDA4'),
 					),
 				)
     ));
@@ -57,41 +57,47 @@ $this->widget('zii.widgets.grid.CGridView', array(
 				//'selectionChanged'=>'validar',
 				'summaryText'=>'',
 			    'enableSorting' => true,
+				'hideHeader'=>true,
 				'template'=>"{items}\n{summary}\n{pager}",
 				'selectableRows'=>0,
 				'emptyText'=>'Esta actividad no tiene recursos asociados',
                 'dataProvider'=>$recursos[$i][$j],
 				'columns'=>array(
 					array(
+						'type'=>'raw',
 						'headerHtmlOptions'=>array('style'=>'width:60%;text-align:left;'),
 						'header'=>'<PRE>Recursos',
-						'value'=>'\'\'.(($data->idinsumo == null?\'\':$data->idinsumo0->insumo).\'\'.($data->idrepuesto == null?\'\':$data->idrepuesto0->repuesto).\'\'.($data->idservicio == null?\'\':$data->idservicio0->servicio)).\'\'.$data->detalle',
-						'htmlOptions'=>array('style'=>'text-align:left;width:200px'),
+						'value'=>'\'<strong>Recurso: </strong>\'.(($data->idinsumo == null?\'\':$data->idinsumo0->insumo).\'\'.($data->idrepuesto == null?\'\':$data->idrepuesto0->repuesto).\'\'.($data->idservicio == null?\'\':$data->idservicio0->servicio)).\'\'.$data->detalle.\',  \'.$data->cantidad.\' \'.$data->idunidad0->unidad',
+						'htmlOptions'=>array('style'=>'text-align:left;width:200px;background:#E5F1F4'),
 					), 
 					
+					/*
 					array(
-					'headerHtmlOptions'=>array('style'=>'text-align:center;'),
-					'header'=>'<PRE>Tipo',
-					'value'=>'(($data->idinsumo == null?\'\':\'Insumo\').\'\'.($data->idrepuesto == null?\'\':\'Repuesto\').\'\'.($data->idservicio == null?\'\':\'Servicio\')).\' \'.$data->detalle',
-					'htmlOptions'=>array('style'=>'text-align:center;'),
-					//'footer'=>'',
-				),
-					array(
+					'type'=>'raw',
 					'headerHtmlOptions'=>array('style'=>'text-align:center;'),
 					'header'=>'<PRE>Cantidad',
-					'value'=>'$data->cantidad',
-					'htmlOptions'=>array('style'=>'text-align:center;'),
+					'value'=>'\'<strong>Cantidad: </strong>\'.$data->cantidad',
+					'htmlOptions'=>array('style'=>'text-align:center;background:#AEE7AA'),
 					
 					//'footer'=>'',
 				),
 				array(
+					'type'=>'raw',
 					'headerHtmlOptions'=>array('style'=>'text-align:center;'),
 					'header'=>'<PRE>Unidad',
-					'value'=>'$data->idunidad0->unidad',
-					'htmlOptions'=>array('style'=>'text-align:center;'),
+					'value'=>'\'<strong>Unidad: </strong>\'.$data->idunidad0->unidad',
+					'htmlOptions'=>array('style'=>'text-align:center;background:#AEE7AA'),
 					
 					//'footer'=>'',
 				),
+				array(
+					'type'=>'raw',
+					'headerHtmlOptions'=>array('style'=>'text-align:center;'),
+					'header'=>'<PRE>Tipo',
+					'value'=>'\'<strong>Tipo: </strong>\'.(($data->idinsumo == null?\'\':\'Insumo\').\'\'.($data->idrepuesto == null?\'\':\'Repuesto\').\'\'.($data->idservicio == null?\'\':\'Servicio\')).\' \'.$data->detalle',
+					'htmlOptions'=>array('style'=>'text-align:center;background:#AEE7AA'),
+					//'footer'=>'',
+				),*/
 			)
     ));
 	}
@@ -103,6 +109,10 @@ $this->widget('zii.widgets.grid.CGridView', array(
 		Observaciones:<hr><hr><hr><hr><hr><hr>
 		</div>
 <style>
+.grid-view .summary {
+    margin: 0px 0px 0px;
+    text-align: right;
+}
 hr{
 	margin-top: 10px;
 }
@@ -273,13 +283,6 @@ h1 {
 {
 	width: 15px;
 }
-
-.grid-view .summary
-{
-	margin: 0 0 0px 0;
-	text-align: right;
-}
-
 .grid-view .pager
 {
 	margin: 5px 0 0 0;

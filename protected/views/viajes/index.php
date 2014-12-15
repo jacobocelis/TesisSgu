@@ -17,23 +17,64 @@ $this->menu=array(
 ?>
 <div class='crugepanel user-assignments-detail'>
 <h1></h1>
-</div>
+
 <?php
-/*ventana agregar recurso*/
-$this->beginWidget('zii.widgets.jui.CJuiDialog', array( // the dialog
-    'id'=>'viaje',
-    'options'=>array(
-        'title'=>'Registrar viaje realizado',
-        'autoOpen'=>false,
-        'modal'=>true,
-        'width'=>390,
-		'position'=>array(500,100),
-		'resizable'=>false
-    ),
-));?>
-<div class="divForForm"></div>
- 
-<?php $this->endWidget();?>
+$this->Widget('ext.highcharts.HighchartsWidget', array(
+   'options'=>array(
+		'chart'=>array(
+			'type'=>'pie'
+		),
+		'title' => array(
+			'text' => 'Total de viajes clasificados por tipo A,B,C en lo que va de año 2014',
+			'style'=>array('fontSize'=>'26px'),
+		),
+		'yAxis' => array(
+			
+			'title'=>array('text'=>'Viajes'),
+		),
+		'xAxis' => array(
+			'categories' => array('01', '05', '44', '38', '22', '16'),
+			'title'=>array('text'=>'Unidades'),
+            
+  
+		),
+		'labels' => array(
+			'items' => array('html' => 'Total por tipo',
+							'style'=>array('left'=>'50px',
+											'top'=>'18px',
+											'color'=>'(Highcharts.theme && Highcharts.theme.textColor) || "black"',
+											),
+							)
+		),
+		'series' => array(
+			
+			array('type'=>'column','name' => 'A', 'data' => array(375, 278, 415,470,364,418)),
+			array('type'=>'column','name' => 'B', 'data' => array(24, 12, 28,12,10,14)),
+			array('type'=>'column','name' => 'C', 'data' => array(70, 05, 10,10,8,9)),
+			
+			array('type'=>'spline','name' => 'Promedio', 'data' => array(156, 135, 254,178,214,123)),
+			
+			
+			array('type'=>'pie','name' => 'Total Viajes', 'data' => array(
+					array('name'=>'A','y'=>375),
+					array('name'=>'B','y'=>75),
+					array('name'=>'C','y'=>25)),
+					'size'=>70,
+					'center'=>array(90,40),
+			),
+      ),
+	    'tooltip'=>array(
+            'headerFormat'=>'<span style="font-size:10px">{point.key}</span><table>',
+            'pointFormat'=>'<tr><td style="color:{series.color};padding:0">{series.name}: </td><td style="padding:0"><b>{point.y:.f} Viajes</b></td></tr>',
+            'footerFormat'=> '</table>',
+            'shared'=> true,
+            'useHTML'=> true,
+        ),
+   )
+));
+
+	?>
+	</div>
 <style>
 .crugepanel {
     background-color: #FFF;

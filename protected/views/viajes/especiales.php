@@ -3,9 +3,9 @@
 /* @var $dataProvider CActiveDataProvider */
 
 $this->breadcrumbs=array(
-	'Viajes',
+	'Viajes'=>array('viajes/index'),
+	'Viajes especiales',
 );
-
 $this->menu=array(
 	array('label'=>'<div id="menu"><strong>Viajes</strong></div>'),
 	array('label'=>'Registrar viajes rutinarios', 'url'=>array('rutinarios')),

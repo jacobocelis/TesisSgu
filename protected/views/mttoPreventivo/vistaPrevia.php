@@ -265,6 +265,10 @@ h1 {
     font-size: 250%;
     line-height: 40px;
 }
+.grid-view .summary {
+    margin: 0px 0px 0px;
+    text-align: right;
+}
 .grid-view table.items th {
 	color: rgba(0, 0, 0, 1);
     text-align: center;

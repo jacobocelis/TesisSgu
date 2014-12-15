@@ -33,13 +33,13 @@
 
 	<div class="row">
 		<?php echo $form->labelEx($model,'horaSalida'); ?>
-		<?php echo $form->textField($model,'horaSalida',array('style' => 'width:80px;')); ?>
+		<?php echo $form->textField($model,'horaSalida',array('readonly'=>'readonly',"onblur"=>"validarHora()",'style' => 'width:80px;cursor:pointer;')); ?>
 		<?php echo $form->error($model,'horaSalida'); ?>
 	</div>
 
 	<div class="row">
 		<?php echo $form->labelEx($model,'horaLlegada'); ?>
-		<?php echo $form->textField($model,'horaLlegada',array('style' => 'width:80px;')); ?>
+		<?php echo $form->textField($model,'horaLlegada',array('readonly'=>'readonly','style' => 'width:80px;cursor:pointer;')); ?>
 		<?php echo $form->error($model,'horaLlegada'); ?>
 	</div>
 
@@ -58,7 +58,13 @@
 
 </div><!-- form -->
 <script>
-
+$('#Historicoviajes_horaLlegada').attr('disabled', true);
+function validarHora(){
+	if($('#Historicoviajes_horaSalida').val()=="")
+		$('#Historicoviajes_horaLlegada').attr('disabled', true);
+	else	
+		$('#Historicoviajes_horaLlegada').attr('disabled', false);
+}
 (function($) {
         $.timepicker.regional['es'] = {
                 timeOnlyTitle: 'Elegir una hora',
@@ -78,7 +84,7 @@
 })(jQuery);
 $("#Historicoviajes_horaSalida").timepicker({
 		onSelect: function(data){
-		
+			validarHora();
 			$("#Historicoviajes_horaLlegada").timepicker("option","minTime", data);
 		}
 });

@@ -16,7 +16,6 @@ $this->menu=array(
 ?>
 <div class='crugepanel user-assignments-role-list'>
 <h1>Histórico de gastos y consumos</h1>
-
 <?php 
 			$this->widget('zii.widgets.grid.CGridView', array(
 			'id'=>'rec',

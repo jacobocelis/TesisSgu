@@ -44,7 +44,7 @@ class Actividadesgrupo extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('idactividadMtto, frecuenciaKm, duracion, idgrupo, idprioridad, idtiempod, idtiempof, duracion', 'required'),
+			array('idactividadMtto, frecuenciaKm,frecuenciaMes, duracion, idgrupo, idprioridad, idtiempod, idtiempof, duracion', 'required'),
 			array('frecuenciaKm, frecuenciaMes, duracion, diasParo, idgrupo, idprioridad, idtiempod, idtiempof', 'numerical', 'integerOnly'=>true),
 			array('procedimiento', 'length', 'max'=>200),
 			// The following rule is used by search().
