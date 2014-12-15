@@ -102,7 +102,7 @@
 		<?php echo $form->textField($model,'capTanque'); ?>
 		<?php echo $form->error($model,'capTanque'); ?>
 	</div>
-<div class="row">
+	<div class="row">
 		<?php echo $form->labelEx($marca,'marca'); ?>
 		<?php echo $form->dropDownList($marca,'id',CHtml::listData(Marca::model()->findAll(array('order' => 'id ASC')), 'id', 'marca'),
 		array(

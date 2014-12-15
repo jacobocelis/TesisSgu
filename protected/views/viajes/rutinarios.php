@@ -274,7 +274,7 @@ if (confirm("¿Confirma que desea agregar los ultimos viajes registrados?")){
                 'cache':false});
 	}}
 	else
-		alert('aún no se han registrado viajes');
+		alert('No hay viajes para registrar');
     return false; 
 }
 function editarViaje(id){

@@ -40,13 +40,13 @@
 	
 	<div id="salida" class="row">
 		<?php echo $form->labelEx($model,'horaSalida'); ?>
-		<?php echo $form->textField($model,'horaSalida',array('style' => 'width:80px;')); ?>
+		<?php echo $form->textField($model,'horaSalida',array('readonly'=>'readonly',"onblur"=>"validarHora()",'style' => 'width:80px;cursor:pointer;')); ?>
 		<?php echo $form->error($model,'horaSalida'); ?>
 	</div>
 
 	<div id="llegada" class="row">
 		<?php echo $form->labelEx($model,'horaLlegada'); ?>
-		<?php echo $form->textField($model,'horaLlegada',array('style' => 'width:80px;')); ?>
+		<?php echo $form->textField($model,'horaLlegada',array('readonly'=>'readonly','style' => 'width:80px;cursor:pointer;')); ?>
 		<?php echo $form->error($model,'horaLlegada'); ?>
 	</div>
 
@@ -65,7 +65,13 @@
 
 </div><!-- form -->
 <script>
-
+$('#Historicoviajes_horaLlegada').attr('disabled', true);
+function validarHora(){
+	if($('#Historicoviajes_horaSalida').val()=="")
+		$('#Historicoviajes_horaLlegada').attr('disabled', true);
+	else	
+		$('#Historicoviajes_horaLlegada').attr('disabled', false);
+}
 (function($) {
         $.timepicker.regional['es'] = {
                 timeOnlyTitle: 'Elegir una hora',
@@ -85,7 +91,7 @@
 })(jQuery);
 $("#Historicoviajes_horaSalida").timepicker({
 		onSelect: function(data){
-		
+			validarHora();
 			$("#Historicoviajes_horaLlegada").timepicker("option","minTime", data);
 		}
 });
@@ -155,12 +161,23 @@ $('#registrar').show(500);
 										$('#salida').show();
 										$('#llegada').show();
 										$('#boton').show();
-										window.setTimeout('location.reload()');
+										//window.setTimeout('location.reload()');
+										actualizarListaViajes();
                           
                                 }
                         },
                 'cache':false});
 				//$('#registrar').show();
     return false; 
+}
+function actualizarListaViajes(){
+var dir="<?php echo Yii::app()->baseUrl;?>"+"/viajes/validarRuta/0";
+	$.ajax({  		
+          url: dir,
+        })
+  	.done(function(result) {    	
+    	     $('#Historicoviajes_idviaje').html(result);
+  	});
+
 }
 </script>

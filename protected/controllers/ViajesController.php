@@ -32,7 +32,7 @@ class ViajesController extends Controller
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create','update','agregarViajeRutinario','agregarViajeEspecial','rutinarios','ultimosViajes','especiales','formAgregarEspecial','agregarRutaNueva','actualizarSpan'),
+				'actions'=>array('create','update','agregarViajeRutinario','agregarViajeEspecial','rutinarios','ultimosViajes','especiales','formAgregarEspecial','agregarRutaNueva','actualizarSpan','validarRuta'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -272,7 +272,7 @@ public function actionActualizarSpan(){
 		$model=new Historicoviajes();
 		
 		$dataProvider=new CActiveDataProvider('Historicoviajes',
-		array('criteria'=>array('condition'=>'id in (select hv.id as id from sgu_historicoViajes hv, sgu_viaje v where hv.idviaje=v.id and v.idtipo=2 or v.idtipo=3)'
+		array('criteria'=>array('condition'=>'id in (select hv.id as id from sgu_historicoViajes hv, sgu_viaje v where hv.idviaje=v.id and (v.idtipo=2 or v.idtipo=3))'
 		)));
 		
 		$this->render('especiales',array(
@@ -340,6 +340,20 @@ public function actionActualizarSpan(){
 		{
 			echo CActiveForm::validate($model);
 			Yii::app()->end();
+		}
+	}
+	public function actionValidarRuta($id){
+		if($id==0){
+			$lista2=Viaje::model()->findAll('idtipo <> :id order by id DESC',array(':id'=>'1'));
+			foreach($lista2 as $li){
+				echo CHtml::tag('option',array('type'=>'text','value'=>(($li->id))),Chtml::encode(($li->viaje)),true);
+			}
+		}
+		else{
+			$lista2=Lugar::model()->findAll('id <> :id',array(':id'=>$id));
+			foreach($lista2 as $li){
+				echo CHtml::tag('option',array('type'=>'text','value'=>(($li->id))),Chtml::encode(($li->lugar)),true);
+			}
 		}
 	}
 }

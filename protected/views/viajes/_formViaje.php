@@ -16,17 +16,17 @@
 )); ?>
 <div id="verde">
 <strong>Complete los datos para registrar una ruta:</strong>
-	
-	
+
 	<div class="row">
 		<?php echo $form->labelEx($model,'idOrigen'); ?>
-		<?php echo $form->dropDownList($model,'idOrigen',CHtml::listData(Lugar::model()->findAll(),'id','lugar'),array('style' => 'width:150px;')); ?>
+		<?php echo $form->dropDownList($model,'idOrigen',CHtml::listData(Lugar::model()->findAll(),'id','lugar'),array(
+			'style' => 'width:150px;','prompt'=>'Seleccione: ','onchange'=>'validarLugar(this.value);')); ?>
 		<?php echo $form->error($model,'idOrigen'); ?>
 	</div>
 
 	<div class="row">
 		<?php echo $form->labelEx($model,'idDestino'); ?>
-		<?php echo $form->dropDownList($model,'idDestino',CHtml::listData(Lugar::model()->findAll(),'id','lugar'),array('style' => 'width:150px;')); ?>
+		<?php echo $form->dropDownList($model,'idDestino',array(),array('prompt'=>'-','style' => 'width:150px;')); ?>
 		<?php echo $form->error($model,'idDestino'); ?>
 	</div>
 	<div class="row">
@@ -56,6 +56,15 @@
 
 </div><!-- form -->
 <script>
+function validarLugar(id){
+var dir="<?php echo Yii::app()->baseUrl;?>"+"/viajes/validarRuta/"+id;
+	$.ajax({  		
+          url: dir,
+        })
+  	.done(function( result ) {    	
+    	     $('#Viaje_idDestino').html(result);
+  	});
+}
 $("#viaje-form").submit(function(event){
 	event.preventDefault();
 	$('#Viaje_viaje').val($('#Viaje_idOrigen option:selected').text()+" -> "+$('#Viaje_idDestino option:selected').text());
