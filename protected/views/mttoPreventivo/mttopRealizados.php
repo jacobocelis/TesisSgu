@@ -243,7 +243,8 @@ var id="<?php echo $id?>";
 	if(x==true){
 		if(confirm('Confirma que desea poner la orden como lista?')){
 			x=1;
-			window.location = "<?php echo Yii::app()->baseUrl."/mttoPreventivo/verOrdenes"?>";
+			window.location.replace("<?php echo Yii::app()->baseUrl."/mttoPreventivo/verOrdenes"?>");
+			
 		}else{
 			x=0;
 		}

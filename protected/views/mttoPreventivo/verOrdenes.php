@@ -13,7 +13,7 @@ $this->menu=array(
 	<h1>Órdenes de mantenimiento abiertas</h1>
 <?php
 $this->widget('zii.widgets.grid.CGridView', array(
-                'id'=>'ordenes',
+                'id'=>'orden',
 				'summaryText'=>'',
 			    'enableSorting' => true,
 				'template'=>"{items}\n{summary}\n{pager}",
@@ -213,6 +213,10 @@ h1 {
 }
 </style>
 <script>
+$( document ).ready(function() {
+	//$.fn.yiiGridView.update('orden');
+});
+
 var Uurl;
 function enviar(id){
 	 if (typeof(id)=='string')
@@ -220,7 +224,7 @@ function enviar(id){
 	jQuery.ajax({
                 url: Uurl,
                 'data':$(this).serialize(),
-                'type':'post',
+               // 'type':'post',
                 'dataType':'json',
                 'success':function(data)
                         {
