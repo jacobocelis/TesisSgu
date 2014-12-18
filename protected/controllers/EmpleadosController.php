@@ -32,7 +32,7 @@ class EmpleadosController extends Controller
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create','update','conductores','AgregarConductorRuta'),
+				'actions'=>array('create','update','conductores','AgregarConductorRuta','RegistrarConductor'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -62,12 +62,34 @@ class EmpleadosController extends Controller
 			'dataProvider'=>$dataProvider,
 		));
 	}
+	public function actionRegistrarConductor(){
+			$id='id=1';
+		$model=new Empleado;
+		if(isset($_POST['Empleado'])){
+            $model->attributes=$_POST['Empleado'];
+			if($model->save()){
+                if (Yii::app()->request->isAjaxRequest){
+                    echo CJSON::encode(array(
+                        'status'=>'success', 
+                        'div'=>"Conductor agregado"
+                        ));
+					exit;
+                }
+            }
+        }
+		 if (Yii::app()->request->isAjaxRequest){	
+            echo CJSON::encode(array(
+                'status'=>'failure', 
+                'div'=>$this->renderPartial('_formEmpleado', array('model'=>$model,'tipo'=>$id), true)
+				));
+            exit;               
+        }
+	}
 	public function actionAgregarConductorRuta(){
                 $model=new Historicoempleados;
         // Uncomment the following line if AJAX validation is needed
          //$this->performAjaxValidation($model);
 			
-		
 		if(isset($_POST['historicoempleados'])){
             $model->attributes=$_POST['historicoempleados'];
 			

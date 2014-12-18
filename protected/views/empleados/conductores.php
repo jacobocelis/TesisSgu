@@ -39,7 +39,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
 					'htmlOptions'=>array('style'=>'text-align:center;width:50px;'),
 				),
 				array(
-					'header'=>'Ruta realizada',
+					'header'=>'Conductor asignado',
 					'name'=>'idviaje',
 					'value'=>'$data->idviaje0->idOrigen0->lugar.\' - \'.$data->idviaje0->idDestino0->lugar',
 					//'value'=>'$data->idplan0->idplanGrupo0->CompiledColour->$data-id.\' \'.$data->CompiledColour',
@@ -47,23 +47,12 @@ $this->widget('zii.widgets.grid.CGridView', array(
 				),
 
 				array(
-					'header'=>'Hora de salida',
+					'header'=>'Fecha de asignación',
 					'name'=>'horaSalida',
 					'value'=>'date("g:i a", strtotime($data->horaSalida));',
 					'htmlOptions'=>array('style'=>'text-align:center;width:100px;'),
 				),
-				array(
-					'header'=>'Hora de llegada',
-					'name'=>'horaLlegada',
-					'value'=>'date("g:i a", strtotime($data->horaLlegada));',
-					'htmlOptions'=>array('style'=>'text-align:center;width:100px;'),
-				),
-				array(
-					'header'=>'Distancia',
-					'value'=>'$data->idviaje0->distanciaKm.\' Km \'',
-					//'value'=>'date("g:i a", strtotime($data->horaLlegada));',
-					'htmlOptions'=>array('style'=>'text-align:center;width:100px;'),
-				),
+				
 				array(
 						'headerHtmlOptions'=>array('style'=>'text-align:center;width:10px;'),
 						'htmlOptions'=>array('style'=>'text-align:center;width:30px;'),
@@ -155,46 +144,8 @@ $this->beginWidget('zii.widgets.jui.CJuiDialog', array( // the dialog
 }
 </style>
 <script>
-	$(function($){
-	    $.datepicker.regional['es'] = {
-	        closeText: 'Cerrar',
-	        prevText: 'Anterior',
-	        nextText: 'Siguiente',
-	        currentText: 'Hoy',
-	        monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
-	        monthNamesShort: ['Ene','Feb','Mar','Abr', 'May','Jun','Jul','Ago','Sep', 'Oct','Nov','Dic'],
-	        dayNames: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
-	        dayNamesShort: ['Dom','Lun','Mar','Mié','Juv','Vie','Sáb'],
-	        dayNamesMin: ['Do','Lu','Ma','Mi','Ju','Vi','Sá'],
-	        weekHeader: 'Sm',
-	        dateFormat: 'dd/mm/yy',
-	        firstDay: 1,
-	        isRTL: false,
-			changeMonth: true,
-            changeYear: true,
-	        showMonthAfterYear: false,
-	        yearSuffix: '',
-	        maxDate: '0d',
-	        //minDate: '0d',
-	    };
-	    $.datepicker.setDefaults($.datepicker.regional['es']);
-	});      		
-	$("#fecha").datepicker({
-		onSelect: function(selected){
-			var fecha=$('#fecha').val();
-			$.fn.yiiGridView.update('viajes',{data:"fecha="+fecha});
-			var hoy="<?php echo date('d/m/Y');?>";
-				if($('#fecha').val()==hoy)
-			$('#etiqueta').show();
-			else
-				$('#etiqueta').hide();
-		}
-});
-</script>
-<script>
 agregarChoferRuta();
 function agregarChoferRuta(){
-	
 	var dir="<?php echo Yii::app()->baseUrl."/empleados/agregarConductorRuta/"?>";
 	jQuery.ajax({
                 url: dir,
@@ -203,6 +154,7 @@ function agregarChoferRuta(){
                 'dataType':'json',
                 'success':function(data){
                                 if (data.status == 'failure'){
+								
                                         $('#viaje').html(data.div);
                                         $('#viaje form').submit(agregarChoferRuta);
                                 }
@@ -210,36 +162,9 @@ function agregarChoferRuta(){
                                         $('#viaje').html(data.div);
                                         //setTimeout("$('#viaje').dialog('close') ",1000);
                                         window.setTimeout('agregarChoferRuta()', 2000);
-										$.fn.yiiGridView.update('viajes');
+										//$.fn.yiiGridView.update('viajes');
                                 }
                         },
-                'cache':false});
-    return false; 
-}
-function editarViaje(id){
-$('#modificar').dialog('open');
-	 if (typeof(id)=='string')
-                Uurl=id;
-	jQuery.ajax({
-                url: Uurl,
-                'data':$(this).serialize(),
-                'type':'post',
-                'dataType':'json',
-                'success':function(data)
-                        {
-                                if (data.status == 'failure')
-                                {
-                                        $('#modificar div.divForForm').html(data.div);
-                                        // Here is the trick: on submit-> once again this function!
-                                        $('#modificar div.divForForm form').submit(editarViaje); // updatePaymentComment
-                                }
-                                else
-                                {
-                                        $('#modificar div.divForForm').html(data.div);
-                                        setTimeout("$('#modificar').dialog('close') ",1000);
-										$.fn.yiiGridView.update('viajes');
-                                }
-                        } ,
                 'cache':false});
     return false; 
 }
