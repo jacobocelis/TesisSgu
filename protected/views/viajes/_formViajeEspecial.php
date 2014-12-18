@@ -144,7 +144,7 @@ $('#registrar').hide();
 AgregarRutaNueva(0);
 function AgregarRutaNueva(tip){
 if(tip){
-$('#registrar').show(500);
+$('#registrar').show();
 	$('#salida').hide();
 	$('#llegada').hide();
 	$('#pasajeros').hide();

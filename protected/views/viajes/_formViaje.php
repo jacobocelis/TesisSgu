@@ -70,18 +70,19 @@ $("#viaje-form").submit(function(event){
 	$('#Viaje_viaje').val($('#Viaje_idOrigen option:selected').text()+" -> "+$('#Viaje_idDestino option:selected').text());
 });
 function cancelar(){
-	$('#registrar').hide(500);
+	$('#registrar').hide();
 	$('#salida').show();
 	$('#llegada').show();
 	$('#pasajeros').show();
 	$('#boton').show();
+	$('#registrarRuta').show();
 }
 </script>
 <style>
 
 #verde{
 	background: #D9EDFF;
-	width:250px;
+	width:320px;
 	padding: 5px;
 	border-radius: 2px;
 }

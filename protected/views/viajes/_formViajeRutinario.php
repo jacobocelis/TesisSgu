@@ -27,13 +27,15 @@
 	
 	<div class="row">
 		<?php echo $form->labelEx($model,'idviaje'); ?>
-		<?php echo $form->dropDownList($model,'idviaje',CHtml::listData(Viaje::model()->findAll('idtipo=1'),'id','viaje')); echo CHtml::link('(+)', "",array('title'=>'Registrar ruta',
-        'style'=>'cursor: pointer;font-size:15px',
-        'onclick'=>"{
-		AgregarRutaNueva(1);}"));?>
+		<?php echo $form->dropDownList($model,'idviaje',CHtml::listData(Viaje::model()->findAll('idtipo=1'),'id','viaje'),array('style'=>'margin-bottom: 2px;')); ?>
 		<?php echo $form->error($model,'idviaje');?>
 	</div>
-
+	<div id="registrarRuta">
+	<?php echo CHtml::link('Registrar ruta', "",array('title'=>'Registrar ruta',
+        'style'=>'cursor: pointer;font-size:13px;margin-left:240px;',
+        'onclick'=>"{
+		AgregarRutaNueva(1);}"));?>
+	</div>
 	<div id="registrar"></div>
 	
 	<div id="salida" class="row">
@@ -121,11 +123,12 @@ $('#registrar').hide();
 AgregarRutaNueva(0);
 function AgregarRutaNueva(tip){
 if(tip){
-$('#registrar').show(500);
+$('#registrar').show();
 	$('#salida').hide();
 	$('#llegada').hide();
 	$('#pasajeros').hide();
 	$('#boton').hide();
+	$('#registrarRuta').hide();
 }
 	var dir="<?php echo Yii::app()->baseUrl;?>"+"/viajes/agregarRutaNueva/0";
 	jQuery.ajax({
@@ -147,6 +150,7 @@ $('#registrar').show(500);
 										$('#salida').show();
 										$('#llegada').show();
 										$('#boton').show();
+										$('#registrarRuta').show();
 										//window.setTimeout('location.reload()');
 										actualizarListaViajes();
                           

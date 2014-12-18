@@ -30,21 +30,26 @@
 		<?php echo $form->hiddenField($model,'fechaFin'); ?>
 		
 	</div>
-
+	<?php 
+		$models = Empleado::model()->findAll('idtipoEmpleado=1');
+		$data = array();
+		foreach ($models as $mode)
+			$data[$mode->id] = $mode->nombre . ' '. $mode->apellido;  
+	?>
 	<div class="row">
 		<?php echo $form->labelEx($model,'idempleado'); ?>
-		<?php echo $form->textField($model,'idempleado'); ?>
+		<?php echo $form->dropDownList($model,'idempleado',$data,array('prompt'=>'Seleccione: ','style' => 'width:160px;')); ?>
 		<?php echo $form->error($model,'idempleado'); ?>
 	</div>
 
 	<div class="row">
 		<?php echo $form->labelEx($model,'idvehiculo'); ?>
-		<?php echo $form->textField($model,'idvehiculo'); ?>
+		<?php echo $form->dropDownList($model,'idvehiculo',CHtml::listData(Vehiculo::model()->findAll(),'id','numeroUnidad'),array('prompt'=>'Seleccione: ','style' => 'width:110px;')); ?>
 		<?php echo $form->error($model,'idvehiculo'); ?>
 	</div>
 
 	<div class="row buttons">
-		<?php echo CHtml::submitButton($model->isNewRecord ? 'Create' : 'Save'); ?>
+		<?php echo CHtml::submitButton($model->isNewRecord ? 'Registrar' : 'Guardar'); ?>
 	</div>
 
 <?php $this->endWidget(); ?>

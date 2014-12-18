@@ -64,7 +64,7 @@ class Historicoempleados extends CActiveRecord
 			'fechaInicio' => 'Fecha Inicio',
 			'fechaFin' => 'Fecha Fin',
 			'idempleado' => 'Empleado',
-			'idvehiculo' => 'Idvehiculo',
+			'idvehiculo' => 'Unidad',
 		);
 	}
 
