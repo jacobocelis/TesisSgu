@@ -8,11 +8,13 @@ $this->breadcrumbs=array(
 
 $this->menu=array(
 	array('label'=>'<div id="menu"><strong>Viajes</strong></div>'),
-	array('label'=>'Registrar viajes rutinarios', 'url'=>array('rutinarios')),
-	array('label'=>'Registrar viajes especiales', 'url'=>array('especiales')),
+	array('label'=>'      Registrar viajes rutinarios', 'url'=>array('rutinarios')),
+	array('label'=>'      Registrar viajes especiales', 'url'=>array('especiales')),
+	array('label'=>'<div id="menu"><strong>Conductores</strong></div>'),
+	array('label'=>'      Gestión de conductores', 'url'=>array('empleados/conductores')),
 	array('label'=>'<div id="menu"><strong>Historial</strong></div>'),
-	array('label'=>'Histórico de viajes', 'url'=>array('admin')),
-	array('label'=>'Estadísticas de viajes', 'url'=>array('admin')),
+	array('label'=>'      Histórico de viajes', 'url'=>array('admin')),
+	array('label'=>'      Estadísticas de viajes', 'url'=>array('admin')),
 );
 ?>
 <div class='crugepanel user-assignments-detail'>
@@ -59,7 +61,7 @@ $this->Widget('ext.highcharts.HighchartsWidget', array(
 					array('name'=>'A','y'=>375),
 					array('name'=>'B','y'=>75),
 					array('name'=>'C','y'=>25)),
-					'size'=>70,
+					'size'=>'30%',
 					'center'=>array(90,40),
 			),
       ),

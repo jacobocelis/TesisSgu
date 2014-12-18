@@ -32,7 +32,7 @@ class ViajesController extends Controller
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create','update','agregarViajeRutinario','agregarViajeEspecial','rutinarios','ultimosViajes','especiales','formAgregarEspecial','agregarRutaNueva','actualizarSpan','validarRuta','puestos','insumos','repuesto'),
+				'actions'=>array('create','update','agregarViajeRutinario','agregarViajeEspecial','rutinarios','ultimosViajes','especiales','formAgregarEspecial','agregarRutaNueva','actualizarSpan','validarRuta','puestos','insumos','repuesto','validarRutaNormal'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -50,7 +50,11 @@ public function actionActualizarSpan(){
 			'total'=>$tot["total"],
 		));
 	 }
-	public function actionAgregarRutaNueva(){
+	public function actionAgregarRutaNueva($id){
+		if($id==0)
+			$id='id=1';
+		else
+			$id='id=2 or id=3';
 		$model=new Viaje;
 		if(isset($_POST['Viaje'])){
             $model->attributes=$_POST['Viaje'];
@@ -67,7 +71,7 @@ public function actionActualizarSpan(){
 		 if (Yii::app()->request->isAjaxRequest){	
             echo CJSON::encode(array(
                 'status'=>'failure', 
-                'div'=>$this->renderPartial('_formViaje', array('model'=>$model), true)
+                'div'=>$this->renderPartial('_formViaje', array('model'=>$model,'tipo'=>$id), true)
 				));
             exit;               
         }
@@ -76,11 +80,18 @@ public function actionActualizarSpan(){
 	 * Displays a particular model.
 	 * @param integer $id the ID of the model to be displayed
 	 */
+	 
 	 public function actionFormAgregarEspecial(){
 		$model=new Historicoviajes;
 		if(isset($_POST['Historicoviajes'])){
             $model->attributes=$_POST['Historicoviajes'];
-            $model->fecha=date("Y-m-d", strtotime(str_replace('/', '-', $_POST['Historicoviajes']['fecha'])));
+			if($model->validate()){
+				$model->fecha=date("Y-m-d", strtotime(str_replace('/', '-', $_POST['Historicoviajes']['fecha'])));
+				if($_POST['Historicoviajes']['horaSalida']<>'')
+					$model->horaSalida=date("H:i", strtotime($_POST['Historicoviajes']['horaSalida']));
+				if(isset($_POST['Historicoviajes']['horaLlegada'])<>'')
+				$model->horaLlegada=date("H:i", strtotime($_POST['Historicoviajes']['horaLlegada']));
+			}
 			if($model->save()){
                 if (Yii::app()->request->isAjaxRequest){
                     echo CJSON::encode(array(
@@ -111,10 +122,12 @@ public function actionActualizarSpan(){
 				
 		if(isset($_POST['Historicoviajes'])){
             $model->attributes=$_POST['Historicoviajes'];
+			if($model->validate()){
 			if($_POST['Historicoviajes']['horaSalida']<>'')
 				$model->horaSalida=date("H:i", strtotime($_POST['Historicoviajes']['horaSalida']));
-			if($_POST['Historicoviajes']['horaLlegada']<>'')
+			if(isset($_POST['Historicoviajes']['horaLlegada'])<>'')
 			$model->horaLlegada=date("H:i", strtotime($_POST['Historicoviajes']['horaLlegada']));
+			}
             if($model->save()){
                 if (Yii::app()->request->isAjaxRequest){
 					echo CJSON::encode(array(
@@ -341,6 +354,15 @@ public function actionActualizarSpan(){
 			echo CActiveForm::validate($model);
 			Yii::app()->end();
 		}
+	}
+	public function actionValidarRutaNormal(){
+	
+			$lista2=Viaje::model()->findAll('idtipo = :id order by id DESC',array(':id'=>'1'));
+			foreach($lista2 as $li){
+				echo CHtml::tag('option',array('type'=>'text','value'=>(($li->id))),Chtml::encode(($li->viaje)),true);
+			
+		}
+
 	}
 	public function actionValidarRuta($id){
 		if($id==0){

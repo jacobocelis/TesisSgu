@@ -17,11 +17,16 @@ $this->menu=array(
 	array('label'=>'      Ver órdenes abiertas <span class="badge badge-'.$Colorabi.' pull-right">'.$abiertas.'</span>', 'url'=>array('verOrdenes')),
 	array('label'=>'      Órdenes listas para cerrar <span class="badge badge-'.$Colorli.' pull-right">'.$listas.'</span>', 'url'=>array('cerrarOrdenes')),
 	
+	array('label'=>'<div id="menu"><strong>Gestión de coordinadores</strong></div>'),
+	array('label'=>'      Coordinador operativo', 'url'=>array('')),
+	array('label'=>'      Coordinador de transporte', 'url'=>array('')),
+	
 	array('label'=>'<div id="menu"><strong>Historial</strong></div>'),
 	array('label'=>'      Histórico de mantenimientos', 'url'=>array('historicoPreventivo')),
 	array('label'=>'      Histórico de gastos', 'url'=>array('historicoGastos')),
 	array('label'=>'      Histórico de ordenes', 'url'=>array('historicoOrdenes')),
 );
+
 ?>
 <div class='crugepanel user-assignments-role-list'>
 <h1>Próximas actividades de mantenimiento a realizarse</h1>

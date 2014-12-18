@@ -55,6 +55,18 @@
 		<?php echo $form->textField($model,'nroPersonas',array('size'=>3,'maxlength'=>3,'style' => 'width:40px;')); ?>
 		<?php echo $form->error($model,'nroPersonas'); ?>
 	</div>
+	<?php 
+		$models = Empleado::model()->findAll();
+		$data = array();
+		foreach ($models as $mode)
+			$data[$mode->id] = $mode->nombre . ' '. $mode->apellido;  
+	?>
+	<div class="row">
+		<?php echo $form->labelEx($model,'idconductor'); ?>
+		<?php echo $form->dropDownList($model,'idconductor',$data,array('style' => 'width:170px;')); ?>
+		<?php echo $form->error($model,'idconductor'); ?>
+	</div>
+	
 	<div id="boton" class="row buttons">
 		<?php echo CHtml::submitButton($model->isNewRecord ? 'Registrar' : 'Actualizar'); 
 		?>
@@ -65,12 +77,11 @@
 
 </div><!-- form -->
 <script>
-$('#Historicoviajes_horaLlegada').attr('disabled', true);
+
 function validarHora(){
-	if($('#Historicoviajes_horaSalida').val()=="")
-		$('#Historicoviajes_horaLlegada').attr('disabled', true);
-	else	
-		$('#Historicoviajes_horaLlegada').attr('disabled', false);
+	if($('#Historicoviajes_horaSalida').val()!="")
+	$("#Historicoviajes_horaLlegada").timepicker();
+
 }
 (function($) {
         $.timepicker.regional['es'] = {
@@ -95,7 +106,7 @@ $("#Historicoviajes_horaSalida").timepicker({
 			$("#Historicoviajes_horaLlegada").timepicker("option","minTime", data);
 		}
 });
-$("#Historicoviajes_horaLlegada").timepicker();
+
 </script>
 <script>
 	$(function($){
@@ -139,7 +150,7 @@ $('#registrar').show(500);
 	$('#pasajeros').hide();
 	$('#boton').hide();
 }
-	var dir="<?php echo Yii::app()->baseUrl."/viajes/agregarRutaNueva"?>";
+	var dir="<?php echo Yii::app()->baseUrl;?>"+"/viajes/agregarRutaNueva/1";
 	jQuery.ajax({
                 url: dir,
                 'data':$(this).serialize(),

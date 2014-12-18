@@ -36,7 +36,7 @@
 	</div>
 	<div class="row">
 		<?php echo $form->labelEx($model,'idtipo'); ?>
-		<?php echo $form->dropDownList($model,'idtipo',CHtml::listData(Tipoviaje::model()->findAll('id=2 or id=3'),'id','tipo'),array('style' => 'width:50px;')); ?>
+		<?php echo $form->dropDownList($model,'idtipo',CHtml::listData(Tipoviaje::model()->findAll($tipo),'id','tipo'),array('style' => 'width:50px;')); ?>
 		<?php echo $form->error($model,'idtipo'); ?>
 	</div>
 

@@ -27,17 +27,22 @@
 	
 	<div class="row">
 		<?php echo $form->labelEx($model,'idviaje'); ?>
-		<?php echo $form->dropDownList($model,'idviaje',CHtml::listData(Viaje::model()->findAll('idtipo=1'),'id','viaje')); ?>
+		<?php echo $form->dropDownList($model,'idviaje',CHtml::listData(Viaje::model()->findAll('idtipo=1'),'id','viaje')); echo CHtml::link('(+)', "",array('title'=>'Registrar ruta',
+        'style'=>'cursor: pointer;font-size:15px',
+        'onclick'=>"{
+		AgregarRutaNueva(1);}"));?>
 		<?php echo $form->error($model,'idviaje');?>
 	</div>
 
-	<div class="row">
+	<div id="registrar"></div>
+	
+	<div id="salida" class="row">
 		<?php echo $form->labelEx($model,'horaSalida'); ?>
 		<?php echo $form->textField($model,'horaSalida',array('readonly'=>'readonly',"onblur"=>"validarHora()",'style' => 'width:80px;cursor:pointer;')); ?>
 		<?php echo $form->error($model,'horaSalida'); ?>
 	</div>
 
-	<div class="row">
+	<div id="llegada" class="row">
 		<?php echo $form->labelEx($model,'horaLlegada'); ?>
 		<?php echo $form->textField($model,'horaLlegada',array('readonly'=>'readonly','style' => 'width:80px;cursor:pointer;')); ?>
 		<?php echo $form->error($model,'horaLlegada'); ?>
@@ -49,9 +54,20 @@
 	
 	</div>	
 
-
-	<div class="row buttons">
-		<?php echo CHtml::submitButton($model->isNewRecord ? 'Registrar' : 'Actualizar'); ?>
+		<?php 
+		$models = Empleado::model()->findAll();
+		$data = array();
+		foreach ($models as $mode)
+			$data[$mode->id] = $mode->nombre . ' '. $mode->apellido;  
+	?>
+	<div class="row">
+		<?php echo $form->labelEx($model,'idconductor'); ?>
+		<?php echo $form->dropDownList($model,'idconductor',$data,array('style' => 'width:170px;')); ?>
+		<?php echo $form->error($model,'idconductor'); ?>
+	</div>
+	<div id="boton" class="row buttons">
+		<?php echo CHtml::submitButton($model->isNewRecord ? 'Registrar' : 'Actualizar'); 
+		?>
 	</div>
 
 <?php $this->endWidget(); ?>
@@ -69,12 +85,11 @@ var dir="<?php echo Yii::app()->baseUrl;?>"+"/viajes/puestos/"+id;
 }
 </script>
 <script>
-$('#Historicoviajes_horaLlegada').attr('disabled', true);
+
 function validarHora(){
-	if($('#Historicoviajes_horaSalida').val()=="")
-		$('#Historicoviajes_horaLlegada').attr('disabled', true);
-	else	
-		$('#Historicoviajes_horaLlegada').attr('disabled', false);
+	if($('#Historicoviajes_horaSalida').val()!="")
+	$("#Historicoviajes_horaLlegada").timepicker();
+
 }
 (function($) {
         $.timepicker.regional['es'] = {
@@ -99,6 +114,57 @@ $("#Historicoviajes_horaSalida").timepicker({
 			$("#Historicoviajes_horaLlegada").timepicker("option","minTime", data);
 		}
 });
-$("#Historicoviajes_horaLlegada").timepicker();
+
+</script>
+<script>
+$('#registrar').hide();
+AgregarRutaNueva(0);
+function AgregarRutaNueva(tip){
+if(tip){
+$('#registrar').show(500);
+	$('#salida').hide();
+	$('#llegada').hide();
+	$('#pasajeros').hide();
+	$('#boton').hide();
+}
+	var dir="<?php echo Yii::app()->baseUrl;?>"+"/viajes/agregarRutaNueva/0";
+	jQuery.ajax({
+                url: dir,
+                'data':$(this).serialize(),
+                'type':'post',
+                'dataType':'json',
+                'success':function(data){
+								
+                                if (data.status == 'failure'){
+										
+											$('#registrar').html(data.div);
+                                        $('#registrar  form').submit(AgregarRutaNueva);
+                                }
+                                else{
+                                        $('#registrar form').html(data.div);
+										
+                                        setTimeout("$('#registrar').hide(); ",0);
+										$('#salida').show();
+										$('#llegada').show();
+										$('#boton').show();
+										//window.setTimeout('location.reload()');
+										actualizarListaViajes();
+                          
+                                }
+                        },
+                'cache':false});
+				//$('#registrar').show();
+    return false; 
+}
+function actualizarListaViajes(){
+var dir="<?php echo Yii::app()->baseUrl;?>"+"/viajes/validarRutaNormal";
+	$.ajax({  		
+          url: dir,
+        })
+  	.done(function(result) {    	
+    	     $('#Historicoviajes_idviaje').html(result);
+  	});
+
+}
 </script>
 

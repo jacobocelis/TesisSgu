@@ -8,16 +8,15 @@ $this->breadcrumbs=array(
 );
 $this->menu=array(
 	array('label'=>'<div id="menu"><strong>Viajes</strong></div>'),
-	array('label'=>'Registrar viajes rutinarios', 'url'=>array('rutinarios')),
+	array('label'=>'      Registrar viajes rutinarios', 'url'=>array('rutinarios')),
 	array('label'=>'<div id="menu"><strong>Historial</strong></div>'),
-	array('label'=>'Histórico de viajes', 'url'=>array('admin')),
-	array('label'=>'Estadísticas de viajes', 'url'=>array('admin')),
+	array('label'=>'      Histórico de viajes', 'url'=>array('admin')),
+	array('label'=>'      Estadísticas de viajes', 'url'=>array('admin')),
 );
 ?>
 <div class='crugepanel user-assignments-detail'>
 <h1>Registro de viajes especiales</h1>
 <div id="registro" class='crugepanel user-assignments-detail'>
-<?php //$this->renderPartial('_formViajeEspecial', array('model'=>$model)); ?>
 </div>
 <h1>Listado de viajes registrados</h1>
 <?php
@@ -189,9 +188,6 @@ $this->beginWidget('zii.widgets.jui.CJuiDialog', array( // the dialog
 }
 </style>
 <script>
-if( $('#Historicoviajes_idviaje').empty() ){
-	
-}
 viajeForm();
 function viajeForm(){
 var dir="<?php echo Yii::app()->baseUrl."/viajes/formAgregarEspecial"?>";
@@ -216,31 +212,6 @@ jQuery.ajax({
 }
 </script>
 <script>
-function agregarViaje(){
-$('#viaje').dialog('open');
-	var fecha=$('#fecha').val();
-	var dir="<?php echo Yii::app()->baseUrl."/viajes/agregarViaje/"?>";
-	jQuery.ajax({
-                url: dir,
-                'data':$(this).serialize()+"&fecha="+fecha,
-                'type':'post',
-                'dataType':'json',
-                'success':function(data){
-                                if (data.status == 'failure'){
-                                        $('#viaje div.divForForm').html(data.div);
-                                        $('#viaje div.divForForm form').submit(agregarViaje); // updatePaymentComment
-                                }
-                                else{
-                                        $('#viaje div.divForForm').html(data.div);
-                                        setTimeout("$('#viaje').dialog('close') ",1000);
-                                        $.fn.yiiGridView.update('viajes');
-										
-                                }
-                        },
-                'cache':false});
-    return false; 
-}
-
 function editarViaje(id){
 $('#modificar').dialog('open');
 	 if (typeof(id)=='string')

@@ -9,25 +9,17 @@ $this->breadcrumbs=array(
 
 $this->menu=array(
 	array('label'=>'<div id="menu"><strong>Viajes</strong></div>'),
-	array('label'=>'Registrar viajes especiales', 'url'=>array('especiales')),
+	array('label'=>'      Registrar viajes especiales', 'url'=>array('especiales')),
 	array('label'=>'<div id="menu"><strong>Historial</strong></div>'),
-	array('label'=>'Histórico de viajes', 'url'=>array('admin')),
-	array('label'=>'Estadísticas de viajes', 'url'=>array('admin')),
+	array('label'=>'      Histórico de viajes', 'url'=>array('admin')),
+	array('label'=>'      Estadísticas de viajes', 'url'=>array('admin')),
 );
 ?>
 <div class='crugepanel user-assignments-detail'>
 <h1>Registro de viajes rutinarios</h1>
-<label >Seleccione la fecha:  </label><br><?php echo CHtml::textField('Fecha',date('d/m/Y'),array('id'=>'fecha','size'=>10,'readonly'=>'readonly','maxlength'=>8, 'style'=>'width:100px;cursor:pointer;'));?>
-<br>
-<strong>Opciones:</strong> 
-<br>		
-<?php
- echo CHtml::link('1. Registrar nuevo viaje<br>', "", 
- array(
-        'style'=>'cursor: pointer; text-decoration: underline;',
-        'onclick'=>"{agregarViajeRutinario(); }"));
-		?>
+<label >Seleccione la fecha:  </label><br><?php echo CHtml::textField('Fecha',date('d/m/Y'),array('id'=>'fecha','size'=>10,'readonly'=>'readonly','maxlength'=>8, 'style'=>'width:100px;cursor:pointer;'));?>	
 
+<div id="viaje" class='crugepanel user-assignments-detail'></div>
 		<div id='etiqueta' ><?php echo CHtml::link('2. Registrar viajes de última rutina', "",  
  array(
         'style'=>'cursor: pointer; text-decoration: underline;',
@@ -108,22 +100,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
 ?>
 
 </div>
-<?php
-/*ventana agregar recurso*/
-$this->beginWidget('zii.widgets.jui.CJuiDialog', array( // the dialog
-    'id'=>'viaje',
-    'options'=>array(
-        'title'=>'Registrar viaje realizado',
-        'autoOpen'=>false,
-        'modal'=>true,
-        'width'=>390,
-		'position'=>array(500,100),
-		'resizable'=>false
-    ),
-));?>
-<div class="divForForm"></div>
- 
-<?php $this->endWidget();?>
+
 <?php
 /*ventana agregar recurso*/
 $this->beginWidget('zii.widgets.jui.CJuiDialog', array( // the dialog
@@ -233,8 +210,8 @@ function actualizarSpan(){
 });
 </script>
 <script>
+agregarViajeRutinario();
 function agregarViajeRutinario(){
-$('#viaje').dialog('open');
 	var fecha=$('#fecha').val();
 	var dir="<?php echo Yii::app()->baseUrl."/viajes/agregarViajeRutinario/"?>";
 	jQuery.ajax({
@@ -244,13 +221,14 @@ $('#viaje').dialog('open');
                 'dataType':'json',
                 'success':function(data){
                                 if (data.status == 'failure'){
-                                        $('#viaje div.divForForm').html(data.div);
-                                        $('#viaje div.divForForm form').submit(agregarViajeRutinario);
+                                        $('#viaje').html(data.div);
+                                        $('#viaje form').submit(agregarViajeRutinario);
                                 }
                                 else{
-                                        $('#viaje div.divForForm').html(data.div);
-                                        setTimeout("$('#viaje').dialog('close') ",1000);
-                                        $.fn.yiiGridView.update('viajes');
+                                        $('#viaje').html(data.div);
+                                        //setTimeout("$('#viaje').dialog('close') ",1000);
+                                        window.setTimeout('agregarViajeRutinario()', 2000);
+										$.fn.yiiGridView.update('viajes');
                                 }
                         },
                 'cache':false});
