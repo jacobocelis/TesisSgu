@@ -15,9 +15,8 @@ $this->menu=array(
 );
 ?>
 <div class='crugepanel user-assignments-detail'>
-<h1>Coordinador operativo y de transporte</h1>
-		
-
+<h1>Registro de coordinador operativo y de transporte</h1>
+	
 <div id="viaje" class='crugepanel user-assignments-detail'></div>
 <?php
 $this->widget('zii.widgets.grid.CGridView', array(
@@ -32,33 +31,26 @@ $this->widget('zii.widgets.grid.CGridView', array(
 				
 				'columns'=>array(
 				array(
-					'header'=>'Unidad',
-					'name'=>'idvehiculo',
-					'value'=>'str_pad((int) $data->idvehiculo0->numeroUnidad,2,"0",STR_PAD_LEFT)',
+					'header'=>'Nombre',
+					'name'=>'nombre',
+					'value'=>'$data->nombre.\' \'.$data->apellido',
 					//'value'=>'$data->idplan0->idplanGrupo0->CompiledColour->$data-id.\' \'.$data->CompiledColour',
 					'htmlOptions'=>array('style'=>'text-align:center;width:50px;'),
 				),
-				array(
-					'header'=>'Conductor asignado',
-					'name'=>'idempleado',
-					'value'=>'$data->idempleado0->nombre.\'  \'.$data->idempleado0->apellido',
-					//'value'=>'$data->idplan0->idplanGrupo0->CompiledColour->$data-id.\' \'.$data->CompiledColour',
-					'htmlOptions'=>array('style'=>'text-align:center;width:100px;'),
-				),
+			
 
 				array(
-					'header'=>'Fecha de asignación',
-					'name'=>'fechaInicio',
-					'value'=>'date("d/m/Y", strtotime($data->fechaInicio));',
+					'header'=>'Cédula',
+					'name'=>'cedula',
+					'value'=>'number_format($data->cedula, 0,",",".")',
 					'htmlOptions'=>array('style'=>'text-align:center;width:100px;'),
 				),
 				array(
-					'header'=>'Fecha de retiro',
-					'name'=>'fechaFin',
-					'value'=>'$data->fechaFin=="0000-00-00"?\'  \':$date("d/m/Y", strtotime($data->fechaFin));',
+					'header'=>'Cargo',
+					'name'=>'idtipoEmpleado',
+					'value'=>'$data->idtipoEmpleado0->tipo',
 					'htmlOptions'=>array('style'=>'text-align:center;width:100px;'),
 				),
-				
 				array(
 						'headerHtmlOptions'=>array('style'=>'text-align:center;width:10px;'),
 						'htmlOptions'=>array('style'=>'text-align:center;width:30px;'),
@@ -152,7 +144,7 @@ $this->beginWidget('zii.widgets.jui.CJuiDialog', array( // the dialog
 <script>
 agregarChoferRuta();
 function agregarChoferRuta(){
-	var dir="<?php echo Yii::app()->baseUrl."/empleados/agregarConductorRuta/"?>";
+	var dir="<?php echo Yii::app()->baseUrl."/empleados/agregarCoordinador/"?>";
 	jQuery.ajax({
                 url: dir,
                 'data':$(this).serialize(),

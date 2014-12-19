@@ -32,7 +32,7 @@ class EmpleadosController extends Controller
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create','update','conductores','AgregarConductorRuta','RegistrarConductor'),
+				'actions'=>array('create','update','conductores','AgregarConductorRuta','RegistrarConductor','coordinadores','agregarCoordinador'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -62,6 +62,14 @@ class EmpleadosController extends Controller
 			'dataProvider'=>$dataProvider,
 		));
 	}
+	public function actionCoordinadores(){
+		$dataProvider=new CActiveDataProvider('Empleado',array('criteria'=>array('condition'=>'idtipoEmpleado>1')));
+		
+		$this->render('coordinadores',array(
+			'dataProvider'=>$dataProvider,
+		));
+	}
+	
 	public function actionRegistrarConductor(){
 			$id='id=1';
 		$model=new Empleado;
@@ -81,6 +89,30 @@ class EmpleadosController extends Controller
             echo CJSON::encode(array(
                 'status'=>'failure', 
                 'div'=>$this->renderPartial('_formEmpleado', array('model'=>$model,'tipo'=>$id), true)
+				));
+            exit;               
+        }
+	}
+	public function actionAgregarCoordinador(){
+			$id='id>1';
+	
+		$model=new Empleado;
+		if(isset($_POST['Empleado'])){
+            $model->attributes=$_POST['Empleado'];
+			if($model->save()){
+                if (Yii::app()->request->isAjaxRequest){
+                    echo CJSON::encode(array(
+                        'status'=>'success', 
+                        'div'=>"Conductor agregado"
+                        ));
+					exit;
+                }
+            }
+        }
+		 if (Yii::app()->request->isAjaxRequest){	
+            echo CJSON::encode(array(
+                'status'=>'failure', 
+                'div'=>$this->renderPartial('_formCoordinador', array('model'=>$model,'tipo'=>$id), true)
 				));
             exit;               
         }

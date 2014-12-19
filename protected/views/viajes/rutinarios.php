@@ -71,6 +71,13 @@ $this->widget('zii.widgets.grid.CGridView', array(
 					//'value'=>'date("g:i a", strtotime($data->horaLlegada));',
 					'htmlOptions'=>array('style'=>'text-align:center;width:100px;'),
 				),
+				
+				array(
+					'header'=>'Conductor',
+					'value'=>'$data->idconductor0->nombre.\'  \'.$data->idconductor0->apellido',
+					//'value'=>'date("g:i a", strtotime($data->horaLlegada));',
+					'htmlOptions'=>array('style'=>'text-align:center;width:100px;'),
+				),
 				array(
 						'headerHtmlOptions'=>array('style'=>'text-align:center;width:10px;'),
 						'htmlOptions'=>array('style'=>'text-align:center;width:30px;'),
@@ -200,6 +207,7 @@ function actualizarSpan(){
 	$("#fecha").datepicker({
 		onSelect: function(selected){
 			var fecha=$('#fecha').val();
+			$('#Historicoviajes_fecha').val($('#fecha').val());
 			$.fn.yiiGridView.update('viajes',{data:"fecha="+fecha});
 			var hoy="<?php echo date('d/m/Y');?>";
 				if($('#fecha').val()==hoy)
@@ -264,7 +272,7 @@ $('#modificar').dialog('open');
                 'type':'post',
                 'dataType':'json',
                 'success':function(data)
-                        {
+                 {
                                 if (data.status == 'failure')
                                 {
                                         $('#modificar div.divForForm').html(data.div);
@@ -277,7 +285,7 @@ $('#modificar').dialog('open');
                                         setTimeout("$('#modificar').dialog('close') ",1000);
 										$.fn.yiiGridView.update('viajes');
                                 }
-                        } ,
+                } ,
                 'cache':false});
     return false; 
 }

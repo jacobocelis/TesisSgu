@@ -80,9 +80,16 @@ function obtenerPuestos(id){
 var dir="<?php echo Yii::app()->baseUrl;?>"+"/viajes/puestos/"+id;
 	$.ajax({  		
           url: dir,
+		  'dataType':'json',
+		  'success':function(data){
+			//$('#Historicoviajes_nroPersonas').val(result.puestos);
+			//$('#Historicoviajes_idconductor').html(result.lista);		  
+		  }
         })
-  	.done(function( result ) {    
-    	     $('#Historicoviajes_nroPersonas').val(result);
+  	.done(function( result ) {
+	
+    	     $('#Historicoviajes_nroPersonas').val(result.puestos);
+			 //$('#Historicoviajes_idconductor').html(result.lista);
   	});
 }
 </script>

@@ -77,6 +77,12 @@ $this->widget('zii.widgets.grid.CGridView', array(
 					'htmlOptions'=>array('style'=>'text-align:center;width:60px;'),
 				),
 				array(
+					'header'=>'Conductor',
+					'value'=>'$data->idconductor0->nombre.\'  \'.$data->idconductor0->apellido',
+					//'value'=>'date("g:i a", strtotime($data->horaLlegada));',
+					'htmlOptions'=>array('style'=>'text-align:center;width:100px;'),
+				),
+				array(
 					'header'=>'Tipo',
 					'value'=>'$data->idviaje0->idtipo0->tipo',
 					//'value'=>'date("g:i a", strtotime($data->horaLlegada));',

@@ -163,6 +163,12 @@ class VehiculoController extends Controller
 		{
 			$model->attributes=$_POST['Vehiculo'];
 			if($model->save()){
+				/*insertar km inicial en tabla kilometraje*/
+				$km=new Kilometraje();
+				$km->fecha=date('Y-m-d');
+				$km->lectura=$model->KmInicial;
+				$km->idvehiculo=$model->id;
+				$km->save();
 			/*inserta informacion adicional*/
 				$totalVeh=Yii::app()->db->createCommand('select informacion from sgu_infGrupo where idgrupo="'.$model->idgrupo.'"')->queryAll();
 				$total=count($totalVeh);

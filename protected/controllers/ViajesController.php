@@ -91,7 +91,12 @@ public function actionActualizarSpan(){
 				if(isset($_POST['Historicoviajes']['horaLlegada'])<>'')
 				$model->horaLlegada=date("H:i", strtotime($_POST['Historicoviajes']['horaLlegada']));
 			}
-			if($model->save()){
+			if($model->save()){	
+				$ultimaLectura=Yii::app()->db->createCommand('select lectura from sgu_kilometraje where idvehiculo='.$model->idvehiculo.' order by id desc limit 1')->queryRow();
+				$kmViaje=Yii::app()->db->createCommand('select distanciaKm from sgu_viaje where id='.$model->idviaje.'')->queryRow();
+				Yii::app()->db->createCommand('INSERT INTO `tsg`.`sgu_kilometraje` (`fecha`,`lectura`,`idvehiculo`) 
+				VALUES ("'.date('Y-m-d').'",'.($ultimaLectura['lectura']+$kmViaje['distanciaKm']).','.$model->idvehiculo.')')->query();
+			
                 if (Yii::app()->request->isAjaxRequest){
                     echo CJSON::encode(array(
                         'status'=>'success', 
@@ -111,7 +116,8 @@ public function actionActualizarSpan(){
 	}
 	
 	public function actionAgregarViajeRutinario(){
-                $model=new Historicoviajes;
+		
+         $model=new Historicoviajes;
         // Uncomment the following line if AJAX validation is needed
          //$this->performAjaxValidation($model);
 			if(isset($_POST['fecha']))
@@ -122,12 +128,17 @@ public function actionActualizarSpan(){
 		if(isset($_POST['Historicoviajes'])){
             $model->attributes=$_POST['Historicoviajes'];
 			if($model->validate()){
+				$model->fecha=date('Y-m-d',strtotime(str_replace('/', '-', $_POST['fecha'])));
 			if($_POST['Historicoviajes']['horaSalida']<>'')
 				$model->horaSalida=date("H:i", strtotime($_POST['Historicoviajes']['horaSalida']));
 			if(isset($_POST['Historicoviajes']['horaLlegada'])<>'')
 			$model->horaLlegada=date("H:i", strtotime($_POST['Historicoviajes']['horaLlegada']));
 			}
             if($model->save()){
+				$ultimaLectura=Yii::app()->db->createCommand('select lectura from sgu_kilometraje where idvehiculo='.$model->idvehiculo.' order by id desc limit 1')->queryRow();
+				$kmViaje=Yii::app()->db->createCommand('select distanciaKm from sgu_viaje where id='.$model->idviaje.'')->queryRow();
+				Yii::app()->db->createCommand('INSERT INTO `tsg`.`sgu_kilometraje` (`fecha`,`lectura`,`idvehiculo`) 
+			VALUES ("'.date('Y-m-d').'",'.($ultimaLectura['lectura']+$kmViaje['distanciaKm']).','.$model->idvehiculo.')')->query();
                 if (Yii::app()->request->isAjaxRequest){
 					echo CJSON::encode(array(
                         'status'=>'success', 
@@ -165,6 +176,12 @@ public function actionActualizarSpan(){
 			if($_POST['Historicoviajes']['horaLlegada']<>'')
 			$model->horaLlegada=date("H:i", strtotime($_POST['Historicoviajes']['horaLlegada']));
             if($model->save()){
+				
+				$ultimaLectura=Yii::app()->db->createCommand('select lectura from sgu_kilometraje where idvehiculo='.$model->idvehiculo.' order by id desc limit 1')->queryRow();
+				$kmViaje=Yii::app()->db->createCommand('select distanciaKm from sgu_viaje where id='.$model->idviaje.'')->queryRow();
+				Yii::app()->db->createCommand('INSERT INTO `tsg`.`sgu_kilometraje` (`fecha`,`lectura`,`idvehiculo`) 
+				VALUES ("'.date('Y-m-d').'",'.($ultimaLectura['lectura']+$kmViaje['distanciaKm']).','.$model->idvehiculo.')')->query();
+			
                 if (Yii::app()->request->isAjaxRequest){
 					echo CJSON::encode(array(
                         'status'=>'success', 
@@ -191,8 +208,8 @@ public function actionActualizarSpan(){
 	}
 	public function actionUltimosViajes(){
              
-					Yii::app()->db->createCommand("INSERT  ignore INTO `tsg`.`sgu_historicoViajes` (`fecha`,`horaSalida`,`horaLlegada`,`idviaje`,`idvehiculo`)
-					select date(now()) as fecha, horaSalida, horaLlegada, idviaje, idvehiculo from sgu_historicoViajes where fecha=(select fecha from sgu_historicoViajes hv, sgu_viaje v where hv.idviaje=v.id and v.idtipo=1 and fecha<>date(now()) group by fecha order by fecha desc limit 1)")->query();
+					Yii::app()->db->createCommand("INSERT  ignore INTO `tsg`.`sgu_historicoViajes` (`fecha`,`horaSalida`,`horaLlegada`,`idviaje`,`idvehiculo`,`idconductor`,`nroPersonas`)
+					select date(now()) as fecha, horaSalida, horaLlegada, idviaje, idvehiculo, idconductor, nroPersonas from sgu_historicoViajes where fecha=(select fecha from sgu_historicoViajes hv, sgu_viaje v where hv.idviaje=v.id and v.idtipo=1 and fecha<>date(now()) group by fecha order by fecha desc limit 1)")->query();
     
         if (Yii::app()->request->isAjaxRequest){
             echo CJSON::encode(array(
@@ -269,6 +286,10 @@ public function actionActualizarSpan(){
 	 */
 	public function actionDelete($id)
 	{
+				$model=$this->loadModel($id);
+				$ultimaLectura=Yii::app()->db->createCommand('select id from sgu_kilometraje where idvehiculo='.$model->idvehiculo.' order by id desc limit 1')->queryRow();
+				Yii::app()->db->createCommand('DELETE FROM `tsg`.`sgu_kilometraje` where id='.$ultimaLectura['id'].'')->query();
+			
 		$this->loadModel($id)->delete();
 
 		// if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
@@ -387,7 +408,16 @@ public function actionActualizarSpan(){
 	}
 	public function actionPuestos($id){
 			$modelo=Vehiculo::model()->findByPk($id);
-			echo $modelo->nroPuestos;
+			//echo $modelo->nroPuestos;
+			echo CJSON::encode(array('puestos'=>$modelo->nroPuestos,'lista'=>''));	
+
+		/*$models = Empleado::model()->findAll();
+		$data = array();
+		foreach ($models as $mode){
+			$data[$mode->id] = $mode->nombre . ' '. $mode->apellido; 
+			//echo CHtml::tag('option',array('type'=>'text','value'=>(($mode->id))),Chtml::encode(($data[$mode->id])),true);
+			echo CJSON::encode(array('lista'=>CHtml::tag('option',array('type'=>'text','value'=>(($mode->id))),Chtml::encode(($data[$mode->id])),true)));
+		}*/
 	}
 	public function actionInsumos($id){
 			$lista2=Insumo::model()->findAll('tipoInsumo = :id',array(':id'=>$id));

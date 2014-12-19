@@ -18,8 +18,8 @@ $this->menu=array(
 	array('label'=>'      Órdenes listas para cerrar <span class="badge badge-'.$Colorli.' pull-right">'.$listas.'</span>', 'url'=>array('cerrarOrdenes')),
 	
 	array('label'=>'<div id="menu"><strong>Gestión de coordinadores</strong></div>'),
-	array('label'=>'      Coordinador operativo', 'url'=>array('')),
-	array('label'=>'      Coordinador de transporte', 'url'=>array('')),
+	array('label'=>'      Coordinador operativo y de transporte', 'url'=>array('empleados/coordinadores')),
+	
 	
 	array('label'=>'<div id="menu"><strong>Historial</strong></div>'),
 	array('label'=>'      Histórico de mantenimientos', 'url'=>array('historicoPreventivo')),

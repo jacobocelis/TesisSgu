@@ -52,12 +52,12 @@ $this->widget('zii.widgets.grid.CGridView', array(
 					'value'=>'date("d/m/Y", strtotime($data->fechaInicio));',
 					'htmlOptions'=>array('style'=>'text-align:center;width:100px;'),
 				),
-				array(
+				/*array(
 					'header'=>'Fecha de retiro',
 					'name'=>'fechaFin',
 					'value'=>'$data->fechaFin=="0000-00-00"?\'  \':$date("d/m/Y", strtotime($data->fechaFin));',
 					'htmlOptions'=>array('style'=>'text-align:center;width:100px;'),
-				),
+				),*/
 				
 				array(
 						'headerHtmlOptions'=>array('style'=>'text-align:center;width:10px;'),
