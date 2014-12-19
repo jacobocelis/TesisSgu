@@ -90,14 +90,13 @@ class EmpleadosController extends Controller
         // Uncomment the following line if AJAX validation is needed
          //$this->performAjaxValidation($model);
 			
-		if(isset($_POST['historicoempleados'])){
-            $model->attributes=$_POST['historicoempleados'];
-			
+		if(isset($_POST['Historicoempleados'])){
+            $model->attributes=$_POST['Historicoempleados'];
             if($model->save()){
                 if (Yii::app()->request->isAjaxRequest){
 					echo CJSON::encode(array(
                         'status'=>'success', 
-                        'div'=>"se registró el viaje correctamente"
+                        'div'=>"se asoció el coductor a la unidad correctamente"
                         ));
                     exit;
                 }

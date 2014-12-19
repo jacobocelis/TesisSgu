@@ -40,16 +40,22 @@ $this->widget('zii.widgets.grid.CGridView', array(
 				),
 				array(
 					'header'=>'Conductor asignado',
-					'name'=>'idviaje',
-					'value'=>'$data->idviaje0->idOrigen0->lugar.\' - \'.$data->idviaje0->idDestino0->lugar',
+					'name'=>'idempleado',
+					'value'=>'$data->idempleado0->nombre.\'  \'.$data->idempleado0->apellido',
 					//'value'=>'$data->idplan0->idplanGrupo0->CompiledColour->$data-id.\' \'.$data->CompiledColour',
 					'htmlOptions'=>array('style'=>'text-align:center;width:100px;'),
 				),
 
 				array(
 					'header'=>'Fecha de asignación',
-					'name'=>'horaSalida',
-					'value'=>'date("g:i a", strtotime($data->horaSalida));',
+					'name'=>'fechaInicio',
+					'value'=>'date("d/m/Y", strtotime($data->fechaInicio));',
+					'htmlOptions'=>array('style'=>'text-align:center;width:100px;'),
+				),
+				array(
+					'header'=>'Fecha de retiro',
+					'name'=>'fechaFin',
+					'value'=>'$data->fechaFin=="0000-00-00"?\'  \':$date("d/m/Y", strtotime($data->fechaFin));',
 					'htmlOptions'=>array('style'=>'text-align:center;width:100px;'),
 				),
 				
@@ -73,7 +79,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
 					 'template'=>'{delete}',
 					     'buttons'=>array(
 							'delete' => array(
-								'url'=>'Yii::app()->createUrl("viajes/delete", array("id"=>$data->id))',
+								'url'=>'Yii::app()->createUrl("empleado/delete", array("id"=>$data->id))',
 						),
 					),
 				),
@@ -162,7 +168,7 @@ function agregarChoferRuta(){
                                         $('#viaje').html(data.div);
                                         //setTimeout("$('#viaje').dialog('close') ",1000);
                                         window.setTimeout('agregarChoferRuta()', 2000);
-										//$.fn.yiiGridView.update('viajes');
+										$.fn.yiiGridView.update('viajes');
                                 }
                         },
                 'cache':false});

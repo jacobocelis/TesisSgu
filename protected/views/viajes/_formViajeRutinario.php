@@ -168,7 +168,6 @@ var dir="<?php echo Yii::app()->baseUrl;?>"+"/viajes/validarRutaNormal";
   	.done(function(result) {    	
     	     $('#Historicoviajes_idviaje').html(result);
   	});
-
 }
 </script>
 

@@ -18,7 +18,6 @@ class ViajesController extends Controller
 			'postOnly + delete', // we only allow deletion via POST request
 		);
 	}
-
 	/**
 	 * Specifies the access control rules.
 	 * This method is used by the 'accessControl' filter.
@@ -32,7 +31,7 @@ class ViajesController extends Controller
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create','update','agregarViajeRutinario','agregarViajeEspecial','rutinarios','ultimosViajes','especiales','formAgregarEspecial','agregarRutaNueva','actualizarSpan','validarRuta','puestos','insumos','repuesto','validarRutaNormal'),
+				'actions'=>array('create','update','agregarViajeRutinario','agregarViajeEspecial','rutinarios','ultimosViajes','especiales','formAgregarEspecial','agregarRutaNueva','actualizarSpan','validarRuta','puestos','insumos','repuesto','validarRutaNormal','actualizarListaConductor'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -355,6 +354,15 @@ public function actionActualizarSpan(){
 			Yii::app()->end();
 		}
 	}
+	public function actionActualizarListaConductor(){
+		
+		$models = Empleado::model()->findAll('idtipoEmpleado=1 order by id DESC');
+		$data = array();
+		foreach ($models as $mode){
+			$data[$mode->id] = $mode->nombre . ' '. $mode->apellido; 
+			echo CHtml::tag('option',array('type'=>'text','value'=>(($mode->id))),Chtml::encode(($data[$mode->id])),true);
+		}
+	}
 	public function actionValidarRutaNormal(){
 	
 			$lista2=Viaje::model()->findAll('idtipo = :id order by id DESC',array(':id'=>'1'));
@@ -362,7 +370,6 @@ public function actionActualizarSpan(){
 				echo CHtml::tag('option',array('type'=>'text','value'=>(($li->id))),Chtml::encode(($li->viaje)),true);
 			
 		}
-
 	}
 	public function actionValidarRuta($id){
 		if($id==0){

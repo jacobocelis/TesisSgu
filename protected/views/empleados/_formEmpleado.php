@@ -37,9 +37,9 @@
 	</div>
 
 	<div class="row">
-		<?php echo $form->labelEx($model,'idtipoEmpleado'); ?>
-		<?php echo $form->dropDownList($model,'idtipoEmpleado',CHtml::listData(Tipoempleado::model()->findAll($tipo),'id','tipo'),array('style'=>'')); ?>
-		<?php echo $form->error($model,'idtipoEmpleado'); ?>
+		
+		<?php echo $form->dropDownList($model,'idtipoEmpleado',CHtml::listData(Tipoempleado::model()->findAll($tipo),'id','tipo'),array('style' => 'display: none')); ?>
+		
 	</div>
 <?php
 		echo CHtml::link('Cancelar', "",array('title'=>'Cancelar',

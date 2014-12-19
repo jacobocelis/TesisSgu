@@ -17,7 +17,6 @@
 
 	<p class="note">Campos con <span class="required">*</span> obligatorios.</p>
 
-	<?php echo $form->errorSummary($model); ?>
 
 	<div class="row">
 		
@@ -41,6 +40,7 @@
 		<?php echo $form->dropDownList($model,'idempleado',$data,array('prompt'=>'Seleccione: ','style' => 'width:160px;margin-bottom: 2px;')); ?>
 		<?php echo $form->error($model,'idempleado'); ?>
 	</div>
+	
 	<div id="registrarRuta">
 	<?php echo CHtml::link('Registrar conductor', "",array('title'=>'Registrar conductor',
         'style'=>'cursor: pointer;font-size:13px;margin-left:120px;',
@@ -81,7 +81,7 @@ $('#registrar').show();
 								
                                 if (data.status == 'failure'){
 										
-											$('#registrar').html(data.div);
+										$('#registrar').html(data.div);
                                         $('#registrar  form').submit(AgregarConductor);
                                 }
                                 else{
@@ -93,6 +93,7 @@ $('#registrar').show();
 										$('#boton').show();
 										$('#registrarRuta').show();
 										//window.setTimeout('location.reload()');
+										actualizarListaConductor();
 										
                           
                                 }
@@ -100,5 +101,14 @@ $('#registrar').show();
                 'cache':false});
 				//$('#registrar').show();
     return false; 
+}
+function actualizarListaConductor(){
+var dir="<?php echo Yii::app()->baseUrl;?>"+"/viajes/actualizarListaConductor";
+	$.ajax({  		
+          url: dir,
+        })
+  	.done(function(result) {    	
+    	     $('#Historicoempleados_idempleado').html(result);
+  	});
 }
 </script>

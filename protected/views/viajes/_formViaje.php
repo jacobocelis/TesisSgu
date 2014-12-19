@@ -61,7 +61,7 @@ var dir="<?php echo Yii::app()->baseUrl;?>"+"/viajes/validarRuta/"+id;
 	$.ajax({  		
           url: dir,
         })
-  	.done(function( result ) {    	
+  	.done(function(result){    	
     	     $('#Viaje_idDestino').html(result);
   	});
 }
@@ -79,7 +79,6 @@ function cancelar(){
 }
 </script>
 <style>
-
 #verde{
 	background: #D9EDFF;
 	width:320px;
