@@ -144,23 +144,33 @@ class ActividadesController extends Controller
             $model->attributes=$_POST['Actividades'];
             if($model->save()){
 			if (Yii::app()->request->isAjaxRequest){
-			Yii::app()->db->createCommand("update `tsg`.`sgu_actividades` set idestatus='3' where id = '".$id."'")->query();
+			
 			//se crea y calcula la nueva actividad
 			$proximoFecha = new DateTime($model->fechaRealizada);
 			$proximoKm=$model->kmRealizada+$model->frecuenciaKm;
 			$proximoFecha->add(new DateInterval('P'.$model->frecuenciaMes.$model->idtiempof0->sqlTimevalues));
-			Yii::app()->db->createCommand("INSERT INTO `tsg`.`sgu_actividades` (`ultimoKm`,`ultimoFecha`,`frecuenciaKm`,`frecuenciaMes`,`proximoKm`,`proximoFecha`,`duracion`,`idprioridad`,`idvehiculo`,`idestatus`,`procedimiento`,`idtiempod`,`idtiempof`,`idactividadesGrupo`,`idactividadMtto`)
-			VALUES (".$model->kmRealizada.",'".$model->fechaRealizada."',".$model->frecuenciaKm.",".$model->frecuenciaMes.",".$proximoKm.",'".$proximoFecha->format("Y-m-d")."',".$model->duracion.",".$model->idprioridad.",".$model->idvehiculo.",2,'".$model->procedimiento."',".$model->idtiempod.",".$model->idtiempof.",".$model->idactividadesGrupo.",".$model->idactividadMtto.")")->query();
 			
+			if($model->idestatus==4){
+				Yii::app()->db->createCommand("INSERT INTO `tsg`.`sgu_actividades` (`ultimoKm`,`ultimoFecha`,`frecuenciaKm`,`frecuenciaMes`,`proximoKm`,`proximoFecha`,`duracion`,`idprioridad`,`idvehiculo`,`idestatus`,`procedimiento`,`idtiempod`,`idtiempof`,`idactividadesGrupo`,`idactividadMtto`)
+				VALUES (".$model->kmRealizada.",'".$model->fechaRealizada."',".$model->frecuenciaKm.",".$model->frecuenciaMes.",".$proximoKm.",'".$proximoFecha->format("Y-m-d")."',".$model->duracion.",".$model->idprioridad.",".$model->idvehiculo.",2,'".$model->procedimiento."',".$model->idtiempod.",".$model->idtiempof.",".$model->idactividadesGrupo.",".$model->idactividadMtto.")")->query();
+			}
+			if($model->idestatus==3){
+				$ult=Yii::app()->db->createCommand("select id from sgu_actividades where idactividadesGrupo=".$model->idactividadesGrupo." order by id desc limit 1")->queryRow();
+				
+				Yii::app()->db->createCommand("update `tsg`.`sgu_actividades` set ultimoKm=".$model->kmRealizada.",ultimoFecha='".$model->fechaRealizada."', frecuenciaKm=".$model->frecuenciaKm.",frecuenciaMes=".$model->frecuenciaMes.",proximoKm=".$proximoKm.",proximoFecha='".$proximoFecha->format("Y-m-d")."',duracion=".$model->duracion.",idprioridad=".$model->idprioridad.",idvehiculo=".$model->idvehiculo.",idestatus=2, procedimiento='".$model->procedimiento."',idtiempod=".$model->idtiempod.",idtiempof=".$model->idtiempof.",idactividadesGrupo=".$model->idactividadesGrupo.",idactividadMtto=".$model->idactividadMtto." where id = '".$ult["id"]."'")->query();	
+			}
+			Yii::app()->db->createCommand("update `tsg`.`sgu_actividades` set idestatus='3' where id = '".$id."'")->query();
 			//inserto el recurso de la actividad
+			if($model->idestatus==4){
 				$totalRec=Yii::app()->db->createCommand('select * from sgu_actividadRecurso where idactividades="'.$id.'"')->queryAll();
                 $total=count($totalRec);
 				$null='NULL';
 				$ultimaAct=Yii::app()->db->createCommand('select id from sgu_actividades order by id desc limit 1')->queryRow();
 				for($i=0;$i<$total;$i++){
 					Yii::app()->db->createCommand("INSERT INTO `tsg`.`sgu_actividadRecurso` (`cantidad`,`idactividades`,`idinsumo`,`idrepuesto`,`idservicio`,`idunidad`,`detalle`,`idactividadRecursoGrupo`)
-						VALUES (".$totalRec[$i]["cantidad"].",".$ultimaAct["id"].",".($totalRec[$i]["idinsumo"]==null?$null:$totalRec[$i]["idinsumo"]).",".($totalRec[$i]["idrepuesto"]==null?$null:$totalRec[$i]["idrepuesto"]).",".($totalRec[$i]["idservicio"]==null?$null:$totalRec[$i]["idservicio"]).",".$totalRec[$i]["idunidad"].",'".$totalRec[$i]["detalle"]."',".($totalRec[$i]["idactividadRecursoGrupo"]==null?$null:$totalRec[$i]["idactividadRecursoGrupo"])."")->query();
+						VALUES (".$totalRec[$i]["cantidad"].",".$ultimaAct["id"].",".($totalRec[$i]["idinsumo"]==null?$null:$totalRec[$i]["idinsumo"]).",".($totalRec[$i]["idrepuesto"]==null?$null:$totalRec[$i]["idrepuesto"]).",".($totalRec[$i]["idservicio"]==null?$null:$totalRec[$i]["idservicio"]).",".$totalRec[$i]["idunidad"].",'".$totalRec[$i]["detalle"]."',".($totalRec[$i]["idactividadRecursoGrupo"]==null?$null:$totalRec[$i]["idactividadRecursoGrupo"]).")")->query();
 				}
+			}
 			//calculo del proximo mantenimiento a realizarse en base al ultimo ingresado
 				/*$proximoFecha = new DateTime($model->ultimoFecha);
 				$proximoKm=$model->ultimoKm+$model->frecuenciaKm;

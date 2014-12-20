@@ -28,7 +28,7 @@ class MttoPreventivoController extends Controller
 	{
 		return array(
 			array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array('index','view','crearPlan','planes','agregarActividad','obtenerParte','mttopVehiculo','mttopIniciales','calendario','obtenerActividad','agregarRecurso','iniciales','crearordenpreventiva','crearOrden','verOrdenes','cambiarFecha','mttopRealizados','registrarFacturacion','agregarFactura','estatusOrden','cerrarOrdenes','historicoPreventivo','historicoOrdenes','historicoGastos','vistaPrevia','vistaPreviaPDF','generarPdf','correo','actualizarSpan','agregarRecursoAdicional','insumos','repuesto'),
+				'actions'=>array('index','view','crearPlan','planes','agregarActividad','obtenerParte','mttopVehiculo','mttopIniciales','calendario','obtenerActividad','agregarRecurso','iniciales','crearordenpreventiva','crearOrden','verOrdenes','cambiarFecha','mttopRealizados','registrarFacturacion','agregarFactura','estatusOrden','cerrarOrdenes','historicoPreventivo','historicoOrdenes','historicoGastos','vistaPrevia','vistaPreviaPDF','generarPdf','correo','actualizarSpan','agregarRecursoAdicional','insumos','repuesto','ActualizarCheck'),
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
@@ -434,6 +434,26 @@ class MttoPreventivoController extends Controller
 			'nom'=>$nom,
 			'dir'=>$dir,
 		));
+	}
+	public function actionActualizarCheck($id){
+		$dataProvider=new CActiveDataProvider('Actividades',array('criteria' => array(
+			'order'=>'proximoFecha asc',
+			'condition'=>'id in (select idactividades from sgu_detalleOrden where idordenMtto="'.$id.'")')
+			,'pagination'=>array('pageSize'=>9999999)));
+			
+		$data=$dataProvider->getData();
+		for($i=0;$i<count($data);$i++){
+			//if($data[$i]["fechaRealizada"]=="0000-01-01" or $data[$i]["kmRealizada"]==-1){
+			if($data[$i]["idestatus"]<>3){
+				$estado=0;
+				break;
+			}else	
+				$estado=1;
+		}
+		  echo CJSON::encode(array(
+                'estado'=>$estado, 
+                ));
+			exit;
 	}
 	public function actionMttopIniciales($id){
 		$dataProvider=new CActiveDataProvider('Actividades',array('criteria' => array(

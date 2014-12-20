@@ -72,7 +72,7 @@
 		<?php echo $form->hiddenField($model,'costoTotal'); ?>
 		
 	</div>
-<div class="row"><br>
+<div class="row" id="garantia"><br>
 	Opcional puede agregar informacion adicional de garantía <br><br>
 		<?php echo $form->labelEx($model,'garantia'); ?>
 		<?php echo $form->textField($model,'garantia',array('style' => 'width:50px;'));?>
@@ -88,6 +88,9 @@
 
 </div><!-- form -->
 <script>
+$("#garantia").hide();
+if($("#Actividadrecurso_idrepuesto").val()!="")
+$("#garantia").show();
 $("#actividadrecurso-form").submit(function(event){
 	event.preventDefault();
 	validar();

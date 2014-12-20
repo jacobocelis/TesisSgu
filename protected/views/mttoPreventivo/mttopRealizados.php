@@ -23,6 +23,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
 				'selectableRows'=>0,
 				'emptyText'=>'',
                 'dataProvider'=>$orden,
+				//'afterAjaxUpdate'=>'recargar',
 				//'htmlOptions'=>array('style'=>'cursor:pointer'),
 				'columns'=>array(
 				array(
@@ -146,6 +147,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
 				),
 			)
         ));
+		
 ?>
 </div>
 <?php
@@ -207,6 +209,24 @@ h1 {
 }
 </style>
 <script>
+var idorden="<?php echo $id;?>";
+actualizarCheck(idorden);
+function actualizarCheck(idorden){	
+var dir="<?php echo Yii::app()->baseUrl."/mttoPreventivo/actualizarCheck"?>";	
+		jQuery.ajax({
+                url: dir+"/"+idorden,
+                'data':$(this).serialize(),
+                'type':'post',
+                'dataType':'json',
+				'success':function(data){
+					if(data.estado==0)
+						$('#campo1').attr('disabled',true);
+						else
+						$('#campo1').attr('disabled',false);
+				},
+                'cache':false});
+}
+
 var Uurl;
 function registrarMR(id){
 
@@ -230,10 +250,14 @@ function registrarMR(id){
                                         $('#dialog div.divForForm').html(data.div);
                                         setTimeout("$('#dialog').dialog('close') ",1000);
                                         $.fn.yiiGridView.update('final');
+										actualizarCheck(idorden);
                                 }
                         } ,
                 'cache':false});
     return false; 
+}
+function recargar(){
+	window.location.replace("<?php echo Yii::app()->baseUrl."/mttoPreventivo/verOrdenes"?>");	
 }
 function validar(id){
 
@@ -243,7 +267,7 @@ function validar(id){
 	if(y==true){
 		if(confirm('Confirma que desea poner la orden como lista?')){
 			x=1;
-			window.location.replace("<?php echo Yii::app()->baseUrl."/mttoPreventivo/verOrdenes"?>");	
+			
 		}else{
 			x=0;
 			y=false;
@@ -255,7 +279,12 @@ function validar(id){
                 'data':$(this).serialize()+ '&id=' + id,
                 'type':'post',
                 'dataType':'json',
-                'cache':false});			
+				'success':function(){
+					if(x==1)
+						recargar();
+				},
+                'cache':false});		
+				
 	$.fn.yiiGridView.update('ordenes');
 }
 </script>

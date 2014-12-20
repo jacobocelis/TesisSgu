@@ -14,7 +14,6 @@ $this->menu=array(
 <div class='crugepanel user-assignments-role-list'>
 	<h1>Detalle de orden de mantenimiento</h1>
 <?php
-
 $this->widget('zii.widgets.grid.CGridView', array(
                 'id'=>'factura',
 				'summaryText'=>'',
@@ -52,7 +51,13 @@ $this->widget('zii.widgets.grid.CGridView', array(
 					//'value'=>'$data->idplan0->idplanGrupo0->CompiledColour->$data-id.\' \'.$data->CompiledColour',
 					'htmlOptions'=>array('style'=>'text-align:center;width:150px'),
 				),
-
+				array(
+					'header'=>'Cerrar órden',
+					'value'=>'CHTML::checkBox("campo",0,array(\'id\'=>"campo$data->id",\'width\'=>4,\'maxlength\'=>2,\'onchange\'=>"return cerrar($data->id)"))',
+					'type'=>'raw',
+					'visible'=>$nom=='Cerrar órdenes'?true:false,
+					'htmlOptions'=>array('style'=>'width: 50px;text-align: center'),
+				),
 			)
         ));
 		?>
@@ -267,7 +272,7 @@ h1 {
     line-height: 40px;
 }
 .grid-view .summary {
-    margin: 0px 0px 0px;
+    margin: 2px 0px 0px;
     text-align: right;
 }
 .grid-view table.items th {
@@ -352,7 +357,7 @@ jQuery.ajax({
 
 		return false; 
 }
-function validar(orden){
+function cerrar(orden){
 	if(confirm('¿confirma que desea cerrar la orden?')){
 	var dir="<?php echo Yii::app()->baseUrl."/mttoPreventivo/estatusOrden"?>";
 		x=7;
@@ -361,6 +366,9 @@ function validar(orden){
                 'data':$(this).serialize()+ '&id=' + orden,
                 'type':'post',
                 'dataType':'json',
+				'success':function(){
+					window.location.replace("<?php echo Yii::app()->baseUrl."/mttoPreventivo/index"?>");	
+				},
                 'cache':false});			
 	}
 	$.fn.yiiGridView.update('ordenes');
