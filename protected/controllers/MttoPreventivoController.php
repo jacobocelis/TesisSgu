@@ -28,7 +28,7 @@ class MttoPreventivoController extends Controller
 	{
 		return array(
 			array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array('index','view','crearPlan','planes','agregarActividad','obtenerParte','mttopVehiculo','mttopIniciales','calendario','obtenerActividad','agregarRecurso','iniciales','crearordenpreventiva','crearOrden','verOrdenes','cambiarFecha','mttopRealizados','registrarFacturacion','agregarFactura','estatusOrden','cerrarOrdenes','historicoPreventivo','historicoOrdenes','historicoGastos','vistaPrevia','vistaPreviaPDF','generarPdf','correo','actualizarSpan','agregarRecursoAdicional'),
+				'actions'=>array('index','view','crearPlan','planes','agregarActividad','obtenerParte','mttopVehiculo','mttopIniciales','calendario','obtenerActividad','agregarRecurso','iniciales','crearordenpreventiva','crearOrden','verOrdenes','cambiarFecha','mttopRealizados','registrarFacturacion','agregarFactura','estatusOrden','cerrarOrdenes','historicoPreventivo','historicoOrdenes','historicoGastos','vistaPrevia','vistaPreviaPDF','generarPdf','correo','actualizarSpan','agregarRecursoAdicional','insumos','repuesto'),
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
@@ -374,7 +374,8 @@ class MttoPreventivoController extends Controller
 		
 		$modeloOrdenMtto=new Ordenmtto;
 		$dataProvider=new CActiveDataProvider('Actividades',array('criteria' => array(
-			'condition' =>'idestatus=2 and atraso >=-5',
+			//'condition' =>'idestatus=2 and atraso >=-5',
+			'condition' =>'idestatus=2',
 			'order'=>'proximoFecha'
 			)));
 		$this->render('crearOrdenPreventiva',array(
@@ -450,6 +451,8 @@ class MttoPreventivoController extends Controller
 	 */
 	 	public function actionAgregarRecursoAdicional($id){
                 $model=new Actividadrecurso;
+				$tipoInsumo=new Tipoinsumo();
+				$tipoRepuesto=new Subtiporepuesto();
         // Uncomment the following line if AJAX validation is needed
          //$this->performAjaxValidation($model);
  
@@ -468,7 +471,7 @@ class MttoPreventivoController extends Controller
         if (Yii::app()->request->isAjaxRequest){
             echo CJSON::encode(array(
                 'status'=>'failure', 
-                'div'=>$this->renderPartial('_formRecursoAdicional', array('model'=>$model,'id'=>$id), true)));
+                'div'=>$this->renderPartial('_formRecursoAdicional', array('model'=>$model,'id'=>$id,'tipoInsumo'=>$tipoInsumo,'tipoRepuesto'=>$tipoRepuesto), true)));
             exit;               
         }
         /*else
@@ -714,5 +717,17 @@ class MttoPreventivoController extends Controller
 			echo CActiveForm::validate($model);
 			Yii::app()->end();
 		}
+	}
+	public function actionInsumos($id){
+			$lista2=Insumo::model()->findAll('tipoInsumo = :id',array(':id'=>$id));
+			foreach($lista2 as $li){
+				echo CHtml::tag('option',array('type'=>'text','value'=>(($li->id))),Chtml::encode(($li->insumo)),true);
+			}
+	}
+	public function actionRepuesto($id){
+			$lista2=Repuesto::model()->findAll('idsubTipoRepuesto = :id',array(':id'=>$id));
+			foreach($lista2 as $li){
+				echo CHtml::tag('option',array('type'=>'text','value'=>(($li->id))),Chtml::encode(($li->repuesto)),true);
+			}
 	}
 }

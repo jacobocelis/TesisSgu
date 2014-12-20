@@ -30,6 +30,13 @@ $this->menu=array(
 ?>
 <div class='crugepanel user-assignments-role-list'>
 <h1>Próximas actividades de mantenimiento a realizarse</h1>
+<div id="filtro">
+<select id="lista" >
+			<option value="1">Mes actual</option>
+			<option value="2">En progreso</option>
+			<option value="3">Todas</option>
+		</select>
+</div>
 <?php
 $this->widget('zii.widgets.grid.CGridView', array(
                 'id'=>'head',
@@ -37,7 +44,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
 			    'enableSorting' => true,
 				'emptyText'=>'No hay actividades de mantenimiento registradas',
                 'dataProvider'=>$dataProvider,
-				'rowCssClassExpression'=>'$this->dataProvider->data[$row]->diasRestantes($this->dataProvider->data[$row]->proximoFecha)>=5?"even":"rojo"',
+				'rowCssClassExpression'=>'$this->dataProvider->data[$row]->diasRestantes($this->dataProvider->data[$row]->proximoFecha)<=5 || ($this->dataProvider->data[$row]->kmRestantes($this->dataProvider->data[$row]->idvehiculo,$this->dataProvider->data[$row]->proximoKm))<=50?"rojo":"even"',
 				'ajaxUpdate'=>false,
 				'columns'=>array(
 				array(
@@ -90,7 +97,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
 					'type'=>'raw',
 					'header'=>'Atraso',
 					'name'=>'atraso',
-					'value'=>'\'<b><span style="color:red">\'.$data->atraso($data->proximoFecha).\'</span></b>\'',
+					'value'=>'\'<b><span style="color:red">\'.$data->atraso($data->proximoFecha).\'</span></b><br><b><span style="color:red">\'.$data->atrasoKm($data->idvehiculo,$data->proximoKm).\'</span></b>\'',
 					'htmlOptions'=>array('style'=>'width:60px;text-align:center;'),
 				),
 				array(
@@ -98,6 +105,14 @@ $this->widget('zii.widgets.grid.CGridView', array(
 					'name'=>'idprioridad',
 					'value'=>'$data->idprioridad0->prioridad',
 					'htmlOptions'=>array('style'=>'width:70px;text-align:center;'),
+				),
+				
+				array(
+					'type'=>'raw',
+					'header'=>'Kms restantes',
+					'name'=>'frecuenciaKm',
+					'value'=>'$data->kmRestantes($data->idvehiculo,$data->proximoKm)<=50?\'<strong><span style="color:red">\'.$data->kmRestantes($data->idvehiculo,$data->proximoKm).\'</span></strong>\':number_format($data->kmRestantes($data->idvehiculo,$data->proximoKm))',
+					'htmlOptions'=>array('style'=>'width:60px;text-align:center;'),
 				),
 				array(
 					'type'=>'raw',
@@ -110,17 +125,25 @@ $this->widget('zii.widgets.grid.CGridView', array(
 					'htmlOptions'=>array('style'=>'width:110px;text-align:center;'),
 				),
 				array(
-					'type'=>'raw',
-					'header'=>'Kms restantes',
-					'name'=>'frecuenciaKm',
-					'value'=>'\'-\'',
-					'htmlOptions'=>array('style'=>'width:110px;text-align:center;'),
+					'header'=>'Estatus',
+					'name'=>'idestatus',
+					'value'=>'$data->idestatus0->estatus',
+					'htmlOptions'=>array('style'=>'text-align:center;width:100px'),
 				),
 			)
         ));
 		?>
 </div>
 <style>
+#filtro{
+	
+	float:right;
+}
+select {
+    width: 130px;
+    background-color: #FFF;
+    border: 1px solid #CCC;
+}
 #menu{
 	font-size:15px;
 

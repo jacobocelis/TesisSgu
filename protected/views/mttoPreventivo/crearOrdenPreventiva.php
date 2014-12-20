@@ -15,7 +15,7 @@
 
 <div class='crugepanel user-assignments-role-list'>
 	<h1>Seleccione las actividades a incluir en la orden de mantenimiento</h1>
-	<p><b>Nota: </b><i>Sólo se mostrarán las actividades con menos de 5 dias restantes o que posean atraso</p></i>
+	<?php //<p><b>Nota: </b><i>Sólo se mostrarán las actividades con menos de 5 dias restantes o que posean atraso</p></i>?>
 <?php
 $this->widget('zii.widgets.grid.CGridView', array(
                 'id'=>'actividades',
@@ -53,19 +53,28 @@ $this->widget('zii.widgets.grid.CGridView', array(
 					'name'=>'proximoFecha',
 					'htmlOptions'=>array('style'=>'width:100px;text-align:center;'),
 				),*/
-				array(
-					'type'=>'raw',
-					'header'=>'Atraso',
-					'name'=>'atraso',
-					'value'=>'\'<b><span style="color:red">\'.$data->atraso($data->proximoFecha).\'</span></b>\'',
-					'htmlOptions'=>array('style'=>'width:60px;text-align:center;'),
-				),
+				
 				array(
 					'header'=>'Prioridad',
 					'name'=>'idprioridad',
 					'value'=>'$data->idprioridad0->prioridad',
 					'htmlOptions'=>array('style'=>'width:70px;text-align:center;'),
 				),
+				array(
+					'type'=>'raw',
+					'header'=>'Atraso',
+					'name'=>'atraso',
+					'value'=>'\'<b><span style="color:red">\'.$data->atraso($data->proximoFecha).\'</span></b><br><b><span style="color:red">\'.$data->atrasoKm($data->idvehiculo,$data->proximoKm).\'</span></b>\'',
+					'htmlOptions'=>array('style'=>'width:60px;text-align:center;'),
+				),
+				array(
+					'type'=>'raw',
+					'header'=>'Kms restantes',
+					'name'=>'frecuenciaKm',
+					'value'=>'$data->kmRestantes($data->idvehiculo,$data->proximoKm)<=50?\'<strong><span style="color:red">\'.$data->kmRestantes($data->idvehiculo,$data->proximoKm).\'</span></strong>\':$data->kmRestantes($data->idvehiculo,$data->proximoKm)',
+					'htmlOptions'=>array('style'=>'width:110px;text-align:center;'),
+				),
+				
 				array(
 					'type'=>'raw',
 					'header'=>'Días restantes',

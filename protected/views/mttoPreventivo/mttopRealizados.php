@@ -235,21 +235,19 @@ function registrarMR(id){
                 'cache':false});
     return false; 
 }
-function validar(){
+function validar(id){
 
-var id="<?php echo $id?>";
+//var id="<?php echo $id?>";
 	var dir="<?php echo Yii::app()->baseUrl."/mttoPreventivo/estatusOrden"?>";
-	var x = document.getElementById("campo1").checked;
-	if(x==true){
+	var y = document.getElementById("campo1").checked;
+	if(y==true){
 		if(confirm('Confirma que desea poner la orden como lista?')){
 			x=1;
-			window.location.replace("<?php echo Yii::app()->baseUrl."/mttoPreventivo/verOrdenes"?>");
-			
+			window.location.replace("<?php echo Yii::app()->baseUrl."/mttoPreventivo/verOrdenes"?>");	
 		}else{
 			x=0;
-		}
-		
-		
+			y=false;
+		}	
 	}else
 		x=0;
 	jQuery.ajax({

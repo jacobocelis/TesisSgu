@@ -43,12 +43,12 @@ class Actividadrecurso extends CActiveRecord
 		// will receive user inputs.
 		return array(
 			array('cantidad, idactividades, idunidad,costoUnitario', 'required'),
-			array('cantidad, idactividades, idinsumo, idrepuesto, idservicio, idunidad, idactividadRecursoGrupo', 'numerical', 'integerOnly'=>true),
+			array('cantidad, idactividades, idinsumo, idrepuesto, idservicio, idunidad, idactividadRecursoGrupo, garantia, idtiempoGarantia', 'numerical', 'integerOnly'=>true),
 			array('costoUnitario, costoTotal', 'numerical'),
 			array('detalle', 'length', 'max'=>100),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, cantidad, idactividades, idinsumo, idrepuesto, idservicio, idunidad, detalle, idactividadRecursoGrupo, costoUnitario, costoTotal', 'safe', 'on'=>'search'),
+			array('id, cantidad, idactividades, idinsumo, idrepuesto, idservicio, idunidad, detalle, idactividadRecursoGrupo, costoUnitario, costoTotal, garantia, idtiempoGarantia', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -66,6 +66,7 @@ class Actividadrecurso extends CActiveRecord
 			'idrepuesto0' => array(self::BELONGS_TO, 'Repuesto', 'idrepuesto'),
 			'idservicio0' => array(self::BELONGS_TO, 'Servicio', 'idservicio'),
 			'idunidad0' => array(self::BELONGS_TO, 'Unidad', 'idunidad'),
+			'idtiempoGarantia0' => array(self::BELONGS_TO, 'Tiempo', 'idtiempoGarantia'),
 		);
 	}
 
@@ -86,6 +87,8 @@ class Actividadrecurso extends CActiveRecord
 			'idactividadRecursoGrupo' => 'Idactividad Recurso Grupo',
 			'costoUnitario' => 'Costo unitario',
 			'costoTotal' => 'Costo total',
+			'garantia' => 'Garantía',
+			'idtiempoGarantia' => 'Idtiempo Garantia',
 		);
 	}
 
@@ -118,7 +121,8 @@ class Actividadrecurso extends CActiveRecord
 		$criteria->compare('idactividadRecursoGrupo',$this->idactividadRecursoGrupo);
 		$criteria->compare('costoUnitario',$this->costoUnitario);
 		$criteria->compare('costoTotal',$this->costoTotal);
-
+	    $criteria->compare('garantia',$this->garantia);
+		$criteria->compare('idtiempoGarantia',$this->idtiempoGarantia);
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
 		));

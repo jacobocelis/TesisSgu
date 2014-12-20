@@ -232,14 +232,15 @@ $this->beginWidget('zii.widgets.jui.CJuiDialog', array( // the dialog
         'autoOpen'=>false,
         'modal'=>true,
         'width'=>490,
-		'resizable'=>false
+		'resizable'=>false,
+		'position'=>array(null,100),
     ),
 ));?>
 <div class="divForForm"></div> 
 <?php $this->endWidget();?>
 
 <?php
-/*ventana agregar recurso*/
+/*ventana agregar costo*/
 $this->beginWidget('zii.widgets.jui.CJuiDialog', array( // the dialog
     'id'=>'dialog',
     'options'=>array(
@@ -247,7 +248,8 @@ $this->beginWidget('zii.widgets.jui.CJuiDialog', array( // the dialog
         'autoOpen'=>false,
         'modal'=>true,
         'width'=>390,
-        'height'=>260,
+		'position'=>array(null,100),
+        //'height'=>260,
 		'resizable'=>false
     ),
 ));?>
@@ -263,7 +265,7 @@ $this->beginWidget('zii.widgets.jui.CJuiDialog', array( // the dialog
         'autoOpen'=>false,
         'modal'=>true,
         'width'=>390,
-		'position'=>array(500,100),
+		'position'=>array(null,100),
 		'resizable'=>false
     ),
 ));?>

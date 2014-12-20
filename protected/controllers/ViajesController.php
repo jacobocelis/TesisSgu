@@ -419,16 +419,4 @@ public function actionActualizarSpan(){
 			echo CJSON::encode(array('lista'=>CHtml::tag('option',array('type'=>'text','value'=>(($mode->id))),Chtml::encode(($data[$mode->id])),true)));
 		}*/
 	}
-	public function actionInsumos($id){
-			$lista2=Insumo::model()->findAll('tipoInsumo = :id',array(':id'=>$id));
-			foreach($lista2 as $li){
-				echo CHtml::tag('option',array('type'=>'text','value'=>(($li->id))),Chtml::encode(($li->insumo)),true);
-			}
-	}
-	public function actionRepuesto($id){
-			$lista2=Repuesto::model()->findAll('idsubTipoRepuesto = :id',array(':id'=>$id));
-			foreach($lista2 as $li){
-				echo CHtml::tag('option',array('type'=>'text','value'=>(($li->id))),Chtml::encode(($li->repuesto)),true);
-			}
-	}
 }

@@ -108,7 +108,7 @@ function validar(){
 }
 
 function validarInsumo(id){
-var dir="<?php echo Yii::app()->baseUrl;?>"+"/viajes/insumos/"+id;
+var dir="<?php echo Yii::app()->baseUrl;?>"+"/mttoPreventivo/insumos/"+id;
 $.ajax({  		
           url: dir,
         })
@@ -117,7 +117,7 @@ $.ajax({
   	});
 }
 function validarRepuesto(id){
-var dir="<?php echo Yii::app()->baseUrl;?>"+"/viajes/repuesto/"+id;
+var dir="<?php echo Yii::app()->baseUrl;?>"+"/mttoPreventivo/repuesto/"+id;
 $.ajax({  		
           url: dir,
         })

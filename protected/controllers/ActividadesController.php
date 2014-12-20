@@ -159,7 +159,7 @@ class ActividadesController extends Controller
 				$ultimaAct=Yii::app()->db->createCommand('select id from sgu_actividades order by id desc limit 1')->queryRow();
 				for($i=0;$i<$total;$i++){
 					Yii::app()->db->createCommand("INSERT INTO `tsg`.`sgu_actividadRecurso` (`cantidad`,`idactividades`,`idinsumo`,`idrepuesto`,`idservicio`,`idunidad`,`detalle`,`idactividadRecursoGrupo`)
-						VALUES (".$totalRec[$i]["cantidad"].",".$ultimaAct["id"].",".($totalRec[$i]["idinsumo"]==null?$null:$totalRec[$i]["idinsumo"]).",".($totalRec[$i]["idrepuesto"]==null?$null:$totalRec[$i]["idrepuesto"]).",".($totalRec[$i]["idservicio"]==null?$null:$totalRec[$i]["idservicio"]).",".$totalRec[$i]["idunidad"].",'".$totalRec[$i]["detalle"]."',".$totalRec[$i]["idactividadRecursoGrupo"].")")->query();
+						VALUES (".$totalRec[$i]["cantidad"].",".$ultimaAct["id"].",".($totalRec[$i]["idinsumo"]==null?$null:$totalRec[$i]["idinsumo"]).",".($totalRec[$i]["idrepuesto"]==null?$null:$totalRec[$i]["idrepuesto"]).",".($totalRec[$i]["idservicio"]==null?$null:$totalRec[$i]["idservicio"]).",".$totalRec[$i]["idunidad"].",'".$totalRec[$i]["detalle"]."',".($totalRec[$i]["idactividadRecursoGrupo"]==null?$null:$totalRec[$i]["idactividadRecursoGrupo"])."")->query();
 				}
 			//calculo del proximo mantenimiento a realizarse en base al ultimo ingresado
 				/*$proximoFecha = new DateTime($model->ultimoFecha);

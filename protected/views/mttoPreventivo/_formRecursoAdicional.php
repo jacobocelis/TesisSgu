@@ -26,6 +26,11 @@
 		</select>
 	</div>
 	<div id="insumo" class="row">
+	<?php echo $form->labelEx($tipoInsumo,'tipo'); ?>
+		<?php echo $form->dropDownList($tipoInsumo,'tipo',CHtml::listData(Tipoinsumo::model()->findAll(),'id','tipo'),array(
+			'style' => 'width:150px;','onchange'=>'validarInsumo(this.value);')); ?><br>
+		<?php //echo $form->error($tipoInsumo,'idOrigen'); ?>
+		
 		<?php echo $form->labelEx($model,'idinsumo'); ?>
 		<?php echo $form->dropDownList($model,'idinsumo',CHtml::listData(Insumo::model()->findAll(),'id','insumo'),array('style' => 'width:300px;')); ?>
 		<?php echo $form->error($model,'idinsumo'); ?>
@@ -37,7 +42,13 @@
 		<?php echo $form->error($model,'idservicio'); ?>
 	</div>
 
-	<div id="repuesto"class="row">
+		<div id="repuesto"class="row">
+		
+		<?php echo $form->labelEx($tipoRepuesto,'subTipo'); ?>
+		<?php echo $form->dropDownList($tipoRepuesto,'subTipo',CHtml::listData(Subtiporepuesto::model()->findAll(),'id','subTipo'),array(
+			'style' => 'width:200px;','onchange'=>'validarRepuesto(this.value);')); ?><br>
+		<?php //echo $form->error($tipoRepuesto,'idOrigen'); ?>
+		
 		<?php echo $form->labelEx($model,'idrepuesto'); ?>
 		<?php echo $form->dropDownList($model,'idrepuesto',CHtml::listData(Repuesto::model()->findAll(),'id','repuesto'),array('style' => 'width:200px;')); ?>
 		<?php echo $form->error($model,'idrepuesto'); ?>
@@ -92,11 +103,16 @@
 
 </div><!-- form -->
 <script>
+var iden=$('#Actividadrecurso_idinsumo option:selected').val();
+validarInsumo(iden);
+var idrep=$('#Actividadrecurso_idrepuesto option:selected').val();
+validarRepuesto(idrep);
 $("#actividadrecurso-form").submit(function(event){
 	event.preventDefault();
 	validar();
 });
 function validar(){
+	
 	if($("#lista").val()==1){
 		$("#Actividadrecurso_idservicio option:selected").val('');
 		$("#Actividadrecurso_idrepuesto option:selected").val('');
@@ -109,10 +125,28 @@ function validar(){
 		$("#Actividadrecurso_idinsumo option:selected").val('');
 		$("#Actividadrecurso_idrepuesto option:selected").val('');
 	}
-	return true
+	return true;
 }
-</script>
-<script>
+
+function validarInsumo(id){
+var dir="<?php echo Yii::app()->baseUrl;?>"+"/mttoPreventivo/insumos/"+id;
+$.ajax({  		
+          url: dir,
+        })
+  	.done(function( result ) {    	
+    	     $('#Actividadrecurso_idinsumo').html(result);
+  	});
+}
+function validarRepuesto(id){
+var dir="<?php echo Yii::app()->baseUrl;?>"+"/mttoPreventivo/repuesto/"+id;
+$.ajax({  		
+          url: dir,
+        })
+  	.done(function( result ) {    	
+    	     $('#Actividadrecurso_idrepuesto').html(result);
+  	});
+}
+
 $("#servicio").hide();
 $("#repuesto").hide();
 //$("#Actividadrecursogrupo_recurso").val($("#Actividadrecursogrupo_idinsumo option:selected").text());
@@ -121,13 +155,11 @@ $("#lista").change(function() {
 		$("#servicio").hide();
 		$("#repuesto").hide();
 		$("#insumo").show();
-		
 	} 
 	if($("#lista").val()==2){
 		$("#insumo").hide();
 		$("#servicio").hide();
 		$("#repuesto").show();
-		
 	} 
 	if($("#lista").val()==3){
 		$("#insumo").hide();

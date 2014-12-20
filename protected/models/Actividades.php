@@ -60,6 +60,15 @@ class Actividades extends CActiveRecord
 				return 0;
 		return $interval->format('%a');
 	}
+	function kmRestantes($id,$prox){
+		$km=Kilometraje::model()->findAll(array(
+			'condition'=>'t.idvehiculo ='.$id.' order by t.id desc limit 1',
+		));
+		if(($prox-$km[0]["lectura"])<0)
+			return 0;
+		else
+			return $prox-$km[0]["lectura"];
+	}
 	/*public function porcentaje($ini,$fin){
 		$datetime1 = new DateTime($fin);
 		$datetime2 = new DateTime("now");
@@ -84,6 +93,15 @@ class Actividades extends CActiveRecord
 		if($retraso<-1)
 			return $interval->format('%a Días');
 		return "";
+	}
+	public function atrasoKm($id,$prox){
+		$km=Kilometraje::model()->findAll(array(
+			'condition'=>'t.idvehiculo ='.$id.' order by t.id desc limit 1',
+		));
+		if(($prox-$km[0]["lectura"])<0)
+			return "+ ".abs($prox-$km[0]["lectura"])." Km";
+		else
+			return "";
 	}
 	public function porcentaje($ini,$fin){
 		$datetime1 = new DateTime($fin);
