@@ -32,7 +32,7 @@ $this->menu=array(
 <h1>Próximas actividades de mantenimiento a realizarse</h1>
 <div id="filtro">
 <select id="lista" >
-			<option value="1">Mes actual</option>
+			<option value="1">Éste mes</option>
 			<option value="2">En progreso</option>
 			<option value="3">Todas</option>
 		</select>

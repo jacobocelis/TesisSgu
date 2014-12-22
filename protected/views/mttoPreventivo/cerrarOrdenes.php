@@ -46,10 +46,22 @@ $this->widget('zii.widgets.grid.CGridView', array(
 					'htmlOptions'=>array('style'=>'text-align:center;width:50px'),
 				),
 				array(
-					'header'=>'Responsable',
-					'name'=>'responsable',
-					//'value'=>'$data->idplan0->idplanGrupo0->CompiledColour->$data-id.\' \'.$data->CompiledColour',
-					'htmlOptions'=>array('style'=>'text-align:center;width:150px'),
+					'header'=>'C. operativo',
+					'name'=>'cOperativo',
+					'value'=>'$data->cOperativo0->nombre.\'  \'.$data->cOperativo0->apellido',
+					'htmlOptions'=>array('style'=>'text-align:center;width:80px'),
+				),
+				array(
+					'header'=>'C. de transporte',
+					'name'=>'cTaller',
+					'value'=>'$data->cTaller0->nombre.\'  \'.$data->cTaller0->apellido',
+					'htmlOptions'=>array('style'=>'text-align:center;width:80px'),
+				),
+				array(
+					'header'=>'Taller asignado',
+					'name'=>'taller',
+					'value'=>'$data->taller0->nombre',
+					'htmlOptions'=>array('style'=>'text-align:center;width:80px'),
 				),
 				array(
 						'headerHtmlOptions'=>array('style'=>'text-align:center;width:50px;'),

@@ -60,6 +60,8 @@ class Repuesto extends CActiveRecord
 			'idunidad0' => array(self::BELONGS_TO, 'Unidad', 'idunidad'),
 			'sguActividadrecursogrupos' => array(self::HAS_MANY, 'Actividadrecursogrupo', 'idrepuesto'),
 			'sguActividadrecursos' => array(self::HAS_MANY, 'Actividadrecursos', 'idrepuesto'),
+			'sguRecursofallas' => array(self::HAS_MANY,'Recursofalla', 'idrepuesto'),
+			
 		);
 	}
 

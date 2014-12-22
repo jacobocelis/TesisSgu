@@ -22,13 +22,28 @@
 	</div>
 
 	<div class="row">
-		<?php echo $form->label($model,'responsable'); ?>
-		<?php echo $form->textField($model,'responsable',array('size'=>45,'maxlength'=>45)); ?>
+		<?php echo $form->label($model,'tipo'); ?>
+		<?php echo $form->textField($model,'tipo'); ?>
 	</div>
 
 	<div class="row">
 		<?php echo $form->label($model,'idestatus'); ?>
 		<?php echo $form->textField($model,'idestatus'); ?>
+	</div>
+
+	<div class="row">
+		<?php echo $form->label($model,'taller'); ?>
+		<?php echo $form->textField($model,'taller'); ?>
+	</div>
+
+	<div class="row">
+		<?php echo $form->label($model,'cOperativo'); ?>
+		<?php echo $form->textField($model,'cOperativo'); ?>
+	</div>
+
+	<div class="row">
+		<?php echo $form->label($model,'cTaller'); ?>
+		<?php echo $form->textField($model,'cTaller'); ?>
 	</div>
 
 	<div class="row buttons">

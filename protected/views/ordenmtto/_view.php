@@ -13,12 +13,24 @@
 	<?php echo CHtml::encode($data->fecha); ?>
 	<br />
 
-	<b><?php echo CHtml::encode($data->getAttributeLabel('responsable')); ?>:</b>
-	<?php echo CHtml::encode($data->responsable); ?>
+	<b><?php echo CHtml::encode($data->getAttributeLabel('tipo')); ?>:</b>
+	<?php echo CHtml::encode($data->tipo); ?>
 	<br />
 
 	<b><?php echo CHtml::encode($data->getAttributeLabel('idestatus')); ?>:</b>
 	<?php echo CHtml::encode($data->idestatus); ?>
+	<br />
+
+	<b><?php echo CHtml::encode($data->getAttributeLabel('taller')); ?>:</b>
+	<?php echo CHtml::encode($data->taller); ?>
+	<br />
+
+	<b><?php echo CHtml::encode($data->getAttributeLabel('cOperativo')); ?>:</b>
+	<?php echo CHtml::encode($data->cOperativo); ?>
+	<br />
+
+	<b><?php echo CHtml::encode($data->getAttributeLabel('cTaller')); ?>:</b>
+	<?php echo CHtml::encode($data->cTaller); ?>
 	<br />
 
 

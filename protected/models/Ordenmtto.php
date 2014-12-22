@@ -37,12 +37,12 @@ class Ordenmtto extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('responsable, idestatus', 'required'),
-			array('idestatus', 'numerical', 'integerOnly'=>true),
-			array('responsable', 'length', 'max'=>45),
+			array('fecha, tipo, idestatus, taller, cOperativo, cTaller', 'required'),
+			array('tipo, idestatus, taller, cOperativo, cTaller', 'numerical', 'integerOnly'=>true),
+			
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, fecha, responsable, idestatus', 'safe', 'on'=>'search'),
+			array('id, fecha,tipo, idestatus, taller, cOperativo, cTaller', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -57,6 +57,12 @@ class Ordenmtto extends CActiveRecord
 			'sguDetalleordens' => array(self::HAS_MANY, 'Detalleorden', 'idordenMtto'),
 			'idestatus0' => array(self::BELONGS_TO, 'Estatus', 'idestatus'),
 			'sguFacturas' => array(self::HAS_MANY, 'Factura', 'idordenMtto'),
+			'cOperativo0' => array(self::BELONGS_TO, 'Empleado', 'cOperativo'),
+			'cTaller0' => array(self::BELONGS_TO, 'Empleado', 'cTaller'),
+			'idestatus0' => array(self::BELONGS_TO, 'Estatus', 'idestatus'),
+			'taller0' => array(self::BELONGS_TO, 'Proveedor', 'taller'),
+			'sguDetalleordencos' => array(self::HAS_MANY, 'Detalleordenco', 'idordenMtto'),
+			
 		);
 	}
 
@@ -68,8 +74,12 @@ class Ordenmtto extends CActiveRecord
 		return array(
 			'id' => 'ID',
 			'fecha' => 'Fecha',
-			'responsable' => 'Responsable',
-			'idestatus' => 'Estatus',
+			'tipo' => 'Tipo',
+			'idestatus' => 'Idestatus',
+			'taller' => 'Taller',
+			
+			'cOperativo' => 'Coordinador operativo',
+			'cTaller' => 'Coordinador de transporte',
 		);
 	}
 
@@ -95,7 +105,10 @@ class Ordenmtto extends CActiveRecord
 		$criteria->compare('fecha',$this->fecha,true);
 		$criteria->compare('responsable',$this->responsable,true);
 		$criteria->compare('idestatus',$this->idestatus);
-
+		$criteria->compare('taller',$this->taller);
+		$criteria->compare('tipo',$this->tipo);
+		$criteria->compare('cOperativo',$this->cOperativo);
+		$criteria->compare('cTaller',$this->cTaller);
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
 		));

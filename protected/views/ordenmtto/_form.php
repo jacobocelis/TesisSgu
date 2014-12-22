@@ -26,15 +26,33 @@
 	</div>
 
 	<div class="row">
-		<?php echo $form->labelEx($model,'responsable'); ?>
-		<?php echo $form->textField($model,'responsable',array('size'=>45,'maxlength'=>45)); ?>
-		<?php echo $form->error($model,'responsable'); ?>
+		<?php echo $form->labelEx($model,'tipo'); ?>
+		<?php echo $form->textField($model,'tipo'); ?>
+		<?php echo $form->error($model,'tipo'); ?>
 	</div>
 
 	<div class="row">
 		<?php echo $form->labelEx($model,'idestatus'); ?>
 		<?php echo $form->textField($model,'idestatus'); ?>
 		<?php echo $form->error($model,'idestatus'); ?>
+	</div>
+
+	<div class="row">
+		<?php echo $form->labelEx($model,'taller'); ?>
+		<?php echo $form->textField($model,'taller'); ?>
+		<?php echo $form->error($model,'taller'); ?>
+	</div>
+
+	<div class="row">
+		<?php echo $form->labelEx($model,'cOperativo'); ?>
+		<?php echo $form->textField($model,'cOperativo'); ?>
+		<?php echo $form->error($model,'cOperativo'); ?>
+	</div>
+
+	<div class="row">
+		<?php echo $form->labelEx($model,'cTaller'); ?>
+		<?php echo $form->textField($model,'cTaller'); ?>
+		<?php echo $form->error($model,'cTaller'); ?>
 	</div>
 
 	<div class="row buttons">
