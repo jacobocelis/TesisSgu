@@ -680,9 +680,18 @@ class MttoPreventivoController extends Controller
 			));
 	}
 	public function actionIndex(){
-	
+		$cond='idestatus<>1 and idestatus<>3 and idestatus<>4 and month(proximoFecha)=month(now())';
+			if(isset($_GET["filtro"])){
+				if($_GET["filtro"]==1)
+					$cond='idestatus<>1 and idestatus<>3 and idestatus<>4 and month(proximoFecha)=month(now())';
+				if($_GET["filtro"]==2)
+					$cond='idestatus=4';
+				if($_GET["filtro"]==3)
+					$cond='idestatus<>1 and idestatus<>3 and idestatus<>4';
+			}
+			
 			$dataProvider=new CActiveDataProvider('Actividades',array('criteria' => array(
-			'condition' =>'idestatus<>1 and idestatus<>3',
+			'condition' =>$cond,
 			'order'=>'proximoFecha'
 			)));
 			$mi=Yii::app()->db->createCommand("select count(*) as total from sgu_actividades where idestatus=1")->queryRow();

@@ -74,7 +74,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
                         CHtml::image(Yii::app()->request->baseUrl."/imagenes/agregar.png",
                                           "Agregar",array("title"=>"Editar")),
 										  
-                        Yii::app()->createUrl("mttoPreventivo/registrarFacturacion", array("id"=>$data->id,"nom"=>"'.$nom.'","dir"=>"'.$dir.'")),
+                        Yii::app()->createUrl("mttoCorrectivo/registrarFacturacion", array("id"=>$data->id,"nom"=>"'.$nom.'","dir"=>"'.$dir.'")),
                         array(
                                 \'style\'=>\'cursor: pointer;text-decoration: underline;text-align:center;\',
                         )

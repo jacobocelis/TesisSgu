@@ -1,15 +1,13 @@
 <?php 
 	$this->breadcrumbs=array(
-	'Mantenimiento preventivo'=>array('mttoPreventivo/index'),
+	'Mantenimiento correctivo'=>array('mttoCorrectivo/index'),
 	'Cerrar órdenes',
 );
 $this->menu=array(
 	array('label'=>'<div id="menu"><strong>Órdenes de mantenimiento</strong></div>'),
 	array('label'=>'      Crear orden de mantenimiento', 'url'=>array('crearOrdenCorrectiva')),
-	
 );
 ?>
-
 <div class='crugepanel user-assignments-role-list'>
 	<h1>Cerrar órdenes de mantenimiento</h1>
 <?php

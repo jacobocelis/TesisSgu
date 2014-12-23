@@ -65,11 +65,25 @@ if (isset($_GET['nrol']))
                     'itemCssClass' => 'item-test',
                     'encodeLabel' => false,
                     'items' => array(
-                        array('label' => 'Inicio', 'url' => array('/'), 
+                        /*array('label' => 'Inicio', 'url' => array('/'), 
+                            'visible' => !Yii::app()->user->isGuest),*/
+							array('label' => 'Vehiculos', 'url' => array('/Vehiculo'), 
+                            'visible' => !Yii::app()->user->isGuest),
+							array('label' => 'Repuestos', 'url' => array('/repuesto'), 
+                            'visible' => !Yii::app()->user->isGuest),
+							array('label' => 'M.Preventivo', 'url' => array('/mttoPreventivo'), 
+                            'visible' => !Yii::app()->user->isGuest),
+							array('label' => 'M.Correctivo', 'url' => array('/mttoCorrectivo'), 
+                            'visible' => !Yii::app()->user->isGuest),
+							array('label' => 'Combustible', 'url' => array('/'), 
+                            'visible' => !Yii::app()->user->isGuest),
+							array('label' => 'Llantas', 'url' => array('/'), 
+                            'visible' => !Yii::app()->user->isGuest),
+							array('label' => 'Viajes', 'url' => array('/viajes'), 
                             'visible' => !Yii::app()->user->isGuest),
                         
                         //Menu de Super Admin
-                        array('label' => 'Administrar<span class="caret"></span>', 'url' => '#', 
+                        /*array('label' => 'Administrar<span class="caret"></span>', 'url' => '#', 
                             'visible' => Yii::app()->user->isSuperAdmin,
                             'itemOptions' => array('class' => 'dropdown', 'tabindex' => "-1"), 
                             'linkOptions' => array('class' => 'dropdown-toggle', 'data-toggle' => "dropdown"),
@@ -84,20 +98,20 @@ if (isset($_GET['nrol']))
                                 array('label' => 'Asignar Roles', 'url' => array('/cruge/ui/rbacusersassignments')),
                                 array('label' => 'Sesiones', 'url' => array('/cruge/ui/sessionadmin')),
                                 array('label' => 'Opciones', 'url' => array('/cruge/ui/systemupdate')),
-                            )),
+                            )),*/
                         
                      
                         
 
                         //Diferentes Menu Compartidos
-                        array('label' => 'Mi Cuenta <span class="caret"></span>', 'url' => '#', 
+                        /*array('label' => 'Mi Cuenta <span class="caret"></span>', 'url' => '#', 
                             'visible' => !Yii::app()->user->isGuest, 
                             'itemOptions' => array('class' => 'dropdown', 'tabindex' => "-1"), 
                             'linkOptions' => array('class' => 'dropdown-toggle', 'data-toggle' => "dropdown"),
                             'items' => array(
                                 array('label' => 'Historial de Sesiones', 'url' => '#'),
                                 array('label' => 'Perfil', 'url' => array('/cruge/ui/editprofile')),
-                            )),
+                            )),*/
                         
                         array('label' => 'Iniciar', 'url' => array('/cruge/ui/login'), 
                             'visible' => Yii::app()->user->isGuest),

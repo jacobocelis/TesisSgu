@@ -312,9 +312,9 @@ class MttoCorrectivoController extends Controller
 			$idrecurso=$_GET['idAct'];
 			$recurso=new CActiveDataProvider('Actividadrecurso',array('criteria'=>array('condition'=>'idactividades="'.$idrecurso.'"')));	
 		}
-		$dataProvider=new CActiveDataProvider('Actividades',array('criteria' => array(
-			'order'=>'proximoFecha asc',
-			'condition'=>'id in (select idactividades from sgu_detalleOrden where idordenMtto="'.$id.'")')
+		$dataProvider=new CActiveDataProvider('Reportefalla',array('criteria' => array(
+			'order'=>'fechaFalla desc',
+			'condition'=>'id in (select idreporteFalla from sgu_detalleOrdenCo where idordenMtto="'.$id.'")')
 			,'pagination'=>array('pageSize'=>9999999)));
 			
 		$factura=new CActiveDataProvider('Factura',array('criteria' => array(
@@ -417,7 +417,7 @@ class MttoCorrectivoController extends Controller
 			'condition' =>'id='.$id."")
 			,'pagination'=>array('pageSize'=>9999999)));
 		$dataProvider=new CActiveDataProvider('Reportefalla',array('criteria' => array(
-			'condition' =>'1',
+			'condition' =>'id in (select idreporteFalla from sgu_detalleOrdenCo where idordenMtto="'.$id.'")',
 			
 			'order'=>'fechaFalla DESC'
 			
@@ -603,7 +603,7 @@ class MttoCorrectivoController extends Controller
 	}
 	public function actionRegistrarFalla(){
 		$dataProvider=new CActiveDataProvider('Reportefalla',array('criteria' => array(
-			'condition' =>'1',
+			'condition' =>'idestatus=8',
 			'order'=>'fechaFalla DESC'
 			)));
 		$this->render('registrarFalla',array(
@@ -688,13 +688,24 @@ class MttoCorrectivoController extends Controller
 			));
 	}
 	public function actionIndex(){
-	
+			$cond='idestatus=8';
+			if(isset($_GET["filtro"])){
+				if($_GET["filtro"]==1)
+					$cond='idestatus=8';
+				if($_GET["filtro"]==2)
+					$cond='idestatus=4';
+				if($_GET["filtro"]==3)
+					$cond='idestatus=3';
+				if($_GET["filtro"]==4){
+					$cond='1';
+				}
+			}
 			$dataProvider=new CActiveDataProvider('Reportefalla',array('criteria' => array(
-			'condition' =>'1',
+			'condition' =>$cond,
 			'order'=>'fechaFalla DESC'
 			)));
 			
-			$mi=Yii::app()->db->createCommand("select count(*) as total from sgu_actividades where idestatus=1")->queryRow();
+			$mi=Yii::app()->db->createCommand("select count(*) as total from sgu_reporteFalla where idestatus=8")->queryRow();
 		$this->render('index',array(
 			'dataProvider'=>$dataProvider,
 			'mi'=>$mi['total'],

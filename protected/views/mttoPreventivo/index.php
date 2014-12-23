@@ -45,7 +45,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
 				'emptyText'=>'No hay actividades de mantenimiento registradas',
                 'dataProvider'=>$dataProvider,
 				'rowCssClassExpression'=>'$this->dataProvider->data[$row]->diasRestantes($this->dataProvider->data[$row]->proximoFecha)<=5 || ($this->dataProvider->data[$row]->kmRestantes($this->dataProvider->data[$row]->idvehiculo,$this->dataProvider->data[$row]->proximoKm))<=50?"rojo":"even"',
-				'ajaxUpdate'=>false,
+				//'ajaxUpdate'=>false,
 				'columns'=>array(
 				array(
 					'header'=>'Unidad',
@@ -212,3 +212,8 @@ background: none repeat scroll 0% 0% #FFD6D6;
     padding: 0.3em;
 }
 </style>
+<script>
+$( "#lista" ).change(function() { 
+	$.fn.yiiGridView.update('head',{ data : "filtro="+$(this).val()});
+});
+</script>

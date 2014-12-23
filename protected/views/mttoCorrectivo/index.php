@@ -34,18 +34,19 @@ $this->menu=array(
 <select id="lista" >
 			<option value="1">Por atender</option>
 			<option value="2">En progreso</option>
+			<option value="3">Ejectadas</option>
 			<option value="3">Todas</option>
 		</select>
 </div>
 <?php
 $this->widget('zii.widgets.grid.CGridView', array(
-                'id'=>'head',
+                'id'=>'fallas',
 				'summaryText'=>'',
 			    'enableSorting' => true,
 				'emptyText'=>'No hay fallas registradas',
                 'dataProvider'=>$dataProvider,
 				
-				'ajaxUpdate'=>false,
+			
 				'columns'=>array(
 				array(
 					'header'=>'Unidad',
@@ -161,3 +162,8 @@ background: none repeat scroll 0% 0% #FFD6D6;
     padding: 0.3em;
 }
 </style>
+<script>
+$( "#lista" ).change(function() { 
+	$.fn.yiiGridView.update('fallas',{ data : "filtro="+$(this).val()});
+});
+</script>
