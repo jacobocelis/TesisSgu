@@ -32,7 +32,7 @@ class ReportefallaController extends Controller
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create','update'),
+				'actions'=>array('create','update','ActualizarMR'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -44,7 +44,39 @@ class ReportefallaController extends Controller
 			),
 		);
 	}
+public function actionActualizarMR($id){
+	
+		$model=$this->loadModel($id);
+		if($model->kmRealizada==-1 or $model->fechaRealizada=='0000-01-01')
+			$var=1;
+		else
+			$var=0;
+			if(isset($_POST['Reportefalla'])){
+            $model->attributes=$_POST['Reportefalla'];
+			$model->fechaRealizada=date("Y-m-d", strtotime(str_replace('/', '-', $model->fechaRealizada)));
+            if($model->save()){
+			if (Yii::app()->request->isAjaxRequest){
+			
+			Yii::app()->db->createCommand("update `tsg`.`sgu_reporteFalla` set idestatus=3")->query();
+				
+                
+                    echo CJSON::encode(array(
+                        'status'=>'success', 
+                        'div'=>"se registró el mantenimiento correctamente"
+                        ));
+                    exit;               
+                }
+            }
+        }
+        if (Yii::app()->request->isAjaxRequest){
+            echo CJSON::encode(array(
+                'status'=>'failure', 
+                'div'=>$this->renderPartial('_formRegistrarMR', array('model'=>$model,'id'=>$var), true)));
+            exit;               
+        }
 
+	}
+	
 	/**
 	 * Displays a particular model.
 	 * @param integer $id the ID of the model to be displayed

@@ -27,6 +27,96 @@
  */
 class Reportefalla extends CActiveRecord
 {
+	public function color($id,$estatus){
+		if($id==4)
+			return '<strong><span style="color:orange">'.$estatus.'</span></strong>';
+		if($id==3)
+			return '<strong><span style="color:green">'.$estatus.'</span></strong>';
+    }
+	public function noasignado(){
+			return '<span style="color:red">no registrado</span>';
+    }
+	public function valores($id){
+		if($id=='0000-01-01'||$id==-1)
+			return 0;
+		return 1;
+    }
+	function diasRestantes($fin){
+		$datetime1 = new DateTime($fin);
+		$datetime2 = new DateTime("now");
+		$datetime2=$datetime2->format('Y-m-d');
+		$fecha=new DateTime($datetime2);
+		$interval = $fecha->diff($datetime1);
+			if($interval->format('%R%a')<0)
+				return 0;
+		return $interval->format('%a');
+	}
+	function kmRestantes($id,$prox){
+		$km=Kilometraje::model()->findAll(array(
+			'condition'=>'t.idvehiculo ='.$id.' order by t.id desc limit 1',
+		));
+		if(($prox-$km[0]["lectura"])<0)
+			return 0;
+		else
+			return $prox-$km[0]["lectura"];
+	}
+	/*public function porcentaje($ini,$fin){
+		$datetime1 = new DateTime($fin);
+		$datetime2 = new DateTime("now");
+		$interval = $datetime2->diff($datetime1);
+		$diasR=$interval->format('%a');
+		//dias totales
+		$datetime1 = new DateTime($fin);
+		$datetime2 = new DateTime($ini);
+		$interval = $datetime2->diff($datetime1);
+		$diasT=$interval->format('%a');		
+		
+		return 100-(($diasR/$diasT)*100);
+	}*/
+	public function atraso($fin){
+		$datetime1 = new DateTime($fin);
+		$datetime2 = new DateTime("now");
+		$interval = $datetime2->diff($datetime1);
+		$retraso=$interval->format('%R%a');
+		
+		if($retraso==-1)
+			return $interval->format('%a Día');
+		if($retraso<-1)
+			return $interval->format('%a Días');
+		return "";
+	}
+	public function atrasoKm($id,$prox){
+		$km=Kilometraje::model()->findAll(array(
+			'condition'=>'t.idvehiculo ='.$id.' order by t.id desc limit 1',
+		));
+		if(($prox-$km[0]["lectura"])<0)
+			return "+ ".abs($prox-$km[0]["lectura"])." Km";
+		else
+			return "";
+	}
+	public function porcentaje($ini,$fin){
+		$datetime1 = new DateTime($fin);
+		$datetime2 = new DateTime("now");
+		$datetime2=$datetime2->format('Y-m-d');
+		$fecha=new DateTime($datetime2);
+		$interval = $fecha->diff($datetime1);
+		
+		if($interval->format('%R%a')<0)
+			return 100;
+		$diasR=$interval->format('%a');
+		if($diasR>5)
+			return 0;
+		else	
+			return 100-(($diasR/5)*100);
+		
+	}
+	public function obtColor($restante){
+		if($restante<=5)
+			return 'F00';
+		else
+			return '20DA14';
+	}
+	
 	/**
 	 * @return string the associated database table name
 	 */
@@ -82,7 +172,7 @@ class Reportefalla extends CActiveRecord
 			'fechaFalla' => 'Fecha',
 			'fechaRealizada' => 'Realizada',
 			'kmRealizada' => 'Km Realizada',
-			'diasParo' => 'Dias de paro',
+			'diasParo' => 'Tiempo de paro',
 			'idtiempo' => 'Idtiempo',
 			'idvehiculo' => 'Unidad',
 			'idempleado' => 'Reportó',

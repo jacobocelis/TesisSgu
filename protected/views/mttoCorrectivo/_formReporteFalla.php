@@ -36,7 +36,7 @@
 	<div class="row">
 		
 		<?php echo $form->hiddenField($model,'diasParo',array('style' => 'width:60px;')); ?>
-		<?php echo $form->dropDownList($model,'idtiempo',CHtml::listData(Tiempo::model()->findAll(array("condition"=>"id <> 1 and id <> 5")),'id','tiempo'),array('id'=>'tiempo','style' => 'width:90px;display:none')); ?>
+		<?php echo $form->hiddenField($model,'idtiempo'); ?>
 	
 	</div>
 

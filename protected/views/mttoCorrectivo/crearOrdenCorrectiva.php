@@ -1,11 +1,13 @@
 <?php 
 	$this->breadcrumbs=array(
-	'Mantenimiento preventivo'=>array('mttoPreventivo/index'),
-	'Crear orden preventiva',
+	'Mantenimiento preventivo'=>array('mttoCorrectivo/index'),
+	'Crear orden correctiva',
 );
 	$this->menu=array(
 	array('label'=>'<div id="menu"><strong>Órdenes de mantenimiento</strong></div>'),
-	array('label'=>'      Crear orden de mantenimiento', 'url'=>array('crearOrdenPreventiva')),
+	array('label'=>'      Crear orden de mantenimiento', 'url'=>array('crearOrdenCorrectiva')),
+	array('label'=>'      Ver órdenes abiertas <span class="badge badge-'.$Colorabi.' pull-right">'.$abiertas.'</span>', 'url'=>array('verOrdenes')),
+	array('label'=>'      Órdenes listas para cerrar <span class="badge badge-'.$Colorli.' pull-right">'.$listas.'</span>', 'url'=>array('cerrarOrdenes')),
 );
 ?>
 

@@ -28,7 +28,7 @@ class MttoCorrectivoController extends Controller
 	{
 		return array(
 			array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array('index','view','falla','registrarFalla','ajaxObtenerFallas','ajaxObtenerConductor','nuevaFalla','ajaxActualizarListaFallas','crearOrdenCorrectiva','obtenerActividad','agregarRecurso','iniciales','crearordenpreventiva','crearOrden','verOrdenes','cambiarFecha','mttopRealizados','registrarFacturacion','agregarFactura','estatusOrden','cerrarOrdenes','historicoPreventivo','historicoOrdenes','historicoGastos','vistaPrevia','vistaPreviaPDF','generarPdf','correo','actualizarSpan','agregarRecursoAdicional','insumos','repuesto','ActualizarCheck'),
+				'actions'=>array('index','view','falla','registrarFalla','ajaxObtenerFallas','ajaxObtenerConductor','nuevaFalla','ajaxActualizarListaFallas','crearOrdenCorrectiva','obtenerActividad','agregarRecurso','iniciales','crearordenpreventiva','crearOrden','verOrdenes','cambiarFecha','mttocRealizados','registrarFacturacion','agregarFactura','estatusOrden','cerrarOrdenes','HistoricoCorrectivo','historicoOrdenes','historicoGastos','vistaPrevia','vistaPreviaPDF','generarPdf','correo','actualizarSpan','agregarRecursoAdicional','insumos','repuesto','ActualizarCheck'),
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
@@ -96,7 +96,7 @@ class MttoCorrectivoController extends Controller
 			'condition' =>'id='.$id."")
 			,'pagination'=>array('pageSize'=>9999999)));
 			
-		$idvehiculo=Yii::app()->db->createCommand("select distinct( a.idvehiculo), count(*) as totAct from sgu_actividades a, sgu_detalleOrden d where d.idactividades=a.id and d.idordenMtto=".$id." group by a.idvehiculo")->queryAll();
+		$idvehiculo=Yii::app()->db->createCommand("select distinct( a.idvehiculo), count(*) as totAct from sgu_reporteFalla a, sgu_detalleOrdenCo d where d.idreporteFalla=a.id and d.idordenMtto=".$id." group by a.idvehiculo")->queryAll();
 		$totalVeh=count($idvehiculo);
 		
 		//$actividades=Yii::app()->db->createCommand("select idactividades from sgu_detalleorden where idordenMtto=".$id."")->queryAll();
@@ -106,13 +106,14 @@ class MttoCorrectivoController extends Controller
 			'condition' =>'id="'.$idvehiculo[$i]["idvehiculo"].'"',
 			)));
 			
-		$totAct=Yii::app()->db->createCommand('select idactividades as id from sgu_detalleOrden where idordenMtto="'.$id.'" and idactividades in(select a.id from sgu_actividades a where a.idvehiculo="'.$idvehiculo[$i]["idvehiculo"].'")')->queryAll();
+		$totAct=Yii::app()->db->createCommand('select idreporteFalla as id from sgu_detalleOrdenCo where idordenMtto="'.$id.'" and idreporteFalla in(select a.id from sgu_reporteFalla a where a.idvehiculo="'.$idvehiculo[$i]["idvehiculo"].'")')->queryAll();
+		
 		for($j=0;$j<$idvehiculo[$i]["totAct"];$j++){		
-				$actividades[$i][$j]=new CActiveDataProvider('Actividades',array('criteria' => array(
+				$actividades[$i][$j]=new CActiveDataProvider('Reportefalla',array('criteria' => array(
 				'condition' =>'id="'.$totAct[$j]["id"].'"',
 				)));
-				$recursos[$i][$j]=new CActiveDataProvider('ActividadRecurso',array('criteria' => array(
-				'condition' =>'idactividades="'.$totAct[$j]["id"].'"',
+				$recursos[$i][$j]=new CActiveDataProvider('Recursofalla',array('criteria' => array(
+				'condition' =>'idreporteFalla="'.$totAct[$j]["id"].'"',
 				)));
 			}
 		}
@@ -151,7 +152,7 @@ class MttoCorrectivoController extends Controller
 			'condition' =>'id='.$id."")
 			,'pagination'=>array('pageSize'=>9999999)));
 			
-		$idvehiculo=Yii::app()->db->createCommand("select distinct( a.idvehiculo), count(*) as totAct from sgu_actividades a, sgu_detalleOrden d where d.idactividades=a.id and d.idordenMtto=".$id." group by a.idvehiculo")->queryAll();
+		$idvehiculo=Yii::app()->db->createCommand("select distinct( a.idvehiculo), count(*) as totAct from sgu_reporteFalla a, sgu_detalleOrdenCo d where d.idreporteFalla=a.id and d.idordenMtto=".$id." group by a.idvehiculo")->queryAll();
 		$totalVeh=count($idvehiculo);
 		
 		//$actividades=Yii::app()->db->createCommand("select idactividades from sgu_detalleorden where idordenMtto=".$id."")->queryAll();
@@ -161,18 +162,18 @@ class MttoCorrectivoController extends Controller
 			'condition' =>'id="'.$idvehiculo[$i]["idvehiculo"].'"',
 			)));
 			
-		$totAct=Yii::app()->db->createCommand('select idactividades as id from sgu_detalleOrden where idordenMtto="'.$id.'" and idactividades in(select a.id from sgu_actividades a where a.idvehiculo="'.$idvehiculo[$i]["idvehiculo"].'")')->queryAll();
+		$totAct=Yii::app()->db->createCommand('select idreporteFalla as id from sgu_detalleOrdenCo where idordenMtto="'.$id.'" and idreporteFalla in(select a.id from sgu_reporteFalla a where a.idvehiculo="'.$idvehiculo[$i]["idvehiculo"].'")')->queryAll();
 		
 		for($j=0;$j<$idvehiculo[$i]["totAct"];$j++){		
-				$actividades[$i][$j]=new CActiveDataProvider('Actividades',array('criteria' => array(
+				$actividades[$i][$j]=new CActiveDataProvider('Reportefalla',array('criteria' => array(
 				'condition' =>'id="'.$totAct[$j]["id"].'"',
 				)));
-				$recursos[$i][$j]=new CActiveDataProvider('ActividadRecurso',array('criteria' => array(
-				'condition' =>'idactividades="'.$totAct[$j]["id"].'"',
+				$recursos[$i][$j]=new CActiveDataProvider('Recursofalla',array('criteria' => array(
+				'condition' =>'idreporteFalla="'.$totAct[$j]["id"].'"',
 				)));
 			}
 		}
-		$totFactura=Yii::app()->db->createCommand('select (round(sum(ar.costoTotal),2)) as Total from sgu_actividadrecurso ar, sgu_detalleorden d where d.idactividades=ar.idactividades and d.idordenMtto="'.$id.'"')->queryRow();
+		$totFactura=Yii::app()->db->createCommand('select (round(sum(ar.costoTotal),2)) as Total from sgu_recursoFalla ar, sgu_detalleordenCo d where d.idreporteFalla=ar.idreporteFalla and d.idordenMtto="'.$id.'"')->queryRow();
 		
 
 		$factura=new CActiveDataProvider('Factura',array('criteria' => array(
@@ -372,6 +373,10 @@ class MttoCorrectivoController extends Controller
 			)));
 		$this->render('crearOrdenCorrectiva',array(
 			'dataProvider'=>$dataProvider,
+			'Colorabi'=>$this->getColor($this->getOrdenesAbiertas()),
+			'Colorli'=>$this->getColor($this->getOrdenesListas()),
+			'listas'=>$this->getOrdenesListas(),
+			'abiertas'=>$this->getOrdenesAbiertas(),
 		));
 	}
 	public function actionMttopVehiculo($id){
@@ -387,6 +392,7 @@ class MttoCorrectivoController extends Controller
 			'dataProvider'=>$dataProvider,
 			'mi'=>$mi["total"],
 			'color'=>$this->getColor($mi["total"]),
+			
 		));
 	}
 	public function actionEstatusOrden($id){
@@ -406,15 +412,18 @@ class MttoCorrectivoController extends Controller
 			'dataProvider'=>$dataProvider,
 		));
 	}
-	public function actionMttopRealizados($id,$nom,$dir){
+	public function actionMttocRealizados($id,$nom,$dir){
 		$orden=new CActiveDataProvider('Ordenmtto',array('criteria' => array(
 			'condition' =>'id='.$id."")
 			,'pagination'=>array('pageSize'=>9999999)));
-		$dataProvider=new CActiveDataProvider('Actividades',array('criteria' => array(
-			'order'=>'proximoFecha asc',
-			'condition'=>'id in (select idactividades from sgu_detalleOrden where idordenMtto="'.$id.'")')
-			,'pagination'=>array('pageSize'=>9999999)));
-		$this->render('mttopRealizados',array(
+		$dataProvider=new CActiveDataProvider('Reportefalla',array('criteria' => array(
+			'condition' =>'1',
+			
+			'order'=>'fechaFalla DESC'
+			
+			)));
+			
+		$this->render('mttocRealizados',array(
 			'dataProvider'=>$dataProvider,
 			'orden'=>$orden,
 			'id'=>$id,
@@ -423,9 +432,9 @@ class MttoCorrectivoController extends Controller
 		));
 	}
 	public function actionActualizarCheck($id){
-		$dataProvider=new CActiveDataProvider('Actividades',array('criteria' => array(
-			'order'=>'proximoFecha asc',
-			'condition'=>'id in (select idactividades from sgu_detalleOrden where idordenMtto="'.$id.'")')
+		$dataProvider=new CActiveDataProvider('Reportefalla',array('criteria' => array(
+			'order'=>'fechaFalla asc',
+			'condition'=>'id in (select idreporteFalla from sgu_detalleOrdenCo where idordenMtto="'.$id.'")')
 			,'pagination'=>array('pageSize'=>9999999)));
 			
 		$data=$dataProvider->getData();
@@ -650,21 +659,21 @@ class MttoCorrectivoController extends Controller
 			'dataProvider'=>$dataProvider,
 		));
 	}
-	public function actionHistoricoPreventivo(){
+	public function actionHistoricoCorrectivo(){
 	//idplan in (select id from sgu_plan) and ??
-			$dataProvider=new CActiveDataProvider('Actividades',array('criteria' => array(
+			$dataProvider=new CActiveDataProvider('Reportefalla',array('criteria' => array(
 				'condition' =>'idestatus=3',
-				'order'=>'ultimoFecha'
+				'order'=>'fechaRealizada'
 			)));
-			$mi=Yii::app()->db->createCommand("select count(*) as total from sgu_actividades where idestatus=1")->queryRow();
-		$this->render('historicoPreventivo',array(
+			//$mi=Yii::app()->db->createCommand("select count(*) as total from sgu_reporteFalla where idestatus=8")->queryRow();
+		$this->render('historicoCorrectivo',array(
 				'dataProvider'=>$dataProvider,
-				'mi'=>$mi['total'],
+				/*'mi'=>$mi['total'],
 				'color'=>$this->getColor($mi["total"]),
 				'abiertas'=>$this->getOrdenesAbiertas(),
 				'Colorabi'=>$this->getColor($this->getOrdenesAbiertas()),
 				'Colorli'=>$this->getColor($this->getOrdenesListas()),
-				'listas'=>$this->getOrdenesListas(),
+				'listas'=>$this->getOrdenesListas(),*/
 			));
 	}
 	public function actionHistoricoOrdenes(){
