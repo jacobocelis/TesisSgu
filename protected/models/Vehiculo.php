@@ -84,6 +84,8 @@ class Vehiculo extends CActiveRecord
 			'sguActividades' => array(self::HAS_MANY, 'Actividades', 'idvehiculo'),
 			'sguKilometrajes' => array(self::HAS_MANY, 'Kilometraje', 'idvehiculo'),
 			'sguHistoricoempleadoses' => array(self::HAS_MANY,'Historicoempleados', 'idvehiculo'),
+			'sguReportefallas' => array(self::HAS_MANY,'Reportefalla', 'idvehiculo'),
+			
 			
 		);
 	}

@@ -52,6 +52,9 @@ class Tiempo extends CActiveRecord
 			'sguActividades1' => array(self::HAS_MANY, 'Actividades', 'idtiempof'),
 			'sguActividadesgrupos' => array(self::HAS_MANY, 'Actividadesgrupo', 'idtiempod'),
 			'sguActividadesgrupos1' => array(self::HAS_MANY, 'Actividadesgrupo', 'idtiempof'),
+			'sguActividadrecursos' => array(self::HAS_MANY, 'Actividadrecurso', 'idtiempoGarantia'),
+			'sguRecursofallas' => array(self::HAS_MANY, 'Recursofalla', 'idtiempo'),
+			'sguReportefallas' => array(self::HAS_MANY, 'Reportefalla', 'idtiempo'),
 		);
 	}
 

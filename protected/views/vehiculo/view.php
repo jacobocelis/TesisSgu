@@ -39,6 +39,7 @@ $this->menu=array(
 			'value'=>$model->idgrupo0->grupo,
 			
 		),
+		'KmInicial',
 			array(
 			'name'=>'idmodelo',
 			'label'=>'Marca',

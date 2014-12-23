@@ -98,7 +98,7 @@ if ($rol == "Jefe Departamento") {
 				
 				</a>
 				
-				<a href="<?php echo Yii::app()->request->baseUrl;?>" id="correctivo">
+				<a href="<?php echo Yii::app()->request->baseUrl;?>/mttoCorrectivo/" id="correctivo">
 				
 				</a>
 				

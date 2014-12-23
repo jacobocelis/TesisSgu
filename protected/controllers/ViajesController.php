@@ -287,8 +287,17 @@ public function actionActualizarSpan(){
 	public function actionDelete($id)
 	{
 				$model=$this->loadModel($id);
-				$ultimaLectura=Yii::app()->db->createCommand('select id from sgu_kilometraje where idvehiculo='.$model->idvehiculo.' order by id desc limit 1')->queryRow();
-				Yii::app()->db->createCommand('DELETE FROM `tsg`.`sgu_kilometraje` where id='.$ultimaLectura['id'].'')->query();
+				
+				$ultimaLectura=Yii::app()->db->createCommand('select lectura from sgu_kilometraje where idvehiculo='.$model->idvehiculo.' order by id desc limit 1')->queryRow();
+				$kmViaje=Yii::app()->db->createCommand('select distanciaKm from sgu_viaje where id='.$model->idviaje.'')->queryRow();
+				Yii::app()->db->createCommand('INSERT INTO `tsg`.`sgu_kilometraje` (`fecha`,`lectura`,`idvehiculo`) 
+			VALUES ("'.date('Y-m-d').'",'.($ultimaLectura['lectura']-$kmViaje['distanciaKm']).','.$model->idvehiculo.')')->query();
+			
+			
+			
+				
+				/*$ultimaLectura=Yii::app()->db->createCommand('select id from sgu_kilometraje where idvehiculo='.$model->idvehiculo.' order by id desc limit 1')->queryRow();
+				Yii::app()->db->createCommand('DELETE FROM `tsg`.`sgu_kilometraje` where id='.$ultimaLectura['id'].'')->query();*/
 			
 		$this->loadModel($id)->delete();
 

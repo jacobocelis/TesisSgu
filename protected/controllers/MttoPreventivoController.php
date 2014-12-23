@@ -239,11 +239,11 @@ class MttoPreventivoController extends Controller
 		$this->render('calendar');
 	}*/
 	public function getOrdenesAbiertas(){
-		$abiertas=Yii::app()->db->createCommand("select count(*) as total from sgu_ordenMtto where idestatus=5")->queryRow();
+		$abiertas=Yii::app()->db->createCommand("select count(*) as total from sgu_ordenMtto where idestatus=5 and tipo=0")->queryRow();
 		return $abiertas["total"];
 	}
 	public function getOrdenesListas(){
-		$abiertas=Yii::app()->db->createCommand("select count(*) as total from sgu_ordenMtto where idestatus=6")->queryRow();
+		$abiertas=Yii::app()->db->createCommand("select count(*) as total from sgu_ordenMtto where idestatus=6 and tipo=0")->queryRow();
 		return $abiertas["total"];
 	}
 	public function getColor($tot){
@@ -270,7 +270,7 @@ class MttoPreventivoController extends Controller
 	}
 	public function actionVerOrdenes(){
 		$dataProvider=new CActiveDataProvider('Ordenmtto',array('criteria' => array(
-			'condition' =>'id in (select id from sgu_ordenMtto where idestatus=5 or idestatus=6)',
+			'condition' =>'id in (select id from sgu_ordenMtto where (idestatus=5 or idestatus=6) and tipo=0)',
 			'order'=>'idestatus '
 			)));
 		$this->render('verOrdenes',array(

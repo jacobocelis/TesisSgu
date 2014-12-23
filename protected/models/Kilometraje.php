@@ -31,11 +31,10 @@ class Kilometraje extends CActiveRecord
 		// will receive user inputs.
 		return array(
 			array('fecha, lectura, idvehiculo', 'required'),
-			array('idvehiculo', 'numerical', 'integerOnly'=>true),
-			array('lectura', 'numerical'),
+			array('idvehiculo,idhistoricoViajes, lectura', 'numerical', 'integerOnly'=>true),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, fecha, lectura, idvehiculo', 'safe', 'on'=>'search'),
+			array('id, fecha, lectura, idvehiculo, idhistoricoViajes', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -48,9 +47,9 @@ class Kilometraje extends CActiveRecord
 		// class name for the relations automatically generated below.
 		return array(
 			'idvehiculo0' => array(self::BELONGS_TO, ' Vehiculo', 'idvehiculo'),
+			'idhistoricoViajes0' => array(self::BELONGS_TO,'Historicoviajes', 'idhistoricoViajes'),
 		);
 	}
-
 	/**
 	 * @return array customized attribute labels (name=>label)
 	 */
@@ -61,6 +60,7 @@ class Kilometraje extends CActiveRecord
 			'fecha' => 'Fecha',
 			'lectura' => 'Lectura',
 			'idvehiculo' => 'Idvehiculo',
+			'idhistoricoViajes' => 'Idhistorico Viajes',
 		);
 	}
 
@@ -86,7 +86,7 @@ class Kilometraje extends CActiveRecord
 		$criteria->compare('fecha',$this->fecha,true);
 		$criteria->compare('lectura',$this->lectura);
 		$criteria->compare('idvehiculo',$this->idvehiculo);
-
+		$criteria->compare('idhistoricoViajes',$this->idhistoricoViajes);
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
 		));
