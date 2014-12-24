@@ -9,9 +9,9 @@
 	array('label'=>'      Ajuste de fechas en calendario', 'url'=>array('calendario')),
 );
 ?>
-<div class='form'>
 <div class='crugepanel user-assignments-role-list'>
 <h1>Registro de fallas</h1>
+
 <div id="falla"></div>
 <HR>
 <h1>Últimas fallas registradas</h1>
@@ -22,8 +22,6 @@ $this->widget('zii.widgets.grid.CGridView', array(
 			    'enableSorting' => true,
 				'emptyText'=>'No hay fallas registradas',
                 'dataProvider'=>$dataProvider,
-				
-				
 				'columns'=>array(
 				array(
 					'header'=>'Unidad',
@@ -70,7 +68,6 @@ $this->widget('zii.widgets.grid.CGridView', array(
 			)
         ));
 		?>
-</div>
 </div>
 <style>
 .badge {

@@ -67,7 +67,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
 						'type'=>'raw',
 						'headerHtmlOptions'=>array('style'=>'width:60%;text-align:left;'),
 						'header'=>'<PRE>Recursos',
-						'value'=>'\'<strong>Recurso: </strong>\'.(($data->idinsumo == null?\'\':$data->idinsumo0->insumo).\'\'.($data->idrepuesto == null?\'\':$data->idrepuesto0->repuesto).\'\'.($data->idservicio == null?\'\':$data->idservicio0->servicio)).\'\'.$data->detalle.\',  \'.$data->cantidad.\' \'.$data->idunidad0->unidad',
+						'value'=>'\'<strong>Recurso: </strong>\'.(($data->idinsumo == null?\'\':$data->idinsumo0->insumo).\'\'.($data->idrepuesto == null?\'\':$data->idrepuesto0->repuesto).\'\'.($data->idservicio == null?\'\':$data->idservicio0->servicio)).\',  \'.$data->cantidad.\' \'.$data->idunidad0->unidad',
 						'htmlOptions'=>array('style'=>'text-align:left;width:200px;background:#E5F1F4'),
 					), 
 					

@@ -104,7 +104,7 @@ function validar(){
 		$("#Actividadrecursogrupo_idinsumo option:selected").val('');
 		$("#Actividadrecursogrupo_idrepuesto option:selected").val('');
 	}
-	return true
+	return true;
 }
 
 function validarInsumo(id){

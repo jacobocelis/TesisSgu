@@ -307,11 +307,10 @@ class MttoCorrectivoController extends Controller
 	public function actionRegistrarFacturacion($id,$nom,$dir){
 		$model = new Factura;
 		$idrecurso=0;
-		$recurso=new CActiveDataProvider('Actividadrecurso',array('criteria'=>array('condition'=>'idactividades="'.$idrecurso.'"')));
 		if(isset($_GET['idAct'])){	
 			$idrecurso=$_GET['idAct'];
-			$recurso=new CActiveDataProvider('Actividadrecurso',array('criteria'=>array('condition'=>'idactividades="'.$idrecurso.'"')));	
 		}
+		$recurso=new CActiveDataProvider('Recursofalla',array('criteria'=>array('condition'=>'idreporteFalla="'.$idrecurso.'"')));
 		$dataProvider=new CActiveDataProvider('Reportefalla',array('criteria' => array(
 			'order'=>'fechaFalla desc',
 			'condition'=>'id in (select idreporteFalla from sgu_detalleOrdenCo where idordenMtto="'.$id.'")')
@@ -466,14 +465,14 @@ class MttoCorrectivoController extends Controller
 	 * If creation is successful, the browser will be redirected to the 'view' page.
 	 */
 	 	public function actionAgregarRecursoAdicional($id){
-                $model=new Actividadrecurso;
+                $model=new Recursofalla;
 				$tipoInsumo=new Tipoinsumo();
 				$tipoRepuesto=new Subtiporepuesto();
         // Uncomment the following line if AJAX validation is needed
          //$this->performAjaxValidation($model);
  
-    if(isset($_POST['Actividadrecurso'])){
-            $model->attributes=$_POST['Actividadrecurso'];
+    if(isset($_POST['Recursofalla'])){
+            $model->attributes=$_POST['Recursofalla'];
             if($model->save()){
                 if (Yii::app()->request->isAjaxRequest){
 					echo CJSON::encode(array(
@@ -654,7 +653,7 @@ class MttoCorrectivoController extends Controller
 	 * Lists all models.
 	 */
 	public function actionHistoricoGastos(){	
-		$dataProvider=new CActiveDataProvider('Actividadrecurso',array('criteria'=>array('condition'=>'costoTotal>0')));
+		$dataProvider=new CActiveDataProvider('Recursofalla',array('criteria'=>array('condition'=>'costoTotal>0')));
 		$this->render('historicoGastos',array(
 			'dataProvider'=>$dataProvider,
 		));

@@ -14,7 +14,7 @@ $this->breadcrumbs=array(
 ?>
 <div id="factura" class='crugepanel user-assignments-role-list'>
 </div>
-<div id="detalle" class='crugepanel user-assignments-role-list'>
+<div id="detalle" class='crugepanel user-assignments-role-list'>	
 <h1>Información de facturación</h1>
 <?php
 $this->widget('zii.widgets.grid.CGridView', array(
@@ -99,6 +99,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
                 'dataProvider'=>$dataProvider,
 				'htmlOptions'=>array('style'=>'cursor:pointer;'),
 				'columns'=>array(
+				
 				array(
 					'header'=>'Unidad',
 					'name'=>'idvehiculo',
@@ -150,7 +151,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
 					'headerHtmlOptions'=>array('style'=>'text-align:left;'),
 					'header'=>'Recurso',
 					'name'=>'idservicio',
-					'value'=>'(($data->idinsumo == null?\'\':$data->idinsumo0->insumo).\'\'.($data->idrepuesto == null?\'\':$data->idrepuesto0->repuesto).\'\'.($data->idservicio == null?\'\':$data->idservicio0->servicio)).\'\'.$data->detalle',
+					'value'=>'(($data->idinsumo == null?\'\':$data->idinsumo0->insumo).\'\'.($data->idrepuesto == null?\'\':$data->idrepuesto0->repuesto).\'\'.($data->idservicio == null?\'\':$data->idservicio0->servicio)).\'\'',
 					'htmlOptions'=>array('style'=>'width:250px;'),
 					//'footer'=>'',
 				),
@@ -198,7 +199,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
                         "",
                         array(
                                 \'style\'=>\'cursor: pointer;text-decoration: underline;text-align:center;\',
-                                \'onclick\'=>\'{editarActividad("\'.Yii::app()->createUrl("actividadrecurso/update",array("id"=>$data["id"])).\'"); $("#dialog").dialog("open");}\'
+                                \'onclick\'=>\'{editarActividad("\'.Yii::app()->createUrl("Recursofalla/update",array("id"=>$data["id"])).\'"); $("#dialog").dialog("open");}\'
                         )
                 );',),
 				/*array(
@@ -410,7 +411,7 @@ $('#ModFactura').dialog('open');
 function agregarRecurso(){
 $('#recurso').dialog('open');
 	var idAct = $.fn.yiiGridView.getSelection('actividad');
-	var url="<?php echo Yii::app()->baseUrl."/mttoPreventivo/agregarRecursoAdicional/"?>";
+	var url="<?php echo Yii::app()->baseUrl."/mttoCorrectivo/agregarRecursoAdicional/"?>";
 	jQuery.ajax({
                 url: url+idAct,
                 'data':$(this).serialize(),

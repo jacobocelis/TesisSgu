@@ -3,7 +3,7 @@
 /* @var $dataProvider CActiveDataProvider */
 
 $this->breadcrumbs=array(
-	'Mantenimiento preventivo'=>array('mttoPreventivo/index'),
+	'Mantenimiento correctivo'=>array('mttoCorrectivo/index'),
 	'Histórico de mantenimientos',
 );
 $this->menu=array(
@@ -27,17 +27,17 @@ $this->menu=array(
 			'summaryText' => '',
 			'columns'=>array(
 				array(
-					'headerHtmlOptions'=>array('style'=>'text-align:left;'),
 					'header'=>'Unidad',
-					'value'=>'str_pad((int) $data->idactividades0->idvehiculo0->numeroUnidad,2,"0",STR_PAD_LEFT)',
-					'htmlOptions'=>array('style'=>'width:50px;'),
-					//'footer'=>'',
-				),	
+					
+					'value'=>'str_pad((int) $data->idreporteFalla0->idvehiculo0->numeroUnidad,2,"0",STR_PAD_LEFT);',
+					//'value'=>'$data->idplan0->idplanGrupo0->CompiledColour->$data-id.\' \'.$data->CompiledColour',
+					'htmlOptions'=>array('style'=>'text-align:center;width:40px'),
+				),
 				array(
 					'headerHtmlOptions'=>array('style'=>'text-align:left;'),
 					'header'=>'Recurso',
 					'name'=>'idservicio',
-					'value'=>'(($data->idinsumo == null?\'\':$data->idinsumo0->insumo).\'\'.($data->idrepuesto == null?\'\':$data->idrepuesto0->repuesto).\'\'.($data->idservicio == null?\'\':$data->idservicio0->servicio)).\'\'.$data->detalle',
+					'value'=>'(($data->idinsumo == null?\'\':$data->idinsumo0->insumo).\'\'.($data->idrepuesto == null?\'\':$data->idrepuesto0->repuesto).\'\'.($data->idservicio == null?\'\':$data->idservicio0->servicio)).\'\'',
 					'htmlOptions'=>array('style'=>'width:250px;'),
 					//'footer'=>'',
 				),
@@ -70,10 +70,11 @@ $this->menu=array(
 					'headerHtmlOptions'=>array('style'=>'text-align:left;'),
 					'header'=>'Total',
 					'name'=>'costoTotal',
-					'value'=>'number_format($data->costoUnitario, 2,",",".").\' BsF.\'',
+					'value'=>'number_format($data->costoTotal, 2,",",".").\' Bs.\'',
 					'htmlOptions'=>array('style'=>'width:50px;'),
 					//'footer'=>'',
 				),
+				
 			),
 	));
 			

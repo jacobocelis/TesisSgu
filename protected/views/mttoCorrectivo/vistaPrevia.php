@@ -138,13 +138,13 @@ $this->widget('zii.widgets.grid.CGridView', array(
 					array(
 						'headerHtmlOptions'=>array('style'=>'width:35%;text-align:left;'),
 						'header'=>'<PRE>Recursos',
-						'value'=>'\'\'.(($data->idinsumo == null?\'\':$data->idinsumo0->insumo).\'\'.($data->idrepuesto == null?\'\':$data->idrepuesto0->repuesto).\'\'.($data->idservicio == null?\'\':$data->idservicio0->servicio)).\'\'.$data->detalle',
+						'value'=>'\'\'.(($data->idinsumo == null?\'\':$data->idinsumo0->insumo).\'\'.($data->idrepuesto == null?\'\':$data->idrepuesto0->repuesto).\'\'.($data->idservicio == null?\'\':$data->idservicio0->servicio)).\'\'',
 						'htmlOptions'=>array('style'=>'text-align:left;width:150px'),
 					),
 					array(
 					'headerHtmlOptions'=>array('style'=>'text-align:left;'),
 					'header'=>'<PRE>Tipo',
-					'value'=>'(($data->idinsumo == null?\'\':\'Insumo\').\'\'.($data->idrepuesto == null?\'\':\'Repuesto\').\'\'.($data->idservicio == null?\'\':\'Servicio\')).\' \'.$data->detalle',
+					'value'=>'(($data->idinsumo == null?\'\':\'Insumo\').\'\'.($data->idrepuesto == null?\'\':\'Repuesto\').\'\'.($data->idservicio == null?\'\':\'Servicio\')).\' \'',
 					'htmlOptions'=>array('style'=>'width:40px;'),
 					//'footer'=>'',
 				),
@@ -370,7 +370,7 @@ jQuery.ajax({
 }
 function cerrar(orden){
 	if(confirm('¿confirma que desea cerrar la orden?')){
-	var dir="<?php echo Yii::app()->baseUrl."/mttoPreventivo/estatusOrden"?>";
+	var dir="<?php echo Yii::app()->baseUrl."/mttoCorrectivo/estatusOrden"?>";
 		x=7;
 	jQuery.ajax({
                 url: dir+"/"+x,
@@ -378,7 +378,7 @@ function cerrar(orden){
                 'type':'post',
                 'dataType':'json',
 				'success':function(){
-					window.location.replace("<?php echo Yii::app()->baseUrl."/mttoPreventivo/index"?>");	
+					window.location.replace("<?php echo Yii::app()->baseUrl."/mttoCorrectivo/index"?>");	
 				},
                 'cache':false});			
 	}

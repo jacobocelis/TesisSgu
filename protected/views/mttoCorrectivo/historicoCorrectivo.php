@@ -3,7 +3,7 @@
 /* @var $dataProvider CActiveDataProvider */
 
 $this->breadcrumbs=array(
-	'Mantenimiento preventivo'=>array('mttoPreventivo/index'),
+	'Mantenimiento correctivo'=>array('mttoCorrectivo/index'),
 	'Histórico de mantenimientos',
 );
 $this->menu=array(

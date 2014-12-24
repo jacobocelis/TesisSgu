@@ -123,7 +123,6 @@ $("#Historicoviajes_horaSalida").timepicker({
 			$("#Historicoviajes_horaLlegada").timepicker("option","minTime", data);
 		}
 });
-
 </script>
 <script>
 $('#registrar').hide();
@@ -147,7 +146,7 @@ $('#registrar').show();
 								
                                 if (data.status == 'failure'){
 										
-											$('#registrar').html(data.div);
+										$('#registrar').html(data.div);
                                         $('#registrar  form').submit(AgregarRutaNueva);
                                 }
                                 else{
@@ -160,7 +159,6 @@ $('#registrar').show();
 										$('#registrarRuta').show();
 										//window.setTimeout('location.reload()');
 										actualizarListaViajes();
-                          
                                 }
                         },
                 'cache':false});

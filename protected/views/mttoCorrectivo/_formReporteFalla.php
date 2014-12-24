@@ -4,7 +4,7 @@
 /* @var $form CActiveForm */
 ?>
 
-<div class="form">
+<div id="azul"class="form">
 
 <?php $form=$this->beginWidget('CActiveForm', array(
 	'id'=>'reportefalla-form',
@@ -92,6 +92,33 @@
 
 </div><!-- form -->
 <script>
+	$(function($){
+	    $.datepicker.regional['es'] = {
+	        closeText: 'Cerrar',
+	        prevText: 'Anterior',
+	        nextText: 'Siguiente',
+	        currentText: 'Hoy',
+	        monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+	        monthNamesShort: ['Ene','Feb','Mar','Abr', 'May','Jun','Jul','Ago','Sep', 'Oct','Nov','Dic'],
+	        dayNames: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
+	        dayNamesShort: ['Dom','Lun','Mar','Mié','Juv','Vie','Sáb'],
+	        dayNamesMin: ['Do','Lu','Ma','Mi','Ju','Vi','Sá'],
+	        weekHeader: 'Sm',
+	        dateFormat: 'dd/mm/yy',
+	        firstDay: 1,
+	        isRTL: false,
+			changeMonth: true,
+            changeYear: true,
+	        showMonthAfterYear: false,
+	        yearSuffix: '',
+	        maxDate: '0d',
+	        minDate: '-30d',
+	    };
+	    $.datepicker.setDefaults($.datepicker.regional['es']);
+	});        		
+	$("#fecha").datepicker();
+</script>
+<script>
 
 function obtenerConductor(id){
 	if(id=="")
@@ -148,30 +175,10 @@ var dir="<?php echo Yii::app()->baseUrl;?>"+"/mttoCorrectivo/ajaxActualizarLista
   	});
 }
 </script>
-<script>
-	$(function($){
-	    $.datepicker.regional['es'] = {
-	        closeText: 'Cerrar',
-	        prevText: 'Anterior',
-	        nextText: 'Siguiente',
-	        currentText: 'Hoy',
-	        monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
-	        monthNamesShort: ['Ene','Feb','Mar','Abr', 'May','Jun','Jul','Ago','Sep', 'Oct','Nov','Dic'],
-	        dayNames: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
-	        dayNamesShort: ['Dom','Lun','Mar','Mié','Juv','Vie','Sáb'],
-	        dayNamesMin: ['Do','Lu','Ma','Mi','Ju','Vi','Sá'],
-	        weekHeader: 'Sm',
-	        dateFormat: 'dd/mm/yy',
-	        firstDay: 1,
-	        isRTL: false,
-			changeMonth: true,
-            changeYear: true,
-	        showMonthAfterYear: false,
-	        yearSuffix: '',
-	        maxDate: '0d',
-	        //minDate: '0d',
-	    };
-	    $.datepicker.setDefaults($.datepicker.regional['es']);
-	});      		
-	$("#fecha").datepicker();
-</script>
+<style>
+#azul{
+	background:#E7FEFE;
+	width:50%;
+	padding:10px;
+}
+</style>
