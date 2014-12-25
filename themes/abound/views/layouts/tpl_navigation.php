@@ -38,6 +38,19 @@ if (isset($_GET['nrol']))
     Yii::app()->getSession()->add('rolActual', $_GET['nrol']);
     $currentRole = Yii::app()->getSession()->get('rolActual');
 ?>
+<?php
+
+$alertas = Yii::app()->db->createCommand('SELECT count(*) as total from sgu_actividades where proximoFecha<now() and idestatus=2')->queryRow();
+
+if($alertas["total"]>0){
+	$span='<span class="badge badge-important pull-right">'.$alertas["total"].'</span>';
+	$di='/mttoPreventivo?ajax=head&filtro=4';
+}
+else{
+	$span='';
+	$di='/mttoPreventivo';
+}
+?>
 <div class="navbar navbar-inverse navbar-fixed-top">
     <div class="navbar-inner">
         <div class="container">
@@ -71,7 +84,7 @@ if (isset($_GET['nrol']))
                             'visible' => !Yii::app()->user->isGuest),
 							array('label' => 'Repuestos', 'url' => array('/repuesto'), 
                             'visible' => !Yii::app()->user->isGuest),
-							array('label' => 'M.Preventivo', 'url' => array('/mttoPreventivo'), 
+							array('label' => 'M.Preventivo'.$span.'', 'url' => array($di), 
                             'visible' => !Yii::app()->user->isGuest),
 							array('label' => 'M.Correctivo', 'url' => array('/mttoCorrectivo'), 
                             'visible' => !Yii::app()->user->isGuest),

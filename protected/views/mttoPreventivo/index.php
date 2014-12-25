@@ -33,6 +33,7 @@ $this->menu=array(
 <div id="filtro">
 <select id="lista" >
 			<option value="1">Éste mes</option>
+			<option value="4">Atrasadas</option>
 			<option value="2">En progreso</option>
 			<option value="3">Todas</option>
 		</select>
@@ -45,7 +46,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
 				'emptyText'=>'No hay actividades de mantenimiento registradas',
                 'dataProvider'=>$dataProvider,
 				'rowCssClassExpression'=>'$this->dataProvider->data[$row]->diasRestantes($this->dataProvider->data[$row]->proximoFecha)<=5 || ($this->dataProvider->data[$row]->kmRestantes($this->dataProvider->data[$row]->idvehiculo,$this->dataProvider->data[$row]->proximoKm))<=50?"rojo":"even"',
-				//'ajaxUpdate'=>false,
+				'ajaxUpdate'=>false,
 				'columns'=>array(
 				array(
 					'header'=>'Unidad',
@@ -127,7 +128,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
 				array(
 					'header'=>'Estatus',
 					'name'=>'idestatus',
-					'value'=>'$data->idestatus0->estatus',
+					'value'=>'($data->idestatus==2 and $data->proximoFecha<date("Y-m-d"))?\'Retrasada\':$data->idestatus0->estatus',
 					'htmlOptions'=>array('style'=>'text-align:center;width:100px'),
 				),
 			)
@@ -213,6 +214,10 @@ background: none repeat scroll 0% 0% #FFD6D6;
 }
 </style>
 <script>
+var va="<?php echo $ca?>";
+if(va){
+	$("#lista").val('4').change();
+}
 $( "#lista" ).change(function() { 
 	$.fn.yiiGridView.update('head',{ data : "filtro="+$(this).val()});
 });

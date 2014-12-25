@@ -680,14 +680,21 @@ class MttoPreventivoController extends Controller
 			));
 	}
 	public function actionIndex(){
-		$cond='idestatus<>1 and idestatus<>3 and idestatus<>4 and month(proximoFecha)=month(now())';
+		$ca=false;
+		if(isset($_GET["filtro"]))
+			if($_GET["filtro"]==4)
+					$ca=true;
+			
+		$cond='idestatus<>1 and idestatus<>3 and idestatus<>4 and (month(proximoFecha)=month(now()) and (year(proximoFecha)=year(now())))';
 			if(isset($_GET["filtro"])){
 				if($_GET["filtro"]==1)
-					$cond='idestatus<>1 and idestatus<>3 and idestatus<>4 and month(proximoFecha)=month(now())';
+					$cond='idestatus<>1 and idestatus<>3 and idestatus<>4 and (month(proximoFecha)=month(now()) and (year(proximoFecha)=year(now())))';
 				if($_GET["filtro"]==2)
 					$cond='idestatus=4';
 				if($_GET["filtro"]==3)
-					$cond='idestatus<>1 and idestatus<>3 and idestatus<>4';
+					$cond='idestatus<>1 and idestatus<>3';
+				if($_GET["filtro"]==4)
+					$cond='idestatus<>1 and idestatus<>3 and idestatus<>4 and proximoFecha<now()';
 			}
 			
 			$dataProvider=new CActiveDataProvider('Actividades',array('criteria' => array(
@@ -703,6 +710,7 @@ class MttoPreventivoController extends Controller
 			'Colorabi'=>$this->getColor($this->getOrdenesAbiertas()),
 			'Colorli'=>$this->getColor($this->getOrdenesListas()),
 			'listas'=>$this->getOrdenesListas(),
+			'ca'=>$ca,
 			));
 	}
 	/**

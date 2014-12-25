@@ -34,7 +34,7 @@ $this->menu=array(
 <select id="lista" >
 			<option value="1">Por atender</option>
 			<option value="2">En progreso</option>
-			<option value="3">Ejectadas</option>
+			<option value="3">Ejecutadas</option>
 			<option value="3">Todas</option>
 		</select>
 </div>
