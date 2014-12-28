@@ -116,7 +116,6 @@ $this->widget('zii.widgets.grid.CGridView', array(
 <script>
 agregarFalla();
 function agregarFalla(){
-	
 	jQuery.ajax({
                 url: "Falla",
                 'data':$(this).serialize(),
@@ -132,7 +131,8 @@ function agregarFalla(){
                                         $('#falla').html(data.div);
                                         //setTimeout("$('#dialog').dialog('close') ",1000);
 										 
-                                        window.setTimeout('agregarFalla()',1000);
+                                        //window.setTimeout('agregarFalla()',1000);
+										window.setTimeout('location.reload()', 1000);
 										$.fn.yiiGridView.update('fallas');
                                 }
                         } ,

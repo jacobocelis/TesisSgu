@@ -40,16 +40,27 @@ if (isset($_GET['nrol']))
 ?>
 <?php
 
-$alertas = Yii::app()->db->createCommand('SELECT count(*) as total from sgu_actividades where proximoFecha<now() and idestatus=2')->queryRow();
+$alertasPre = Yii::app()->db->createCommand('SELECT count(*) as total  from sgu_actividades a where (a.proximoKm-(select lectura from sgu_kilometraje where idvehiculo=a.idvehiculo order by id desc limit 1)<=0 or a.proximoFecha<=date(now())) and a.idestatus=2')->queryRow();
 
-if($alertas["total"]>0){
-	$span='<span class="badge badge-important pull-right">'.$alertas["total"].'</span>';
-	$di='/mttoPreventivo?ajax=head&filtro=4';
+if($alertasPre["total"]>0){
+	$spanPre='<span class="badge badge-important pull-right">'.$alertasPre["total"].'</span>';
+	$diPre='/mttoPreventivo?ajax=head&filtro=4';
 }
 else{
-	$span='';
-	$di='/mttoPreventivo';
+	$spanPre='';
+	$diPre='/mttoPreventivo';
 }
+$alertasCor = Yii::app()->db->createCommand('SELECT count(*) as total from sgu_reporteFalla where idestatus=8')->queryRow();
+
+if($alertasCor["total"]>0){
+	$spanCor='<span class="badge badge-important pull-right">'.$alertasCor["total"].'</span>';
+	$diCor='/mttoCorrectivo?ajax=fallas&filtro=1';
+}
+else{
+	$spanCor='';
+	$diCor='/mttoCorrectivo';
+}
+
 ?>
 <div class="navbar navbar-inverse navbar-fixed-top">
     <div class="navbar-inner">
@@ -84,9 +95,9 @@ else{
                             'visible' => !Yii::app()->user->isGuest),
 							array('label' => 'Repuestos', 'url' => array('/repuesto'), 
                             'visible' => !Yii::app()->user->isGuest),
-							array('label' => 'M.Preventivo'.$span.'', 'url' => array($di), 
+							array('label' => 'M.Preventivo'.$spanPre.'', 'url' => array($diPre), 
                             'visible' => !Yii::app()->user->isGuest),
-							array('label' => 'M.Correctivo', 'url' => array('/mttoCorrectivo'), 
+							array('label' => 'M.Correctivo'.$spanCor.'', 'url' => array($diCor), 
                             'visible' => !Yii::app()->user->isGuest),
 							array('label' => 'Combustible', 'url' => array('/'), 
                             'visible' => !Yii::app()->user->isGuest),

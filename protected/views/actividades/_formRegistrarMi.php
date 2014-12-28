@@ -25,15 +25,17 @@
 	?>
 	<div class="row">
 		
-		<label>Última lectura del odómetro: </label><?php echo $form->textField($modelo,'lectura',array('value'=>number_format($km[0]["lectura"], 0,",","") ,'readonly'=>'readonly','style' => 'width:100px;cursor:pointer;text-align:right')); ?> Km 
+		<label>Última lectura del odómetro: </label><?php echo $form->textField($modelo,'lectura',array('value'=>number_format($km[0]["lectura"], 0,",","") ,'readonly'=>'readonly','style' => 'width:100px;cursor:default;text-align:right')); ?> Km 
 		
 	</div>
 	
 	<div class="row">
 		<?php echo $form->labelEx($model,'ultimoKm'); ?>
-		<?php echo $form->textField($model,'ultimoKm',array('value'=>$id?'':$model->ultimoKm,'style' => 'width:100px;text-align:right')); ?>  Km
+		<?php echo $form->textField($model,'ultimoKm',array('value'=>$id?'':$model->ultimoKm,'readonly'=>'readonly','style' => 'width:100px;cursor:pointer;text-align:right')); ?>  Km
 		<?php echo $form->error($model,'ultimoKm'); ?>
 	</div>
+
+<div id="slider-range-min"></div>
 
 	<div class="row">
 		<?php echo $form->labelEx($model,'ultimoFecha'); ?>
@@ -126,8 +128,24 @@
 
 	$("#Actividades_ultimoFecha").datepicker();
 </script>
-<script type="text/javascript">
-$("#Kilometraje_lectura").click(function(){
-	$("#Actividades_ultimoKm").val($("#Kilometraje_lectura").val());
+
+ <script>
+var medio=$("#Kilometraje_lectura").val()-($("#Actividades_frecuenciaKm").val()/2);
+
+var min=$("#Kilometraje_lectura").val()-$("#Actividades_frecuenciaKm").val();
+if(min<0)
+	min=0;
+$(function() {
+$( "#slider-range-min" ).slider({
+range: "min",
+value: medio,
+min: min,
+max: $("#Kilometraje_lectura").val(),
+slide: function( event, ui ) {
+$( "#Actividades_ultimoKm" ).val( ui.value );
+}
 });
+$( "#Actividades_ultimoKm" ).val($( "#slider-range-min" ).slider( "value" ) );
+});
+
 </script>

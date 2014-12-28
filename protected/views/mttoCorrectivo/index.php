@@ -49,18 +49,19 @@ $this->widget('zii.widgets.grid.CGridView', array(
 			
 				'columns'=>array(
 				array(
+					'header'=>'Fecha',
+					'name'=>'fechaFalla',
+					'value'=>'date("d/m/Y",strtotime($data->fechaFalla))',
+					'htmlOptions'=>array('style'=>'text-align:center;width:50px'),
+				),
+				array(
 					'header'=>'Unidad',
 					'name'=>'idvehiculo',
 					'value'=>'str_pad((int) $data->idvehiculo0->numeroUnidad,2,"0",STR_PAD_LEFT);',
 					//'value'=>'$data->idplan0->idplanGrupo0->CompiledColour->$data-id.\' \'.$data->CompiledColour',
 					'htmlOptions'=>array('style'=>'text-align:center;width:40px'),
 				),
-				array(
-					'header'=>'Fecha',
-					'name'=>'fechaFalla',
-					'value'=>'date("d/m/Y",strtotime($data->fechaFalla))',
-					'htmlOptions'=>array('style'=>'text-align:center;width:50px'),
-				),
+				
 			
 				array(
 					'header'=>'Falla reportada',

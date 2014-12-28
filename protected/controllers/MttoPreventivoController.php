@@ -28,7 +28,7 @@ class MttoPreventivoController extends Controller
 	{
 		return array(
 			array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array('index','view','crearPlan','planes','agregarActividad','obtenerParte','mttopVehiculo','mttopIniciales','calendario','obtenerActividad','agregarRecurso','iniciales','crearordenpreventiva','crearOrden','verOrdenes','cambiarFecha','mttopRealizados','registrarFacturacion','agregarFactura','estatusOrden','cerrarOrdenes','historicoPreventivo','historicoOrdenes','historicoGastos','vistaPrevia','vistaPreviaPDF','generarPdf','correo','actualizarSpan','agregarRecursoAdicional','insumos','repuesto','ActualizarCheck'),
+				'actions'=>array('index','view','crearPlan','planes','agregarActividad','obtenerParte','mttopVehiculo','mttopIniciales','calendario','obtenerActividad','agregarRecurso','iniciales','crearordenpreventiva','crearOrden','verOrdenes','cambiarFecha','mttopRealizados','registrarFacturacion','agregarFactura','estatusOrden','cerrarOrdenes','historicoPreventivo','historicoOrdenes','historicoGastos','vistaPrevia','vistaPreviaPDF','generarPdf','correo','actualizarSpan','agregarRecursoAdicional','insumos','repuesto','ActualizarCheck','ActualizarListaActividades'),
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
@@ -592,7 +592,9 @@ class MttoPreventivoController extends Controller
 			}
 		}
 			$actividades=new CActiveDataProvider('Actividadesgrupo',array('criteria'=>array('condition'=>'idgrupo="'.$idGrupo.'"')));
+			$actividades->setPagination(false);
 			$recurso=new CActiveDataProvider('Actividadrecursogrupo',array('criteria'=>array('condition'=>'idactividadesGrupo="'.$idAct.'"')));
+			$recurso->setPagination(false);
 		$mi=Yii::app()->db->createCommand("select count(*) as total from sgu_actividades where idestatus=1")->queryRow();
 		$this->render('planes',array(
 			'grupo'=>$grupo,
@@ -680,10 +682,9 @@ class MttoPreventivoController extends Controller
 			));
 	}
 	public function actionIndex(){
-		$ca=false;
+		$ca=1;
 		if(isset($_GET["filtro"]))
-			if($_GET["filtro"]==4)
-					$ca=true;
+					$ca=$_GET["filtro"];
 			
 		$cond='idestatus<>1 and idestatus<>3 and idestatus<>4 and (month(proximoFecha)=month(now()) and (year(proximoFecha)=year(now())))';
 			if(isset($_GET["filtro"])){
@@ -694,7 +695,7 @@ class MttoPreventivoController extends Controller
 				if($_GET["filtro"]==3)
 					$cond='idestatus<>1 and idestatus<>3';
 				if($_GET["filtro"]==4)
-					$cond='idestatus<>1 and idestatus<>3 and idestatus<>4 and proximoFecha<now()';
+					$cond='idestatus<>1 and idestatus<>3 and idestatus<>4 and (proximoFecha<=now() or t.proximoKm-(select lectura from sgu_kilometraje where idvehiculo=t.idvehiculo order by id desc limit 1)<=0 )';
 			}
 			
 			$dataProvider=new CActiveDataProvider('Actividades',array('criteria' => array(
@@ -766,5 +767,13 @@ class MttoPreventivoController extends Controller
 			foreach($lista2 as $li){
 				echo CHtml::tag('option',array('type'=>'text','value'=>(($li->id))),Chtml::encode(($li->repuesto)),true);
 			}
+	}
+	public function actionActualizarListaActividades(){
+	
+			$lista2=Actividadmtto::model()->findAll('1 order by id DESC',array(':id'=>'1'));
+			foreach($lista2 as $li){
+				echo CHtml::tag('option',array('type'=>'text','value'=>(($li->id))),Chtml::encode(($li->actividad)),true);
+			
+		}
 	}
 }

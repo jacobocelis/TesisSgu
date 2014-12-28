@@ -68,6 +68,9 @@
 	<?php Yii::app()->clientScript->registerScriptFile($ruta.'/js/responsiveslides.js'); ?>
 	<?php Yii::app()->clientScript->registerScriptFile($ruta.'/js/responsiveslides.min.js'); ?>
 	<?php Yii::app()->clientScript->registerScriptFile($ruta.'/js/jquery-ui-timepicker.js'); ?>
+	<?php Yii::app()->clientScript->registerScriptFile($ruta.'/js/jquery.scrollTo.min.js'); ?>
+	<?php Yii::app()->clientScript->registerScriptFile($ruta.'/js/jquery.scrollTo.js'); ?>
+	
     </head>
 
     <body>

@@ -44,6 +44,13 @@
 		<?php echo $form->error($model,'fechaRealizada'); ?>
 	</div>
 
+		
+	<div class="row">
+		<?php echo $form->labelEx($model,'duracion'); ?>
+		<?php echo $form->textField($model,'duracion',array('style' => 'width:60px;')); ?>
+		<?php echo $form->dropDownList($model,'idtiempod',CHtml::listData(Tiempo::model()->findAll(array("condition"=>"id = 5 or id = 2 or id = 1 order by id ASC")),'id','tiempo'),array('style' => 'width:100px;')); ?>
+		<?php echo $form->error($model,'duracion'); ?><span class="tooltip" title="la duración comprende el tiempo total que el vehiculo estuvo fuera de operación"></span>
+	</div>
 	
 	
 	<div class="row">
@@ -62,10 +69,7 @@
 		<?php echo $form->hiddenField($model,'proximoFecha'); ?>
 	</div>
 
-	<div class="row">
-		
-		<?php echo $form->hiddenField($model,'duracion'); ?>
-	</div>
+	
 	<div class="row">
 		
 		<?php echo $form->hiddenField($model,'atraso'); ?>
@@ -80,11 +84,7 @@
 		
 	</div>
 
-	<div class="row">
-		
-		<?php echo $form->hiddenField($model,'idtiempod'); ?>
-		
-	</div>
+	
 
 	<div class="row">
 		<?php echo $form->hiddenField($model,'idtiempof'); ?>
@@ -135,3 +135,13 @@ $("#Kilometraje_lectura").click(function(){
 	$("#Actividades_kmRealizada").val($("#Kilometraje_lectura").val());
 });
 </script>
+<style>
+.tooltip {
+	opacity: 1;
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    cursor: help;
+	background-image: url("<?php echo Yii::app()->request->baseUrl;?>/imagenes/help.png");
+}
+<style>

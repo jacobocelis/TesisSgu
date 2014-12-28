@@ -92,8 +92,9 @@ $this->beginWidget('zii.widgets.jui.CJuiDialog', array( // the dialog
 		'resizable'=>false
     ),
 ));?>
-<div class="divForForm"></div>
- 
+<div class="divForForm">
+
+</div>
 <?php $this->endWidget();?>
 <style>
 .crugepanel {
@@ -148,7 +149,8 @@ function registrarMi(id){
                                 {
                                         $('#dialog div.divForForm').html(data.div);
                                         setTimeout("$('#dialog').dialog('close') ",1000);
-                                        $.fn.yiiGridView.update('inicial');
+                                        //$.fn.yiiGridView.update('inicial');
+										window.setTimeout('location.reload()');
                                 }
                         } ,
                 'cache':false});

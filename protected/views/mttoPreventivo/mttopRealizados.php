@@ -136,6 +136,13 @@ $this->widget('zii.widgets.grid.CGridView', array(
 					'htmlOptions'=>array('style'=>'width:80px;text-align:center;'),
 				),
 				array(
+					'header'=>'Duración',
+					'name'=>'duracion',
+					'type'=>'raw',
+					'value'=>'$data->duracion.\' \'.$data->idtiempod0->tiempo',
+					'htmlOptions'=>array('style'=>'width:80px;text-align:center;'),
+				),
+				array(
 					'headerHtmlOptions'=>array('style'=>'text-align:center;width:30px;'),
 					'htmlOptions'=>array('style'=>'text-align:center;'),
 					'header'=>'Registrar mantenimiento realizado',
@@ -170,8 +177,9 @@ $this->beginWidget('zii.widgets.jui.CJuiDialog', array( // the dialog
         'autoOpen'=>false,
         'modal'=>true,
         'width'=>400,
-        'height'=>255,
-		'resizable'=>false
+        //'height'=>255,
+		'resizable'=>false,
+		'position'=>array(null,100),
     ),
 ));?>
 <div class="divForForm"></div>
