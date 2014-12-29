@@ -137,15 +137,13 @@ if(min<0)
 	min=0;
 $(function() {
 $( "#slider-range-min" ).slider({
-range: "min",
-value: medio,
-min: min,
+	range: "min",
+	value: medio,
+	min: min,
+	step: 1,
 max: $("#Kilometraje_lectura").val(),
 slide: function( event, ui ) {
-$( "#Actividades_ultimoKm" ).val( ui.value );
-}
-});
-$( "#Actividades_ultimoKm" ).val($( "#slider-range-min" ).slider( "value" ) );
-});
+$( "#Actividades_ultimoKm" ).val( ui.value );}});
+$( "#Actividades_ultimoKm" ).val($( "#slider-range-min" ).slider( "value" ) );});
 
 </script>

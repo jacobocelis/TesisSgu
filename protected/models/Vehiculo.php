@@ -73,7 +73,7 @@ class Vehiculo extends CActiveRecord
 			'Fotos' => array(self::HAS_MANY, 'Foto', 'idvehiculo'),
 			'Historicoedoses' => array(self::HAS_MANY, 'Historicoedos', 'idvehiculo'),
 			'Ruedas' => array(self::HAS_MANY, 'Rueda', 'idvehiculo'),
-			'idcombustible0' => array(self::BELONGS_TO, 'Combustible', 'idcombustible'),
+			'idcombustible0' => array(self::BELONGS_TO, 'Tipocombustible', 'idcombustible'),
 			'idgrupo0' => array(self::BELONGS_TO, 'Grupo', 'idgrupo'),
 			'idcolor0' => array(self::BELONGS_TO, 'Color', 'idcolor'),
 			'idmodelo0' => array(self::BELONGS_TO, 'Modelo', 'idmodelo'),

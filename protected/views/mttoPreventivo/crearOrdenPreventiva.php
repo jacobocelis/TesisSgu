@@ -26,6 +26,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
 				'selectableRows'=>2,
 				'emptyText'=>'No hay actividades a tiempo de mantenimiento',
                 'dataProvider'=>$dataProvider,
+				'rowCssClassExpression'=>'$this->dataProvider->data[$row]->diasRestantes($this->dataProvider->data[$row]->proximoFecha)<=5 || ($this->dataProvider->data[$row]->kmRestantes($this->dataProvider->data[$row]->idvehiculo,$this->dataProvider->data[$row]->proximoKm))<=50?"rojo":"even"',
 				'ajaxUpdate'=>false,
 				'columns'=>array(
 				array(
@@ -95,6 +96,9 @@ $this->widget('zii.widgets.grid.CGridView', array(
 	/*$this->renderPartial('_formCrearOrden',array('model'=>$modeloOrdenMtto));*/?>
 </div>
 <style>
+.rojo{
+background: none repeat scroll 0% 0% #FFD6D6;
+}
 .grid-view table.items tr.selected {
     background: none repeat scroll 0% 0% rgba(0, 249, 3, 0.3);
 }

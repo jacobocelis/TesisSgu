@@ -99,7 +99,7 @@ else{
                             'visible' => !Yii::app()->user->isGuest),
 							array('label' => 'M.Correctivo'.$spanCor.'', 'url' => array($diCor), 
                             'visible' => !Yii::app()->user->isGuest),
-							array('label' => 'Combustible', 'url' => array('/'), 
+							array('label' => 'Combustible', 'url' => array('/Combustible'), 
                             'visible' => !Yii::app()->user->isGuest),
 							array('label' => 'Llantas', 'url' => array('/'), 
                             'visible' => !Yii::app()->user->isGuest),

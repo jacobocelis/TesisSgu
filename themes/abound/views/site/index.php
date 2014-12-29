@@ -83,26 +83,23 @@ if ($rol == "Jefe Departamento") {
 			
 				<div id="uno">
 					
-					<a href="<?php echo Yii::app()->request->baseUrl;?>/vehiculo/" id="vehiculos"></a>
-					
+					<a href="<?php echo Yii::app()->request->baseUrl;?>/vehiculo" id="vehiculos"></a>
 					
 				</div>
-			
-					
 				
-					<a href="<?php echo Yii::app()->request->baseUrl;?>/repuesto/" id="repuesto"></a>
+					<a href="<?php echo Yii::app()->request->baseUrl;?>/repuesto" id="repuesto"></a>
 				
 			
 				
-				<a href="<?php echo Yii::app()->request->baseUrl;?>/mttoPreventivo/" id="preventivo">
+				<a href="<?php echo Yii::app()->request->baseUrl;?>/mttoPreventivo" id="preventivo">
 				
 				</a>
 				
-				<a href="<?php echo Yii::app()->request->baseUrl;?>/mttoCorrectivo/" id="correctivo">
+				<a href="<?php echo Yii::app()->request->baseUrl;?>/mttoCorrectivo" id="correctivo">
 				
 				</a>
 				
-				<a href="<?php echo Yii::app()->request->baseUrl;?>" id="combustible">
+				<a href="<?php echo Yii::app()->request->baseUrl;?>/combustible" id="combustible">
 				
 				</a>
 			

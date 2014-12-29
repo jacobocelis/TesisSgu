@@ -130,7 +130,7 @@
 
 	<div class="row">
 		<?php echo $form->labelEx($model,'idcombustible'); ?>
-		<?php echo $form->dropDownList($model,'idcombustible',CHtml::listData(Combustible::model()->findAll(),'id','combustible'),array('id'=>'combustible')); ?>
+		<?php echo $form->dropDownList($model,'idcombustible',CHtml::listData(Tipocombustible::model()->findAll(),'id','combustible'),array('id'=>'combustible')); ?>
 		<?php echo $form->error($model,'idcombustible'); ?>
 	</div>
 <div class="row">

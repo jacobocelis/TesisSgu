@@ -25,7 +25,7 @@ $this->breadcrumbs=array(
 				array(
 					'header'=>'Unidad',
 					'name'=>'idvehiculo',
-					'value'=>'$data->idvehiculo0->numeroUnidad',
+					'value'=>'str_pad((int) $data->idvehiculo0->numeroUnidad,2,"0",STR_PAD_LEFT);',
 					//'value'=>'$data->idplan0->idplanGrupo0->CompiledColour->$data-id.\' \'.$data->CompiledColour',
 					'htmlOptions'=>array('style'=>'text-align:center;width:50px;'),
 				),

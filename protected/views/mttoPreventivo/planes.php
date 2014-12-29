@@ -75,7 +75,7 @@
 						'htmlOptions'=>array('style'=>'text-align:center;'),
 						'header'=>'Recursos',
 						'type'=>'raw',
-						'value'=>'CHtml::link(
+						'value'=>'($data->totalRecursos($data->id)==0?\'-\':$data->totalRecursos($data->id)).CHtml::link(
                         CHtml::image(Yii::app()->request->baseUrl."/imagenes/ver.png",
                                           "Agregar",array("title"=>"Agregar recurso")),
                         "",
@@ -767,7 +767,6 @@ $('#recurso').dialog('open');
                                         $('#recurso div.divForForm').html(data.div);
                                         setTimeout("$('#recurso').dialog('close') ",1000);
                                         $.fn.yiiGridView.update('rec');
-										
                                 }
                         },
                 'cache':false});
