@@ -32,7 +32,7 @@ class CombustibleController extends Controller
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create','update'),
+				'actions'=>array('create','update','alertaReposicion','autonomia','formAutonomia'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -122,12 +122,62 @@ class CombustibleController extends Controller
 	 */
 	public function actionIndex()
 	{
-		$dataProvider=new CActiveDataProvider('Historicocombustible');
+		$reposicionDias=Parametro::model()->findByAttributes(array('nombre'=>'alertaReposicion'));
+		$consulta=Yii::app()->db->createCommand("select * from(select * from sgu_historicocombustible  order by fecha desc) historicocombustible  group by idvehiculo")->queryAll();
+		
+		$dataProvider=new CArrayDataProvider($consulta, array('keyField'=>'id'));
+        //$dataProvider=new CActiveDataProvider('Historicocombustible',array('criteria'=>array('group'=>'t.idvehiculo','order'=>'fecha desc')));
+		$dataProvider->setPagination(false);
 		$this->render('index',array(
 			'dataProvider'=>$dataProvider,
+			'reposicionDias'=>$reposicionDias["valor"],
 		));
 	}
-
+	public function actionFormAutonomia($id){
+		//se envia desde la vista mail
+			$model = new Autonomia;
+		if(isset($_POST['Autonomia'])){
+				$model->attributes=$_POST['Autonomia'];
+				if($model->validate()){	
+					$vehiculos=Vehiculo::model()->findAll('idgrupo='.$id);
+					foreach($vehiculos as $veh){
+						$veh->rendimiento=$model->autonomia;
+						$veh->save();
+					}
+					if (Yii::app()->request->isAjaxRequest){
+                    echo CJSON::encode(array(
+                        'status'=>'success', 
+                        'div'=>"Información actualizada"
+                        ));
+					exit;
+                }
+				}
+				
+		}
+			if (Yii::app()->request->isAjaxRequest){	
+            echo CJSON::encode(array(
+                'status'=>'failure', 
+                'div'=>$this->renderPartial('_formAutonomia', array('model'=>$model), true)
+				));
+            exit;               
+        }
+	}
+	public function actionAutonomia()
+	{	$idgrupo=0;
+		if(isset($_GET["idGrupo"])){
+			$idgrupo=$_GET["idGrupo"];
+		}
+		
+		$vehiculos=new CActiveDataProvider('Vehiculo',array('criteria'=>array('condition'=>'idgrupo='.$idgrupo)));
+		$grupo=Grupo::model()->findAll();
+		$dataProvider=new CActiveDataProvider('Historicocombustible',array('criteria'=>array('order'=>'fecha desc')));
+		$this->render('autonomia',array(
+			'dataProvider'=>$dataProvider,
+			'grupo'=>$grupo,		
+			'vehiculos'=>$vehiculos,
+			
+		));
+	}
 	/**
 	 * Manages all models.
 	 */
@@ -169,5 +219,10 @@ class CombustibleController extends Controller
 			echo CActiveForm::validate($model);
 			Yii::app()->end();
 		}
+	}
+	public function actionalertaReposicion($id){
+		$modelo=Parametro::model()->findByAttributes(array('nombre'=>'alertaReposicion'));
+		$modelo->valor=$id;
+		$modelo->save();
 	}
 }

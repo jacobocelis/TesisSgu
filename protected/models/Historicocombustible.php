@@ -26,7 +26,21 @@ class Historicocombustible extends CActiveRecord
 	{
 		return 'sgu_historicoCombustible';
 	}
-
+	public function fechaReposicion($fecha){
+		
+		if(date("d/m/Y",strtotime($fecha))==date("d/m/Y",strtotime("today")))
+			return '<div id="verde">Hoy</div>';
+		elseif(date("d/m/Y",strtotime($fecha))==date("d/m/Y",strtotime("yesterday")))
+			return '<div id="verde">Ayer</div>';
+		else
+			return '+ '.(date("d/m/Y",strtotime("now"))-date("d/m/Y",strtotime($fecha))).' Días';
+		
+	}
+	
+	public function ReposicionDias($fecha){
+			return (date("d/m/Y",strtotime("now"))-date("d/m/Y",strtotime($fecha)));
+	}
+	
 	/**
 	 * @return array validation rules for model attributes.
 	 */
@@ -99,7 +113,7 @@ class Historicocombustible extends CActiveRecord
 		$criteria->compare('idestacionServicio',$this->idestacionServicio);
 		$criteria->compare('idconductor',$this->idconductor);
 		$criteria->compare('idvehiculo',$this->idvehiculo);
-
+	
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
 		));

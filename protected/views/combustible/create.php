@@ -3,8 +3,8 @@
 /* @var $model Historicocombustible */
 
 $this->breadcrumbs=array(
-	'Historicocombustibles'=>array('index'),
-	'Create',
+	'Combustible'=>array('index'),
+	'Registrar reposición',
 );
 
 $this->menu=array(
@@ -13,6 +13,6 @@ $this->menu=array(
 );
 ?>
 
-<h1>Create Historicocombustible</h1>
+<h1>Registrar reposición de combustible</h1>
 
 <?php $this->renderPartial('_form', array('model'=>$model)); ?>

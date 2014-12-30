@@ -149,6 +149,13 @@
 		<?php echo $form->hiddenField($model,'fechaRegistro'); ?>
 		
 	</div>
+	
+	<div class="row">
+	
+		<?php echo $form->hiddenField($model,'rendimiento'); ?>
+		
+	</div>
+	
 	<div class="row">
 		<?php echo $form->labelEx($model,'comentario'); ?>
 		<?php echo $form->textArea($model,'comentario',array('size'=>60,'maxlength'=>200)); ?>

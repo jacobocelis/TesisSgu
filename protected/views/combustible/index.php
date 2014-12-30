@@ -7,21 +7,23 @@ $this->breadcrumbs=array(
 );
 
 $this->menu=array(
-	array('label'=>'Registrar reposición', 'url'=>array('create')),
-	array('label'=>'Histórico de reposición', 'url'=>array('admin')),
-	array('label'=>'Estadísticas', 'url'=>array('admin')),
+	array('label'=>'      Registrar reposición', 'url'=>array('create')),
+	array('label'=>'      Autonomía de combustible', 'url'=>array('autonomia')),
+	array('label'=>'      Histórico de reposición', 'url'=>array('admin')),
+	array('label'=>'      Estadísticas', 'url'=>array('admin')),
 );
 ?>
 <h1>Última reposición de combustible</h1>
-<?php $this->widget('zii.widgets.grid.CGridView', array(
+<?php 
+$this->widget('zii.widgets.grid.CGridView', array(
                 'id'=>'combustible',
 				'summaryText'=>'',
-			   
-				'emptyText'=>'No registro de reposición',
+			    //'rowCssClassExpression'=>'$this->dataProvider->data[$row]->ReposicionDias($data->fecha)>='.$reposicionDias.'?"rojo":"even"',
+				'emptyText'=>'No hay registro de reposiciónes',
                 'dataProvider'=>$dataProvider,
-				
+				//'Nombre:text:Nombre',
 				'columns'=>array(
-				
+			
 				array(
 					'header'=>'Unidad',
 					'name'=>'idvehiculo',
@@ -49,15 +51,41 @@ $this->menu=array(
 				),
 				array(
 					'type'=>'raw',
-					'header'=>'Fecha',
+					'header'=>'Última reposición',
 					'name'=>'fecha',
-					'value'=>'date("d/m/Y",strtotime($data->fecha))==date("d/m/Y",strtotime("today"))?\'<div id="verde">Hoy</div>\':\'+ \'.(date("d/m/Y",strtotime("now"))-date("d/m/Y",strtotime($data->fecha))).\' Días\'',
+					'value'=>'$data->fechaReposicion($data->fecha)',
 					'htmlOptions'=>array('style'=>'text-align:center;width:50px'),
 				),
 			)
         ));
 ?>
+<i>Mostrar alerta cuando un vehiculo no tenga reposición transcurridos 
+<select id="lista" >
+		<?php for($i=1;$i<11;$i++)
+			echo '<option value="'.$i.'">'.$i.'</option>';
+			?>
+		</select> o más días en adelante</i>
+<script>
+var valor="<?php echo $reposicionDias?>";
+$("#lista").val(valor).change();
+//$("#lista option:selected").val();
+$("#lista").change(function(){
+var dir="<?php echo Yii::app()->baseUrl;?>"+"/combustible/alertaReposicion/"+$(this).val();
+$.ajax({  		
+          url: dir,
+        })
+  	.done(function( result ) {    	
+			$.fn.yiiGridView.update('combustible');
+  	});
+});
+</script>
 <style>
+.rojo{
+background: none repeat scroll 0% 0% #FFD6D6;
+}
+#lista{
+	width:50px;
+}
 #verde{
 	color: #0FA526;
 	font-weight: bold;
