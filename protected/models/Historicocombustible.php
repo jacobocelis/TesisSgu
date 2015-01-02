@@ -28,17 +28,17 @@ class Historicocombustible extends CActiveRecord
 	}
 	public function fechaReposicion($fecha){
 		
-		if(date("d/m/Y",strtotime($fecha))==date("d/m/Y",strtotime("today")))
+		if(date("Y-m-d",strtotime($fecha))==date("Y-m-d",strtotime("today")))
 			return '<div id="verde">Hoy</div>';
-		elseif(date("d/m/Y",strtotime($fecha))==date("d/m/Y",strtotime("yesterday")))
+		elseif(date("Y-m-d",strtotime($fecha))==date("Y-m-d",strtotime("yesterday")))
 			return '<div id="verde">Ayer</div>';
 		else
-			return '+ '.(date("d/m/Y",strtotime("now"))-date("d/m/Y",strtotime($fecha))).' Días';
+			return '+ '.(date("Y-m-d",strtotime("now"))-date("Y-m-d",strtotime($fecha))).' Días';
 		
 	}
 	
 	public function ReposicionDias($fecha){
-			return (date("d/m/Y",strtotime("now"))-date("d/m/Y",strtotime($fecha)));
+			return (date("Y-m-d",strtotime("now"))-date("Y-m-d",strtotime($fecha)));
 	}
 	
 	/**
@@ -49,12 +49,12 @@ class Historicocombustible extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('fecha, litros, costoTotal, idestacionServicio, idconductor, idvehiculo', 'required'),
-			array('idestacionServicio, idconductor, idvehiculo', 'numerical', 'integerOnly'=>true),
+			array('fecha, litros, costoTotal, idestacionServicio, idconductor, idvehiculo,historico', 'required'),
+			array('idestacionServicio, idconductor, idvehiculo,historico', 'numerical', 'integerOnly'=>true),
 			array('litros, costoTotal', 'numerical'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, fecha, litros, costoTotal, idestacionServicio, idconductor, idvehiculo', 'safe', 'on'=>'search'),
+			array('id, fecha, litros, costoTotal, idestacionServicio, idconductor, idvehiculo,historico', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -85,6 +85,7 @@ class Historicocombustible extends CActiveRecord
 			'idestacionServicio' => 'Idestacion Servicio',
 			'idconductor' => 'Idconductor',
 			'idvehiculo' => 'Idvehiculo',
+			'historico' => 'Historico',
 		);
 	}
 
@@ -113,7 +114,8 @@ class Historicocombustible extends CActiveRecord
 		$criteria->compare('idestacionServicio',$this->idestacionServicio);
 		$criteria->compare('idconductor',$this->idconductor);
 		$criteria->compare('idvehiculo',$this->idvehiculo);
-	
+		$criteria->compare('historico',$this->historico);
+		
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
 		));

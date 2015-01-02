@@ -55,6 +55,12 @@
 		<?php echo $form->error($model,'idvehiculo'); ?>
 	</div>
 
+	<div class="row">
+		
+		<?php echo $form->hiddenField($model,'historico',array('value'=>0)); ?>
+		
+	</div>
+	
 	<div class="row buttons">
 		<?php echo CHtml::submitButton($model->isNewRecord ? 'Create' : 'Save'); ?>
 	</div>

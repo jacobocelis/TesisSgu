@@ -14,14 +14,13 @@ $this->menu=array(
 );
 ?>
 <h1>Última reposición de combustible</h1>
-<?php 
-$this->widget('zii.widgets.grid.CGridView', array(
+<?php $this->widget('zii.widgets.grid.CGridView', array(
                 'id'=>'combustible',
 				'summaryText'=>'',
-			    //'rowCssClassExpression'=>'$this->dataProvider->data[$row]->ReposicionDias($data->fecha)>='.$reposicionDias.'?"rojo":"even"',
+			    'rowCssClassExpression'=>'$this->dataProvider->data[$row]->ReposicionDias($data->fecha)>='.$reposicionDias.'?"rojo":"even"',
 				'emptyText'=>'No hay registro de reposiciónes',
                 'dataProvider'=>$dataProvider,
-				//'Nombre:text:Nombre',
+				
 				'columns'=>array(
 			
 				array(
@@ -58,7 +57,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
 				),
 			)
         ));
-?>
+//'Nombre:text:Nombre',?>
 <i>Mostrar alerta cuando un vehiculo no tenga reposición transcurridos 
 <select id="lista" >
 		<?php for($i=1;$i<11;$i++)

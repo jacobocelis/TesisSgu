@@ -70,6 +70,15 @@ class CombustibleController extends Controller
 		if(isset($_POST['Historicocombustible']))
 		{
 			$model->attributes=$_POST['Historicocombustible'];
+			if($model->validate()){
+				$consulta=Yii::app()->db->createCommand("select id,fecha from sgu_historicocombustible where idvehiculo=".$model->idvehiculo." order by fecha desc limit 1")->queryAll();
+				if(count($consulta)>0){
+					if($consulta[0]["fecha"]>$model->fecha)
+						$model->historico=1;
+					else
+					Yii::app()->db->createCommand("update `tsg`.`sgu_historicocombustible` set `historico` = 1 where `sgu_historicocombustible`.`id` = ".$consulta[0]["id"]."")->query();	
+				}
+			}
 			if($model->save())
 				$this->redirect(array('view','id'=>$model->id));
 		}
@@ -124,9 +133,10 @@ class CombustibleController extends Controller
 	{
 		$reposicionDias=Parametro::model()->findByAttributes(array('nombre'=>'alertaReposicion'));
 		$consulta=Yii::app()->db->createCommand("select * from(select * from sgu_historicocombustible  order by fecha desc) historicocombustible  group by idvehiculo")->queryAll();
-		
-		$dataProvider=new CArrayDataProvider($consulta, array('keyField'=>'id'));
-        //$dataProvider=new CActiveDataProvider('Historicocombustible',array('criteria'=>array('group'=>'t.idvehiculo','order'=>'fecha desc')));
+		//file_put_contents('prueba.txt',print_r($model=new Historicocombustible,true));
+		//$dataProvider=new CArrayDataProvider($consulta, array('keyField'=>'id'));
+		//,array('criteria'=>array('group'=>'t.idvehiculo','order'=>'fecha desc'))
+        $dataProvider=new CActiveDataProvider('Historicocombustible',array('criteria'=>array('condition'=>'historico=0','order'=>'fecha desc')));
 		$dataProvider->setPagination(false);
 		$this->render('index',array(
 			'dataProvider'=>$dataProvider,
