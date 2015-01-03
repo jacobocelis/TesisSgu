@@ -44,6 +44,13 @@ $this->widget('zii.widgets.grid.CGridView', array(
 					'htmlOptions'=>array('style'=>'text-align:center;width:25px'),
 				),
 				array(
+					'type'=>'raw',
+					'header'=>'Combustible',
+					'name'=>'idcombust',
+					'value'=>'$data->idcombust0->tipo',
+					'htmlOptions'=>array('style'=>'text-align:center;width:50px'),
+				),
+				array(
 					'header'=>'Conductor',
 					'name'=>'idempleado',
 					'value'=>'$data->idconductor0->nombre.\' \'.$data->idconductor0->apellido',
@@ -62,27 +69,14 @@ $this->widget('zii.widgets.grid.CGridView', array(
 					'value'=>'$data->fechaReposicion($data->fecha)',
 					'htmlOptions'=>array('style'=>'text-align:center;width:50px'),
 				),
-				array(
-						'headerHtmlOptions'=>array('style'=>'text-align:center;width:10px;'),
-						'htmlOptions'=>array('style'=>'text-align:center;width:30px;'),
-						'header'=>'Modificar',
-						'type'=>'raw',
-						'value'=>'CHtml::link(
-                        CHtml::image(Yii::app()->request->baseUrl."/imagenes/agregar.png",
-                                          "Agregar",array("title"=>"Editar")),
-                        "",
-                        array(
-                                \'style\'=>\'cursor: pointer;text-decoration: underline;text-align:center;\',
-                                \'onclick\'=>\'{editarViaje("\'.Yii::app()->createUrl("Viajes/update",array("id"=>$data["id"])).\'"); $("#modificar").dialog("open");}\'
-                        )
-                );',),
+			
 				array(
 					'header'=>'Eliminar',
 					'class'=>'CButtonColumn',
 					 'template'=>'{delete}',
 					     'buttons'=>array(
 							'delete' => array(
-								'url'=>'Yii::app()->createUrl("viajes/delete", array("id"=>$data->id))',
+								'url'=>'Yii::app()->createUrl("combustible/delete", array("id"=>$data->id))',
 						),
 					),
 				),

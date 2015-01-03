@@ -52,8 +52,8 @@
 
 	<div class="row">
 		
-		<?php echo $form->textField($model,'costoTotal',array('size'=>4,'maxlength'=>4, 'style'=>'width:100px')); ?>
-		<?php echo $form->error($model,'costoTotal'); ?>
+		<?php echo $form->hiddenField($model,'costoTotal',array('value'=>0,'size'=>4,'maxlength'=>4, 'style'=>'width:100px')); ?>
+
 	</div>
 	
 	<div class="row">
@@ -79,19 +79,7 @@
 }
 </style>
 <script>
-$('form').on('submit',function(e){
-    e.preventDefault();
-	var idTipo=$("#Historicocombustible_idcombust option:selected").val();
-	var dir="<?php echo Yii::app()->baseUrl;?>"+"/combustible/costoCombustible/";
-	$.ajax({  		
-          url: dir+idTipo,
-        })
-  	.done(function(result) {    	
-    	     $('#Historicocombustible_costoTotal').val(result*$("#Historicocombustible_litros").val());
-			 //alert($('#Historicocombustible_costoTotal').val())
-  	});	
 
-});
 $(function($){
 	    $.datepicker.regional['es'] = {
 	        closeText: 'Cerrar',

@@ -80,13 +80,16 @@ class CombustibleController extends Controller
 			$model->attributes=$_POST['Historicocombustible'];
 			if($model->validate()){
 				$model->fecha=date("Y-m-d", strtotime(str_replace('/', '-',$model->fecha)));
-				$consulta=Yii::app()->db->createCommand("select id,fecha from sgu_historicoCombustible where idvehiculo=".$model->idvehiculo." order by fecha desc limit 1")->queryAll();
+				$consulta=Yii::app()->db->createCommand("select id,fecha from sgu_historicoCombustible where idvehiculo=".$model->idvehiculo." order by fecha,id desc limit 1")->queryAll();
 				if(count($consulta)>0){
 					if($consulta[0]["fecha"]>$model->fecha)
 						$model->historico=1;
-					else
-					Yii::app()->db->createCommand("update `tsg`.`sgu_historicoCombustible` set `historico` = 1 where `sgu_historicoCombustible`.`id` = ".$consulta[0]["id"]."")->query();	
+					else{
+						Yii::app()->db->createCommand("update `tsg`.`sgu_historicoCombustible` set `historico` = 1 where `sgu_historicoCombustible`.`id` = ".$consulta[0]["id"]."")->query();
+					}
 				}
+				$comb=Combust::model()->findByPk($model->idcombust);
+				$model->costoTotal=($model->litros)*($comb->costoLitro);
 			}
 			if($model->save()){
                 if (Yii::app()->request->isAjaxRequest){
@@ -139,7 +142,15 @@ class CombustibleController extends Controller
 	 */
 	public function actionDelete($id)
 	{
-		$this->loadModel($id)->delete();
+		$modelo=$this->loadModel($id);
+		if($modelo->historico==1)
+			$this->loadModel($id)->delete();
+		else{
+			$consulta=Yii::app()->db->createCommand("select id,fecha from sgu_historicoCombustible where idvehiculo=".$modelo->idvehiculo." order by fecha,id desc limit 1 offset 1")->queryAll();
+			
+			Yii::app()->db->createCommand("update `tsg`.`sgu_historicoCombustible` set `historico` = 0 where `sgu_historicoCombustible`.`id` = ".$consulta[0]["id"]."")->query();
+			$this->loadModel($id)->delete();
+		}
 
 		// if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
 		if(!isset($_GET['ajax']))
