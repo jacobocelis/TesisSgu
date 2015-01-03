@@ -7,20 +7,20 @@ $this->breadcrumbs=array(
 );
 
 $this->menu=array(
-	array('label'=>'      Registrar reposición', 'url'=>array('create')),
+	array('label'=>'      Registrar reposición', 'url'=>array('registrarReposicion')),
 	array('label'=>'      Autonomía de combustible', 'url'=>array('autonomia')),
 	array('label'=>'      Histórico de reposición', 'url'=>array('admin')),
 	array('label'=>'      Estadísticas', 'url'=>array('admin')),
 );
 ?>
+<div class='crugepanel user-assignments-detail'>
 <h1>Última reposición de combustible</h1>
 <?php $this->widget('zii.widgets.grid.CGridView', array(
                 'id'=>'combustible',
 				'summaryText'=>'',
 			    'rowCssClassExpression'=>'$this->dataProvider->data[$row]->ReposicionDias($data->fecha)>='.$reposicionDias.'?"rojo":"even"',
 				'emptyText'=>'No hay registro de reposiciónes',
-                'dataProvider'=>$dataProvider,
-				
+                'dataProvider'=>$dataProvider,	
 				'columns'=>array(
 			
 				array(
@@ -49,21 +49,30 @@ $this->menu=array(
 					'htmlOptions'=>array('style'=>'text-align:center;width:60px'),
 				),
 				array(
+					'header'=>'Fecha',
+					'name'=>'fecha',
+					'value'=>'date("d/m/Y",strtotime($data->fecha))',
+					'htmlOptions'=>array('style'=>'text-align:center;width:40px'),
+				),
+				array(
 					'type'=>'raw',
 					'header'=>'Última reposición',
 					'name'=>'fecha',
 					'value'=>'$data->fechaReposicion($data->fecha)',
 					'htmlOptions'=>array('style'=>'text-align:center;width:50px'),
 				),
+				
 			)
         ));
 //'Nombre:text:Nombre',?>
+
 <i>Mostrar alerta cuando un vehiculo no tenga reposición transcurridos 
 <select id="lista" >
 		<?php for($i=1;$i<11;$i++)
 			echo '<option value="'.$i.'">'.$i.'</option>';
 			?>
 		</select> o más días en adelante</i>
+</div>
 <script>
 var valor="<?php echo $reposicionDias?>";
 $("#lista").val(valor).change();
@@ -79,6 +88,15 @@ $.ajax({
 });
 </script>
 <style>
+.crugepanel {
+    background-color: #FFF;
+    border: 1px dotted #AAA;
+    border-radius: 1px;
+    box-shadow: 3px 3px 5px #EEE;
+    display: block;
+    margin-top: 10px;
+    padding: 10px;
+}
 .rojo{
 background: none repeat scroll 0% 0% #FFD6D6;
 }

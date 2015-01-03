@@ -6,9 +6,9 @@
  * The followings are the available columns in table 'sgu_tipocombustible':
  * @property integer $id
  * @property string $combustible
- * @property double $costoLitro
  *
  * The followings are the available model relations:
+ * @property SguCombust[] $sguCombusts
  * @property SguVehiculo[] $sguVehiculos
  */
 class Tipocombustible extends CActiveRecord
@@ -31,11 +31,10 @@ class Tipocombustible extends CActiveRecord
 		return array(
 			array('id, combustible', 'required'),
 			array('id', 'numerical', 'integerOnly'=>true),
-			array('costoLitro', 'numerical'),
 			array('combustible', 'length', 'max'=>45),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, combustible, costoLitro', 'safe', 'on'=>'search'),
+			array('id, combustible', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -47,6 +46,7 @@ class Tipocombustible extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
+			'sguCombusts' => array(self::HAS_MANY, 'Combust', 'idtipoCombustible'),
 			'sguVehiculos' => array(self::HAS_MANY, 'Vehiculo', 'idcombustible'),
 		);
 	}
@@ -59,7 +59,6 @@ class Tipocombustible extends CActiveRecord
 		return array(
 			'id' => 'ID',
 			'combustible' => 'Combustible',
-			'costoLitro' => 'Costo x Litro',
 		);
 	}
 
@@ -83,7 +82,6 @@ class Tipocombustible extends CActiveRecord
 
 		$criteria->compare('id',$this->id);
 		$criteria->compare('combustible',$this->combustible,true);
-		$criteria->compare('costoLitro',$this->costoLitro);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,

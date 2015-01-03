@@ -4,7 +4,7 @@
 /* @var $form CActiveForm */
 ?>
 
-<div class="form">
+<div id="azul"class="form">
 
 <?php $form=$this->beginWidget('CActiveForm', array(
 	'id'=>'historicoviajes-form',
@@ -14,7 +14,7 @@
 	// See class documentation of CActiveForm for details on this.
 	'enableAjaxValidation'=>false,
 )); ?>
-
+<h1>Registro de viajes especiales</h1>
 	<p class="note">Campos con  <span class="required">*</span> son obligatorios.</p>
 	<div class="row">
 		<?php echo $form->labelEx($model,'fecha'); ?>
@@ -23,10 +23,14 @@
 	</div>
 	<div class="row">
 		<?php echo $form->labelEx($model,'idvehiculo'); ?>
-		<?php echo $form->dropDownList($model,'idvehiculo',CHtml::listData(Vehiculo::model()->findAll(),'id','numeroUnidad'),array('style' => 'width:70px;')); ?>
+		<?php echo $form->dropDownList($model,'idvehiculo',CHtml::listData(Vehiculo::model()->findAll(),'id','numeroUnidad'),array('prompt'=>'Seleccione: ','style' => 'width:110px;','onchange'=>'obtenerConductor(this.value);')); ?>
 		<?php echo $form->error($model,'idvehiculo'); ?>
 	</div>
-	
+	<div class="row">
+		<?php echo $form->labelEx($model,'idconductor'); ?>
+		<?php echo $form->dropDownList($model,'idconductor',array(),array('style' => 'width:170px;')); ?>
+		<?php echo $form->error($model,'idconductor'); ?>
+	</div>
 	<div class="row">
 		<?php echo $form->labelEx($model,'idviaje'); ?>
 		<?php echo $form->dropDownList($model,'idviaje',CHtml::listData(Viaje::model()->findAll('idtipo=2  or idtipo=3'),'id','viaje')); echo CHtml::link('(+)', "",array('title'=>'Registrar ruta',
@@ -55,17 +59,6 @@
 		<?php echo $form->textField($model,'nroPersonas',array('size'=>3,'maxlength'=>3,'style' => 'width:40px;')); ?>
 		<?php echo $form->error($model,'nroPersonas'); ?>
 	</div>
-	<?php 
-		$models = Empleado::model()->findAll();
-		$data = array();
-		foreach ($models as $mode)
-			$data[$mode->id] = $mode->nombre . ' '. $mode->apellido;  
-	?>
-	<div class="row">
-		<?php echo $form->labelEx($model,'idconductor'); ?>
-		<?php echo $form->dropDownList($model,'idconductor',$data,array('style' => 'width:170px;')); ?>
-		<?php echo $form->error($model,'idconductor'); ?>
-	</div>
 	
 	<div id="boton" class="row buttons">
 		<?php echo CHtml::submitButton($model->isNewRecord ? 'Registrar' : 'Actualizar'); 
@@ -76,7 +69,28 @@
 <?php $this->endWidget(); ?>
 
 </div><!-- form -->
+<style>
+#azul {
+    background: none repeat scroll 0% 0% #F9FDFD;
+    padding: 5px;
+    border: 1px solid #94A8FF;
+    margin-top: 5px;
+    width: 600px;
+}
+</style>
 <script>
+function obtenerConductor(id){
+
+	if(id=="")
+		id=0;
+	var dir="<?php echo Yii::app()->baseUrl;?>"+"/mttoCorrectivo/AjaxObtenerConductor/";
+	$.ajax({  		
+          url: dir+id,
+        })
+  	.done(function(result) {    	
+    	     $('#Historicoviajes_idconductor').html(result);
+  	});	
+}
 
 function validarHora(){
 	if($('#Historicoviajes_horaSalida').val()!="")

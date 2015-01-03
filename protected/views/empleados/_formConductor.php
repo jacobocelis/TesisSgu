@@ -14,7 +14,7 @@
 	// See class documentation of CActiveForm for details on this.
 	'enableAjaxValidation'=>false,
 )); ?>
-
+<h1>Registro y asignación de conductores</h1>
 	<p class="note">Campos con <span class="required">*</span> obligatorios.</p>
 
 

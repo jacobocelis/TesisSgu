@@ -44,7 +44,7 @@
 		<link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->request->baseUrl; ?>/css/jquery.galleryview-3.0-dev.css" />
 		<link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->request->baseUrl; ?>/css/jquery.galleryview-3.0-dev.css" />
 		<link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->request->baseUrl; ?>/css/jquery-ui-timepicker-addon.css" />
-
+		
 		
         <?php
         $cs->registerScriptFile($baseUrl . '/js/bootstrap.min.js');

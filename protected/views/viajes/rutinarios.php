@@ -15,12 +15,13 @@ $this->menu=array(
 	array('label'=>'      Estadísticas de viajes', 'url'=>array('admin')),
 );
 ?>
-<div class='crugepanel user-assignments-detail'>
-<h1>Registro de viajes rutinarios</h1>
-<label >Seleccione la fecha:  </label><br><?php echo CHtml::textField('Fecha',date('d/m/Y'),array('id'=>'fecha','size'=>10,'readonly'=>'readonly','maxlength'=>8, 'style'=>'width:100px;cursor:pointer;'));?>	
+<div class='crugepanel user-assignments-detail'>	
 
-<div id="viaje" class='crugepanel user-assignments-detail'></div>
-		<div id='etiqueta' ><?php echo CHtml::link('2. Registrar viajes de última rutina', "",  
+<div id="viaje" ></div>
+</div>
+<div class='crugepanel user-assignments-detail'>
+<h1>Listado de viajes rutinarios registrados</h1>
+		<div id='etiqueta' ><?php echo CHtml::link('Registrar viajes de última rutina', "",  
  array(
         'style'=>'cursor: pointer; text-decoration: underline;',
         'onclick'=>"{ultimosViajes(); }"));
@@ -145,6 +146,9 @@ $this->beginWidget('zii.widgets.jui.CJuiDialog', array( // the dialog
 	float: left;
     height: 35px;
 }
+#viaje{
+	width: 600px;
+}
 </style>
 <style>
 .grid-view table.items th {
@@ -180,42 +184,6 @@ function actualizarSpan(){
 			 $('#span').text(result.total);
 		},});		
 }
-	$(function($){
-	    $.datepicker.regional['es'] = {
-	        closeText: 'Cerrar',
-	        prevText: 'Anterior',
-	        nextText: 'Siguiente',
-	        currentText: 'Hoy',
-	        monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
-	        monthNamesShort: ['Ene','Feb','Mar','Abr', 'May','Jun','Jul','Ago','Sep', 'Oct','Nov','Dic'],
-	        dayNames: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
-	        dayNamesShort: ['Dom','Lun','Mar','Mié','Juv','Vie','Sáb'],
-	        dayNamesMin: ['Do','Lu','Ma','Mi','Ju','Vi','Sá'],
-	        weekHeader: 'Sm',
-	        dateFormat: 'dd/mm/yy',
-	        firstDay: 1,
-	        isRTL: false,
-			changeMonth: true,
-            changeYear: true,
-	        showMonthAfterYear: false,
-	        yearSuffix: '',
-	        maxDate: '0d',
-	        //minDate: '0d',
-	    };
-	    $.datepicker.setDefaults($.datepicker.regional['es']);
-	});      		
-	$("#fecha").datepicker({
-		onSelect: function(selected){
-			var fecha=$('#fecha').val();
-			$('#Historicoviajes_fecha').val($('#fecha').val());
-			$.fn.yiiGridView.update('viajes',{data:"fecha="+fecha});
-			var hoy="<?php echo date('d/m/Y');?>";
-				if($('#fecha').val()==hoy)
-			$('#etiqueta').show();
-			else
-				$('#etiqueta').hide();
-		}
-});
 </script>
 <script>
 agregarViajeRutinario();
@@ -234,6 +202,7 @@ function agregarViajeRutinario(){
                                 }
                                 else{
                                         $('#viaje').html(data.div);
+										$('#viaje').css('background','#9EF79C');
                                         //setTimeout("$('#viaje').dialog('close') ",1000);
                                         window.setTimeout('agregarViajeRutinario()', 2000);
 										$.fn.yiiGridView.update('viajes');

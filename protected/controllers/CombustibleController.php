@@ -32,7 +32,7 @@ class CombustibleController extends Controller
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create','update','alertaReposicion','autonomia','formAutonomia'),
+				'actions'=>array('create','update','alertaReposicion','autonomia','formAutonomia','registrarReposicion','RegReposicion','AjaxObtenerTipoCombustible','CostoCombustible'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -60,8 +60,16 @@ class CombustibleController extends Controller
 	 * Creates a new model.
 	 * If creation is successful, the browser will be redirected to the 'view' page.
 	 */
-	public function actionCreate()
-	{
+	public function actionRegistrarReposicion(){
+		$dataProvider=new CActiveDataProvider('Historicocombustible',array('criteria'=>array('condition'=>'1','order'=>'id desc')));
+		$dataProvider->setPagination(false);
+		
+		$this->render('registrarReposicion',array(
+			'dataProvider'=>$dataProvider
+		));
+	}
+	public function actionRegReposicion(){
+		
 		$model=new Historicocombustible;
 
 		// Uncomment the following line if AJAX validation is needed
@@ -71,21 +79,33 @@ class CombustibleController extends Controller
 		{
 			$model->attributes=$_POST['Historicocombustible'];
 			if($model->validate()){
-				$consulta=Yii::app()->db->createCommand("select id,fecha from sgu_historicocombustible where idvehiculo=".$model->idvehiculo." order by fecha desc limit 1")->queryAll();
+				$model->fecha=date("Y-m-d", strtotime(str_replace('/', '-',$model->fecha)));
+				$consulta=Yii::app()->db->createCommand("select id,fecha from sgu_historicoCombustible where idvehiculo=".$model->idvehiculo." order by fecha desc limit 1")->queryAll();
 				if(count($consulta)>0){
 					if($consulta[0]["fecha"]>$model->fecha)
 						$model->historico=1;
 					else
-					Yii::app()->db->createCommand("update `tsg`.`sgu_historicocombustible` set `historico` = 1 where `sgu_historicocombustible`.`id` = ".$consulta[0]["id"]."")->query();	
+					Yii::app()->db->createCommand("update `tsg`.`sgu_historicoCombustible` set `historico` = 1 where `sgu_historicoCombustible`.`id` = ".$consulta[0]["id"]."")->query();	
 				}
 			}
-			if($model->save())
-				$this->redirect(array('view','id'=>$model->id));
+			if($model->save()){
+                if (Yii::app()->request->isAjaxRequest){
+				   /*inserts por debajo del plan de mantenimiento a cada vehiculo del grupo*/
+				   
+					echo CJSON::encode(array(
+                        'status'=>'success', 
+                        'div'=>"se realizó el registro correctamente",
+                        ));
+                    exit;
+                }
+            }	
 		}
-
-		$this->render('create',array(
-			'model'=>$model,
-		));
+		if (Yii::app()->request->isAjaxRequest){
+				echo CJSON::encode(array(
+					'status'=>'failure', 
+					'div'=>$this->renderPartial('_formReposicion', array('model'=>$model), true)));
+				exit;               
+			}
 	}
 
 	/**
@@ -234,5 +254,20 @@ class CombustibleController extends Controller
 		$modelo=Parametro::model()->findByAttributes(array('nombre'=>'alertaReposicion'));
 		$modelo->valor=$id;
 		$modelo->save();
+	}
+	public function actionAjaxObtenerTipoCombustible($id){
+			if($id==0)
+				return  CHtml::tag('option',array('type'=>'text','value'=>((''))),Chtml::encode(('')),true);
+	$model=Vehiculo::model()->findByPk($id);
+			$idtipo=$model->idcombustible;
+	$models = Combust::model()->findAll('idtipoCombustible = '.$idtipo.' order by id DESC');
+		foreach ($models as $mode){
+			echo CHtml::tag('option',array('type'=>'text','value'=>(($mode->id))),Chtml::encode(($mode->tipo)),true);
+		}
+	}
+	
+	public function actionCostoCombustible($id){
+			$model=Combust::model()->findByPk($id);
+			echo $model->costoLitro;
 	}
 }

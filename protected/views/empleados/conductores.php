@@ -3,8 +3,8 @@
 /* @var $dataProvider CActiveDataProvider */
 
 $this->breadcrumbs=array(
-	'Viajes'=>array('viajes/index'),
-	'Viajes rutinarios',
+	//'Viajes'=>array('viajes/index'),
+	'Conductores',
 );
 
 $this->menu=array(
@@ -15,12 +15,11 @@ $this->menu=array(
 );
 ?>
 <div class='crugepanel user-assignments-detail'>
-<h1>Registro y asignación de conductores</h1>
-		
-
-<div id="viaje" class='crugepanel user-assignments-detail'></div>
-<?php
-$this->widget('zii.widgets.grid.CGridView', array(
+<div id="viaje" ></div>
+</div>
+<div class='crugepanel user-assignments-detail'>
+<h1>Lista de conductores asignados a cada unidad</h1>
+<?php $this->widget('zii.widgets.grid.CGridView', array(
                 'id'=>'viajes',
 				'summaryText'=>'',
 				'selectableRows'=>1,

@@ -791,9 +791,9 @@ class MttoCorrectivoController extends Controller
 			if($id==0)
 				return  CHtml::tag('option',array('type'=>'text','value'=>((''))),Chtml::encode(('')),true);
 			
-			$lista2=Historicoempleados::model()->findAll('idvehiculo = :id order by id desc limit 1',array(':id'=>$id));
+	$lista2=Historicoempleados::model()->findAll('idvehiculo = '.$id.' and idempleado in (select id from sgu_empleado where idtipoEmpleado=1) order by id desc limit 1');
 			
-			$mi=Yii::app()->db->createCommand("select id, concat(nombre,' ',apellido) as nombre from sgu_empleado order by id=".$lista2[0]['idvehiculo']." desc")->queryAll();
+			$mi=Yii::app()->db->createCommand("select id, concat(nombre,' ',apellido) as nombre from sgu_empleado where idtipoEmpleado=1 order by id=".$lista2[0]['idvehiculo']." desc")->queryAll();
 			
 			foreach($mi as $li){
 				echo CHtml::tag('option',array('type'=>'text','value'=>(($li['id']))),Chtml::encode(($li["nombre"])),true);

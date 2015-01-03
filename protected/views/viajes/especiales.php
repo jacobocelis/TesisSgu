@@ -15,9 +15,9 @@ $this->menu=array(
 );
 ?>
 <div class='crugepanel user-assignments-detail'>
-<h1>Registro de viajes especiales</h1>
-<div id="registro" class='crugepanel user-assignments-detail'>
+<div id="registro"></div>
 </div>
+<div class='crugepanel user-assignments-detail'>
 <h1>Listado de viajes registrados</h1>
 <?php
 $this->widget('zii.widgets.grid.CGridView', array(
@@ -170,6 +170,9 @@ $this->beginWidget('zii.widgets.jui.CJuiDialog', array( // the dialog
 	float: left;
     height: 35px;
 }
+#registro{
+	width: 600px;
+}
 </style>
 <style>
 .grid-view table.items th {
@@ -209,6 +212,7 @@ jQuery.ajax({
                                 }
                                 else{
                                         $('#registro').html(data.div);
+										$('#registro').css('background','#9EF79C');
 										window.setTimeout('viajeForm()', 2000);
 										$.fn.yiiGridView.update('viajes');
                                 }
@@ -238,6 +242,7 @@ $('#modificar').dialog('open');
                                 else
                                 {
                                         $('#modificar div.divForForm').html(data.div);
+										
                                         setTimeout("$('#modificar').dialog('close') ",1000);
 										$.fn.yiiGridView.update('viajes');
                                 }

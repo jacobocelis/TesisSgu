@@ -83,6 +83,7 @@ function cancelar(){
 	background: #D9EDFF;
 	width:320px;
 	padding: 5px;
-	border-radius: 2px;
+	 border: 1px solid #94A8FF;
+	
 }
 </style>

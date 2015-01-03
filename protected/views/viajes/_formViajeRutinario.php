@@ -4,7 +4,7 @@
 /* @var $form CActiveForm */
 ?>
 
-<div class="form">
+<div id="azul"class="form">
 
 <?php $form=$this->beginWidget('CActiveForm', array(
 	'id'=>'historicoviajes-form',
@@ -15,6 +15,8 @@
 	'enableAjaxValidation'=>false,
 )); ?>
  
+<h1>Registro de viajes rutinarios</h1>
+<label >Seleccione la fecha:  </label><br><?php echo CHtml::textField('Fecha',date('d/m/Y'),array('id'=>'fecha','size'=>10,'readonly'=>'readonly','maxlength'=>8, 'style'=>'width:100px;cursor:pointer;'));?>
 	<p class="note">Campos con  <span class="required">*</span> son obligatorios.</p>
 	
 		<?php echo $form->hiddenField($model,'fecha',array('value'=>$fecha)); ?>
@@ -23,6 +25,12 @@
 		<?php echo $form->labelEx($model,'idvehiculo'); ?>
 		<?php echo $form->dropDownList($model,'idvehiculo',CHtml::listData(Vehiculo::model()->findAll(),'id','numeroUnidad'),array('prompt'=>'Seleccione: ','onchange'=>'obtenerPuestos(this.value);','style' => 'width:110px;')); ?>
 		<?php echo $form->error($model,'idvehiculo'); ?>
+	</div>
+	
+	<div class="row">
+		<?php echo $form->labelEx($model,'idconductor'); ?>
+		<?php echo $form->dropDownList($model,'idconductor',array(),array('style' => 'width:170px;')); ?>
+		<?php echo $form->error($model,'idconductor'); ?>
 	</div>
 	
 	<div class="row">
@@ -56,17 +64,7 @@
 	
 	</div>	
 
-		<?php 
-		$models = Empleado::model()->findAll();
-		$data = array();
-		foreach ($models as $mode)
-			$data[$mode->id] = $mode->nombre . ' '. $mode->apellido;  
-	?>
-	<div class="row">
-		<?php echo $form->labelEx($model,'idconductor'); ?>
-		<?php echo $form->dropDownList($model,'idconductor',$data,array('style' => 'width:170px;')); ?>
-		<?php echo $form->error($model,'idconductor'); ?>
-	</div>
+
 	<div id="boton" class="row buttons">
 		<?php echo CHtml::submitButton($model->isNewRecord ? 'Registrar' : 'Actualizar'); 
 		?>
@@ -75,8 +73,18 @@
 <?php $this->endWidget(); ?>
 
 </div><!-- form -->
+<style>
+#azul {
+    background: none repeat scroll 0% 0% #F9FDFD;
+    padding: 5px;
+    border: 1px solid #94A8FF;
+    margin-top: 5px;
+    width: 600px;
+}
+</style>
 <script>
 function obtenerPuestos(id){
+	obtenerConductor(id);
 var dir="<?php echo Yii::app()->baseUrl;?>"+"/viajes/puestos/"+id;
 	$.ajax({  		
           url: dir,
@@ -92,8 +100,55 @@ var dir="<?php echo Yii::app()->baseUrl;?>"+"/viajes/puestos/"+id;
 			 //$('#Historicoviajes_idconductor').html(result.lista);
   	});
 }
+function obtenerConductor(id){
+	if(id=="")
+		id=0;
+	var dir="<?php echo Yii::app()->baseUrl;?>"+"/mttoCorrectivo/AjaxObtenerConductor/";
+	$.ajax({  		
+          url: dir+id,
+        })
+  	.done(function(result) {    	
+    	     $('#Historicoviajes_idconductor').html(result);
+  	});	
+}
 </script>
 <script>
+$(function($){
+	    $.datepicker.regional['es'] = {
+	        closeText: 'Cerrar',
+	        prevText: 'Anterior',
+	        nextText: 'Siguiente',
+	        currentText: 'Hoy',
+	        monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+	        monthNamesShort: ['Ene','Feb','Mar','Abr', 'May','Jun','Jul','Ago','Sep', 'Oct','Nov','Dic'],
+	        dayNames: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
+	        dayNamesShort: ['Dom','Lun','Mar','Mié','Juv','Vie','Sáb'],
+	        dayNamesMin: ['Do','Lu','Ma','Mi','Ju','Vi','Sá'],
+	        weekHeader: 'Sm',
+	        dateFormat: 'dd/mm/yy',
+	        firstDay: 1,
+	        isRTL: false,
+			changeMonth: true,
+            changeYear: true,
+	        showMonthAfterYear: false,
+	        yearSuffix: '',
+	        maxDate: '0d',
+	        //minDate: '0d',
+	    };
+	    $.datepicker.setDefaults($.datepicker.regional['es']);
+	});      		
+	$("#fecha").datepicker({
+		onSelect: function(selected){
+			var fecha=$('#fecha').val();
+			$('#Historicoviajes_fecha').val($('#fecha').val());
+			$.fn.yiiGridView.update('viajes',{data:"fecha="+fecha});
+			var hoy="<?php echo date('d/m/Y');?>";
+				if($('#fecha').val()==hoy)
+			$('#etiqueta').show();
+			else
+				$('#etiqueta').hide();
+		}
+});
 
 function validarHora(){
 	if($('#Historicoviajes_horaSalida').val()!="")

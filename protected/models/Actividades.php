@@ -50,7 +50,7 @@ class Actividades extends CActiveRecord
 			return 0;
 		return 1;
     }
-	function diasRestantes($fin){
+	/*function diasRestantes($fin){
 		$datetime1 = new DateTime($fin);
 		$datetime2 = new DateTime("now");
 		$datetime2=$datetime2->format('Y-m-d');
@@ -59,6 +59,20 @@ class Actividades extends CActiveRecord
 			if($interval->format('%R%a')<0)
 				return 0;
 		return $interval->format('%a');
+	}*/
+	
+	function diasRestantes($fin){
+		$datetime1 = new DateTime($fin);
+		$datetime2 = new DateTime("now");
+		$datetime2=$datetime2->format('Y-m-d');
+		$fecha=new DateTime($datetime2);
+		$interval = $fecha->diff($datetime1);
+		
+		$intervalo=((strtotime($fin)-strtotime(date("Y-m-d")))/86400);
+		
+			if($intervalo<0)
+				return 0;
+		return $intervalo;
 	}
 	function kmRestantes($id,$prox){
 		$km=Kilometraje::model()->findAll(array(
