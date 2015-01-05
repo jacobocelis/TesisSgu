@@ -8,7 +8,7 @@
  * @property string $piso
  *
  * The followings are the available model relations:
- * @property SguRueda[] $sguRuedas
+ * @property SguCaucho[] $sguCauchos
  */
 class Piso extends CActiveRecord
 {
@@ -45,7 +45,7 @@ class Piso extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-			'sguRuedas' => array(self::HAS_MANY, 'SguRueda', 'idpiso'),
+			'sguCauchos' => array(self::HAS_MANY, 'SguCaucho', 'idpiso'),
 		);
 	}
 

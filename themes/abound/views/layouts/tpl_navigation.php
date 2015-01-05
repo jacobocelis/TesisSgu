@@ -101,7 +101,7 @@ else{
                             'visible' => !Yii::app()->user->isGuest),
 							array('label' => 'Combustible', 'url' => array('/Combustible'), 
                             'visible' => !Yii::app()->user->isGuest),
-							array('label' => 'Llantas', 'url' => array('/'), 
+							array('label' => 'Neumáticos', 'url' => array('/neumaticos'), 
                             'visible' => !Yii::app()->user->isGuest),
 							array('label' => 'Viajes', 'url' => array('/viajes'), 
                             'visible' => !Yii::app()->user->isGuest),
