@@ -122,7 +122,7 @@ class Reportefalla extends CActiveRecord
 	 */
 	public function tableName()
 	{
-		return 'sgu_reportefalla';
+		return 'sgu_reporteFalla';
 	}
 
 	/**

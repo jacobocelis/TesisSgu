@@ -8,8 +8,9 @@ $this->breadcrumbs=array(
 );
 
 $this->menu=array(
-	array('label'=>'List Historicocombustible', 'url'=>array('index')),
-	array('label'=>'Manage Historicocombustible', 'url'=>array('admin')),
+	array('label'=>'      Autonomía de combustible', 'url'=>array('autonomia')),
+	array('label'=>'      Histórico de reposición', 'url'=>array('admin')),
+	array('label'=>'      Estadísticas', 'url'=>array('admin')),
 );
 ?>
 <div class='crugepanel user-assignments-detail'>

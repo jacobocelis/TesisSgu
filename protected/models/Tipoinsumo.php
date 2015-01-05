@@ -17,7 +17,7 @@ class Tipoinsumo extends CActiveRecord
 	 */
 	public function tableName()
 	{
-		return 'sgu_tipoinsumo';
+		return 'sgu_tipoInsumo';
 	}
 
 	/**

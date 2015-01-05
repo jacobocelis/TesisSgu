@@ -3,8 +3,8 @@
 /* @var $model Historicocombustible */
 
 $this->breadcrumbs=array(
-	'Historicocombustibles'=>array('index'),
-	'Manage',
+	'Combustible'=>array('index'),
+	'Histórico',
 );
 
 $this->menu=array(
@@ -13,9 +13,9 @@ $this->menu=array(
 	array('label'=>'      Estadísticas', 'url'=>array('admin')),
 );
 ?>
-
+<div class='crugepanel user-assignments-detail'>
 <h1>Histórico de reposiciones</h1>
-</div><!-- search-form -->
+
 <?php
 $this->widget('zii.widgets.grid.CGridView', array(
                 'id'=>'comb',
@@ -42,6 +42,12 @@ $this->widget('zii.widgets.grid.CGridView', array(
 					'htmlOptions'=>array('style'=>'text-align:center;width:25px'),
 				),
 				array(
+					'header'=>'Costo Bs.',
+					'name'=>'costoTotal',
+					//'value'=>'$data->idfalla0->falla',
+					'htmlOptions'=>array('style'=>'text-align:center;width:25px'),
+				),
+				array(
 					'type'=>'raw',
 					'header'=>'Combustible',
 					'name'=>'idcombust',
@@ -62,22 +68,53 @@ $this->widget('zii.widgets.grid.CGridView', array(
 				),
 				array(
 					'type'=>'raw',
-					'header'=>'Última reposición',
+					'header'=>'Fecha reposición',
 					'name'=>'fecha',
-					'value'=>'$data->fechaReposicion($data->fecha)',
+					'value'=>'date("d/m/Y",strtotime($data->fecha))',
 					'htmlOptions'=>array('style'=>'text-align:center;width:50px'),
-				),
-			
-				array(
-					'header'=>'Eliminar',
-					'class'=>'CButtonColumn',
-					 'template'=>'{delete}',
-					     'buttons'=>array(
-							'delete' => array(
-								'url'=>'Yii::app()->createUrl("combustible/delete", array("id"=>$data->id))',
-						),
-					),
 				),
 			)
         ));
 ?>
+</div>
+<style>
+.crugepanel {
+    background-color: #FFF;
+    border: 1px dotted #AAA;
+    border-radius: 1px;
+    box-shadow: 3px 3px 5px #EEE;
+    display: block;
+    margin-top: 10px;
+    padding: 10px;
+}
+.rojo{
+background: none repeat scroll 0% 0% #FFD6D6;
+}
+#lista{
+	width:50px;
+}
+#verde{
+	color: #0FA526;
+	font-weight: bold;
+}
+.grid-view table.items th {
+    text-align: center;
+    background: none repeat scroll 0% 0% rgba(0, 138, 255, 0.15);
+	color: #000;
+}
+.grid-view table.items th a {
+    color: #000!important;
+    font-weight: bold;
+    text-decoration: none;
+}
+.grid-view table.items td {
+    font-size: 0.9em;
+    border: 1px solid #5877C3;
+    padding: 0.3em;
+}
+.grid-view table.items th, .grid-view table.items td {
+    font-size: 0.9em;
+    border: 1px solid #A8C5F0;
+    padding: 0.3em;
+}
+</style>

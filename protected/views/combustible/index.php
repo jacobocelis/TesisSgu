@@ -9,8 +9,9 @@ $this->breadcrumbs=array(
 $this->menu=array(
 	array('label'=>'      Registrar reposición', 'url'=>array('registrarReposicion')),
 	array('label'=>'      Autonomía de combustible', 'url'=>array('autonomia')),
-	array('label'=>'      Histórico de reposición', 'url'=>array('admin')),
+	array('label'=>'      Histórico de reposición', 'url'=>array('historicoReposicion')),
 	array('label'=>'      Estadísticas', 'url'=>array('admin')),
+	array('label'=>'      Administración de parámetros', 'url'=>array('admin')),
 );
 ?>
 <div class='crugepanel user-assignments-detail'>
@@ -22,7 +23,7 @@ $this->menu=array(
 				'emptyText'=>'No hay registro de reposiciónes',
                 'dataProvider'=>$dataProvider,	
 				'columns'=>array(
-			
+				
 				array(
 					'header'=>'Unidad',
 					'name'=>'idvehiculo',

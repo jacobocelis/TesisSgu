@@ -62,11 +62,6 @@ class Actividades extends CActiveRecord
 	}*/
 	
 	function diasRestantes($fin){
-		$datetime1 = new DateTime($fin);
-		$datetime2 = new DateTime("now");
-		$datetime2=$datetime2->format('Y-m-d');
-		$fecha=new DateTime($datetime2);
-		$interval = $fecha->diff($datetime1);
 		
 		$intervalo=((strtotime($fin)-strtotime(date("Y-m-d")))/86400);
 		

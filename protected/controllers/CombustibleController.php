@@ -32,7 +32,7 @@ class CombustibleController extends Controller
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create','update','alertaReposicion','autonomia','formAutonomia','registrarReposicion','RegReposicion','AjaxObtenerTipoCombustible','CostoCombustible'),
+				'actions'=>array('create','update','alertaReposicion','autonomia','formAutonomia','registrarReposicion','RegReposicion','AjaxObtenerTipoCombustible','CostoCombustible','HistoricoReposicion'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -231,6 +231,13 @@ class CombustibleController extends Controller
 
 		$this->render('admin',array(
 			'model'=>$model,
+		));
+	}
+	public function actionHistoricoReposicion()
+	{
+		$dataProvider=new CActiveDataProvider('Historicocombustible',array('criteria'=>array('order'=>'fecha desc')));
+		$this->render('historicoReposicion',array(
+			'dataProvider'=>$dataProvider,
 		));
 	}
 
