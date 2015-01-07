@@ -61,9 +61,9 @@ class Detallerueda extends CActiveRecord
 	{
 		return array(
 			'id' => 'ID',
-			'idposicionRueda' => 'Idposicion Rueda',
+			'idposicionRueda' => 'Posición',
 			'iddetalleEje' => 'Iddetalle Eje',
-			'idcaucho' => 'Idcaucho',
+			'idcaucho' => 'Medida',
 		);
 	}
 

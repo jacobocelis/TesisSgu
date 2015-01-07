@@ -182,8 +182,9 @@ $this->widget('zii.widgets.grid.CGridView', array(
 		<?php echo CHtml::link('Agregar neumático', "",array('title'=>'',
         'style'=>'cursor: pointer;font-size:13px;margin-left:0px;background:#A6FFB6;',
         'onclick'=>"{
-		nuevoChasis();}"));?>
+		nuevoCaucho();}"));?>
 		</div>
+		<div id="nuevoCaucho"></div>
 </div>
 </div>
 </div>
@@ -427,10 +428,35 @@ function nuevoEje(){
                                         setTimeout("$('#nuevoEje').hide();",2000);
 										 setTimeout("$('#plantilla').change()",2000);
 										$.fn.yiiGridView.update('ejes');
+										$('#caucho').hide();
+										
                                 }
                 },
                 'cache':false});
     return false; 
-
+}
+function nuevoCaucho(){
+	$('#nuevoCaucho').show();
+	$('#caucho').hide();
+	var idEje = $.fn.yiiGridView.getSelection('ejes');
+	jQuery.ajax({
+                url: "<?php echo Yii::app()->baseUrl;?>"+"/Detallerueda/agregar/"+idEje,
+                'data':$(this).serialize(),
+                'type':'post',
+                'dataType':'json',
+                'success':function(data){
+                                if (data.status == 'failure'){
+                                        $('#nuevoCaucho').html(data.div);
+                                        $('#nuevoCaucho form').submit(nuevoCaucho);
+                                }
+                                else{
+                                        $('#nuevoCaucho').html(data.div);
+                                        setTimeout("$('#nuevoCaucho').hide();",2000);
+										setTimeout("mostrarRuedas()",2000);
+										$.fn.yiiGridView.update('cauchos');
+                                }
+                },
+                'cache':false});
+    return false; 
 }
 </script>
