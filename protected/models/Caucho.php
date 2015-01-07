@@ -49,10 +49,10 @@ class Caucho extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-			'idmedidaCaucho0' => array(self::BELONGS_TO, 'SguMedidacaucho', 'idmedidaCaucho'),
-			'idpiso0' => array(self::BELONGS_TO, 'SguPiso', 'idpiso'),
-			'idrin0' => array(self::BELONGS_TO, 'SguRin', 'idrin'),
-			'sguHistoricocauchos' => array(self::HAS_MANY, 'SguHistoricocaucho', 'idcaucho'),
+			'idmedidaCaucho0' => array(self::BELONGS_TO, 'Medidacaucho', 'idmedidaCaucho'),
+			'idpiso0' => array(self::BELONGS_TO, 'Piso', 'idpiso'),
+			'idrin0' => array(self::BELONGS_TO, 'Rin', 'idrin'),
+			'sguHistoricocauchos' => array(self::HAS_MANY, 'Historicocaucho', 'idcaucho'),
 		);
 	}
 
@@ -63,9 +63,9 @@ class Caucho extends CActiveRecord
 	{
 		return array(
 			'id' => 'ID',
-			'idmedidaCaucho' => 'Idmedida Caucho',
-			'idrin' => 'Idrin',
-			'idpiso' => 'Idpiso',
+			'idmedidaCaucho' => 'Medida',
+			'idrin' => 'Rin',
+			'idpiso' => 'Piso',
 		);
 	}
 

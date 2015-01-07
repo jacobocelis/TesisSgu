@@ -22,7 +22,7 @@ class Detalleeje extends CActiveRecord
 	 */
 	public function tableName()
 	{
-		return 'sgu_detalleeje';
+		return 'sgu_detalleEje';
 	}
 
 	/**
@@ -62,9 +62,9 @@ class Detalleeje extends CActiveRecord
 	{
 		return array(
 			'id' => 'ID',
-			'nroRuedas' => 'Nro Ruedas',
+			'nroRuedas' => 'Cantidad de neumáticos',
 			'idchasis' => 'Idchasis',
-			'idposicionEje' => 'Idposicion Eje',
+			'idposicionEje' => 'Posición del eje',
 			'nombre' => 'Nombre',
 		);
 	}

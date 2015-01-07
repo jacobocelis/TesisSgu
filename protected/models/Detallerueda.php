@@ -7,10 +7,12 @@
  * @property integer $id
  * @property integer $idposicionRueda
  * @property integer $iddetalleEje
+ * @property integer $idcaucho
  *
  * The followings are the available model relations:
- * @property SguDetalleeje $iddetalleEje0
- * @property SguPosicionrueda $idposicionRueda0
+ * @property Caucho $idcaucho0
+ * @property Detalleeje $iddetalleEje0
+ * @property Posicionrueda $idposicionRueda0
  */
 class Detallerueda extends CActiveRecord
 {
@@ -30,11 +32,11 @@ class Detallerueda extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('idposicionRueda, iddetalleEje', 'required'),
-			array('idposicionRueda, iddetalleEje', 'numerical', 'integerOnly'=>true),
+			array('idposicionRueda, iddetalleEje, idcaucho', 'required'),
+			array('idposicionRueda, iddetalleEje, idcaucho', 'numerical', 'integerOnly'=>true),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, idposicionRueda, iddetalleEje', 'safe', 'on'=>'search'),
+			array('id, idposicionRueda, iddetalleEje, idcaucho', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -46,6 +48,7 @@ class Detallerueda extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
+			'idcaucho0' => array(self::BELONGS_TO, 'Caucho', 'idcaucho'),
 			'iddetalleEje0' => array(self::BELONGS_TO, 'Detalleeje', 'iddetalleEje'),
 			'idposicionRueda0' => array(self::BELONGS_TO, 'Posicionrueda', 'idposicionRueda'),
 		);
@@ -60,6 +63,7 @@ class Detallerueda extends CActiveRecord
 			'id' => 'ID',
 			'idposicionRueda' => 'Idposicion Rueda',
 			'iddetalleEje' => 'Iddetalle Eje',
+			'idcaucho' => 'Idcaucho',
 		);
 	}
 
@@ -84,6 +88,7 @@ class Detallerueda extends CActiveRecord
 		$criteria->compare('id',$this->id);
 		$criteria->compare('idposicionRueda',$this->idposicionRueda);
 		$criteria->compare('iddetalleEje',$this->iddetalleEje);
+		$criteria->compare('idcaucho',$this->idcaucho);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,

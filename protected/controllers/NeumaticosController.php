@@ -32,7 +32,7 @@ class NeumaticosController extends Controller
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create','update','plantilla'),
+				'actions'=>array('create','update','plantilla','ActualizarListaPlantillas','MostrarLinkEje','actualizarListaPosicionesEje','MostrarLinkCaucho'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -52,24 +52,35 @@ class NeumaticosController extends Controller
 	public function actionPlantilla(){
 		$ca=0;
 		$idChasis=0;
-		$llantas=0;
+		$ruedas=0;
+		$idEje=0;
 		
 		if(isset($_GET["data"])){
 			if($_GET["data"]=="")
 				$_GET["data"]=0;
-			
 				$idChasis=$_GET["data"];
 				$ca=$_GET["data"];
 		}
-		$chasis=new CActiveDataProvider('Chasis',array("criteria"=>array("condition"=>"id=".$idChasis."")));
-		$consulta=Yii::app()->db->createCommand("select de.nombre as Eje,  pe.posicionEje as 'Posición del eje', de.nroRuedas as 'Ruedas por eje'
-from sgu_detalleeje de, sgu_posicioneje pe  where de.idposicionEje=pe.id and de.idchasis=1 order by de.nombre")->queryAll();
-			
-		$llantas=new CArrayDataProvider($consulta, array('keyField'=>'Eje'));
 		
+		if(isset($_GET["idEje"])){
+			if($_GET["idEje"]=="")
+				$_GET["idEje"]=0;
+			
+			$idEje=$_GET["idEje"];
+		}
+		$chasis=new CActiveDataProvider('Chasis',array("criteria"=>array("condition"=>"id=".$idChasis."")));
+		
+		/*$consulta=Yii::app()->db->createCommand("select de.nombre as Eje,  pe.posicionEje as 'Posición del eje', de.nroRuedas as 'Ruedas por eje'
+		from sgu_detalleeje de, sgu_posicioneje pe  where de.idposicionEje=pe.id and de.idchasis=".$idChasis." order by de.nombre")->queryAll();*/
+		//$ejes=new CArrayDataProvider($consulta, array('keyField'=>'Eje'));
+		
+		$ejes=new CActiveDataProvider("Detalleeje",array("criteria"=>array("condition"=>"idchasis=".$idChasis."")));
+		
+		$ruedas=new CActiveDataProvider('Detallerueda',array("criteria"=>array("condition"=>"iddetalleEje=".$idEje."")));
 		$this->render('plantilla',array(
 			'chasis'=>$chasis,
-			'llantas'=>$llantas,
+			'llantas'=>$ejes,
+			'ruedas'=>$ruedas,
 			'ca'=>$ca,
 		));
 	}
@@ -97,7 +108,6 @@ from sgu_detalleeje de, sgu_posicioneje pe  where de.idposicionEje=pe.id and de.
 			if($model->save())
 				$this->redirect(array('view','id'=>$model->id));
 		}
-
 		$this->render('create',array(
 			'model'=>$model,
 		));
@@ -192,6 +202,48 @@ from sgu_detalleeje de, sgu_posicioneje pe  where de.idposicionEje=pe.id and de.
 		{
 			echo CActiveForm::validate($model);
 			Yii::app()->end();
+		}
+	}
+	public function actionActualizarListaPlantillas(){
+		
+		$models = Chasis::model()->findAll('1 order by id DESC');
+		foreach ($models as $mode){
+			echo CHtml::tag('option',array('type'=>'text','value'=>(($mode->id))),Chtml::encode(($mode->nombre)),true);
+		}
+	}
+	public function actionMostrarLinkEje($id){
+		if($id==0){
+			echo 1;
+			return 0;
+		}
+	
+		$chasis=Chasis::model()->findByPk($id);
+		$ejes=new CActiveDataProvider("Detalleeje",array("criteria"=>array("condition"=>"idchasis=".$id."")));
+		$totalEjes=$ejes->getTotalItemCount();
+		if($totalEjes<$chasis->nroEjes)
+			echo 0;
+		else
+			echo 1;
+	}
+	public function actionMostrarLinkCaucho($id){
+		if($id==0){
+			echo 1;
+			return 0;
+		}
+		$eje=Detalleeje::model()->findByPk($id);
+		$ruedas=new CActiveDataProvider("Detallerueda",array("criteria"=>array("condition"=>"iddetalleEje=".$id."")));
+		$totalRuedas=$ruedas->getTotalItemCount();
+		if($totalRuedas<$eje->nroRuedas)
+			echo 0;
+		else
+			echo 1;
+	}
+	public function actionActualizarListaPosicionesEje(){
+	
+			$lista2=Posicioneje::model()->findAll('1 order by id desc');
+			foreach($lista2 as $li){
+				echo CHtml::tag('option',array('type'=>'text','value'=>(($li->id))),Chtml::encode(($li->posicionEje)),true);
+			
 		}
 	}
 }

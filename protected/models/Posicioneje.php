@@ -57,7 +57,7 @@ class Posicioneje extends CActiveRecord
 	{
 		return array(
 			'id' => 'ID',
-			'posicionEje' => 'Posicion Eje',
+			'posicionEje' => 'Posición de eje',
 		);
 	}
 

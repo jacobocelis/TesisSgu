@@ -62,9 +62,9 @@ class Chasis extends CActiveRecord
 		return array(
 			'id' => 'ID',
 			'nombre' => 'Nombre',
-			'nroEjes' => 'Nro Ejes',
-			'cantidadNormales' => 'Cantidad Normales',
-			'cantidadRepuesto' => 'Cantidad Repuesto',
+			'nroEjes' => 'Total de ejes',
+			'cantidadNormales' => 'Total de neumáticos en uso',
+			'cantidadRepuesto' => 'Total neumáticos de repuesto',
 		);
 	}
 

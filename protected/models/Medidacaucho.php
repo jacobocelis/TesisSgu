@@ -17,7 +17,7 @@ class Medidacaucho extends CActiveRecord
 	 */
 	public function tableName()
 	{
-		return 'sgu_medidacaucho';
+		return 'sgu_medidaCaucho';
 	}
 
 	/**
@@ -44,7 +44,7 @@ class Medidacaucho extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-			'sguCauchos' => array(self::HAS_MANY, 'SguCaucho', 'idmedidaCaucho'),
+			'sguCauchos' => array(self::HAS_MANY, 'Caucho', 'idmedidaCaucho'),
 		);
 	}
 

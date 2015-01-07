@@ -17,7 +17,7 @@ class Marcacaucho extends CActiveRecord
 	 */
 	public function tableName()
 	{
-		return 'sgu_marcacaucho';
+		return 'sgu_marcaCaucho';
 	}
 
 	/**
@@ -44,7 +44,7 @@ class Marcacaucho extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-			'sguHistoricocauchos' => array(self::HAS_MANY, 'SguHistoricocaucho', 'idmarcaCaucho'),
+			'sguHistoricocauchos' => array(self::HAS_MANY, 'Historicocaucho', 'idmarcaCaucho'),
 		);
 	}
 
@@ -55,7 +55,7 @@ class Marcacaucho extends CActiveRecord
 	{
 		return array(
 			'id' => 'ID',
-			'nombre' => 'Nombre',
+			'nombre' => 'Marca',
 		);
 	}
 

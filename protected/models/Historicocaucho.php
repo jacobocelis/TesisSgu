@@ -15,12 +15,12 @@
  * @property integer $idvehiculo
  *
  * The followings are the available model relations:
- * @property SguCaucho $idcaucho0
- * @property SguEstatuscaucho $idestatusCaucho0
- * @property SguMarcacaucho $idmarcaCaucho0
- * @property SguPosicioneje $idposicionEje0
- * @property SguPosicionrueda $idposicionRueda0
- * @property SguVehiculo $idvehiculo0
+ * @property Caucho $idcaucho0
+ * @property Estatuscaucho $idestatusCaucho0
+ * @property Marcacaucho $idmarcaCaucho0
+ * @property Posicioneje $idposicionEje0
+ * @property Posicionrueda $idposicionRueda0
+ * @property Vehiculo $idvehiculo0
  */
 class Historicocaucho extends CActiveRecord
 {
@@ -40,7 +40,7 @@ class Historicocaucho extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('idestatusCaucho, idposicionEje, idposicionRueda, idvehiculo', 'required'),
+			array('idestatusCaucho, idcaucho, idposicionEje, idposicionRueda, idvehiculo', 'required'),
 			array('idestatusCaucho, idcaucho, idmarcaCaucho, idposicionEje, idposicionRueda, idvehiculo', 'numerical', 'integerOnly'=>true),
 			array('serial', 'length', 'max'=>45),
 			array('fecha', 'safe'),
