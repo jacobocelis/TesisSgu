@@ -20,7 +20,7 @@ $this->menu=array(
 <div id="desplegable">
 		<?php
 		echo CHtml::dropDownList("plantilla","",CHtml::listData(Chasis::model()->findAll(),'id','nombre'),array(
-			'prompt'=>"Seleccione: ",'style' => 'width:150px;')); ?>
+			'prompt'=>"Seleccione: ",'style' => 'width:200px;')); ?>
 			
 <?php 
 //echo $chasis->getTotalItemCount();
@@ -32,13 +32,13 @@ $this->widget('zii.widgets.grid.CGridView', array(
 				'selectableRows'=>0,
 				'emptyText'=>'seleccione una plantilla',
                 'dataProvider'=>$chasis,
-				'htmlOptions'=>array('style'=>'width:500px;float:right'),
+				'htmlOptions'=>array('style'=>'width:75%;float:right'),
 				'columns'=>array(
 				array(
-					'headerHtmlOptions'=>array('style'=>'width:15%'),
+					'headerHtmlOptions'=>array('style'=>'width:25%'),
 					'header'=>'# Ejes',
 					'name'=>'nroEjes',
-					'htmlOptions'=>array('style'=>'text-align:center;width:50px'),
+					'htmlOptions'=>array('style'=>'text-align:center;width:100px'),
 				),
 				array(
 				'headerHtmlOptions'=>array('style'=>'width:30%'),
@@ -80,6 +80,8 @@ $this->widget('zii.widgets.grid.CGridView', array(
 			</negro>
 			<rojo>
 			</rojo>
+			<estado>
+			</estado>
 			</div>
 <div id="uno">
 <?php $this->widget('zii.widgets.grid.CGridView', array(
@@ -113,19 +115,20 @@ $this->widget('zii.widgets.grid.CGridView', array(
 					'htmlOptions'=>array('style'=>'text-align:center;width:160px'),
 				),
 				array(
-						'headerHtmlOptions'=>array('style'=>'text-align:center;width:10px;'),
-						'htmlOptions'=>array('style'=>'text-align:center;width:10px'),
-						'header'=>'Editar',
-						'type'=>'raw',
-						'value'=>'CHtml::link(
-                        CHtml::image(Yii::app()->request->baseUrl."/imagenes/agregar.png",
-                                          "Agregar",array("title"=>"Editar")),
-                        "",
-                        array(
-                                \'style\'=>\'cursor: pointer;text-decoration: underline;text-align:center;\',
-                                \'onclick\'=>\'{editarActividad("\'.Yii::app()->createUrl("actividadesgrupo/update",array("id"=>$data["id"])).\'"); $("#dialog").dialog("open");}\'
-                        )
-                );',),
+					'headerHtmlOptions'=>array('style'=>'width:50px'),
+					'header'=>'Eliminar',
+					'class'=>'CButtonColumn',
+					 'template'=>'{delete}',
+					 'afterDelete'=>'function(link,success,data){
+	                               $("#plantilla").change();
+	                        }',
+							
+					     'buttons'=>array(
+							'delete' => array(
+								'url'=>'Yii::app()->createUrl("detalleeje/delete", array("id"=>$data->id))',
+						),
+					),
+				),
 			),
         ));
 		?>
@@ -146,7 +149,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
 				'selectableRows'=>0,
 				'emptyText'=>'seleccione un eje',
                 'dataProvider'=>$ruedas,
-				'htmlOptions'=>array('style'=>'margin-top:10px;width:100%'),
+				'htmlOptions'=>array('style'=>'margin-top:10px;width: 440px;'),
 				'columns'=>array(
 				
 				array(
@@ -162,19 +165,20 @@ $this->widget('zii.widgets.grid.CGridView', array(
 					'htmlOptions'=>array('style'=>'text-align:center;width:185px'),
 				),
 				array(
-						'headerHtmlOptions'=>array('style'=>'text-align:center;width:10px;'),
-						'htmlOptions'=>array('style'=>'text-align:center;'),
-						'header'=>'Editar',
-						'type'=>'raw',
-						'value'=>'CHtml::link(
-                        CHtml::image(Yii::app()->request->baseUrl."/imagenes/agregar.png",
-                                          "Agregar",array("title"=>"Editar")),
-                        "",
-                        array(
-                                \'style\'=>\'cursor: pointer;text-decoration: underline;text-align:center;\',
-                                \'onclick\'=>\'{editarActividad("\'.Yii::app()->createUrl("actividadesgrupo/update",array("id"=>$data["id"])).\'"); $("#dialog").dialog("open");}\'
-                        )
-                );',),
+					'headerHtmlOptions'=>array('style'=>'width:50px'),
+					'header'=>'Eliminar',
+					'class'=>'CButtonColumn',
+					 'template'=>'{delete}',
+					 'afterDelete'=>'function(link,success,data){
+	                               $("#plantilla").change();
+	                        }',
+							
+					     'buttons'=>array(
+							'delete' => array(
+								'url'=>'Yii::app()->createUrl("detallerueda/delete", array("id"=>$data->id))',
+						),
+					),
+				),
 			),
         ));
 		?>
@@ -187,6 +191,91 @@ $this->widget('zii.widgets.grid.CGridView', array(
 		<div id="nuevoCaucho"></div>
 </div>
 </div>
+<div id="llantaRep">
+<strong>Neumático de repuesto</strong>
+	<?php $this->widget('zii.widgets.grid.CGridView', array(
+                'id'=>'rep',
+				'summaryText'=>'',
+			   // 'enableSorting' => false,
+				'template'=>"{items}\n{summary}\n{pager}",
+				'selectableRows'=>0,
+				'emptyText'=>'No hay registro',
+                'dataProvider'=>$rep,
+				'htmlOptions'=>array('style'=>'margin-top:10px;width:100%'),
+				'columns'=>array(
+				array(
+					'header'=>'Detalle de neumático',
+					'value'=>'$data->idcaucho0->idmedidaCaucho0->medida.\' R\'.$data->idcaucho0->idrin0->rin.\' \'.$data->idcaucho0->idpiso0->piso',
+					'name'=>'idcaucho',
+					'htmlOptions'=>array('style'=>'text-align:center;width:185px'),
+				),
+				array(
+					'headerHtmlOptions'=>array('style'=>'width:50px'),
+					'header'=>'Eliminar',
+					'class'=>'CButtonColumn',
+					 'template'=>'{delete}',
+					 'afterDelete'=>'function(link,success,data){
+	                               $("#plantilla").change();
+	                        }',
+					     'buttons'=>array(
+						 
+							'delete' => array(
+								'url'=>'Yii::app()->createUrl("cauchorep/delete", array("id"=>$data->id))',
+								
+						),
+					),
+				),
+			),
+        ));
+		?>
+		<div id="cauchoRep">
+		<?php echo CHtml::link('Agregar', "",array('title'=>'',
+        'style'=>'cursor: pointer;font-size:13px;margin-left:0px;background:#A6FFB6;',
+        'onclick'=>"{
+		nuevoCauchoRep();}"));?>
+		</div>
+		<div id="nuevoCauchoRep"></div>
+		
+</div>
+<div id="agregarAgrupo"></div>
+<div id="divGrupo">
+<strong>Plantilla asociada al grupo:</strong>
+<?php $this->widget('zii.widgets.grid.CGridView', array(
+                'id'=>'grup',
+				'summaryText'=>'',
+			   // 'enableSorting' => false,
+				'template'=>"{items}\n{summary}\n{pager}",
+				'selectableRows'=>0,
+				'emptyText'=>'No hay registro',
+                'dataProvider'=>$grup,
+				'htmlOptions'=>array('style'=>'margin-top:10px;width:100%'),
+				'columns'=>array(
+				array(
+					'header'=>'Grupo',
+					'value'=>'$data->idgrupo0->grupo',
+					'name'=>'idgrupo',
+					'htmlOptions'=>array('style'=>'text-align:center;width:185px'),
+				),
+				array(
+					'headerHtmlOptions'=>array('style'=>'width:50px'),
+					'header'=>'Eliminar',
+					'class'=>'CButtonColumn',
+					 'template'=>'{delete}',
+					 'afterDelete'=>'function(link,success,data){
+	                               $("#plantilla").change();
+	                        }',
+					     'buttons'=>array(
+						 
+							'delete' => array(
+								'url'=>'Yii::app()->createUrl("asigchasis/delete", array("id"=>$data->id))',
+								
+						),
+					),
+				),
+			),
+        ));
+		?>
+	</div>
 </div>
 <?php
 /*ventana agregar actividad*/
@@ -225,19 +314,31 @@ $this->beginWidget('zii.widgets.jui.CJuiDialog', array( // the dialog
 <?php $this->endWidget();?>
 
 <style>
+
+#divGrupo {
+    margin-top: 10px;
+    padding: 5px;
+    border: 1px solid #A8C5F0;
+    width: 370px;
+    float: left;
+    overflow: auto;
+    margin-right: 10px;
+}
 #uno{
 	float:left;
 	margin-right:20px;
 }
 #dos{
 	float:left;
-	
 }
 negro{
 	color: rgba(0, 0, 0, 1);
 }
 rojo{
 	color: rgba(255, 0, 0, 1);
+}
+estado{
+	float:right;
 }
 #activi{
 	font-weight: bold;
@@ -253,9 +354,18 @@ rojo{
 	border: 1px solid #A8C5F0;
 	overflow:auto;
 }
+#llantaRep {
+    margin-top: 10px;
+    padding: 5px;
+    border: 1px solid #A8C5F0;
+    width: 370px;
+    float: left;
+    overflow: auto;
+    margin-right: 10px;
+}
 #desplegable{
 	padding:5px;
-	width:655px;
+
 	border: 1px solid #A8C5F0;
 	height:60px; 
 }
@@ -329,7 +439,23 @@ rojo{
 <script>
 $("#eje").hide();
 $("#caucho").hide();
-
+$("#cauchoRep").hide();
+$("#llantaRep").hide();
+$("#divGrupo").hide();
+function mostrarLinkRep(id){
+	if(id=="")
+		id=0;
+var dir="<?php echo Yii::app()->baseUrl;?>"+"/neumaticos/mostrarLinkRep/";
+	$.ajax({  		
+          url: dir+id,
+        })
+  	.done(function(result) {    	
+    	     if(result==0)
+				$("#cauchoRep").show();
+			 else
+				$("#cauchoRep").hide();
+  	});
+}
 function mostrarLinkEje(id){
 	if(id=="")
 		id=0;
@@ -343,6 +469,34 @@ var dir="<?php echo Yii::app()->baseUrl;?>"+"/neumaticos/mostrarLinkEje/";
 			 else
 				 $("#eje").hide();
   	});
+}
+function mostrarDivRep(id){
+	if(id=="")
+		id=0;
+var dir="<?php echo Yii::app()->baseUrl;?>"+"/neumaticos/mostrarDivRep/";
+	$.ajax({  		
+          url: dir+id,
+        })
+  	.done(function(result) {    	
+    	     if(result==0)
+				 $("#llantaRep").hide();
+			 if(result==1)
+				 $("#llantaRep").show();
+  	});		
+}
+function mostrarLinkRep(id){
+	if(id=="")
+		id=0;
+var dir="<?php echo Yii::app()->baseUrl;?>"+"/neumaticos/mostrarLinkRep/";
+	$.ajax({  		
+          url: dir+id,
+        })
+  	.done(function(result) {    	
+    	     if(result==1)
+				 $("#cauchoRep").hide();
+			 if(result==0)
+				 $("#cauchoRep").show();
+  	});		
 }
 function mostrarLinkCaucho(id){
 	if(id=="")
@@ -358,17 +512,82 @@ var dir="<?php echo Yii::app()->baseUrl;?>"+"/neumaticos/mostrarLinkCaucho/";
 				 $("#caucho").hide();
   	});
 }
+function actualizarEstado(id){
+	if(id=="")
+		id=0;
+	var dir="<?php echo Yii::app()->baseUrl;?>"+"/neumaticos/actualizarEstado/";
+	$.ajax({  		
+          url: dir+id,
+        })
+  	.done(function(result) {
+				if(result==-1)
+					$('estado').text("");
+				if(result==0){
+					$('estado').attr('title', 'Debe completar la plantilla para que pueda agregarla a un grupo');
+					$('estado').text("Plantilla incompleta").css({ "color": "#FF7500", "cursor":"pointer" });
+					$("#agregarAgrupo").hide();
+				}
+				if(result==2){
+					$('estado').attr('title', 'Se han agregado mas neumáticos de los establecidos en la plantilla');
+					$('estado').text("Error en la plantilla").css({ "color": "#F00", "cursor":"pointer" });
+					$("#agregarAgrupo").hide();
+				}
+				if(result==1){
+					$('estado').text("Plantilla completa").css({ "color": "#66D45F", "cursor":"pointer" });
+					$('estado').attr('title', 'La plantilla está completa, ahora puede agregarla a un grupo');
+					agregarAgrupo();
+					$("#agregarAgrupo").show(500);
+				}
+					
+  	});
+}
+
+function tieneGrupo(id){
+	if(id=="")
+		id=0;
+var dir="<?php echo Yii::app()->baseUrl;?>"+"/neumaticos/tieneGrupo/";
+	$.ajax({  		
+          url: dir+id,
+        })
+  	.done(function(result) {    	
+    	     if(result==0){
+				$("#divGrupo").show();
+				$("#agregarAgrupo").hide();
+			 }
+			 if(result==1){
+				$("#divGrupo").hide();
+				//$("#agregarAgrupo").show();
+			 }
+			 if(result==2){
+				 $("#divGrupo").hide();
+				 $("#agregarAgrupo").hide();
+			 }
+  	});
+}
 var va="<?php echo $ca?>";
 	$("#plantilla").val(va).change();
 $( "#plantilla" ).change(function(){ 
 	$.fn.yiiGridView.update('chasis',{ data : "data="+$(this).val()});
 	$.fn.yiiGridView.update('ejes',{ data : "data="+$(this).val()});
 	$.fn.yiiGridView.update('cauchos',{ data : "idEje=0"});
+	$.fn.yiiGridView.update('rep',{ data : "data="+$(this).val()});
+	$.fn.yiiGridView.update('grup',{ data : "data="+$(this).val()});
 	var v = $("#plantilla option:selected").val();
 	 $('rojo').text($( "#plantilla option[value="+v+"]").text());
-	 if(v=="")
+	 if(v==""){
 		 $('rojo').text("");
-	 mostrarLinkEje($(this).val());
+		 $('estado').text("");
+		 $("#caucho").hide();
+		 $("#agregarAgrupo").hide();
+		 
+		
+	 }
+
+	mostrarLinkEje($(this).val());
+	mostrarLinkRep($(this).val());
+	mostrarDivRep($(this).val());
+	actualizarEstado($(this).val());
+	tieneGrupo($(this).val());
 });
 
 function actualizarLista(){
@@ -404,6 +623,7 @@ $('#nuevoChasis').dialog('open');
                                         $('#nuevoChasis div.divForForm').html(data.div);
                                         setTimeout("$('#nuevoChasis').dialog('close') ",1000);
 										actualizarLista();
+										actualizarEstado($("#plantilla option:selected").val());
                                 }
                 },
                 'cache':false});
@@ -454,6 +674,59 @@ function nuevoCaucho(){
                                         setTimeout("$('#nuevoCaucho').hide();",2000);
 										setTimeout("mostrarRuedas()",2000);
 										$.fn.yiiGridView.update('cauchos');
+										actualizarEstado($("#plantilla option:selected").val());
+                                }
+                },
+                'cache':false});
+    return false; 
+}
+function nuevoCauchoRep(){
+	$('#nuevoCauchoRep').show();
+	$('#cauchoRep').hide();
+	var id = $("#plantilla option:selected").val();
+	jQuery.ajax({
+                url: "<?php echo Yii::app()->baseUrl;?>"+"/cauchorep/agregar/"+id,
+                'data':$(this).serialize(),
+                'type':'post',
+                'dataType':'json',
+                'success':function(data){
+                                if (data.status == 'failure'){
+                                        $('#nuevoCauchoRep').html(data.div);
+                                        $('#nuevoCauchoRep form').submit(nuevoCauchoRep);
+                                }
+                                else{
+                                        $('#nuevoCauchoRep').html(data.div);
+                                        setTimeout("$('#nuevoCauchoRep').hide();",2000);
+										//setTimeout("mostrarRuedas()",2000);
+										$.fn.yiiGridView.update('rep');
+										actualizarEstado($("#plantilla option:selected").val());
+                                }
+                },
+                'cache':false});
+    return false; 
+}
+
+function agregarAgrupo(){
+	
+	var id = $("#plantilla option:selected").val();
+	jQuery.ajax({
+                url: "<?php echo Yii::app()->baseUrl;?>"+"/asigchasis/agregar/"+id,
+                'data':$(this).serialize(),
+                'type':'post',
+                'dataType':'json',
+                'success':function(data){
+                                if (data.status == 'failure'){
+                                        $('#agregarAgrupo').html(data.div);
+                                        $('#agregarAgrupo form').submit(agregarAgrupo);
+                                }
+                                else{
+                                        //$('#agregarAgrupo').html(data.div);
+                                        setTimeout("$('#agregarAgrupo').hide();",000);
+										setTimeout("$('#divGrupo').show();",000);
+										$.fn.yiiGridView.update('grup');
+										//setTimeout("mostrarRuedas()",2000);
+										//$.fn.yiiGridView.update('rep');
+										//actualizarEstado($("#plantilla option:selected").val());
                                 }
                 },
                 'cache':false});

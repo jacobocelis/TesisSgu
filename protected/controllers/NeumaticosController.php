@@ -32,7 +32,7 @@ class NeumaticosController extends Controller
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create','update','plantilla','ActualizarListaPlantillas','MostrarLinkEje','actualizarListaPosicionesEje','MostrarLinkCaucho'),
+				'actions'=>array('create','update','plantilla','ActualizarListaPlantillas','MostrarLinkEje','actualizarListaPosicionesEje','MostrarLinkCaucho','actualizarEstado','MostrarLinkRep','MostrarDivRep','TieneGrupo'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -70,18 +70,21 @@ class NeumaticosController extends Controller
 		}
 		$chasis=new CActiveDataProvider('Chasis',array("criteria"=>array("condition"=>"id=".$idChasis."")));
 		
-		/*$consulta=Yii::app()->db->createCommand("select de.nombre as Eje,  pe.posicionEje as 'Posición del eje', de.nroRuedas as 'Ruedas por eje'
-		from sgu_detalleeje de, sgu_posicioneje pe  where de.idposicionEje=pe.id and de.idchasis=".$idChasis." order by de.nombre")->queryAll();*/
-		//$ejes=new CArrayDataProvider($consulta, array('keyField'=>'Eje'));
-		
 		$ejes=new CActiveDataProvider("Detalleeje",array("criteria"=>array("condition"=>"idchasis=".$idChasis."")));
 		
 		$ruedas=new CActiveDataProvider('Detallerueda',array("criteria"=>array("condition"=>"iddetalleEje=".$idEje."")));
+		
+		$rep=new CActiveDataProvider('Cauchorep',array("criteria"=>array("condition"=>"idchasis=".$idChasis."")));
+		
+		$grup=new CActiveDataProvider('Asigchasis',array("criteria"=>array("condition"=>"idchasis=".$idChasis."")));
+	
 		$this->render('plantilla',array(
 			'chasis'=>$chasis,
 			'llantas'=>$ejes,
 			'ruedas'=>$ruedas,
+			'rep'=>$rep,
 			'ca'=>$ca,
+			'grup'=>$grup
 		));
 	}
 	public function actionView($id)
@@ -216,11 +219,21 @@ class NeumaticosController extends Controller
 			echo 1;
 			return 0;
 		}
-	
 		$chasis=Chasis::model()->findByPk($id);
 		$ejes=new CActiveDataProvider("Detalleeje",array("criteria"=>array("condition"=>"idchasis=".$id."")));
 		$totalEjes=$ejes->getTotalItemCount();
 		if($totalEjes<$chasis->nroEjes)
+			echo 0;
+		else
+			echo 1;
+	}
+	public function actionMostrarDivRep($id){
+		if($id==0){
+			echo 0;
+			return 0;
+		}
+		$chasis=Chasis::model()->findByPk($id);
+		if($chasis->cantidadRepuesto==0)
 			echo 0;
 		else
 			echo 1;
@@ -238,12 +251,60 @@ class NeumaticosController extends Controller
 		else
 			echo 1;
 	}
+	public function actionTieneGrupo($id){
+		if($id==0){
+			echo 2;
+			return 0;
+		}
+		$gru=new CActiveDataProvider("Asigchasis",array("criteria"=>array("condition"=>"idchasis=".$id."")));
+		$totalRuedas=$gru->getTotalItemCount();
+		//echo $gru->getTotalItemCount();
+		if($totalRuedas>0)
+			echo 0;
+		else
+			echo 1;
+	}
+	public function actionMostrarLinkRep($id){
+		if($id==0){
+			echo 1;
+			return 0;
+		}
+		
+		$rep=new CActiveDataProvider("Cauchorep",array("criteria"=>array("condition"=>"idchasis=".$id."")));
+		$total=$rep->getTotalItemCount();
+		if($total<1)
+			echo 0;
+		else
+			echo 1;
+	}
 	public function actionActualizarListaPosicionesEje(){
 	
 			$lista2=Posicioneje::model()->findAll('1 order by id desc');
 			foreach($lista2 as $li){
 				echo CHtml::tag('option',array('type'=>'text','value'=>(($li->id))),Chtml::encode(($li->posicionEje)),true);
-			
 		}
+	}
+	
+	public function actionActualizarEstado($id){
+		if($id==0){
+			echo -1;
+			return 0;
+		}			
+			$ruedasTiene=Yii::app()->db->createCommand("select count(*) as total from sgu_chasis c, sgu_detalleeje de, sgu_detallerueda dr where c.id=de.idchasis and de.id=dr.iddetalleEje and c.id=".$id."")->queryRow();
+			$rTiene=$ruedasTiene["total"];
+			$rep=Yii::app()->db->createCommand("select count(*) as total from sgu_cauchoRep cr, sgu_chasis c where c.id=cr.idchasis and c.id=".$id."")->queryRow();
+			$cant=Chasis::model()->findByPk($id);
+			$ruedasDebe=$cant->cantidadNormales;
+			if($cant->cantidadRepuesto>0)
+				$ruedasDebe=$ruedasDebe+1;
+			$rTiene=$rTiene+$rep["total"];
+			
+		if($rTiene==$ruedasDebe)
+			echo 1;
+		if($rTiene>$ruedasDebe)
+			echo 2;
+		if($rTiene<$ruedasDebe)
+			echo 0;
+	
 	}
 }

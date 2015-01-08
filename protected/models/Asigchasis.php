@@ -59,7 +59,7 @@ class Asigchasis extends CActiveRecord
 		return array(
 			'id' => 'ID',
 			'idchasis' => 'Idchasis',
-			'idgrupo' => 'Idgrupo',
+			'idgrupo' => 'Grupo',
 		);
 	}
 

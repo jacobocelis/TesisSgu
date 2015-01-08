@@ -10,16 +10,16 @@
  * @property integer $idestatusCaucho
  * @property integer $idcaucho
  * @property integer $idmarcaCaucho
- * @property integer $idposicionEje
- * @property integer $idposicionRueda
  * @property integer $idvehiculo
+ * @property integer $iddetalleRueda
+ * @property integer $idasigChasis
  *
  * The followings are the available model relations:
+ * @property Asigchasis $idasigChasis0
  * @property Caucho $idcaucho0
+ * @property Detallerueda $iddetalleRueda0
  * @property Estatuscaucho $idestatusCaucho0
  * @property Marcacaucho $idmarcaCaucho0
- * @property Posicioneje $idposicionEje0
- * @property Posicionrueda $idposicionRueda0
  * @property Vehiculo $idvehiculo0
  */
 class Historicocaucho extends CActiveRecord
@@ -29,7 +29,7 @@ class Historicocaucho extends CActiveRecord
 	 */
 	public function tableName()
 	{
-		return 'sgu_historicoCaucho';
+		return 'sgu_historicocaucho';
 	}
 
 	/**
@@ -40,13 +40,13 @@ class Historicocaucho extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('idestatusCaucho, idcaucho, idposicionEje, idposicionRueda, idvehiculo', 'required'),
-			array('idestatusCaucho, idcaucho, idmarcaCaucho, idposicionEje, idposicionRueda, idvehiculo', 'numerical', 'integerOnly'=>true),
+			array('idestatusCaucho, idcaucho, idvehiculo, idasigChasis', 'required'),
+			array('idestatusCaucho, idcaucho, idmarcaCaucho, idvehiculo, iddetalleRueda, idasigChasis', 'numerical', 'integerOnly'=>true),
 			array('serial', 'length', 'max'=>45),
 			array('fecha', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, fecha, serial, idestatusCaucho, idcaucho, idmarcaCaucho, idposicionEje, idposicionRueda, idvehiculo', 'safe', 'on'=>'search'),
+			array('id, fecha, serial, idestatusCaucho, idcaucho, idmarcaCaucho, idvehiculo, iddetalleRueda, idasigChasis', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -58,11 +58,11 @@ class Historicocaucho extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
+			'idasigChasis0' => array(self::BELONGS_TO, 'Asigchasis', 'idasigChasis'),
 			'idcaucho0' => array(self::BELONGS_TO, 'Caucho', 'idcaucho'),
+			'iddetalleRueda0' => array(self::BELONGS_TO, 'Detallerueda', 'iddetalleRueda'),
 			'idestatusCaucho0' => array(self::BELONGS_TO, 'Estatuscaucho', 'idestatusCaucho'),
 			'idmarcaCaucho0' => array(self::BELONGS_TO, 'Marcacaucho', 'idmarcaCaucho'),
-			'idposicionEje0' => array(self::BELONGS_TO, 'Posicioneje', 'idposicionEje'),
-			'idposicionRueda0' => array(self::BELONGS_TO, 'Posicionrueda', 'idposicionRueda'),
 			'idvehiculo0' => array(self::BELONGS_TO, 'Vehiculo', 'idvehiculo'),
 		);
 	}
@@ -79,9 +79,9 @@ class Historicocaucho extends CActiveRecord
 			'idestatusCaucho' => 'Idestatus Caucho',
 			'idcaucho' => 'Idcaucho',
 			'idmarcaCaucho' => 'Idmarca Caucho',
-			'idposicionEje' => 'Idposicion Eje',
-			'idposicionRueda' => 'Idposicion Rueda',
 			'idvehiculo' => 'Idvehiculo',
+			'iddetalleRueda' => 'Iddetalle Rueda',
+			'idasigChasis' => 'Idasig Chasis',
 		);
 	}
 
@@ -109,9 +109,9 @@ class Historicocaucho extends CActiveRecord
 		$criteria->compare('idestatusCaucho',$this->idestatusCaucho);
 		$criteria->compare('idcaucho',$this->idcaucho);
 		$criteria->compare('idmarcaCaucho',$this->idmarcaCaucho);
-		$criteria->compare('idposicionEje',$this->idposicionEje);
-		$criteria->compare('idposicionRueda',$this->idposicionRueda);
 		$criteria->compare('idvehiculo',$this->idvehiculo);
+		$criteria->compare('iddetalleRueda',$this->iddetalleRueda);
+		$criteria->compare('idasigChasis',$this->idasigChasis);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
