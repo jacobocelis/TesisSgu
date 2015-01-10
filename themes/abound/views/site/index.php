@@ -81,11 +81,11 @@ if ($rol == "Jefe Departamento") {
 
     <div class="span8">  
 			
-				<div id="uno">
+				
 					
 					<a href="<?php echo Yii::app()->request->baseUrl;?>/vehiculo" id="vehiculos"></a>
 					
-				</div>
+			
 				
 					<a href="<?php echo Yii::app()->request->baseUrl;?>/repuesto" id="repuesto"></a>
 				
@@ -96,6 +96,10 @@ if ($rol == "Jefe Departamento") {
 				</a>
 				
 				<a href="<?php echo Yii::app()->request->baseUrl;?>/mttoCorrectivo" id="correctivo">
+				
+				</a>
+				
+				<a href="<?php echo Yii::app()->request->baseUrl;?>/neumaticos" id="neumaticos">
 				
 				</a>
 				
@@ -112,15 +116,14 @@ if ($rol == "Jefe Departamento") {
 	
 </div>
 <style>
-
 .span8 {
-    margin-left: 17%;
-    width: 68%;
-	margin-top: 2%;
-	   border: 1px dotted #aaa;
-    border-radius: 5px;
-   padding: 5px;
-   overflow: auto;
+    width: 79%;
+    margin-top: 2%;
+    border: 1px dotted #AAA;
+    overflow: auto;
+    margin-left: 10%;
+    border-radius: 2px;
+    padding: 5px;
 }
 #vehiculos{
 margin-top: 4%;
@@ -166,6 +169,17 @@ display: block;
   text-indent: -9999px;
   float:left;
 }
+#neumaticos{
+margin-top: 4%;
+ margin-right: 2%;
+background-image: url("<?php echo Yii::app()->request->baseUrl;?>/imagenes/neumaticos.png");
+height: 136px;
+width: 130px;
+display: block;
+  //margin: 0 auto;
+  text-indent: -9999px;
+  float:left;
+}
 #combustible{
 margin-top: 4%;
  margin-right: 2%;
@@ -179,7 +193,7 @@ display: block;
 }
 #viajes{
 margin-top: 4%;
- margin-right: 2%;
+ margin-right: 0%;
 background-image: url("<?php echo Yii::app()->request->baseUrl;?>/imagenes/viajes.png");
 height: 145px;
 width: 125px;

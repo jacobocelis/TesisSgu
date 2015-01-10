@@ -21,17 +21,25 @@
 
 	<div class="row">
 		<?php echo $form->labelEx($model,'idgrupo'); ?>
-		<?php echo $form->dropDownList($model,'idgrupo',CHtml::listData(Grupo::model()->findAll('id not in (select idgrupo from sgu_asigChasis)'), 'id', 'grupo')); ?>
+		<?php echo $form->dropDownList($model,'idgrupo',CHtml::listData(Grupo::model()->findAll('id not in (select idgrupo from sgu_asigChasis)'), 'id', 'grupo'),array("prompt"=>"Seleccione: ")); ?>
 		<?php echo $form->error($model,'idgrupo'); ?>
 	</div>
 
 	<div class="row buttons">
-		<?php echo CHtml::submitButton($model->isNewRecord ? 'Asignar' : 'Guardar'); ?>
+		<?php echo CHtml::submitButton($model->isNewRecord ? 'Asignar' : 'Guardar',array("id"=>"boton","style"=>"cursor:pointer")); ?>
 	</div>
 
 <?php $this->endWidget(); ?>
 
 </div><!-- form -->
+<script>
+
+$('#asigchasis-form').submit(function() {
+        $('#boton').attr("disabled", true);
+		
+        return true; // return false to cancel form action
+    });
+</script>
 <style>
 #azul {
     background: none repeat scroll 0% 0% #F9FDFD;
@@ -40,5 +48,6 @@
     float: left;
     padding: 10px;
     margin-top: 10px;
+	
 }
 </style>

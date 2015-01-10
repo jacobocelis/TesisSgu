@@ -32,7 +32,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
 				'selectableRows'=>0,
 				'emptyText'=>'seleccione una plantilla',
                 'dataProvider'=>$chasis,
-				'htmlOptions'=>array('style'=>'width:75%;float:right'),
+				'htmlOptions'=>array('style'=>'width:78%;float:right'),
 				'columns'=>array(
 				array(
 					'headerHtmlOptions'=>array('style'=>'width:25%'),
@@ -58,6 +58,10 @@ $this->widget('zii.widgets.grid.CGridView', array(
 					'header'=>'Eliminar',
 					'class'=>'CButtonColumn',
 					 'template'=>'{delete}',
+					  'afterDelete'=>'function(link,success,data){
+	                               actualizarLista();
+	                        }',
+							
 					     'buttons'=>array(
 						 
 							'delete' => array(
@@ -68,10 +72,12 @@ $this->widget('zii.widgets.grid.CGridView', array(
 			)
         ));
 		?>
-		<?php echo CHtml::link('Agregar nueva plantilla', "",array('title'=>'una plantilla valida la cantidad de neumáticos que posee un vehiculo',
+		<span class="nueva">
+		
+		<?php echo CHtml::link('Nueva plantilla', "",array('title'=>'una plantilla valida la cantidad de neumáticos que posee un vehiculo',
         'style'=>'cursor: pointer;font-size:13px;margin-left:0px;',
         'onclick'=>"{
-		nuevoChasis();}"));?>
+		nuevoChasis();}"));?></span>
 </div>
 <br>
 <div id="llantas">
@@ -98,7 +104,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
 				'columns'=>array(
 				
 				array(
-					'headerHtmlOptions'=>array('style'=>'text-align:center;width:80px'),
+					'headerHtmlOptions'=>array('style'=>'text-align:center;width:40px'),
 					'header'=>'Eje',
 					'name'=>'nombre',
 					'htmlOptions'=>array('style'=>'text-align:center;'),
@@ -114,13 +120,16 @@ $this->widget('zii.widgets.grid.CGridView', array(
 					'name'=>'nroRuedas',
 					'htmlOptions'=>array('style'=>'text-align:center;width:160px'),
 				),
+			
 				array(
 					'headerHtmlOptions'=>array('style'=>'width:50px'),
 					'header'=>'Eliminar',
+					
 					'class'=>'CButtonColumn',
 					 'template'=>'{delete}',
 					 'afterDelete'=>'function(link,success,data){
 	                               $("#plantilla").change();
+								    alert(data);
 	                        }',
 							
 					     'buttons'=>array(
@@ -147,11 +156,17 @@ $this->widget('zii.widgets.grid.CGridView', array(
 			   // 'enableSorting' => false,
 				'template'=>"{items}\n{summary}\n{pager}",
 				'selectableRows'=>0,
-				'emptyText'=>'seleccione un eje',
+				'emptyText'=>'Nota:Seleccione un eje para registrar los neumáticos',
                 'dataProvider'=>$ruedas,
-				'htmlOptions'=>array('style'=>'margin-top:10px;width: 440px;'),
+				'htmlOptions'=>array('style'=>'margin-top:10px;width: 470px;'),
 				'columns'=>array(
-				
+				array(
+					'headerHtmlOptions'=>array('style'=>'text-align:center;width:40px'),
+					'header'=>'Eje',
+					'name'=>'iddetalleEje',
+					'value'=>'$data->iddetalleEje0->nombre',
+					'htmlOptions'=>array('style'=>'text-align:center;background:#B2FDB2'),
+				),
 				array(
 					'header'=>'Posición del neumático',
 					'name'=>'idposicionRueda',
@@ -159,7 +174,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
 					'htmlOptions'=>array('style'=>'text-align:center;width:200px'),
 				),
 				array(
-					'header'=>'Detalle de neumático',
+					'header'=>'Detalle',
 					'value'=>'$data->idcaucho0->idmedidaCaucho0->medida.\' R\'.$data->idcaucho0->idrin0->rin.\' \'.$data->idcaucho0->idpiso0->piso',
 					'name'=>'idcaucho',
 					'htmlOptions'=>array('style'=>'text-align:center;width:185px'),
@@ -170,7 +185,9 @@ $this->widget('zii.widgets.grid.CGridView', array(
 					'class'=>'CButtonColumn',
 					 'template'=>'{delete}',
 					 'afterDelete'=>'function(link,success,data){
-	                               $("#plantilla").change();
+	                               //$("#plantilla").change();
+								   actualizarEstado($("#plantilla option:selected").val());
+								   $("#caucho").show();
 	                        }',
 							
 					     'buttons'=>array(
@@ -215,7 +232,9 @@ $this->widget('zii.widgets.grid.CGridView', array(
 					'class'=>'CButtonColumn',
 					 'template'=>'{delete}',
 					 'afterDelete'=>'function(link,success,data){
-	                               $("#plantilla").change();
+	                               actualizarEstado($("#plantilla option:selected").val());
+								   $("#cauchoRep").show();
+								  
 	                        }',
 					     'buttons'=>array(
 						 
@@ -262,7 +281,8 @@ $this->widget('zii.widgets.grid.CGridView', array(
 					'class'=>'CButtonColumn',
 					 'template'=>'{delete}',
 					 'afterDelete'=>'function(link,success,data){
-	                               $("#plantilla").change();
+	                               actualizarEstado($("#plantilla option:selected").val());
+								   $.fn.yiiGridView.update("plantillagrup");
 	                        }',
 					     'buttons'=>array(
 						 
@@ -310,11 +330,74 @@ $this->beginWidget('zii.widgets.jui.CJuiDialog', array( // the dialog
     ),
 ));?>
 <div class="divForForm"></div>
- 
+
 <?php $this->endWidget();?>
 
+<div class='crugepanel user-assignments-role-list'>
+<h1>Lista de plantillas asociadas</h1>
+<div id="asociados">
+<?php $this->widget('zii.widgets.grid.CGridView', array(
+                'id'=>'plantillagrup',
+				'summaryText'=>'',
+			   // 'enableSorting' => false,
+				'template'=>"{items}\n{summary}\n{pager}",
+				'selectableRows'=>0,
+				'emptyText'=>'No hay registros',
+                'dataProvider'=>$todo,
+				'htmlOptions'=>array('style'=>'margin-top:10px;width:100%'),
+				'columns'=>array(
+				array(
+					'header'=>'Plantilla',
+					'value'=>'$data->idchasis0->nombre',
+					'name'=>'idchasis',
+					'htmlOptions'=>array('style'=>'text-align:center;width:185px'),
+				),
+				array(
+					'header'=>'Grupo',
+					'value'=>'$data->idgrupo0->grupo',
+					'name'=>'idgrupo',
+					'htmlOptions'=>array('style'=>'text-align:center;width:185px'),
+				),
+				
+				array(
+					'headerHtmlOptions'=>array('style'=>'width:50px'),
+					'header'=>'Eliminar',
+					'class'=>'CButtonColumn',
+					 'template'=>'{delete}',
+					 'afterDelete'=>'function(link,success,data){
+	                               $("#plantilla").change();
+	                        }',
+					     'buttons'=>array(
+						 
+							'delete' => array(
+								'url'=>'Yii::app()->createUrl("asigchasis/delete", array("id"=>$data->id))',
+								
+						),
+					),
+				),
+			),
+        ));
+		?>
+</div>
 <style>
-
+.nueva{
+padding: 1px 9px 2px;
+border-radius: 9px;
+font-size: 11.844px;
+font-weight: bold;
+line-height: 14px;
+color: #FFF;
+text-shadow: 0px -1px 0px rgba(0, 0, 0, 0.25);
+white-space: nowrap;
+vertical-align: baseline;
+background-color: #88E993;
+float:left;
+}
+#asociados{
+	padding:5px;
+	border: 1px solid #A8C5F0;
+	width:50%;
+}
 #divGrupo {
     margin-top: 10px;
     padding: 5px;
@@ -410,37 +493,12 @@ estado{
     padding: 0.3em;
 }
 </style>
-<style>
-.ui-progressbar .ui-widget-header {
-	background: #FFF;
-}
-.ui-progressbar {
-    border: 0px none;
-    border-radius: 0px;
-    clear: both;
-	margin-bottom: 0px;
-}
-.progress, .ui-progressbar {
-    height: 10px;
-}
-.ui-corner-all, .ui-corner-bottom, .ui-corner-right, .ui-corner-br {
-    border-bottom-right-radius: 0px;
-}
-.ui-corner-all, .ui-corner-bottom, .ui-corner-left, .ui-corner-bl {
-    border-bottom-left-radius: 0px;
-}
-.ui-corner-all, .ui-corner-top, .ui-corner-right, .ui-corner-tr {
-    border-top-right-radius: 0px;
-}
-.ui-corner-all, .ui-corner-top, .ui-corner-left, .ui-corner-tl {
-    border-top-left-radius: 0px;
-}
-</style>
 <script>
 $("#eje").hide();
 $("#caucho").hide();
 $("#cauchoRep").hide();
 $("#llantaRep").hide();
+$("#llantas").hide();
 $("#divGrupo").hide();
 function mostrarLinkRep(id){
 	if(id=="")
@@ -537,31 +595,31 @@ function actualizarEstado(id){
 					$('estado').attr('title', 'La plantilla está completa, ahora puede agregarla a un grupo');
 					agregarAgrupo();
 					$("#agregarAgrupo").show(500);
-				}
-					
+				}	
   	});
 }
 
-function tieneGrupo(id){
-	if(id=="")
-		id=0;
-var dir="<?php echo Yii::app()->baseUrl;?>"+"/neumaticos/tieneGrupo/";
+function tieneGrupo(){
+var dir="<?php echo Yii::app()->baseUrl;?>"+"/neumaticos/tieneGrupo";
 	$.ajax({  		
-          url: dir+id,
+          url: dir,
         })
   	.done(function(result) {    	
-    	     if(result==0){
+    	     /*if(result==0){
 				$("#divGrupo").show();
 				$("#agregarAgrupo").hide();
 			 }
 			 if(result==1){
 				$("#divGrupo").hide();
-				//$("#agregarAgrupo").show();
+				
 			 }
 			 if(result==2){
 				 $("#divGrupo").hide();
 				 $("#agregarAgrupo").hide();
-			 }
+			 }*/
+			 $("#Asigchasis_idgrupo").html(result);
+			 $('#boton').attr("disabled", false);
+			 
   	});
 }
 var va="<?php echo $ca?>";
@@ -579,9 +637,10 @@ $( "#plantilla" ).change(function(){
 		 $('estado').text("");
 		 $("#caucho").hide();
 		 $("#agregarAgrupo").hide();
-		 
-		
+		 $("#llantas").hide();
 	 }
+	 else
+		 $("#llantas").show();
 
 	mostrarLinkEje($(this).val());
 	mostrarLinkRep($(this).val());
@@ -721,9 +780,12 @@ function agregarAgrupo(){
                                 }
                                 else{
                                         //$('#agregarAgrupo').html(data.div);
-                                        setTimeout("$('#agregarAgrupo').hide();",000);
-										setTimeout("$('#divGrupo').show();",000);
+                                        //setTimeout("$('#agregarAgrupo').hide();",000);
+										//setTimeout("$('#divGrupo').show();",000);
 										$.fn.yiiGridView.update('grup');
+										setTimeout("tieneGrupo()",000);
+										$.fn.yiiGridView.update("plantillagrup");
+										
 										//setTimeout("mostrarRuedas()",2000);
 										//$.fn.yiiGridView.update('rep');
 										//actualizarEstado($("#plantilla option:selected").val());

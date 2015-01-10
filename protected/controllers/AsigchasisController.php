@@ -49,8 +49,11 @@ class AsigchasisController extends Controller
 		if(isset($_POST['Asigchasis'])){
             $model->attributes=$_POST['Asigchasis'];
             if($model->save()){
-                if (Yii::app()->request->isAjaxRequest){
-				  
+                /*if (Yii::app()->request->isAjaxRequest){
+				  $vehiculos=Vehiculo::model()->findAll("idgrupo=".$model->idgrupo."");
+				  foreach($vehiculos){
+					  print_r($vehiculos);
+				  }*/
                     echo CJSON::encode(array(
                         'status'=>'success', 
                         'div'=>"Plantilla agregada al grupo"
@@ -133,11 +136,18 @@ class AsigchasisController extends Controller
 	 */
 	public function actionDelete($id)
 	{
+		try{
+			
 		$this->loadModel($id)->delete();
 
 		// if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
 		if(!isset($_GET['ajax']))
 			$this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));
+		}
+		catch(CDbException $e){
+			
+			echo "jacobo";
+		}
 	}
 
 	/**

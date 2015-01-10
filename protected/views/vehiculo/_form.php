@@ -46,11 +46,7 @@
 		<?php echo $form->error($model,'KmInicial'); ?>
 	</div>
 	
-	<div class="row">
-		<?php echo $form->labelEx($model,'KmInicial'); ?>
-		<?php echo $form->textField($model,'KmInicial'); ?>
-		<?php echo $form->error($model,'KmInicial'); ?>
-		
+
 		
 	<div class="row">
 		<?php echo $form->labelEx($model,'serialCarroceria'); ?>

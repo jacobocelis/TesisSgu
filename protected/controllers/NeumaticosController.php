@@ -77,14 +77,16 @@ class NeumaticosController extends Controller
 		$rep=new CActiveDataProvider('Cauchorep',array("criteria"=>array("condition"=>"idchasis=".$idChasis."")));
 		
 		$grup=new CActiveDataProvider('Asigchasis',array("criteria"=>array("condition"=>"idchasis=".$idChasis."")));
-	
+		
+		$todo=new CActiveDataProvider('Asigchasis',array("criteria"=>array("condition"=>"1")));
 		$this->render('plantilla',array(
 			'chasis'=>$chasis,
 			'llantas'=>$ejes,
 			'ruedas'=>$ruedas,
 			'rep'=>$rep,
 			'ca'=>$ca,
-			'grup'=>$grup
+			'grup'=>$grup,
+			'todo'=>$todo
 		));
 	}
 	public function actionView($id)
@@ -251,18 +253,25 @@ class NeumaticosController extends Controller
 		else
 			echo 1;
 	}
-	public function actionTieneGrupo($id){
-		if($id==0){
+	public function actionTieneGrupo(){
+		/*if($id==0){
 			echo 2;
 			return 0;
 		}
 		$gru=new CActiveDataProvider("Asigchasis",array("criteria"=>array("condition"=>"idchasis=".$id."")));
 		$totalRuedas=$gru->getTotalItemCount();
-		//echo $gru->getTotalItemCount();
+		
 		if($totalRuedas>0)
 			echo 0;
 		else
-			echo 1;
+			echo 1;*/
+		
+			$lista2=Grupo::model()->findAll('id not in (select idgrupo from sgu_asigChasis)');
+			echo CHtml::tag('option',array('type'=>'text','value'=>""),Chtml::encode("Seleccione: "),true);
+			foreach($lista2 as $li){
+				echo CHtml::tag('option',array('type'=>'text','value'=>(($li->id))),Chtml::encode(($li->grupo)),true);
+			}
+		
 	}
 	public function actionMostrarLinkRep($id){
 		if($id==0){
@@ -290,7 +299,7 @@ class NeumaticosController extends Controller
 			echo -1;
 			return 0;
 		}			
-			$ruedasTiene=Yii::app()->db->createCommand("select count(*) as total from sgu_chasis c, sgu_detalleeje de, sgu_detallerueda dr where c.id=de.idchasis and de.id=dr.iddetalleEje and c.id=".$id."")->queryRow();
+			$ruedasTiene=Yii::app()->db->createCommand("select count(*) as total from sgu_chasis c, sgu_detalleEje de, sgu_detalleRueda dr where c.id=de.idchasis and de.id=dr.iddetalleEje and c.id=".$id."")->queryRow();
 			$rTiene=$ruedasTiene["total"];
 			$rep=Yii::app()->db->createCommand("select count(*) as total from sgu_cauchoRep cr, sgu_chasis c where c.id=cr.idchasis and c.id=".$id."")->queryRow();
 			$cant=Chasis::model()->findByPk($id);

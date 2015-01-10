@@ -57,6 +57,14 @@ $this->widget('zii.widgets.grid.CGridView', array(
 				),
 				array(
 					'type'=>'raw',
+					'header'=>'Km realizada',
+					'name'=>'kmRealizada',
+					'value'=>'number_format($data->kmRealizada)',
+					'htmlOptions'=>array('style'=>'width:100px;text-align:center;'),
+					'headerHtmlOptions'=>array('style'=>'width:100px;font-size: 5px;line-height: 15px;'),
+				),
+				array(
+					'type'=>'raw',
 					'header'=>'Atraso',
 					'name'=>'atraso',
 					'value'=>'\'<b><span style="color:red">\'.$data->atraso($data->proximoFecha).\'</span></b>\'',
