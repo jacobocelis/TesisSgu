@@ -26,7 +26,6 @@ $this->menu=array(
 	array('label'=>'      Histórico de gastos', 'url'=>array('historicoGastos')),
 	array('label'=>'      Histórico de ordenes', 'url'=>array('historicoOrdenes')),
 );
-
 ?>
 <div class='crugepanel user-assignments-role-list'>
 <h1>Próximas actividades de mantenimiento a realizarse</h1>

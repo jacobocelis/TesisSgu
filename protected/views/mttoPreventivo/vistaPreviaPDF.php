@@ -109,6 +109,9 @@ $this->widget('zii.widgets.grid.CGridView', array(
 		Observaciones:<hr><hr><hr><hr><hr><hr>
 		</div>
 <style>
+.list-view div.view {
+    background: none repeat scroll 0% 0% rgba(54, 255, 41, 0.19);
+}
 .grid-view .summary {
     margin: 0px 0px 0px;
     text-align: right;

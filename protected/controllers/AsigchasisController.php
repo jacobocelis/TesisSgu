@@ -49,11 +49,33 @@ class AsigchasisController extends Controller
 		if(isset($_POST['Asigchasis'])){
             $model->attributes=$_POST['Asigchasis'];
             if($model->save()){
-                /*if (Yii::app()->request->isAjaxRequest){
-				  $vehiculos=Vehiculo::model()->findAll("idgrupo=".$model->idgrupo."");
-				  foreach($vehiculos){
-					  print_r($vehiculos);
-				  }*/
+                if (Yii::app()->request->isAjaxRequest){
+					$vehiculos=Vehiculo::model()->findAll("idgrupo=".$model->idgrupo."");
+					$historico=new Historicocaucho;
+					$ruedas=Yii::app()->db->createCommand("select dr.idcaucho, dr.id from sgu_detallerueda dr, sgu_detalleeje de, sgu_chasis c where 		dr.iddetalleEje=de.id and de.idchasis=c.id and de.idchasis=".$model->idchasis."")->queryAll();
+					$repuesto=Yii::app()->db->createCommand("select * from sgu_chasis c, sgu_cauchorep cr where c.id=cr.idchasis and cr.idchasis=".$model->idchasis."")->queryAll();
+					
+				  foreach($vehiculos as $veh){
+					foreach($ruedas as $rue){
+						$historico=new Historicocaucho;
+						$historico->idasigChasis=$model->id;
+						$historico->idvehiculo=$veh["id"];
+						$historico->iddetalleRueda=$rue["id"];
+						$historico->idcaucho=$rue["idcaucho"];
+						$historico->idestatusCaucho=1;
+						$historico->save();	
+					}
+				  }
+				  foreach($vehiculos as $veh){
+					foreach($repuesto as $re){
+						$historico=new Historicocaucho;
+						$historico->idasigChasis=$model->id;
+						$historico->idvehiculo=$veh["id"];
+						$historico->idcaucho=$re["idcaucho"];
+						$historico->idestatusCaucho=4;
+						$historico->save();	
+					}
+				  }
                     echo CJSON::encode(array(
                         'status'=>'success', 
                         'div'=>"Plantilla agregada al grupo"
@@ -136,18 +158,15 @@ class AsigchasisController extends Controller
 	 */
 	public function actionDelete($id)
 	{
-		try{
+		
 			
 		$this->loadModel($id)->delete();
 
 		// if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
 		if(!isset($_GET['ajax']))
 			$this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));
-		}
-		catch(CDbException $e){
-			
-			echo "jacobo";
-		}
+		
+		
 	}
 
 	/**

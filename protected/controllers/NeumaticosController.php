@@ -159,11 +159,38 @@ class NeumaticosController extends Controller
 	/**
 	 * Lists all models.
 	 */
-	public function actionIndex()
-	{
-		$dataProvider=new CActiveDataProvider('Historicocaucho');
+	public function actionIndex(){
+		$montados=array();
+		$rep=array();
+		$veh=array();
+		$idveh=Vehiculo::model()->findAll();
+		
+		if(isset($_POST["Vehiculo"])){
+			if($_POST["Vehiculo"]["id"]==""){
+				foreach($idveh as $idv){
+					$montados[]=new CActiveDataProvider('Historicocaucho',array("criteria"=>array("condition"=>"idestatusCaucho=1 and idvehiculo=".$idv["id"]."")));
+					$rep[]=new CActiveDataProvider('Historicocaucho',array("criteria"=>array("condition"=>"idestatusCaucho=4 and idvehiculo=".$idv["id"]."")));
+					$veh[]=new CActiveDataProvider('Historicocaucho',array("criteria"=>array("condition"=>"idestatusCaucho=4 and idvehiculo=".$idv["id"]."","limit"=>1)));
+				}
+			}else{
+				$montados[]=new CActiveDataProvider('Historicocaucho',array("criteria"=>array("condition"=>"idestatusCaucho=1 and idvehiculo=".$_POST["Vehiculo"]["id"]."")));
+				$rep[]=new CActiveDataProvider('Historicocaucho',array("criteria"=>array("condition"=>"idestatusCaucho=4 and idvehiculo=".$_POST["Vehiculo"]["id"]."")));
+				$veh[]=new CActiveDataProvider('Historicocaucho',array("criteria"=>array("condition"=>"idestatusCaucho=4 and idvehiculo=".$_POST["Vehiculo"]["id"]."","limit"=>1)));
+			}
+			
+			
+		}else
+			foreach($idveh as $idv){
+				
+			$montados[]=new CActiveDataProvider('Historicocaucho',array("criteria"=>array("condition"=>"idestatusCaucho=1 and idvehiculo=".$idv["id"]."")));
+			$rep[]=new CActiveDataProvider('Historicocaucho',array("criteria"=>array("condition"=>"idestatusCaucho=4 and idvehiculo=".$idv["id"]."")));
+		    $veh[]=new CActiveDataProvider('Historicocaucho',array("criteria"=>array("condition"=>"idestatusCaucho=4 and idvehiculo=".$idv["id"]."","limit"=>1)));
+		}
+			
 		$this->render('index',array(
-			'dataProvider'=>$dataProvider,
+			'montados'=>$montados,
+			'rep'=>$rep,
+			'veh'=>$veh
 		));
 	}
 
