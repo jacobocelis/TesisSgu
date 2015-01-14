@@ -9,7 +9,7 @@ $this->breadcrumbs=array(
 
 $this->menu=array(
 	array('label'=>'      Plantillas de montaje', 'url'=>array('plantilla')),
-	array('label'=>'      Montajes-Desmontajes', 'url'=>array('')),
+	array('label'=>'      Montajes-Desmontajes', 'url'=>array('md')),
 	array('label'=>'      Rotaciones', 'url'=>array('')),
 	array('label'=>'      Admin. de parámetros', 'url'=>array('')),
 );
@@ -254,7 +254,6 @@ $this->widget('zii.widgets.grid.CGridView', array(
 		nuevoCauchoRep();}"));?>
 		</div>
 		<div id="nuevoCauchoRep"></div>
-		
 </div>
 <div id="agregarAgrupo"></div>
 <div id="divGrupo">
@@ -365,7 +364,8 @@ $this->beginWidget('zii.widgets.jui.CJuiDialog', array( // the dialog
 					'class'=>'CButtonColumn',
 					 'template'=>'{delete}',
 					 'afterDelete'=>'function(link,success,data){
-	                               $("#plantilla").change();
+	                               //$("#plantilla").change();
+								   tieneGrupo($("#plantilla option:selected").val());
 	                        }',
 					     'buttons'=>array(
 						 

@@ -29,17 +29,17 @@
 	<?php echo CHtml::encode($data->idmarcaCaucho); ?>
 	<br />
 
-	<b><?php echo CHtml::encode($data->getAttributeLabel('idposicionEje')); ?>:</b>
-	<?php echo CHtml::encode($data->idposicionEje); ?>
+	<b><?php echo CHtml::encode($data->getAttributeLabel('idvehiculo')); ?>:</b>
+	<?php echo CHtml::encode($data->idvehiculo); ?>
 	<br />
 
 	<?php /*
-	<b><?php echo CHtml::encode($data->getAttributeLabel('idposicionRueda')); ?>:</b>
-	<?php echo CHtml::encode($data->idposicionRueda); ?>
+	<b><?php echo CHtml::encode($data->getAttributeLabel('iddetalleRueda')); ?>:</b>
+	<?php echo CHtml::encode($data->iddetalleRueda); ?>
 	<br />
 
-	<b><?php echo CHtml::encode($data->getAttributeLabel('idvehiculo')); ?>:</b>
-	<?php echo CHtml::encode($data->idvehiculo); ?>
+	<b><?php echo CHtml::encode($data->getAttributeLabel('idasigChasis')); ?>:</b>
+	<?php echo CHtml::encode($data->idasigChasis); ?>
 	<br />
 
 	*/ ?>

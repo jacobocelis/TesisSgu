@@ -18,7 +18,7 @@
 	<p class="note">Campos con <span class="required">*</span> obligatorios.</p>
 
 	<div class="row"><?php echo $form->labelEx($model,'fecha'); ?>
-		<?php echo $form->textField($model,'fecha',array('id'=>'fecha','size'=>10,'readonly'=>'readonly','value'=>date('d/m/Y'),'maxlength'=>8, 'style'=>'width:100px;cursor:pointer;')); ?>
+		<?php echo $form->textField($model,'fecha',array('id'=>'fecha','size'=>10,'readonly'=>'readonly','value'=>date('d/m/Y h:i A'),'maxlength'=>8, 'style'=>'width:140px;cursor:pointer;')); ?>
 	<?php echo $form->error($model,'fecha'); ?>
 	</div>
 
@@ -79,10 +79,26 @@
 }
 </style>
 <script>
-
+(function($) {
+        $.timepicker.regional['es'] = {
+                timeOnlyTitle: 'Elegir una hora',
+                timeText: 'Hora',
+                hourText: 'Horas',
+                minuteText: 'Minutos',
+                secondText: 'Segundos',
+                millisecText: 'Milisegundos',
+                timezoneText: 'Huso horario',
+                currentText: 'Ahora',
+                closeText: 'Aceptar',
+                timeFormat: 'hh:mm tt',
+                amNames: ['am', 'AM', 'A'],
+                pmNames: ['pm', 'PM', 'P'],
+        };
+        $.timepicker.setDefaults($.timepicker.regional['es']);
+})(jQuery);
 $(function($){
 	    $.datepicker.regional['es'] = {
-	        closeText: 'Cerrar',
+	        closeText: 'Aceptar',
 	        prevText: 'Anterior',
 	        nextText: 'Siguiente',
 	        currentText: 'Hoy',
@@ -93,6 +109,7 @@ $(function($){
 	        dayNamesMin: ['Do','Lu','Ma','Mi','Ju','Vi','Sá'],
 	        weekHeader: 'Sm',
 	        dateFormat: 'dd/mm/yy',
+			//timeFormat: 'hh:mm:00'
 	        firstDay: 1,
 	        isRTL: false,
 			changeMonth: true,
@@ -100,11 +117,13 @@ $(function($){
 	        showMonthAfterYear: false,
 	        yearSuffix: '',
 	        maxDate: '0d',
+			//timeOnlyTitle: 'Elegir una hora',
+               
 	        //minDate: '0d',
 	    };
 	    $.datepicker.setDefaults($.datepicker.regional['es']);
 	});  
-	$("#fecha").datepicker({
+	$("#fecha").datetimepicker({
 		onSelect: function(){
 			
 		}

@@ -29,9 +29,19 @@ class Historicocaucho extends CActiveRecord
 	 */
 	public function tableName()
 	{
-		return 'sgu_historicocaucho';
+		return 'sgu_historicoCaucho';
 	}
-
+	public function porDefinir($data){
+		if($data=='0000-01-01'||$data=="0"||$data=="")
+			return '<span style="color:red">Por definir</span>';
+    }
+	public function coloresEstatus($data){
+		if($data->idestatusCaucho==1||$data->idestatusCaucho==4)
+			return '<span style="color:green">'.$data->idestatusCaucho0->estatusCaucho.'</span>';
+		if($data->idestatusCaucho==5||$data->idestatusCaucho==6||$data->idestatusCaucho==3)
+			return '<span style="color:red">'.$data->idestatusCaucho0->estatusCaucho.'</span>';
+		
+	}
 	/**
 	 * @return array validation rules for model attributes.
 	 */
@@ -40,7 +50,7 @@ class Historicocaucho extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('idestatusCaucho, idcaucho, idvehiculo, idasigChasis', 'required'),
+			array('idestatusCaucho, idcaucho, idvehiculo, idasigChasis,serial', 'required'),
 			array('idestatusCaucho, idcaucho, idmarcaCaucho, idvehiculo, iddetalleRueda, idasigChasis', 'numerical', 'integerOnly'=>true),
 			array('serial', 'length', 'max'=>45),
 			array('fecha', 'safe'),
@@ -77,8 +87,8 @@ class Historicocaucho extends CActiveRecord
 			'fecha' => 'Fecha',
 			'serial' => 'Serial',
 			'idestatusCaucho' => 'Idestatus Caucho',
-			'idcaucho' => 'Idcaucho',
-			'idmarcaCaucho' => 'Idmarca Caucho',
+			'idcaucho' => 'Detalle',
+			'idmarcaCaucho' => 'Marca',
 			'idvehiculo' => 'Idvehiculo',
 			'iddetalleRueda' => 'Iddetalle Rueda',
 			'idasigChasis' => 'Idasig Chasis',

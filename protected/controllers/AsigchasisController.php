@@ -57,12 +57,13 @@ class AsigchasisController extends Controller
 					
 				  foreach($vehiculos as $veh){
 					foreach($ruedas as $rue){
+					 
 						$historico=new Historicocaucho;
 						$historico->idasigChasis=$model->id;
 						$historico->idvehiculo=$veh["id"];
 						$historico->iddetalleRueda=$rue["id"];
 						$historico->idcaucho=$rue["idcaucho"];
-						$historico->idestatusCaucho=1;
+						$historico->idestatusCaucho=5;
 						$historico->save();	
 					}
 				  }
@@ -72,7 +73,7 @@ class AsigchasisController extends Controller
 						$historico->idasigChasis=$model->id;
 						$historico->idvehiculo=$veh["id"];
 						$historico->idcaucho=$re["idcaucho"];
-						$historico->idestatusCaucho=4;
+						$historico->idestatusCaucho=6;
 						$historico->save();	
 					}
 				  }

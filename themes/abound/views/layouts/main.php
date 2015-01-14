@@ -47,6 +47,7 @@
 		
 		
         <?php
+		
         $cs->registerScriptFile($baseUrl . '/js/bootstrap.min.js');
         $cs->registerScriptFile($baseUrl . '/js/plugins/jquery.sparkline.js');
         $cs->registerScriptFile($baseUrl . '/js/plugins/jquery.flot.min.js');

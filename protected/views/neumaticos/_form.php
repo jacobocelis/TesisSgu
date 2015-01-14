@@ -50,21 +50,21 @@
 	</div>
 
 	<div class="row">
-		<?php echo $form->labelEx($model,'idposicionEje'); ?>
-		<?php echo $form->textField($model,'idposicionEje'); ?>
-		<?php echo $form->error($model,'idposicionEje'); ?>
-	</div>
-
-	<div class="row">
-		<?php echo $form->labelEx($model,'idposicionRueda'); ?>
-		<?php echo $form->textField($model,'idposicionRueda'); ?>
-		<?php echo $form->error($model,'idposicionRueda'); ?>
-	</div>
-
-	<div class="row">
 		<?php echo $form->labelEx($model,'idvehiculo'); ?>
 		<?php echo $form->textField($model,'idvehiculo'); ?>
 		<?php echo $form->error($model,'idvehiculo'); ?>
+	</div>
+
+	<div class="row">
+		<?php echo $form->labelEx($model,'iddetalleRueda'); ?>
+		<?php echo $form->textField($model,'iddetalleRueda'); ?>
+		<?php echo $form->error($model,'iddetalleRueda'); ?>
+	</div>
+
+	<div class="row">
+		<?php echo $form->labelEx($model,'idasigChasis'); ?>
+		<?php echo $form->textField($model,'idasigChasis'); ?>
+		<?php echo $form->error($model,'idasigChasis'); ?>
 	</div>
 
 	<div class="row buttons">

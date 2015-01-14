@@ -32,7 +32,7 @@ class NeumaticosController extends Controller
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create','update','plantilla','ActualizarListaPlantillas','MostrarLinkEje','actualizarListaPosicionesEje','MostrarLinkCaucho','actualizarEstado','MostrarLinkRep','MostrarDivRep','TieneGrupo'),
+				'actions'=>array('create','update','plantilla','ActualizarListaPlantillas','MostrarLinkEje','actualizarListaPosicionesEje','MostrarLinkCaucho','actualizarEstado','MostrarLinkRep','MostrarDivRep','TieneGrupo','MD','montar'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -141,7 +141,38 @@ class NeumaticosController extends Controller
 			'model'=>$model,
 		));
 	}
+	public function actionMontar($id){
+		
+		$model=$this->loadModel($id);
 
+		if(isset($_POST['Historicocaucho'])){
+			 $model->attributes=$_POST['Historicocaucho'];
+			 $model->fecha=date("Y-m-d", strtotime(str_replace('/', '-',$model->fecha)));
+			if($model->save()){
+                if (Yii::app()->request->isAjaxRequest){
+                    echo CJSON::encode(array(
+                        'status'=>'success', 
+                        'div'=>"Montaje realizado",
+						'ui'=>$model->idvehiculo,
+                        ));
+					exit;
+                }
+            }
+		}
+			if (Yii::app()->request->isAjaxRequest){	
+				if($model->iddetalleRueda=="")
+					$model->idestatusCaucho=4;
+				else
+					$model->idestatusCaucho=1;
+			
+            echo CJSON::encode(array(
+                'status'=>'failure', 
+                'div'=>$this->renderPartial('_formMD', array('model'=>$model), true),
+				'ui'=>$model->idvehiculo,
+				));
+            exit;               
+        }
+	}
 	/**
 	 * Deletes a particular model.
 	 * If deletion is successful, the browser will be redirected to the 'admin' page.
@@ -170,24 +201,54 @@ class NeumaticosController extends Controller
 				foreach($idveh as $idv){
 					$montados[]=new CActiveDataProvider('Historicocaucho',array("criteria"=>array("condition"=>"idestatusCaucho=1 and idvehiculo=".$idv["id"]."")));
 					$rep[]=new CActiveDataProvider('Historicocaucho',array("criteria"=>array("condition"=>"idestatusCaucho=4 and idvehiculo=".$idv["id"]."")));
-					$veh[]=new CActiveDataProvider('Historicocaucho',array("criteria"=>array("condition"=>"idestatusCaucho=4 and idvehiculo=".$idv["id"]."","limit"=>1)));
+					$veh[]=new CActiveDataProvider('Historicocaucho',array("criteria"=>array("condition"=>"idvehiculo=".$idv["id"]."","limit"=>"1"),'pagination' => false));
 				}
 			}else{
 				$montados[]=new CActiveDataProvider('Historicocaucho',array("criteria"=>array("condition"=>"idestatusCaucho=1 and idvehiculo=".$_POST["Vehiculo"]["id"]."")));
 				$rep[]=new CActiveDataProvider('Historicocaucho',array("criteria"=>array("condition"=>"idestatusCaucho=4 and idvehiculo=".$_POST["Vehiculo"]["id"]."")));
-				$veh[]=new CActiveDataProvider('Historicocaucho',array("criteria"=>array("condition"=>"idestatusCaucho=4 and idvehiculo=".$_POST["Vehiculo"]["id"]."","limit"=>1)));
+			$veh[]=new CActiveDataProvider('Historicocaucho',array("criteria"=>array("condition"=>"idvehiculo=".$_POST["Vehiculo"]["id"]."","limit"=>"1"),'pagination' => false));
+			
 			}
-			
-			
+		
 		}else
 			foreach($idveh as $idv){
 				
 			$montados[]=new CActiveDataProvider('Historicocaucho',array("criteria"=>array("condition"=>"idestatusCaucho=1 and idvehiculo=".$idv["id"]."")));
 			$rep[]=new CActiveDataProvider('Historicocaucho',array("criteria"=>array("condition"=>"idestatusCaucho=4 and idvehiculo=".$idv["id"]."")));
-		    $veh[]=new CActiveDataProvider('Historicocaucho',array("criteria"=>array("condition"=>"idestatusCaucho=4 and idvehiculo=".$idv["id"]."","limit"=>1)));
+		    $veh[]=new CActiveDataProvider('Historicocaucho',array("criteria"=>array("condition"=>"idvehiculo=".$idv["id"]."","limit"=>"1"),'pagination' => false));
 		}
 			
 		$this->render('index',array(
+			'montados'=>$montados,
+			'rep'=>$rep,
+			'veh'=>$veh
+		));
+	}
+public function actionMD(){
+		$montados=array();
+		$rep=array();
+		$veh=array();
+		$idveh=Vehiculo::model()->findAll();
+		
+		if(isset($_POST["Vehiculo"])){
+			if($_POST["Vehiculo"]["id"]==""){
+				foreach($idveh as $idv){
+					$montados[]=new CActiveDataProvider('Historicocaucho',array("criteria"=>array("condition"=>"(idestatusCaucho=5 or idestatusCaucho=1) and idvehiculo=".$idv["id"]."")));
+					$rep[]=new CActiveDataProvider('Historicocaucho',array("criteria"=>array("condition"=>"(idestatusCaucho=6 or idestatusCaucho=4) and idvehiculo=".$idv["id"]."")));
+					$veh[]=new CActiveDataProvider('Historicocaucho',array("criteria"=>array("condition"=>"idvehiculo=".$idv["id"]."","limit"=>"1"),'pagination' => false));
+				}
+			}else{
+				$montados[]=new CActiveDataProvider('Historicocaucho',array("criteria"=>array("condition"=>"(idestatusCaucho=5 or idestatusCaucho=1) and idvehiculo=".$_POST["Vehiculo"]["id"]."")));
+				$rep[]=new CActiveDataProvider('Historicocaucho',array("criteria"=>array("condition"=>"(idestatusCaucho=6 or idestatusCaucho=4) and idvehiculo=".$_POST["Vehiculo"]["id"]."")));
+				$veh[]=new CActiveDataProvider('Historicocaucho',array("criteria"=>array("condition"=>"idvehiculo=".$_POST["Vehiculo"]["id"]."","limit"=>"1"),'pagination' => false));
+			}
+		}else
+			foreach($idveh as $idv){
+				$montados[]=new CActiveDataProvider('Historicocaucho',array("criteria"=>array("condition"=>"(idestatusCaucho=5 or idestatusCaucho=1) and idvehiculo=".$idv["id"]."")));
+				$rep[]=new CActiveDataProvider('Historicocaucho',array("criteria"=>array("condition"=>"(idestatusCaucho=6 or idestatusCaucho=4) and idvehiculo=".$idv["id"]."")));
+				$veh[]=new CActiveDataProvider('Historicocaucho',array("criteria"=>array("condition"=>"idvehiculo=".$idv["id"]."","limit"=>"1"),'pagination' => false));
+		}
+		$this->render('md',array(
 			'montados'=>$montados,
 			'rep'=>$rep,
 			'veh'=>$veh

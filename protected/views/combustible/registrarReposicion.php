@@ -29,14 +29,12 @@ $this->widget('zii.widgets.grid.CGridView', array(
                 'dataProvider'=>$dataProvider,
 				'htmlOptions'=>array('style'=>'font-size: 1.0em;'),
 				'columns'=>array(
-				
-				
 				array(
 					'header'=>'Unidad',
 					'name'=>'idvehiculo',
 					'value'=>'str_pad((int) $data->idvehiculo0->numeroUnidad,2,"0",STR_PAD_LEFT);',
 					//'value'=>'$data->idplan0->idplanGrupo0->CompiledColour->$data-id.\' \'.$data->CompiledColour',
-					'htmlOptions'=>array('style'=>'text-align:center;width:40px'),
+					'htmlOptions'=>array('style'=>'text-align:center;width:30px'),
 				),
 				array(
 					'header'=>'Litros',
@@ -61,16 +59,22 @@ $this->widget('zii.widgets.grid.CGridView', array(
 					'header'=>'Estación',
 					'name'=>'idestacionServicio',
 					'value'=>'$data->idestacionServicio0->nombre',
-					'htmlOptions'=>array('style'=>'text-align:center;width:60px'),
+					'htmlOptions'=>array('style'=>'text-align:center;width:50px'),
+				),
+				array(
+					'header'=>'Fecha y hora',
+					'name'=>'fecha',
+					'value'=>'date("d/m/Y h:i A",strtotime($data->fecha))',
+					'htmlOptions'=>array('style'=>'text-align:center;width:80px'),
 				),
 				array(
 					'type'=>'raw',
 					'header'=>'Última reposición',
 					'name'=>'fecha',
 					'value'=>'$data->fechaReposicion($data->fecha)',
-					'htmlOptions'=>array('style'=>'text-align:center;width:50px'),
+					'htmlOptions'=>array('style'=>'text-align:center;width:80px'),
 				),
-			
+				
 				array(
 					'header'=>'Eliminar',
 					'class'=>'CButtonColumn',

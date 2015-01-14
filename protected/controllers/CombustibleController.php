@@ -32,7 +32,7 @@ class CombustibleController extends Controller
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create','update','alertaReposicion','autonomia','formAutonomia','registrarReposicion','RegReposicion','AjaxObtenerTipoCombustible','CostoCombustible','HistoricoReposicion'),
+				'actions'=>array('create','update','alertaReposicion','autonomia','formAutonomia','registrarReposicion','RegReposicion','AjaxObtenerTipoCombustible','CostoCombustible','HistoricoReposicion','realVsEstimado'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -79,7 +79,7 @@ class CombustibleController extends Controller
 		{
 			$model->attributes=$_POST['Historicocombustible'];
 			if($model->validate()){
-				$model->fecha=date("Y-m-d", strtotime(str_replace('/', '-',$model->fecha)));
+				$model->fecha=date("Y-m-d H:i", strtotime(str_replace('/', '-',$model->fecha)));
 				$consulta=Yii::app()->db->createCommand("select id,fecha from sgu_historicoCombustible where idvehiculo=".$model->idvehiculo." order by fecha,id desc limit 1")->queryAll();
 				if(count($consulta)>0){
 					if($consulta[0]["fecha"]>$model->fecha)
@@ -222,6 +222,14 @@ class CombustibleController extends Controller
 	/**
 	 * Manages all models.
 	 */
+	 
+	 public function actionRealvsestimado(){
+		 $model="";
+		$this->render('realVsEstimado',array(
+			'model'=>$model,
+		));
+	}
+	
 	public function actionAdmin()
 	{
 		$model=new Historicocombustible('search');

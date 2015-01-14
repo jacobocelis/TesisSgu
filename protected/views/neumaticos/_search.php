@@ -42,18 +42,18 @@
 	</div>
 
 	<div class="row">
-		<?php echo $form->label($model,'idposicionEje'); ?>
-		<?php echo $form->textField($model,'idposicionEje'); ?>
-	</div>
-
-	<div class="row">
-		<?php echo $form->label($model,'idposicionRueda'); ?>
-		<?php echo $form->textField($model,'idposicionRueda'); ?>
-	</div>
-
-	<div class="row">
 		<?php echo $form->label($model,'idvehiculo'); ?>
 		<?php echo $form->textField($model,'idvehiculo'); ?>
+	</div>
+
+	<div class="row">
+		<?php echo $form->label($model,'iddetalleRueda'); ?>
+		<?php echo $form->textField($model,'iddetalleRueda'); ?>
+	</div>
+
+	<div class="row">
+		<?php echo $form->label($model,'idasigChasis'); ?>
+		<?php echo $form->textField($model,'idasigChasis'); ?>
 	</div>
 
 	<div class="row buttons">

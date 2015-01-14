@@ -3,35 +3,53 @@
 /* @var $dataProvider CActiveDataProvider */
 
 $this->breadcrumbs=array(
-	'Neumáticos',
+'Neumáticos'=>array('index'),
+	'Montajes y desmontajes',
 );
 
 $this->menu=array(
 	array('label'=>'      Plantillas de montaje', 'url'=>array('plantilla')),
-	array('label'=>'      Montajes-Desmontajes', 'url'=>array('')),
+	array('label'=>'      Montajes-Desmontajes', 'url'=>array('md')),
 	array('label'=>'      Rotaciones', 'url'=>array('')),
 	array('label'=>'      Admin. de parámetros', 'url'=>array('')),
 );
 ?>
+<?php
+/*ventana agregar actividad*/
+$this->beginWidget('zii.widgets.jui.CJuiDialog', array( // the dialog
+    'id'=>'nuevaPos',
+    'options'=>array(
+ 
+        'autoOpen'=>false,
+        'modal'=>true, 
+    ),
+));?>
+<?php $this->endWidget();?>
 <div class='crugepanel user-assignments-detail'>
-<h1>Neumáticos actualmente en uso por vehiculo</h1>
+<h1>Neumáticos</h1>
 <div id="sep">
 
  <?php $form = $this->beginWidget('CActiveForm', array(
     'id'=>'form',
     'enableAjaxValidation'=>false,
 )); ?>
-		Filtrar por #:  
+		Buscar vehiculo por #:  
 		<?php $model=new Vehiculo;
 		echo CHtml::submitButton('Buscar',array("id"=>"boton","style"=>"float:right;margin-top:2px;margin-left:10px;")); 
 		echo $form->dropDownList($model,'id',CHtml::listData(Vehiculo::model()->findAll(),'id','numeroUnidad'),array('prompt'=>'Todos ','style' => 'width:100px;float:right')); ?>
 		
 <?php $this->endWidget(); ?>
 </div>
-<?php  $i=0; foreach($montados as $mont){?>
+<?php  $i=0; 
+foreach($montados as $mont){
+	$idvehiculo=$veh[$i]->getData();
+	if(count($idvehiculo)>0)
+		$idve=$idvehiculo[0]["idvehiculo"];
 
+if(count($idvehiculo)>0){ ?>
 <div class="cuadro">
 <?php
+
 $this->widget('zii.widgets.CListView', array(
 	'dataProvider'=>$veh[$i],
 	'emptyText'=>'No hay registros',
@@ -39,31 +57,42 @@ $this->widget('zii.widgets.CListView', array(
 	'itemView'=>'vehiculos',
 ));
 $this->widget('zii.widgets.grid.CGridView', array(
-				//'id'=>'montados',
+				'id'=>$idve,
 				'summaryText'=>'',
+				//se deben definir inicialmente los neumaticos que posee cada vehiculo
 			   // 'enableSorting' => false,
 				'template'=>"{items}\n{summary}\n{pager}",
 				'selectableRows'=>1,
 				'emptyText'=>'No hay registros',
                 'dataProvider'=>$mont,
-				'htmlOptions'=>array('style'=>'margin-top:10px;width:100%'),
+				'htmlOptions'=>array('style'=>'margin-top:10px;float: left;width:100%'),
 				'columns'=>array(
 				array(
+					'type'=>"raw",
 					'header'=>'Fecha de montaje',
-					'value'=>'$data->fecha',
+					'value'=>'$data->fecha=="0000-01-01"?$data->porDefinir($data->fecha):date("d/m/Y",strtotime($data->fecha))',
 					'name'=>'fecha',
-					'htmlOptions'=>array('style'=>'text-align:center;width:85px'),
+					'htmlOptions'=>array('style'=>'text-align:center;width:5px'),
 				),
 				array(
+					'type'=>"raw",
 					'header'=>'Serial',
-					//'value'=>'$data->idgrupo0->grupo',
+					'value'=>'$data->serial=="0"?$data->porDefinir($data->serial):strtoupper($data->serial);',
 					'name'=>'serial',
-					'htmlOptions'=>array('style'=>'text-align:center;width:85px'),
+					'htmlOptions'=>array('style'=>'text-align:center;width:65px'),
 				),
 				array(
+					'type'=>'raw',
 					'header'=>'Marca',
-					//'value'=>'$data->idgrupo0->grupo',
+					'value'=>'$data->idmarcaCaucho==""?$data->porDefinir(""):$data->idmarcaCaucho0->nombre',
 					'name'=>'idmarcaCaucho',
+					'htmlOptions'=>array('style'=>'text-align:center;width:85px'),
+				),
+				
+				array(
+					'header'=>'Detalle',
+					'value'=>'$data->idcaucho0->idmedidaCaucho0->medida.\' R\'.$data->idcaucho0->idrin0->rin.\' \'.$data->idcaucho0->idpiso0->piso',
+					'name'=>'idcaucho',
 					'htmlOptions'=>array('style'=>'text-align:center;width:85px'),
 				),
 				array(
@@ -79,45 +108,47 @@ $this->widget('zii.widgets.grid.CGridView', array(
 					'htmlOptions'=>array('style'=>'text-align:center;width:85px'),
 				),
 				array(
-					'header'=>'Detalle',
-					'value'=>'$data->idcaucho0->idmedidaCaucho0->medida.\' R\'.$data->idcaucho0->idrin0->rin.\' \'.$data->idcaucho0->idpiso0->piso',
-					'name'=>'idcaucho',
-					'htmlOptions'=>array('style'=>'text-align:center;width:85px'),
-				),
-				array(
+					'type'=>"raw",
+					'headerHtmlOptions'=>array('style'=>'text-align:center;width:50px;'),
 					'header'=>'Estatus',
-					'value'=>'$data->idestatusCaucho0->estatusCaucho',
+					'value'=>'$data->coloresEstatus($data)',
 					'name'=>'idestatusCaucho',
-					'htmlOptions'=>array('style'=>'text-align:center;width:85px;color: #42C66E;font-weight: bold;'),
+					'htmlOptions'=>array('style'=>'text-align:center;width:45px;font-weight: bold;'),
 				),
+				
 					
 			),
-        ));
+        ));?>
+		<div id="agregar<?php echo $idve;?>" class="agregar"></div>
+<?php
 $this->widget('zii.widgets.grid.CGridView', array(
-                //'id'=>'rep',
+                'id'=>'rep'.$idve.'',
 				'summaryText'=>'',
 			   // 'enableSorting' => false,
 				'template'=>"{items}\n{summary}\n{pager}",
 				'selectableRows'=>1,
-				'emptyText'=>'No hay registros',
+				'emptyText'=>'No posee repuesto',
                 'dataProvider'=>$rep[$i],
 				'htmlOptions'=>array('style'=>'margin-top:10px;width:100%'),
 				'columns'=>array(
 				array(
+					'type'=>"raw",
 					'header'=>'Fecha de incorporado',
-					'value'=>'$data->fecha',
+					'value'=>'$data->fecha=="0000-01-01"?$data->porDefinir($data->fecha):date("d/m/Y",strtotime($data->fecha))',
 					'name'=>'fecha',
 					'htmlOptions'=>array('style'=>'text-align:center;width:85px'),
 				),
 				array(
+					'type'=>"raw",
 					'header'=>'Serial',
-					//'value'=>'$data->idgrupo0->grupo',
+					'value'=>'$data->serial==0?$data->porDefinir($data->serial):strtoupper($data->serial);',
 					'name'=>'serial',
-					'htmlOptions'=>array('style'=>'text-align:center;width:85px'),
+					'htmlOptions'=>array('style'=>'text-align:center;width:65px'),
 				),
 				array(
+					'type'=>'raw',
 					'header'=>'Marca',
-					//'value'=>'$data->idgrupo0->grupo',
+					'value'=>'$data->idmarcaCaucho==""?$data->porDefinir(""):$data->idmarcaCaucho0->nombre',
 					'name'=>'idmarcaCaucho',
 					'htmlOptions'=>array('style'=>'text-align:center;width:85px'),
 				),
@@ -128,17 +159,21 @@ $this->widget('zii.widgets.grid.CGridView', array(
 					'htmlOptions'=>array('style'=>'text-align:center;width:85px'),
 				),
 				array(
+					"type"=>"raw",
 					'header'=>'Estatus',
-					'value'=>'$data->idestatusCaucho0->estatusCaucho',
+					'value'=>'$data->coloresEstatus($data)',
 					'name'=>'idestatusCaucho',
-					'htmlOptions'=>array('style'=>'text-align:center;width:85px;color:#0078FF;font-weight: bold;'),
+					'htmlOptions'=>array('style'=>'text-align:center;width:85px;font-weight: bold;'),
 				),
+					
 			),
         ));
-		$i++;
+		
 	?>
 </div>		
 <?php
+}
+$i++;
 }
 ?>
 </div>
@@ -154,6 +189,9 @@ $( document ).ready(function() {
 });
 </script>
 <style>
+.agregar{
+	float: left;
+}
 form {
     margin: 0px 0px 0px;
 }

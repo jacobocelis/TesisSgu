@@ -2,18 +2,21 @@
 /* @var $this CombustibleController */
 /* @var $dataProvider CActiveDataProvider */
 
-$this->breadcrumbs=array(
-	'Combustible',
-);
 
 $this->menu=array(
+
+	array('label'=>'<div id="menu"><strong>Combustible</strong></div>'),
 	array('label'=>'      Registrar reposición', 'url'=>array('registrarReposicion')),
 	array('label'=>'      Autonomía de combustible', 'url'=>array('autonomia')),
 	array('label'=>'      Histórico de reposición', 'url'=>array('historicoReposicion')),
-	array('label'=>'      Estadísticas', 'url'=>array('admin')),
+	
 	array('label'=>'      Administración de parámetros', 'url'=>array('admin')),
+	
+	array('label'=>'<div id="menu"><strong>Estadísticas</strong></div>'),
+	array('label'=>'      Consumo real vs estimado ', 'url'=>array('realVsEstimado')),
 );
 ?>
+
 <div class='crugepanel user-assignments-detail'>
 <h1>Última reposición de combustible</h1>
 <?php $this->widget('zii.widgets.grid.CGridView', array(
@@ -50,9 +53,9 @@ $this->menu=array(
 					'htmlOptions'=>array('style'=>'text-align:center;width:60px'),
 				),
 				array(
-					'header'=>'Fecha',
+					'header'=>'Fecha y hora',
 					'name'=>'fecha',
-					'value'=>'date("d/m/Y",strtotime($data->fecha))',
+					'value'=>'date("d/m/Y h:i A",strtotime($data->fecha))',
 					'htmlOptions'=>array('style'=>'text-align:center;width:40px'),
 				),
 				array(
@@ -67,12 +70,12 @@ $this->menu=array(
         ));
 //'Nombre:text:Nombre',?>
 
-<i>Mostrar alerta cuando un vehiculo no tenga reposición transcurridos 
+<i>Mostrar alerta cuando un vehiculo no tenga reposición a partir de 
 <select id="lista" >
 		<?php for($i=1;$i<11;$i++)
 			echo '<option value="'.$i.'">'.$i.'</option>';
 			?>
-		</select> o más días en adelante</i>
+		</select> días.</i>
 </div>
 <script>
 var valor="<?php echo $reposicionDias?>";
