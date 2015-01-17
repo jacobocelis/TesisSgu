@@ -74,7 +74,6 @@ $this->widget('zii.widgets.grid.CGridView', array(
 					'value'=>'$data->fechaReposicion($data->fecha)',
 					'htmlOptions'=>array('style'=>'text-align:center;width:80px'),
 				),
-				
 				array(
 					'header'=>'Eliminar',
 					'class'=>'CButtonColumn',

@@ -225,6 +225,8 @@ class CombustibleController extends Controller
 	 
 	 public function actionRealvsestimado(){
 		 $model="";
+		 $KmrecorridoEnUltimaRep=Yii::app()->db->createCommand("select  hv.idvehiculo, sum(v.distanciaKm) as totalKm from  sgu_viaje v, sgu_historicoViajes hv where  hv.idviaje=v.id and hv.fecha between (select hc.fecha from sgu_historicocombustible hc where hc.idvehiculo=hv.idvehiculo  order by hc.fecha desc limit 1 offset 1)  and (select hc.fecha from sgu_historicocombustible hc where hc.idvehiculo=hv.idvehiculo order by hc.fecha desc limit 1) group by hv.idvehiculo")->queryAll();
+		 
 		$this->render('realVsEstimado',array(
 			'model'=>$model,
 		));

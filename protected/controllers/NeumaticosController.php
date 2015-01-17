@@ -32,7 +32,7 @@ class NeumaticosController extends Controller
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create','update','plantilla','ActualizarListaPlantillas','MostrarLinkEje','actualizarListaPosicionesEje','MostrarLinkCaucho','actualizarEstado','MostrarLinkRep','MostrarDivRep','TieneGrupo','MD','montar'),
+				'actions'=>array('create','update','plantilla','ActualizarListaPlantillas','MostrarLinkEje','actualizarListaPosicionesEje','MostrarLinkCaucho','actualizarEstado','MostrarLinkRep','MostrarDivRep','TieneGrupo','montajeInicial','montar','alertaCambioCauchos','ActualizarSpan'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -86,7 +86,9 @@ class NeumaticosController extends Controller
 			'rep'=>$rep,
 			'ca'=>$ca,
 			'grup'=>$grup,
-			'todo'=>$todo
+			'todo'=>$todo,	
+			'iniciales'=>$this->getPorDefinir()
+			
 		));
 	}
 	public function actionView($id)
@@ -195,6 +197,7 @@ class NeumaticosController extends Controller
 		$rep=array();
 		$veh=array();
 		$idveh=Vehiculo::model()->findAll();
+		$reposicionDias=Parametro::model()->findByAttributes(array('nombre'=>'alertaCambioCauchos'));
 		
 		if(isset($_POST["Vehiculo"])){
 			if($_POST["Vehiculo"]["id"]==""){
@@ -221,10 +224,12 @@ class NeumaticosController extends Controller
 		$this->render('index',array(
 			'montados'=>$montados,
 			'rep'=>$rep,
-			'veh'=>$veh
+			'veh'=>$veh,
+			'iniciales'=>$this->getPorDefinir(),
+			'reposicionDias'=>$reposicionDias["valor"],
 		));
 	}
-public function actionMD(){
+public function actionMontajeInicial(){
 		$montados=array();
 		$rep=array();
 		$veh=array();
@@ -248,7 +253,7 @@ public function actionMD(){
 				$rep[]=new CActiveDataProvider('Historicocaucho',array("criteria"=>array("condition"=>"(idestatusCaucho=6 or idestatusCaucho=4) and idvehiculo=".$idv["id"]."")));
 				$veh[]=new CActiveDataProvider('Historicocaucho',array("criteria"=>array("condition"=>"idvehiculo=".$idv["id"]."","limit"=>"1"),'pagination' => false));
 		}
-		$this->render('md',array(
+		$this->render('montajeInicial',array(
 			'montados'=>$montados,
 			'rep'=>$rep,
 			'veh'=>$veh
@@ -277,6 +282,17 @@ public function actionMD(){
 	 * @return Historicocaucho the loaded model
 	 * @throws CHttpException
 	 */
+	 public function getPorDefinir(){
+		$tot=Yii::app()->db->createCommand("select count(*) as total from sgu_historicoCaucho where idestatusCaucho=5 or idestatusCaucho=6")->queryRow();
+		return $tot["total"];
+	}
+	
+	public function Color($id){
+		if($id>0)
+			return "important";
+		else	
+			return "";
+	}
 	public function loadModel($id)
 	{
 		$model=Historicocaucho::model()->findByPk($id);
@@ -404,4 +420,17 @@ public function actionMD(){
 			echo 0;
 	
 	}
+	public function actionalertaCambioCauchos($id){
+		$modelo=Parametro::model()->findByAttributes(array('nombre'=>'alertaCambioCauchos'));
+		$modelo->valor=$id;
+		$modelo->save();
+	}
+	public function actionActualizarSpan(){
+		$mi=Yii::app()->db->createCommand("select count(*) as total from sgu_historicoCaucho where idestatusCaucho=5 or idestatusCaucho=6")->queryRow();
+		
+		echo CJSON::encode(array(
+			'total'=>$mi["total"],
+			'color'=>$this->Color($mi["total"]),
+		));
+	 }
 }

@@ -42,6 +42,10 @@ class Historicocaucho extends CActiveRecord
 			return '<span style="color:red">'.$data->idestatusCaucho0->estatusCaucho.'</span>';
 		
 	}
+	public function tiempoCambio($fecha){
+		$nueva= (date("Y-m-d",strtotime($fecha)));
+			return ((strtotime(date("Y-m-d"))-strtotime($nueva))/31536000);
+	}
 	/**
 	 * @return array validation rules for model attributes.
 	 */

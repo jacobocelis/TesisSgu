@@ -6,10 +6,10 @@ $this->breadcrumbs=array(
 	'Neumáticos'=>array('index'),
 	'Plantillas de montaje',
 );
-
 $this->menu=array(
 	array('label'=>'      Plantillas de montaje', 'url'=>array('plantilla')),
-	array('label'=>'      Montajes-Desmontajes', 'url'=>array('md')),
+	array('label'=>'      Montajes iniciales <span id="mi" title="hay '.$iniciales.' montajes iniciales por definir" class="badge badge-'.$this->Color($iniciales).' pull-right">'.$iniciales.'</span>', 'url'=>array('montajeInicial')),
+	array('label'=>'      Montajes-Desmontajes', 'url'=>array('')),
 	array('label'=>'      Rotaciones', 'url'=>array('')),
 	array('label'=>'      Admin. de parámetros', 'url'=>array('')),
 );
@@ -785,7 +785,7 @@ function agregarAgrupo(){
 										$.fn.yiiGridView.update('grup');
 										setTimeout("tieneGrupo()",000);
 										$.fn.yiiGridView.update("plantillagrup");
-										
+										actualizarSpan();
 										//setTimeout("mostrarRuedas()",2000);
 										//$.fn.yiiGridView.update('rep');
 										//actualizarEstado($("#plantilla option:selected").val());
@@ -793,5 +793,18 @@ function agregarAgrupo(){
                 },
                 'cache':false});
     return false; 
+}
+
+function actualizarSpan(){
+	var dir="<?php echo Yii::app()->baseUrl;?>"+"/neumaticos/actualizarSpan";
+	$.ajax({
+		url: dir,
+		'data':$(this).serialize(),
+        'dataType':'json',
+         'success':function( result ) {
+			
+    	     $('#mi').removeClass($('#mi').attr('class')).addClass('badge badge-'+result.color+' pull-right');
+			 $('#mi').text(result.total);
+		},});
 }
 </script>

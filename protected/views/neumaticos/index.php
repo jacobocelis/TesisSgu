@@ -3,14 +3,30 @@
 /* @var $dataProvider CActiveDataProvider */
 
 $this->breadcrumbs=array(
-'Neumáticos'=>array('index'),
-	'Montajes y desmontajes',
+'Neumáticos',
+	
 );
 
 $this->menu=array(
+
+	array('label'=>'<div id="menu"><strong>Neumáticos</strong></div>'),
 	array('label'=>'      Plantillas de montaje', 'url'=>array('plantilla')),
-	array('label'=>'      Montajes-Desmontajes', 'url'=>array('md')),
-	array('label'=>'      Rotaciones', 'url'=>array('')),
+	array('label'=>'      Montajes iniciales <span title="hay '.$iniciales.' montajes iniciales por definir" class="badge badge-'.$this->Color($iniciales).' pull-right">'.$iniciales.'</span>', 'url'=>array('montajeInicial')),
+	
+	array('label'=>'<div id="menu"><strong>Órdenes de neumaticos</strong></div>'),
+	
+	array('label'=>'      Crear órden de neumaticos', 'url'=>array('')),
+	array('label'=>'      Ver órdenes abiertas <span class="badge badge-'.$iniciales.' pull-right">'.$iniciales.'</span>', 'url'=>array('')),
+	array('label'=>'      Órdenes listas para cerrar <span class="badge badge-'.$iniciales.' pull-right">'.$iniciales.'</span>', 'url'=>array('')),
+	
+	
+	array('label'=>'<div id="menu"><strong>Historial</strong></div>'),
+	array('label'=>'      Histórico de montajes', 'url'=>array('historicoPreventivo')),
+	array('label'=>'      Histórico de rotaciones', 'url'=>array('historicoPreventivo')),
+	array('label'=>'      Histórico de gastos', 'url'=>array('historicoGastos')),
+	array('label'=>'      Histórico de ordenes', 'url'=>array('historicoOrdenes')),
+	
+	array('label'=>'<div id="menu"><strong>Parámetros</strong></div>'),
 	array('label'=>'      Admin. de parámetros', 'url'=>array('')),
 );
 ?>
@@ -19,21 +35,30 @@ $this->menu=array(
 $this->beginWidget('zii.widgets.jui.CJuiDialog', array( // the dialog
     'id'=>'nuevaPos',
     'options'=>array(
- 
+	
         'autoOpen'=>false,
         'modal'=>true, 
     ),
 ));?>
 <?php $this->endWidget();?>
 <div class='crugepanel user-assignments-detail'>
+
+
+
 <h1>Neumáticos</h1>
+<i style='float: left' >Mostrar alerta sí un neumatico no se ha reemplazado luego de
+<select id="lista" >
+		<?php for($i=1;$i<6;$i++)
+			echo '<option value="'.$i.'">'.$i.'</option>';
+			?>
+		</select> año(s).</i>
 <div id="sep">
 
  <?php $form = $this->beginWidget('CActiveForm', array(
     'id'=>'form',
     'enableAjaxValidation'=>false,
 )); ?>
-		Buscar vehiculo por #:  
+		<i>Buscar vehiculo por #:  </i>
 		<?php $model=new Vehiculo;
 		echo CHtml::submitButton('Buscar',array("id"=>"boton","style"=>"float:right;margin-top:2px;margin-left:10px;")); 
 		echo $form->dropDownList($model,'id',CHtml::listData(Vehiculo::model()->findAll(),'id','numeroUnidad'),array('prompt'=>'Todos ','style' => 'width:100px;float:right')); ?>
@@ -63,6 +88,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
 			   // 'enableSorting' => false,
 				'template'=>"{items}\n{summary}\n{pager}",
 				'selectableRows'=>1,
+			    'rowCssClassExpression'=>'$this->dataProvider->data[$row]->tiempoCambio($data->fecha)>='.$reposicionDias.'?"rojo":"verde"',
 				'emptyText'=>'No hay registros',
                 'dataProvider'=>$mont,
 				'htmlOptions'=>array('style'=>'margin-top:10px;float: left;width:100%'),
@@ -172,11 +198,24 @@ $this->widget('zii.widgets.grid.CGridView', array(
 	?>
 </div>		
 <?php
-}
-$i++;
-}
+}$i++;}
 ?>
 </div>
+<script>
+
+var valor="<?php echo $reposicionDias?>";
+$("#lista").val(valor).change();
+
+$("#lista").change(function(){
+var dir="<?php echo Yii::app()->baseUrl;?>"+"/neumaticos/alertaCambioCauchos/"+$(this).val();
+$.ajax({  		
+          url: dir,
+        })
+  	.done(function( result ) {    	
+			location.reload();
+  	});
+});
+</script>
 <script>
 $('#form').submit(function() {
         $('#boton').val("Buscando...");
@@ -189,6 +228,12 @@ $( document ).ready(function() {
 });
 </script>
 <style>
+.rojo{
+background: none repeat scroll 0% 0% #FFD6D6;
+}
+.verde{
+background: none repeat scroll 0px 0px #B6FCBB;
+}
 .agregar{
 	float: left;
 }
@@ -236,5 +281,8 @@ form {
     font-size: 0.9em;
     border: 1px solid #A8C5F0;
     padding: 0.3em;
+}
+#lista{
+	width:50px;
 }
 </style>
