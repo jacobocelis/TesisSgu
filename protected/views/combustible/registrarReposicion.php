@@ -157,6 +157,8 @@ function registrarReposicion(){
                 'type':'post',
                 'dataType':'json',
                 'success':function(data){
+					//$("#fecha").datepicker("destroy");
+					//$("#fecha").datepicker();
                                 if (data.status == 'failure'){
                                         $('#reposicion').html(data.div);
                                         $('#reposicion form').submit(registrarReposicion);

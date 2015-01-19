@@ -32,7 +32,7 @@ class NeumaticosController extends Controller
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create','update','plantilla','ActualizarListaPlantillas','MostrarLinkEje','actualizarListaPosicionesEje','MostrarLinkCaucho','actualizarEstado','MostrarLinkRep','MostrarDivRep','TieneGrupo','montajeInicial','montar','alertaCambioCauchos','ActualizarSpan'),
+				'actions'=>array('create','update','plantilla','ActualizarListaPlantillas','MostrarLinkEje','actualizarListaPosicionesEje','MostrarLinkCaucho','actualizarEstado','MostrarLinkRep','MostrarDivRep','TieneGrupo','montajeInicial','montar','alertaCambioCauchos','ActualizarSpan','averiaNeumatico','RegistrarAveriaNeumatico','AgregarAveriaNueva','ajaxActualizarAverias'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -49,6 +49,110 @@ class NeumaticosController extends Controller
 	 * Displays a particular model.
 	 * @param integer $id the ID of the model to be displayed
 	 */
+	public function actionAgregarAveriaNueva(){
+		$model=new Fallacaucho;
+        // Uncomment the following line if AJAX validation is needed
+         //$this->performAjaxValidation($model);
+ 
+    if(isset($_POST['Fallacaucho'])){
+            $model->attributes=$_POST['Fallacaucho'];
+            if($model->save()){
+                if (Yii::app()->request->isAjaxRequest){
+				   /*inserts por debajo del plan de mantenimiento a cada vehiculo del grupo*/
+				   
+					echo CJSON::encode(array(
+                        'status'=>'success', 
+                        'div'=>"se agregó la avería correctamente"
+                        ));
+                    exit;
+                }
+            }
+        }
+        if (Yii::app()->request->isAjaxRequest){
+            echo CJSON::encode(array(
+                'status'=>'failure', 
+                'div'=>$this->renderPartial('_formNuevaAveria', array('model'=>$model), true)));
+            exit;               
+        }
+	}
+	/*public function actionRegistrarAveriaNeumatico(){
+		$model=new Detalleeventoca;
+        // Uncomment the following line if AJAX validation is needed
+         //$this->performAjaxValidation($model);
+		 $idv=0;
+		 
+		$montados=new CActiveDataProvider('Historicocaucho',array("criteria"=>array("condition"=>"idvehiculo=".$idv." and idestatusCaucho=1"),'pagination' => false));
+    if(isset($_POST['Detalleeventoca'])){
+            $model->attributes=$_POST['Detalleeventoca'];
+			$model->fechaFalla=date("Y-m-d", strtotime(str_replace('/', '-',$model->fechaFalla )));
+            if($model->save()){
+                if (Yii::app()->request->isAjaxRequest){
+				   
+					echo CJSON::encode(array(
+                        'status'=>'success', 
+                        'div'=>"se agregó la avería correctamente"
+                        ));
+                    exit;
+                }
+            }
+        }
+        if (Yii::app()->request->isAjaxRequest){
+            echo CJSON::encode(array(
+                'status'=>'failure', 
+                'div'=>$this->renderPartial('_formAveria', array('model'=>$model,'montados'=>$montados), true)));
+            exit;               
+        }
+		
+	}*/
+	public function actionAveriaNeumatico(){
+		
+		$model=new Detalleeventoca;
+		$dataProvider=new CActiveDataProvider('Detalleeventoca',array('criteria' => array(
+			'condition' =>'idestatus=8',
+			//'order'=>'fechaFalla DESC'
+			),
+			'sort'=>array(
+				'defaultOrder'=>'id DESC',
+			)
+		));
+			$idv=0;
+			if(isset($_GET["idvehiculo"])){
+				if($_GET["idvehiculo"]=="")
+					$idv=0;
+				else
+					$idv=$_GET["idvehiculo"];
+			}	
+		$montados=new CActiveDataProvider('Historicocaucho',array("criteria"=>array("condition"=>"idvehiculo=".$idv." and idestatusCaucho=1"),'pagination' => false));
+		$reg=0;
+		if(isset($_POST['Detalleeventoca'])){	
+			$model->attributes=$_POST['Detalleeventoca'];
+			$model->fechaFalla=date("Y-m-d", strtotime(str_replace('/', '-', $_POST['Detalleeventoca']['fechaFalla'])));
+			if($model->save()){
+				$model->unsetAttributes();
+				$reg=1;
+				$this->render('averiaNeumatico',array(
+					'dataProvider'=>$dataProvider,
+					'montados'=>$montados,
+					'model'=>$model,
+					'registrado'=>$reg
+				));
+			}else
+				$this->render('averiaNeumatico',array(
+					'dataProvider'=>$dataProvider,
+					'montados'=>$montados,
+					'model'=>$model,
+					'registrado'=>$reg
+				));	
+		}
+		else{
+			$this->render('averiaNeumatico',array(
+				'dataProvider'=>$dataProvider,
+				'montados'=>$montados,
+				'model'=>$model,
+				'registrado'=>$reg
+			));
+		}
+	}
 	public function actionPlantilla(){
 		$ca=0;
 		$idChasis=0;
@@ -105,7 +209,8 @@ class NeumaticosController extends Controller
 	public function actionCreate()
 	{
 		$model=new Historicocaucho;
-
+		$idv=1;
+		$montados=new CActiveDataProvider('Historicocaucho',array("criteria"=>array("condition"=>"idvehiculo=".$idv." and idestatusCaucho=1"),'pagination' => false));
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
 
@@ -117,6 +222,7 @@ class NeumaticosController extends Controller
 		}
 		$this->render('create',array(
 			'model'=>$model,
+			'montados'=>$montados
 		));
 	}
 
@@ -227,6 +333,7 @@ class NeumaticosController extends Controller
 			'veh'=>$veh,
 			'iniciales'=>$this->getPorDefinir(),
 			'reposicionDias'=>$reposicionDias["valor"],
+			
 		));
 	}
 public function actionMontajeInicial(){
@@ -432,5 +539,12 @@ public function actionMontajeInicial(){
 			'total'=>$mi["total"],
 			'color'=>$this->Color($mi["total"]),
 		));
-	 }
+	}
+	public function actionAjaxActualizarAverias(){
+		
+		$models = Fallacaucho::model()->findAll('id<>0 order by id DESC');
+		foreach ($models as $mode){
+			echo CHtml::tag('option',array('type'=>'text','value'=>(($mode->id))),Chtml::encode(($mode->falla)),true);
+		}
+	}
 }

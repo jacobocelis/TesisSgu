@@ -151,5 +151,4 @@ function obtenerTipoCombustible(id){
     	     $('#Historicocombustible_idcombust').html(result);
   	});	
 }
-
 </script>

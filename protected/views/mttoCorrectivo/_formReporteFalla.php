@@ -14,7 +14,7 @@
 	// See class documentation of CActiveForm for details on this.
 	'enableAjaxValidation'=>false,
 )); ?>
-
+<h1>Registro de fallas</h1>
 	<p class="note">Campos con <span class="required">*</span> obligatorios.</p>
 	
 <div class="row">
@@ -177,8 +177,10 @@ var dir="<?php echo Yii::app()->baseUrl;?>"+"/mttoCorrectivo/ajaxActualizarLista
 </script>
 <style>
 #azul{
-	background:#E7FEFE;
+	 background: none repeat scroll 0% 0% #F9FDFD;
+    padding: 5px;
+    border: 1px solid #94A8FF;
+    margin-top: 5px;
 	width:50%;
-	padding:10px;
 }
 </style>

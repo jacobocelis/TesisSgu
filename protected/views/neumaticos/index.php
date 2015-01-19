@@ -12,6 +12,7 @@ $this->menu=array(
 	array('label'=>'<div id="menu"><strong>Neumáticos</strong></div>'),
 	array('label'=>'      Plantillas de montaje', 'url'=>array('plantilla')),
 	array('label'=>'      Montajes iniciales <span title="hay '.$iniciales.' montajes iniciales por definir" class="badge badge-'.$this->Color($iniciales).' pull-right">'.$iniciales.'</span>', 'url'=>array('montajeInicial')),
+	array('label'=>'      Registro de averías <span title="hay '.$iniciales.' averías en neumaticos por atender" class="badge badge-'.$this->Color($iniciales).' pull-right">'.$iniciales.'</span>', 'url'=>array('averiaNeumatico')),
 	
 	array('label'=>'<div id="menu"><strong>Órdenes de neumaticos</strong></div>'),
 	
@@ -114,7 +115,6 @@ $this->widget('zii.widgets.grid.CGridView', array(
 					'name'=>'idmarcaCaucho',
 					'htmlOptions'=>array('style'=>'text-align:center;width:85px'),
 				),
-				
 				array(
 					'header'=>'Detalle',
 					'value'=>'$data->idcaucho0->idmedidaCaucho0->medida.\' R\'.$data->idcaucho0->idrin0->rin.\' \'.$data->idcaucho0->idpiso0->piso',

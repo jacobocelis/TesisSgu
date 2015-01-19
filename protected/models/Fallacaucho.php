@@ -55,7 +55,7 @@ class Fallacaucho extends CActiveRecord
 	{
 		return array(
 			'id' => 'ID',
-			'falla' => 'Falla',
+			'falla' => 'Avería',
 		);
 	}
 

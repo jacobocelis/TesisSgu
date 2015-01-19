@@ -63,7 +63,8 @@ class Historicocaucho extends CActiveRecord
 			array('id, fecha, serial, idestatusCaucho, idcaucho, idmarcaCaucho, idvehiculo, iddetalleRueda, idasigChasis', 'safe', 'on'=>'search'),
 		);
 	}
-
+	
+	
 	/**
 	 * @return array relational rules.
 	 */
