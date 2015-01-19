@@ -28,7 +28,7 @@
 <div id="averia"></div>
 <?php $this->renderPartial('_formAveria', array('model'=>$model,'montados'=>$montados)); ?>
 </div>
-<div id="averias"class='crugepanel user-assignments-role-list'>
+<div id="averia"class='crugepanel user-assignments-role-list'>
 <h1>Averías registradas</h1>
 <div id="registrado">se registró la avería correctamente</div>
 <?php
@@ -175,10 +175,12 @@ var reg="<?php echo $registrado?>";
 if(reg==1){
 	$('#registrado').css('background','#9EF79C');
 	$("#registrado").show();
-	$.scrollTo($('#averias').offset().top-100, { duration:300});
-}
-
+	//$.scrollTo($('#averia').offset().top-100, { duration:300});
 	
+      $("html, body").animate({scrollTop:$(document).height()+"px"});
+
+
+}
 function AgregarAveriaNueva(){
 	$('#dialog').dialog('open');
 	var dir="<?php echo Yii::app()->baseUrl;?>"+"/neumaticos/AgregarAveriaNueva/";

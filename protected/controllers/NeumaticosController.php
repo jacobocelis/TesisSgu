@@ -113,8 +113,11 @@ class NeumaticosController extends Controller
 			),
 			'sort'=>array(
 				'defaultOrder'=>'id DESC',
+			),
+			'pagination'=>array(
+			'pageSize'=>5,
 			)
-		));
+	));
 			$idv=0;
 			if(isset($_GET["idvehiculo"])){
 				if($_GET["idvehiculo"]=="")
