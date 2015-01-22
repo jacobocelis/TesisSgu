@@ -11,7 +11,7 @@
 	
 	array('label'=>'<div id="menu"><strong>Órdenes de neumaticos</strong></div>'),
 	
-	array('label'=>'      Crear órden de neumaticos', 'url'=>array('')),
+	array('label'=>'      Crear órden de neumaticos', 'url'=>array('crearOrdenNeumaticos')),
 	
 	
 	array('label'=>'<div id="menu"><strong>Historial</strong></div>'),

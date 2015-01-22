@@ -32,7 +32,7 @@ class ReportefallaController extends Controller
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create','update','ActualizarMR'),
+				'actions'=>array('create','update','actualizar'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -44,7 +44,7 @@ class ReportefallaController extends Controller
 			),
 		);
 	}
-public function actionActualizarMR($id){
+public function actionActualizar($id){
 	
 		$model=$this->loadModel($id);
 		if($model->kmRealizada==-1 or $model->fechaRealizada=='0000-01-01')

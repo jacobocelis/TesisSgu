@@ -32,7 +32,7 @@ class NeumaticosController extends Controller
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create','update','plantilla','ActualizarListaPlantillas','MostrarLinkEje','actualizarListaPosicionesEje','MostrarLinkCaucho','actualizarEstado','MostrarLinkRep','MostrarDivRep','TieneGrupo','montajeInicial','montar','alertaCambioCauchos','ActualizarSpan','averiaNeumatico','RegistrarAveriaNeumatico','AgregarAveriaNueva','ajaxActualizarAverias'),
+				'actions'=>array('create','update','plantilla','ActualizarListaPlantillas','MostrarLinkEje','actualizarListaPosicionesEje','MostrarLinkCaucho','actualizarEstado','MostrarLinkRep','MostrarDivRep','TieneGrupo','montajeInicial','montar','alertaCambioCauchos','ActualizarSpan','averiaNeumatico','RegistrarAveriaNeumatico','AgregarAveriaNueva','ajaxActualizarAverias','CrearOrdenNeumaticos','crearOrden'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -104,6 +104,20 @@ class NeumaticosController extends Controller
         }
 		
 	}*/
+	public function getOrdenesAbiertas(){
+		$abiertas=Yii::app()->db->createCommand("select count(*) as total from sgu_ordenMtto where idestatus=5 and tipo=1")->queryRow();
+		return $abiertas["total"];
+	}
+	public function getOrdenesListas(){
+		$abiertas=Yii::app()->db->createCommand("select count(*) as total from sgu_ordenMtto where idestatus=6 and tipo=1")->queryRow();
+		return $abiertas["total"];
+	}
+	public function getColor($tot){
+		if($tot>0)
+			return $color='important';
+		else	
+			return $color='';
+	}
 	public function actionAveriaNeumatico(){
 		
 		$model=new Detalleeventoca;
@@ -307,7 +321,7 @@ class NeumaticosController extends Controller
 		$veh=array();
 		$idveh=Vehiculo::model()->findAll();
 		$reposicionDias=Parametro::model()->findByAttributes(array('nombre'=>'alertaCambioCauchos'));
-		
+		$totFalla=Yii::app()->db->createCommand("select count(*) as total from sgu_detalleEventoCa where idestatus=8")->queryRow();
 		if(isset($_POST["Vehiculo"])){
 			if($_POST["Vehiculo"]["id"]==""){
 				foreach($idveh as $idv){
@@ -336,10 +350,58 @@ class NeumaticosController extends Controller
 			'veh'=>$veh,
 			'iniciales'=>$this->getPorDefinir(),
 			'reposicionDias'=>$reposicionDias["valor"],
+			'totalFalla'=>$totFalla["total"],
+			'listas'=>$this->getOrdenesListas(),
+			'abiertas'=>$this->getOrdenesAbiertas(),
 			
 		));
 	}
-public function actionMontajeInicial(){
+	public function actionCrearOrden(){
+		$model=new Ordenmtto;
+		if(isset($_POST['Ordenmtto'])){
+            $model->attributes=$_POST['Ordenmtto'];
+            if($model->save()){
+			if(isset($_POST['idfalla'])){
+				$fal = explode(",", $_POST['idfalla']);
+				foreach($fal as $idfal){
+					Yii::app()->db->createCommand("INSERT INTO `tsg`.`sgu_detOrdNeumatico` (`iddetalleEventoCa`,`idordenMtto`) VALUES (".$idfal.",".$model->id.")")->query();
+					Yii::app()->db->createCommand("update `tsg`.`sgu_detalleEventoCa` set `idestatus` = '4' where `sgu_detalleEventoCa`.`id` = ".$idfal."")->query();
+				}
+			}
+                if (Yii::app()->request->isAjaxRequest){
+				   /*inserts por debajo del plan de mantenimiento a cada vehiculo del grupo*/
+                    echo CJSON::encode(array(
+                        'status'=>'success', 
+                        'div'=>"se creo la orden de mantenimiento"
+                        ));
+					exit;
+                }
+            }
+        }
+		 if (Yii::app()->request->isAjaxRequest){	
+            echo CJSON::encode(array(
+                'status'=>'failure', 
+                'div'=>$this->renderPartial('_formCrearOrden', array('model'=>$model), true)
+				));
+            exit;               
+        }
+	}
+	public function actionCrearOrdenNeumaticos(){
+		
+		//$modeloOrdenMtto=new Ordenmtto;
+		$dataProvider=new CActiveDataProvider('Detalleeventoca',array('criteria' => array(
+			//'condition' =>'idestatus=2 and atraso >=-5',
+			'condition' =>'idestatus=8',
+			'order'=>'fechaFalla'
+			)));
+		$this->render('crearOrdenNeumaticos',array(
+			'dataProvider'=>$dataProvider,
+			'listas'=>$this->getOrdenesListas(),
+			'abiertas'=>$this->getOrdenesAbiertas(),
+		));
+	}
+	
+	public function actionMontajeInicial(){
 		$montados=array();
 		$rep=array();
 		$veh=array();

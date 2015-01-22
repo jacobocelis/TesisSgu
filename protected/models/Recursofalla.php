@@ -31,7 +31,7 @@ class Recursofalla extends CActiveRecord
 	 */
 	public function tableName()
 	{
-		return 'sgu_recursofalla';
+		return 'sgu_recursoFalla';
 	}
 
 	/**

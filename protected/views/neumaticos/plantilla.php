@@ -18,10 +18,18 @@ $this->menu=array(
 <div class='crugepanel user-assignments-role-list'>
 <h1>Plantillas de montaje</h1>
 <div id="desplegable">
+	<div id="1">
 		<?php
 		echo CHtml::dropDownList("plantilla","",CHtml::listData(Chasis::model()->findAll(),'id','nombre'),array(
-			'prompt'=>"Seleccione: ",'style' => 'width:200px;')); ?>
-			
+			'prompt'=>"Seleccione: ",'style' => 'margin-right: 10px;width: 20%;margin-bottom: 0px;')); ?>
+		
+		<span class="nueva">
+		<?php echo CHtml::link('Nueva plantilla', "",array('title'=>'una plantilla valida la cantidad de neumáticos que posee un vehiculo',
+        'style'=>'cursor: pointer;font-size:13px;margin-left:0px;',
+        'onclick'=>"{
+		nuevoChasis();}"));?></span>
+		</div>
+<div id="2">
 <?php 
 //echo $chasis->getTotalItemCount();
 $this->widget('zii.widgets.grid.CGridView', array(
@@ -32,13 +40,14 @@ $this->widget('zii.widgets.grid.CGridView', array(
 				'selectableRows'=>0,
 				'emptyText'=>'seleccione una plantilla',
                 'dataProvider'=>$chasis,
-				'htmlOptions'=>array('style'=>'width:78%;float:right'),
+				'htmlOptions'=>array('style'=>'clear:both;margin-top: 10px;'),
 				'columns'=>array(
 				array(
 					'headerHtmlOptions'=>array('style'=>'width:25%'),
 					'header'=>'# Ejes',
 					'name'=>'nroEjes',
 					'htmlOptions'=>array('style'=>'text-align:center;width:100px'),
+					 'sortable'=>false,
 				),
 				array(
 				'headerHtmlOptions'=>array('style'=>'width:30%'),
@@ -46,12 +55,14 @@ $this->widget('zii.widgets.grid.CGridView', array(
 					'name'=>'cantidadNormales',
 					'value'=>'$data->cantidadNormales',
 					'htmlOptions'=>array('style'=>'text-align:center;width:100px'),
+					 'sortable'=>false,
 				),
 				array(
 				'headerHtmlOptions'=>array('style'=>'width:40%'),
 					'header'=>'Neumáticos de Repuesto',
 					'name'=>'cantidadRepuesto',
 					'htmlOptions'=>array('style'=>'text-align:center;width:50px'),
+					 'sortable'=>false,
 				),
 				array(
 					'headerHtmlOptions'=>array('style'=>'width:50px'),
@@ -72,12 +83,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
 			)
         ));
 		?>
-		<span class="nueva">
-		
-		<?php echo CHtml::link('Nueva plantilla', "",array('title'=>'una plantilla valida la cantidad de neumáticos que posee un vehiculo',
-        'style'=>'cursor: pointer;font-size:13px;margin-left:0px;',
-        'onclick'=>"{
-		nuevoChasis();}"));?></span>
+		</div>
 </div>
 <br>
 <div id="llantas">
@@ -158,10 +164,10 @@ $this->widget('zii.widgets.grid.CGridView', array(
 				'selectableRows'=>0,
 				'emptyText'=>'Nota:Seleccione un eje para registrar los neumáticos',
                 'dataProvider'=>$ruedas,
-				'htmlOptions'=>array('style'=>'margin-top:10px;width: 470px;'),
+				'htmlOptions'=>array('style'=>'margin-top:10px;'),
 				'columns'=>array(
 				array(
-					'headerHtmlOptions'=>array('style'=>'text-align:center;width:40px'),
+					'headerHtmlOptions'=>array('style'=>'text-align:center;'),
 					'header'=>'Eje',
 					'name'=>'iddetalleEje',
 					'value'=>'$data->iddetalleEje0->nombre',
@@ -171,16 +177,16 @@ $this->widget('zii.widgets.grid.CGridView', array(
 					'header'=>'Posición del neumático',
 					'name'=>'idposicionRueda',
 					'value'=>'$data->idposicionRueda0->posicionRueda',
-					'htmlOptions'=>array('style'=>'text-align:center;width:200px'),
+					'htmlOptions'=>array('style'=>'text-align:center;'),
 				),
 				array(
 					'header'=>'Detalle',
 					'value'=>'$data->idcaucho0->idmedidaCaucho0->medida.\' R\'.$data->idcaucho0->idrin0->rin.\' \'.$data->idcaucho0->idpiso0->piso',
 					'name'=>'idcaucho',
-					'htmlOptions'=>array('style'=>'text-align:center;width:185px'),
+					'htmlOptions'=>array('style'=>'text-align:center;'),
 				),
 				array(
-					'headerHtmlOptions'=>array('style'=>'width:50px'),
+					//'headerHtmlOptions'=>array('style'=>'width:50px'),
 					'header'=>'Eliminar',
 					'class'=>'CButtonColumn',
 					 'template'=>'{delete}',
@@ -221,12 +227,14 @@ $this->widget('zii.widgets.grid.CGridView', array(
 				'htmlOptions'=>array('style'=>'margin-top:10px;width:100%'),
 				'columns'=>array(
 				array(
+					 'sortable'=>false,
 					'header'=>'Detalle de neumático',
 					'value'=>'$data->idcaucho0->idmedidaCaucho0->medida.\' R\'.$data->idcaucho0->idrin0->rin.\' \'.$data->idcaucho0->idpiso0->piso',
 					'name'=>'idcaucho',
 					'htmlOptions'=>array('style'=>'text-align:center;width:185px'),
 				),
 				array(
+					 
 					'headerHtmlOptions'=>array('style'=>'width:50px'),
 					'header'=>'Eliminar',
 					'class'=>'CButtonColumn',
@@ -269,6 +277,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
 				'htmlOptions'=>array('style'=>'margin-top:10px;width:100%'),
 				'columns'=>array(
 				array(
+					 'sortable'=>false,
 					'header'=>'Grupo',
 					'value'=>'$data->idgrupo0->grupo',
 					'name'=>'idgrupo',
@@ -346,12 +355,14 @@ $this->beginWidget('zii.widgets.jui.CJuiDialog', array( // the dialog
 				'htmlOptions'=>array('style'=>'margin-top:10px;width:100%'),
 				'columns'=>array(
 				array(
+					 'sortable'=>false,
 					'header'=>'Plantilla',
 					'value'=>'$data->idchasis0->nombre',
 					'name'=>'idchasis',
 					'htmlOptions'=>array('style'=>'text-align:center;width:185px'),
 				),
 				array(
+					 'sortable'=>false,
 					'header'=>'Grupo',
 					'value'=>'$data->idgrupo0->grupo',
 					'name'=>'idgrupo',
@@ -377,7 +388,7 @@ $this->beginWidget('zii.widgets.jui.CJuiDialog', array( // the dialog
 				),
 			),
         ));
-		?>
+?>
 </div>
 <style>
 .nueva{
@@ -391,7 +402,7 @@ text-shadow: 0px -1px 0px rgba(0, 0, 0, 0.25);
 white-space: nowrap;
 vertical-align: baseline;
 background-color: #88E993;
-float:left;
+padding: 4px;
 }
 #asociados{
 	padding:5px;
@@ -408,11 +419,12 @@ float:left;
     margin-right: 10px;
 }
 #uno{
-	float:left;
-	margin-right:20px;
+	width: 49%;
+	float: left;
+	margin-right: 10px;
 }
 #dos{
-	float:left;
+	width: 50%;
 }
 negro{
 	color: rgba(0, 0, 0, 1);
@@ -436,6 +448,7 @@ estado{
 	padding:5px;
 	border: 1px solid #A8C5F0;
 	overflow:auto;
+	
 }
 #llantaRep {
     margin-top: 10px;
@@ -445,12 +458,11 @@ estado{
     float: left;
     overflow: auto;
     margin-right: 10px;
+	height: 115px;
 }
 #desplegable{
 	padding:5px;
-
 	border: 1px solid #A8C5F0;
-	height:60px; 
 }
 .grid-view {
     padding: 0px 0px;

@@ -154,7 +154,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
                         "",
                         array(
                                 \'style\'=>\'cursor: pointer;text-decoration: underline;text-align:center;\',
-                                \'onclick\'=>\'{registrarMR("\'.Yii::app()->createUrl("reporteFalla/actualizarMR",array("id"=>$data["id"])).\'"); $("#dialog").dialog("open");}\'
+                                \'onclick\'=>\'{registrarMR("\'.Yii::app()->createUrl("reportefalla/actualizar",array("id"=>$data["id"])).\'"); $("#dialog").dialog("open");}\'
                         )
                 );',),
 				array(
