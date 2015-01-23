@@ -32,7 +32,7 @@ class NeumaticosController extends Controller
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create','update','plantilla','ActualizarListaPlantillas','MostrarLinkEje','actualizarListaPosicionesEje','MostrarLinkCaucho','actualizarEstado','MostrarLinkRep','MostrarDivRep','TieneGrupo','montajeInicial','montar','alertaCambioCauchos','ActualizarSpan','averiaNeumatico','RegistrarAveriaNeumatico','AgregarAveriaNueva','ajaxActualizarAverias','CrearOrdenNeumaticos','crearOrden'),
+				'actions'=>array('create','update','plantilla','ActualizarListaPlantillas','MostrarLinkEje','actualizarListaPosicionesEje','MostrarLinkCaucho','actualizarEstado','MostrarLinkRep','MostrarDivRep','TieneGrupo','montajeInicial','montar','alertaCambioCauchos','ActualizarSpan','averiaNeumatico','RegistrarAveriaNeumatico','AgregarAveriaNueva','ajaxActualizarAverias','CrearOrdenNeumaticos','crearOrden','agregarNeumaticosRenovar'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -386,9 +386,30 @@ class NeumaticosController extends Controller
             exit;               
         }
 	}
+	public function actionAgregarNeumaticosRenovar(){
+		if(isset($_POST["ids"])){
+			$model = new Detalleeventoca;
+			 foreach ($_POST["ids"] as $ids){ 
+				 
+			 }
+            echo CJSON::encode(array(
+                'status'=>'neumáticos agregados', 
+				));
+            exit;
+		}	 
+	}
 	public function actionCrearOrdenNeumaticos(){
 		
 		//$modeloOrdenMtto=new Ordenmtto;
+
+		$idv=0;
+			if(isset($_GET["idvehiculo"])){
+				if($_GET["idvehiculo"]=="")
+					$idv=0;
+				else
+					$idv=$_GET["idvehiculo"];
+			}	
+		$montados=new CActiveDataProvider('Historicocaucho',array("criteria"=>array("condition"=>"idvehiculo=".$idv." and idestatusCaucho=1"),'pagination' => false));
 		$dataProvider=new CActiveDataProvider('Detalleeventoca',array('criteria' => array(
 			//'condition' =>'idestatus=2 and atraso >=-5',
 			'condition' =>'idestatus=8',
@@ -398,6 +419,7 @@ class NeumaticosController extends Controller
 			'dataProvider'=>$dataProvider,
 			'listas'=>$this->getOrdenesListas(),
 			'abiertas'=>$this->getOrdenesAbiertas(),
+			'montados'=>$montados
 		));
 	}
 	

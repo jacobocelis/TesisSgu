@@ -124,12 +124,13 @@ $this->widget('zii.widgets.grid.CGridView', array(
 			)
         ));
 		?>
+		
 		<?php echo CHtml::link('agregar neumático(+)', "",  // the link for open the dialog
     array(
         'style'=>'cursor: pointer; text-decoration: underline;',
         'onclick'=>"{agregarNeumatico(); }"));
 		?>	
-		
+		<div id="arenovar"><?php $this->renderPartial('_formMontaje', array('model'=>new detalleEventoCa,'montados'=>$montados)); ?></div>
 		</div>
 
 		<div class='crugepanel user-assignments-role-list'>
