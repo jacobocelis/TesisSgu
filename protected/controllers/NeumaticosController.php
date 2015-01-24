@@ -121,17 +121,20 @@ class NeumaticosController extends Controller
 	public function actionAveriaNeumatico(){
 		
 		$model=new Detalleeventoca;
-		$dataProvider=new CActiveDataProvider('Detalleeventoca',array('criteria' => array(
+		/*$dataProvider=new CActiveDataProvider('Detalleeventoca',array('criteria' => array(
 			'condition' =>'idestatus=8',
 			//'order'=>'fechaFalla DESC'
 			),
 			'sort'=>array(
-				'defaultOrder'=>'id DESC',
-			),
+				'defaultOrder'=>'id DESC',),
+				
 			'pagination'=>array(
-			'pageSize'=>5,
-			)
-	));
+			'pageSize'=>5,)));*/
+			$dataProvider=new CActiveDataProvider('Detalleeventoca',array('criteria' => array(
+			'condition' =>'idestatus=8 and idfallaCaucho is not null',
+			'order'=>'id'
+			)));
+			
 			$idv=0;
 			if(isset($_GET["idvehiculo"])){
 				if($_GET["idvehiculo"]=="")
@@ -321,7 +324,7 @@ class NeumaticosController extends Controller
 		$veh=array();
 		$idveh=Vehiculo::model()->findAll();
 		$reposicionDias=Parametro::model()->findByAttributes(array('nombre'=>'alertaCambioCauchos'));
-		$totFalla=Yii::app()->db->createCommand("select count(*) as total from sgu_detalleEventoCa where idestatus=8")->queryRow();
+		$totFalla=Yii::app()->db->createCommand("select count(*) as total from sgu_detalleEventoCa where idestatus=8 and idfallaCaucho is not null")->queryRow();
 		if(isset($_POST["Vehiculo"])){
 			if($_POST["Vehiculo"]["id"]==""){
 				foreach($idveh as $idv){
@@ -388,10 +391,15 @@ class NeumaticosController extends Controller
 	}
 	public function actionAgregarNeumaticosRenovar(){
 		if(isset($_POST["ids"])){
-			$model = new Detalleeventoca;
 			 foreach ($_POST["ids"] as $ids){ 
-				 
-			 }
+				$model = new Detalleeventoca;
+				$model->fechaFalla=date("Y-m-d");
+				$model->fechaRealizada="0001-00-00";
+				$model->idaccionCaucho=1;
+				$model->idhistoricoCaucho=$ids;
+				$model->idestatus=8;
+				$model->save();
+			}
             echo CJSON::encode(array(
                 'status'=>'neumáticos agregados', 
 				));
@@ -409,17 +417,23 @@ class NeumaticosController extends Controller
 				else
 					$idv=$_GET["idvehiculo"];
 			}	
-		$montados=new CActiveDataProvider('Historicocaucho',array("criteria"=>array("condition"=>"idvehiculo=".$idv." and idestatusCaucho=1"),'pagination' => false));
+		$montados=new CActiveDataProvider('Historicocaucho',array("criteria"=>array("condition"=>"idvehiculo=".$idv." and idestatusCaucho=1 and id not in (select idhistoricoCaucho from sgu_detalleEventoCa where idaccionCaucho=1)"),'pagination' => false));
 		$dataProvider=new CActiveDataProvider('Detalleeventoca',array('criteria' => array(
 			//'condition' =>'idestatus=2 and atraso >=-5',
-			'condition' =>'idestatus=8',
-			'order'=>'fechaFalla'
+			'condition' =>'idestatus=8 and idfallaCaucho is not null',
+			'order'=>'id'
 			)));
+		$renovaciones=new CActiveDataProvider('Detalleeventoca',array('criteria' => array(
+			'condition' =>'idaccionCaucho=1 and idestatus=8',
+			//'order'=>'fechaFalla'
+			)));
+			
 		$this->render('crearOrdenNeumaticos',array(
 			'dataProvider'=>$dataProvider,
 			'listas'=>$this->getOrdenesListas(),
 			'abiertas'=>$this->getOrdenesAbiertas(),
-			'montados'=>$montados
+			'montados'=>$montados,
+			'renovaciones'=>$renovaciones,
 		));
 	}
 	

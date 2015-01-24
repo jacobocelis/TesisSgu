@@ -80,8 +80,8 @@ $this->widget('zii.widgets.grid.CGridView', array(
 			    'enableSorting' => true,
 				'template'=>"{items}\n{summary}\n{pager}",
 				'selectableRows'=>2,
-				'emptyText'=>'No hay averías por atender',
-                'dataProvider'=>$dataProvider,
+				'emptyText'=>'No hay neumáticos agregados para renovar',
+                'dataProvider'=>$renovaciones,
 				'columns'=>array(
 				array(
 					//'header'=>'Seleccione las actividades a incluir',
@@ -96,48 +96,70 @@ $this->widget('zii.widgets.grid.CGridView', array(
 					'htmlOptions'=>array('style'=>'text-align:center;width:40px'),
 				),
 				array(
+					'type'=>"raw",
+					'header'=>'Serial',
+					'value'=>'$data->idhistoricoCaucho0->serial=="0"?$data->porDefinir($data->idhistoricoCaucho0->serial):strtoupper($data->idhistoricoCaucho0->serial);',
+					//'name'=>'serial',
+					'htmlOptions'=>array('style'=>'text-align:center;width:65px'),
+				),
+				array(
+					'type'=>'raw',
+					'header'=>'Marca',
+					'value'=>'$data->idhistoricoCaucho0->idmarcaCaucho==""?$data->porDefinir(""):$data->idhistoricoCaucho0->idmarcaCaucho0->nombre',
+					'name'=>'idmarcaCaucho',
+					'htmlOptions'=>array('style'=>'text-align:center;width:85px'),
+				),
+				array(
+					'header'=>'Detalle',
+					'value'=>'$data->idhistoricoCaucho0->idcaucho0->idmedidaCaucho0->medida.\' R\'.$data->idhistoricoCaucho0->idcaucho0->idrin0->rin.\' \'.$data->idhistoricoCaucho0->idcaucho0->idpiso0->piso',
+					'name'=>'idcaucho',
+					'htmlOptions'=>array('style'=>'text-align:center;width:85px'),
+				),
+				array(
+					'header'=>'Eje',
+					'value'=>'$data->idhistoricoCaucho0->iddetalleRueda0->iddetalleEje0->idposicionEje0->posicionEje',
+					'name'=>'iddetalleRueda',
+					'htmlOptions'=>array('style'=>'text-align:center;width:85px'),
+				),
+				array(
+					'header'=>'Posición',
+					'value'=>'$data->idhistoricoCaucho0->iddetalleRueda0->idposicionRueda0->posicionRueda',
+					'name'=>'iddetalleRueda',
+					'htmlOptions'=>array('style'=>'text-align:center;width:85px'),
+				),
+				array(
+					'header'=>'Eliminar',
+					'class'=>'CButtonColumn',
+					 'template'=>'{delete}',
+					     'buttons'=>array(
+							'delete' => array(
+								'url'=>'Yii::app()->createUrl("detalleEventoCa/delete", array("id"=>$data->id))',
+						),
+					),
+				),
+				/*array(
 					'header'=>'Fecha',
 					'name'=>'fechaFalla',
 					'value'=>'date("d/m/Y",strtotime($data->fechaFalla))',
 					'htmlOptions'=>array('style'=>'text-align:center;width:50px'),
-				),
-			
-				array(
-					'header'=>'Neumático',
-					'name'=>'idfallaCaucho',
-					'value'=>'$data->idfallaCaucho0->falla',
-					'htmlOptions'=>array('style'=>'text-align:center;width:250px'),
-				),
-				array(
-					'header'=>'Reportó',
-					'name'=>'idempleado',
-					'value'=>'$data->idempleado0->nombre.\' \'.$data->idempleado0->apellido',
-					'htmlOptions'=>array('style'=>'text-align:center;width:100px'),
-				),
-				array(
-					'header'=>'Estatus',
-					'name'=>'idestatus',
-					'value'=>'$data->idestatus0->estatus',
-					'htmlOptions'=>array('style'=>'text-align:center;width:60px'),
-				),
-				
+				),*/
 			)
         ));
-		?>
-		
+		?>		
 		<?php echo CHtml::link('agregar neumático(+)', "",  // the link for open the dialog
     array(
+		'id'=>'agregarRenovacion',
         'style'=>'cursor: pointer; text-decoration: underline;',
-        'onclick'=>"{agregarNeumatico(); }"));
+        'onclick'=>"{agregarRenovacion(); }"));
 		?>	
-		<div id="arenovar"><?php $this->renderPartial('_formMontaje', array('model'=>new detalleEventoCa,'montados'=>$montados)); ?></div>
+		<div id="arenovar" style="display:none"><?php $this->renderPartial('_formMontaje', array('model'=>new detalleEventoCa,'montados'=>$montados)); ?></div>
 		</div>
 
 		<div class='crugepanel user-assignments-role-list'>
 	<h2>Neumáticos a rotar</h2>
 	<?php //<p><b>Nota: </b><i>Sólo se mostrarán las actividades con menos de 5 dias restantes o que posean atraso</p></i>?>
 <?php
-$this->widget('zii.widgets.grid.CGridView', array(
+/*$this->widget('zii.widgets.grid.CGridView', array(
                 'id'=>'rotaciones',
 				'selectionChanged'=>'rotaciones',
 				'summaryText'=>'',
@@ -186,12 +208,12 @@ $this->widget('zii.widgets.grid.CGridView', array(
 				),
 				
 			)
-        ));
+        ));*/
 		?>
 		<?php echo CHtml::link('agregar rotación(+)', "",  // the link for open the dialog
     array(
         'style'=>'cursor: pointer; text-decoration: underline;',
-        'onclick'=>"{agregarNeumatico(); }"));
+        'onclick'=>"{agregarRotacion(); }"));
 		?>	
 		
 		</div>
@@ -212,6 +234,12 @@ $this->widget('zii.widgets.grid.CGridView', array(
     display: block;
     margin-top: 10px;
     padding: 10px;
+}
+.grid-view {
+    padding: 15px 0px 0px;
+}
+form {
+    margin: 0px 0px 0px;
 }
 h1 {
     font-size: 270%;
@@ -242,43 +270,13 @@ h2{
     padding: 0.3em;
 }
 </style>
-<style>
-.ui-progressbar .ui-widget-header {
-	background: #FFF;
-}
-.ui-widget-header {
-    border: 1px solid #AAA;
-    background-image: url("<?php echo Yii::app()->request->baseUrl;?>/imagenes/imagen.png");
-    color: #222;
-    font-weight: bold;
-}
-.ui-progressbar {
-    border: 0px none;
-    border-radius: 0px;
-    clear: both;
-	margin-bottom: 0px;
-}
-.progress, .ui-progressbar {
-    height: 10px;
-}
-.ui-corner-all, .ui-corner-bottom, .ui-corner-right, .ui-corner-br {
-    border-bottom-right-radius: 0px;
-}
-.ui-corner-all, .ui-corner-bottom, .ui-corner-left, .ui-corner-bl {
-    border-bottom-left-radius: 0px;
-}
-.ui-corner-all, .ui-corner-top, .ui-corner-right, .ui-corner-tr {
-    border-top-right-radius: 0px;
-}
-.ui-corner-all, .ui-corner-top, .ui-corner-left, .ui-corner-tl {
-    border-top-left-radius: 0px;
-}
-</style>
 <script>
 $('#formulario').hide();
 function validar(){
+var idrot = $.fn.yiiGridView.getSelection('renovaciones');
 var idfalla = $.fn.yiiGridView.getSelection('fallas');
-	if(idfalla=="")
+	
+	if(idfalla=="" && idrot=="")
 		$('#formulario').hide();
 	else
 		$('#formulario').show();
@@ -302,5 +300,9 @@ jQuery.ajax({
                 'cache':false});
 		return false; 
 }
-
+function agregarRenovacion(){
+	$('#arenovar').show(800);
+	$('#agregarRenovacion').hide();
+	
+}
 </script>

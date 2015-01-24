@@ -129,7 +129,7 @@
 	</div>
 	
 	<div class="row">
-		<?php echo $form->hiddenField($model,'idaccionCauho',array('value'=>3)); ?>
+		<?php echo $form->hiddenField($model,'idaccionCaucho',array('value'=>3)); ?>
 	</div>
 
 		<?php echo $form->hiddenField($model,'idestatus',array("value"=>8)); ?>

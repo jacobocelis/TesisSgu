@@ -56,7 +56,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
 				array(
 					'header'=>'Avería reportada',
 					'name'=>'idfallacaucho',
-					'value'=>'$data->idfallaCaucho0->falla',
+					'value'=>'$data->idfallaCaucho==null?\' \':$data->idfallaCaucho0->falla',
 					'htmlOptions'=>array('style'=>'text-align:center;width:250px'),
 				),
 				array(
@@ -77,12 +77,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
 					'name'=>'iddetalleRueda',
 					'htmlOptions'=>array('style'=>'text-align:center;width:85px'),
 				),
-				array(
-					'header'=>'Comentario',
-					'name'=>'comentario',
-					'value'=>'$data->comentario',
-					'htmlOptions'=>array('style'=>'text-align:center;width:250px'),
-				),
+				
 				array(
 					'header'=>'Reportó',
 					'name'=>'idempleado',
@@ -94,6 +89,12 @@ $this->widget('zii.widgets.grid.CGridView', array(
 					'name'=>'idestatus',
 					'value'=>'$data->idestatus0->estatus',
 					'htmlOptions'=>array('style'=>'text-align:center;width:60px'),
+				),
+				array(
+					'header'=>'Comentario',
+					'name'=>'comentario',
+					'value'=>'$data->comentario',
+					'htmlOptions'=>array('style'=>'text-align:center;width:250px'),
 				),
 				array(
 					'header'=>'Eliminar',

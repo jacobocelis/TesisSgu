@@ -10,11 +10,11 @@
  * @property string $comentario
  * @property integer $idhistoricoCaucho
  * @property integer $idfallaCaucho
- * @property integer $idaccionCauho
+ * @property integer $idaccionCaucho
  * @property integer $idestatus
  *
  * The followings are the available model relations:
- * @property Accioncaucho $idaccionCauho0
+ * @property Accioncaucho $idaccionCaucho0
  * @property Estatus $idestatus0
  * @property Fallacaucho $idfallaCaucho0
  * @property Historicocaucho $idhistoricoCaucho0
@@ -38,12 +38,12 @@ class Detalleeventoca extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('fechaFalla, fechaRealizada, idhistoricoCaucho, idaccionCauho, idestatus', 'required'),
-			array('idhistoricoCaucho, idfallaCaucho, idaccionCauho, idestatus,idempleado', 'numerical', 'integerOnly'=>true),
+			array('fechaFalla, fechaRealizada, idhistoricoCaucho, idaccionCaucho, idestatus', 'required'),
+			array('idhistoricoCaucho, idfallaCaucho, idaccionCaucho, idestatus,idempleado', 'numerical', 'integerOnly'=>true),
 			array('comentario', 'length', 'max'=>100),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, fechaFalla, fechaRealizada, comentario, idhistoricoCaucho, idfallaCaucho, idaccionCauho, idestatus,idempleado', 'safe', 'on'=>'search'),
+			array('id, fechaFalla, fechaRealizada, comentario, idhistoricoCaucho, idfallaCaucho, idaccionCaucho, idestatus,idempleado', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -55,7 +55,7 @@ class Detalleeventoca extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-			'idaccionCauho0' => array(self::BELONGS_TO, 'Accioncaucho', 'idaccionCauho'),
+			'idaccionCaucho0' => array(self::BELONGS_TO, 'Accioncaucho', 'idaccionCaucho'),
 			'idestatus0' => array(self::BELONGS_TO, 'Estatus', 'idestatus'),
 			'idfallaCaucho0' => array(self::BELONGS_TO, 'Fallacaucho', 'idfallaCaucho'),
 			'idhistoricoCaucho0' => array(self::BELONGS_TO, 'Historicocaucho', 'idhistoricoCaucho'),
@@ -84,7 +84,7 @@ class Detalleeventoca extends CActiveRecord
 			'comentario' => 'Comentario',
 			'idhistoricoCaucho' => 'Neumático averiado',
 			'idfallaCaucho' => 'Avería',
-			'idaccionCauho' => 'Acción a realizar',
+			'idaccionCaucho' => 'Acción a realizar',
 			'idestatus' => 'Estatus',
 			'idempleado' => 'Conductor',
 		);
@@ -114,7 +114,7 @@ class Detalleeventoca extends CActiveRecord
 		$criteria->compare('comentario',$this->comentario,true);
 		$criteria->compare('idhistoricoCaucho',$this->idhistoricoCaucho);
 		$criteria->compare('idfallaCaucho',$this->idfallaCaucho);
-		$criteria->compare('idaccionCauho',$this->idaccionCauho);
+		$criteria->compare('idaccionCaucho',$this->idaccionCaucho);
 		$criteria->compare('idestatus',$this->idestatus);
 		$criteria->compare('idempleado',$this->idempleado);
 

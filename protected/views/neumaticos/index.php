@@ -237,7 +237,7 @@ $( document ).ready(function() {
 background: none repeat scroll 0% 0% #FFD6D6;
 }
 .verde{
-background: none repeat scroll 0px 0px #B6FCBB;
+background: none repeat scroll 0px 0px #EFFEF0;
 }
 .agregar{
 	float: left;

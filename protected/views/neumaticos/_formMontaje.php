@@ -15,7 +15,6 @@
 	'enableAjaxValidation'=>false,
 )); ?>
 
-	
 	<div class="row">
 		<?php echo $form->hiddenField($model,'fechaFalla',array('size'=>10,'readonly'=>'readonly','value'=>date('d/m/Y'),'maxlength'=>8, 'style'=>'width:100px;cursor:pointer;')); ?>
 	</div>
@@ -118,18 +117,23 @@
 	</div>
 	
 	<div class="row">
-		<?php echo $form->hiddenField($model,'idaccionCauho',array('value'=>1)); ?>
+		<?php echo $form->hiddenField($model,'idaccionCaucho',array('value'=>1)); ?>
 	</div>
 
 		<?php echo $form->hiddenField($model,'idestatus',array("value"=>8)); ?>
 
-	<div class="row buttons">
+	<div id="botonRenov" class="row buttons" style="display:none">
 		<?php echo CHtml::ajaxSubmitButton('Agregar', $this->createAbsoluteUrl('neumaticos/agregarNeumaticosRenovar'), 
         array(	 'dataType' => 'json',
                  'type' => 'post',
 				 'data'=>"js:{ids:$.fn.yiiGridView.getSelection('vehic')}",
 				 'success'=>'js:function(data){
-					 
+					 alert(data.status);
+					 $.fn.yiiGridView.update("vehic");
+					 $.fn.yiiGridView.update("renovaciones");
+					 $("#arenovar").hide();
+					 $("#agregarRenovacion").show();
+	
 				 }',
                 ), array('name' => 'value')) 
 		?>
@@ -140,7 +144,9 @@
 </div><!-- form -->
 
 <script>
+function mostrarBotonRenovacion(){
 
+}
 $('#conductor').hide();
 $("#lista").change(function(){
 	$.fn.yiiGridView.update('vehic',{ data : "idvehiculo="+$(this).val()});
@@ -192,7 +198,15 @@ function obtenerConductor(id){
 		}
 });
 function setId(){
+	
+	
+	
 	var id=$.fn.yiiGridView.getSelection('vehic');
+	if(id=="")
+		$('#botonRenov').hide(300);
+	else
+		$('#botonRenov').show(300);
+	
 	$("#Detalleeventoca_idhistoricoCaucho").val(id);
 }
 </script>
