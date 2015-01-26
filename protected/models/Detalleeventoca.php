@@ -39,7 +39,7 @@ class Detalleeventoca extends CActiveRecord
 		// will receive user inputs.
 		return array(
 			array('fechaFalla, fechaRealizada, idhistoricoCaucho, idaccionCaucho, idestatus', 'required'),
-			array('idhistoricoCaucho, idfallaCaucho, idaccionCaucho, idestatus,idempleado', 'numerical', 'integerOnly'=>true),
+			array('idhistoricoCaucho, idfallaCaucho, idaccionCaucho, idestatus,idempleado,posicionOrigen, cauchoOrigen, posicionDestino, cauchoDestino', 'numerical', 'integerOnly'=>true),
 			array('comentario', 'length', 'max'=>100),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
@@ -61,6 +61,10 @@ class Detalleeventoca extends CActiveRecord
 			'idhistoricoCaucho0' => array(self::BELONGS_TO, 'Historicocaucho', 'idhistoricoCaucho'),
 			'detordneumaticos' => array(self::HAS_MANY, 'Detordneumatico', 'iddetalleEventoCa'),
 			'idempleado0' => array(self::BELONGS_TO, 'Empleado', 'idempleado'),
+			'cauchoOrigen0' => array(self::BELONGS_TO, 'Historicocaucho', 'cauchoOrigen'),
+			'cauchoDestino0' => array(self::BELONGS_TO, 'Historicocaucho', 'cauchoDestino'),
+			'posicionOrigen0' => array(self::BELONGS_TO, 'Detallerueda', 'posicionOrigen'),
+			'posicionDestino0' => array(self::BELONGS_TO, 'Detallerueda', 'posicionDestino'),
 		);
 	}
 	public function beforeValidate() {
@@ -87,6 +91,10 @@ class Detalleeventoca extends CActiveRecord
 			'idaccionCaucho' => 'Acción a realizar',
 			'idestatus' => 'Estatus',
 			'idempleado' => 'Conductor',
+			'posicionOrigen' => 'Posicion Origen',
+			'cauchoOrigen' => 'Caucho Origen',
+			'posicionDestino' => 'Posicion Destino',
+			'cauchoDestino' => 'Caucho Destino',
 		);
 	}
 
@@ -117,7 +125,12 @@ class Detalleeventoca extends CActiveRecord
 		$criteria->compare('idaccionCaucho',$this->idaccionCaucho);
 		$criteria->compare('idestatus',$this->idestatus);
 		$criteria->compare('idempleado',$this->idempleado);
-
+		
+		$criteria->compare('idaccionCaucho',$this->idaccionCaucho);
+		$criteria->compare('posicionOrigen',$this->posicionOrigen);
+		$criteria->compare('cauchoOrigen',$this->cauchoOrigen);
+		$criteria->compare('posicionDestino',$this->posicionDestino);
+		$criteria->compare('cauchoDestino',$this->cauchoDestino);
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
 		));

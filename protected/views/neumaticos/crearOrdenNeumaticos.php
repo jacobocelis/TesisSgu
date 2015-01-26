@@ -73,6 +73,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
 	<h2>Neumáticos a renovar</h2>
 	<?php //<p><b>Nota: </b><i>Sólo se mostrarán las actividades con menos de 5 dias restantes o que posean atraso</p></i>?>
 <?php
+//if(count($renovaciones->getData())>0)
 $this->widget('zii.widgets.grid.CGridView', array(
                 'id'=>'renovaciones',
 				'selectionChanged'=>'validar',
@@ -153,21 +154,20 @@ $this->widget('zii.widgets.grid.CGridView', array(
         'onclick'=>"{agregarRenovacion(); }"));
 		?>	
 		<div id="arenovar" style="display:none"><?php $this->renderPartial('_formMontaje', array('model'=>new detalleEventoCa,'montados'=>$montados)); ?></div>
-		</div>
+</div>
 
-		<div class='crugepanel user-assignments-role-list'>
+<div class='crugepanel user-assignments-role-list'>
 	<h2>Neumáticos a rotar</h2>
-	<?php //<p><b>Nota: </b><i>Sólo se mostrarán las actividades con menos de 5 dias restantes o que posean atraso</p></i>?>
 <?php
-/*$this->widget('zii.widgets.grid.CGridView', array(
+$this->widget('zii.widgets.grid.CGridView', array(
                 'id'=>'rotaciones',
-				'selectionChanged'=>'rotaciones',
+				'selectionChanged'=>'validar',
 				'summaryText'=>'',
 			    'enableSorting' => true,
 				'template'=>"{items}\n{summary}\n{pager}",
 				'selectableRows'=>2,
-				'emptyText'=>'No hay averías por atender',
-                'dataProvider'=>$dataProvider,
+				'emptyText'=>'No hay neumáticos agregados para renovar',
+                'dataProvider'=>$rotaciones,
 				'columns'=>array(
 				array(
 					//'header'=>'Seleccione las actividades a incluir',
@@ -175,52 +175,75 @@ $this->widget('zii.widgets.grid.CGridView', array(
 					'htmlOptions'=>array('style'=>'text-align:center;'),
 				),
 				array(
+					'type'=>'raw',
+					'header'=>'',
+					'value'=>'\'<strong>Origen</strong>\'',
+					'htmlOptions'=>array('style'=>'text-align:center;width:85px'),
+				),
+				array(
 					'header'=>'Unidad',
 					'name'=>'idhistoricoCaucho',
-					'value'=>'str_pad((int) $data->idhistoricoCaucho0->idvehiculo0->numeroUnidad,2,"0",STR_PAD_LEFT);',
+					'value'=>'str_pad((int) $data->cauchoOrigen0->idvehiculo0->numeroUnidad,2,"0",STR_PAD_LEFT);',
 					//'value'=>'$data->idplan0->idplanGrupo0->CompiledColour->$data-id.\' \'.$data->CompiledColour',
 					'htmlOptions'=>array('style'=>'text-align:center;width:40px'),
 				),
 				array(
-					'header'=>'Fecha',
-					'name'=>'fechaFalla',
-					'value'=>'date("d/m/Y",strtotime($data->fechaFalla))',
-					'htmlOptions'=>array('style'=>'text-align:center;width:50px'),
-				),
-			
-				array(
-					'header'=>'Neumático',
-					'name'=>'idfallaCaucho',
-					'value'=>'$data->idfallaCaucho0->falla',
-					'htmlOptions'=>array('style'=>'text-align:center;width:250px'),
+					'header'=>'Eje',
+					'value'=>'$data->posicionOrigen0->iddetalleEje0->idposicionEje0->posicionEje',
+					'name'=>'iddetalleRueda',
+					'htmlOptions'=>array('style'=>'text-align:center;width:85px'),
 				),
 				array(
-					'header'=>'Reportó',
-					'name'=>'idempleado',
-					'value'=>'$data->idempleado0->nombre.\' \'.$data->idempleado0->apellido',
-					'htmlOptions'=>array('style'=>'text-align:center;width:100px'),
+					'header'=>'Posición',
+					'value'=>'$data->posicionOrigen0->idposicionRueda0->posicionRueda',
+					'name'=>'iddetalleRueda',
+					'htmlOptions'=>array('style'=>'text-align:center;width:85px'),
 				),
 				array(
-					'header'=>'Estatus',
-					'name'=>'idestatus',
-					'value'=>'$data->idestatus0->estatus',
-					'htmlOptions'=>array('style'=>'text-align:center;width:60px'),
+					'type'=>'raw',
+					'header'=>'',
+					'value'=>'\'<strong>Destino</strong>\'',
+					'htmlOptions'=>array('style'=>'text-align:center;width:85px'),
 				),
-				
+				array(
+					'header'=>'Unidad',
+					'name'=>'idhistoricoCaucho',
+					'value'=>'str_pad((int) $data->cauchoDestino0->idvehiculo0->numeroUnidad,2,"0",STR_PAD_LEFT);',
+					//'value'=>'$data->idplan0->idplanGrupo0->CompiledColour->$data-id.\' \'.$data->CompiledColour',
+					'htmlOptions'=>array('style'=>'text-align:center;width:40px'),
+				),
+				array(
+					'header'=>'Eje',
+					'value'=>'$data->posicionDestino0->iddetalleEje0->idposicionEje0->posicionEje',
+					'name'=>'iddetalleRueda',
+					'htmlOptions'=>array('style'=>'text-align:center;width:85px'),
+				),
+				array(
+					'header'=>'Posición',
+					'value'=>'$data->posicionDestino0->idposicionRueda0->posicionRueda',
+					'name'=>'iddetalleRueda',
+					'htmlOptions'=>array('style'=>'text-align:center;width:85px'),
+				),
+				array(
+					'header'=>'Eliminar',
+					'class'=>'CButtonColumn',
+					 'template'=>'{delete}',
+					     'buttons'=>array(
+							'delete' => array(
+								'url'=>'Yii::app()->createUrl("detalleEventoCa/delete", array("id"=>$data->id))',
+						),
+					),
+				),
 			)
-        ));*/
-		?>
+        ));
+		?>				
 		<?php echo CHtml::link('agregar rotación(+)', "",  // the link for open the dialog
     array(
+		'id'=>'agregarRotacion',
         'style'=>'cursor: pointer; text-decoration: underline;',
         'onclick'=>"{agregarRotacion(); }"));
 		?>	
-		
-		</div>
-
-<div id='formulario' class='crugepanel user-assignments-role-list'>
-<?php 
-	/*$this->renderPartial('_formCrearOrden',array('model'=>$modeloOrdenMtto));*/?>
+		<div id="arotar" style="display:none"><?php $this->renderPartial('_formRotacion', array('model'=>new detalleEventoCa,'montadosR'=>$montadosR)); ?></div>
 </div>
 <style>
 .grid-view table.items tr.selected {
@@ -234,6 +257,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
     display: block;
     margin-top: 10px;
     padding: 10px;
+	overflow:auto;
 }
 .grid-view {
     padding: 15px 0px 0px;
@@ -249,34 +273,16 @@ h2{
 	font-size: 200%;
     line-height: 40px;
 }
-.grid-view table.items th {
-	color: rgba(0, 0, 0, 1);
-    text-align: center;
-    background: none repeat scroll 0% 0% rgba(0, 138, 255, 0.15);
-}
-.grid-view table.items th a {
-    color: #000;
-    font-weight: bold;
-    text-decoration: none;
-}
-.grid-view table.items td {
-    font-size: 0.9em;
-    border: 1px solid #5877C3;
-    padding: 0.3em;
-}
-.grid-view table.items th, .grid-view table.items td {
-    font-size: 0.9em;
-    border: 1px solid #A8C5F0;
-    padding: 0.3em;
-}
+
 </style>
 <script>
 $('#formulario').hide();
 function validar(){
-var idrot = $.fn.yiiGridView.getSelection('renovaciones');
+var idren = $.fn.yiiGridView.getSelection('renovaciones');
 var idfalla = $.fn.yiiGridView.getSelection('fallas');
-	
-	if(idfalla=="" && idrot=="")
+var idrot = $.fn.yiiGridView.getSelection('rotaciones');
+
+	if(idfalla=="" && idrot=="" && idren=="")
 		$('#formulario').hide();
 	else
 		$('#formulario').show();
@@ -303,6 +309,9 @@ jQuery.ajax({
 function agregarRenovacion(){
 	$('#arenovar').show(800);
 	$('#agregarRenovacion').hide();
-	
+}
+function agregarRotacion(){
+	$('#arotar').show(800);
+	$('#agregarRotacion').hide();
 }
 </script>

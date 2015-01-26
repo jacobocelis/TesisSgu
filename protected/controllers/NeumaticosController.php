@@ -32,7 +32,7 @@ class NeumaticosController extends Controller
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create','update','plantilla','ActualizarListaPlantillas','MostrarLinkEje','actualizarListaPosicionesEje','MostrarLinkCaucho','actualizarEstado','MostrarLinkRep','MostrarDivRep','TieneGrupo','montajeInicial','montar','alertaCambioCauchos','ActualizarSpan','averiaNeumatico','RegistrarAveriaNeumatico','AgregarAveriaNueva','ajaxActualizarAverias','CrearOrdenNeumaticos','crearOrden','agregarNeumaticosRenovar'),
+				'actions'=>array('create','update','plantilla','ActualizarListaPlantillas','MostrarLinkEje','actualizarListaPosicionesEje','MostrarLinkCaucho','actualizarEstado','MostrarLinkRep','MostrarDivRep','TieneGrupo','montajeInicial','montar','alertaCambioCauchos','ActualizarSpan','averiaNeumatico','RegistrarAveriaNeumatico','AgregarAveriaNueva','ajaxActualizarAverias','CrearOrdenNeumaticos','crearOrden','agregarNeumaticosRenovar','agregarNeumaticosRotar'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -406,6 +406,41 @@ class NeumaticosController extends Controller
             exit;
 		}	 
 	}
+	public function actionAgregarNeumaticosRotar(){
+		if(isset($_POST["origen"]) and isset($_POST["destino"])) {
+			$origen=Historicocaucho::model()->findByPk($_POST["origen"][0]);
+			$destino=Historicocaucho::model()->findByPk($_POST["destino"][0]);
+			
+				$model = new Detalleeventoca;
+				$model->fechaFalla=date("Y-m-d");
+				$model->fechaRealizada="0001-00-00";
+				$model->idaccionCaucho=2;
+				$model->idhistoricoCaucho=$origen->id;
+				$model->posicionOrigen=$origen->iddetalleRueda;
+				$model->cauchoOrigen=$origen->id;
+				$model->posicionDestino=$destino->iddetalleRueda;
+				$model->cauchoDestino=$destino->id;
+				$model->idestatus=8;
+				$model->save();
+				
+				$model = new Detalleeventoca;
+				$model->fechaFalla=date("Y-m-d");
+				$model->fechaRealizada="0001-00-00";
+				$model->idaccionCaucho=2;
+				$model->idhistoricoCaucho=$origen->id;
+				$model->posicionOrigen=$destino->iddetalleRueda;
+				$model->cauchoOrigen=$destino->id;
+				$model->posicionDestino=$origen->iddetalleRueda;
+				$model->cauchoDestino=$origen->id;
+				$model->idestatus=8;
+				$model->save();
+			}
+            echo CJSON::encode(array(
+                'status'=>'Rotación agregada', 
+				));
+            exit;
+		 
+	}
 	public function actionCrearOrdenNeumaticos(){
 		
 		//$modeloOrdenMtto=new Ordenmtto;
@@ -418,7 +453,11 @@ class NeumaticosController extends Controller
 					$idv=$_GET["idvehiculo"];
 			}	
 		$montados=new CActiveDataProvider('Historicocaucho',array("criteria"=>array("condition"=>"idvehiculo=".$idv." and idestatusCaucho=1 and id not in (select idhistoricoCaucho from sgu_detalleEventoCa where idaccionCaucho=1)"),'pagination' => false));
-		$dataProvider=new CActiveDataProvider('Detalleeventoca',array('criteria' => array(
+		
+		
+		$montadosR=new CActiveDataProvider('Historicocaucho',array("criteria"=>array("condition"=>"idvehiculo=".$idv." and (idestatusCaucho=1 or idestatusCaucho=4)"),'pagination' => false));
+		
+		$fallas=new CActiveDataProvider('Detalleeventoca',array('criteria' => array(
 			//'condition' =>'idestatus=2 and atraso >=-5',
 			'condition' =>'idestatus=8 and idfallaCaucho is not null',
 			'order'=>'id'
@@ -427,13 +466,19 @@ class NeumaticosController extends Controller
 			'condition' =>'idaccionCaucho=1 and idestatus=8',
 			//'order'=>'fechaFalla'
 			)));
+		$rotaciones=new CActiveDataProvider('Detalleeventoca',array('criteria' => array(
+			'condition' =>'idaccionCaucho=2 and idestatus=8',
+			//'order'=>'fechaFalla'
+			)));
 			
 		$this->render('crearOrdenNeumaticos',array(
-			'dataProvider'=>$dataProvider,
+			'dataProvider'=>$fallas,
 			'listas'=>$this->getOrdenesListas(),
 			'abiertas'=>$this->getOrdenesAbiertas(),
 			'montados'=>$montados,
 			'renovaciones'=>$renovaciones,
+			'rotaciones'=>$rotaciones,
+			'montadosR'=>$montadosR,
 		));
 	}
 	

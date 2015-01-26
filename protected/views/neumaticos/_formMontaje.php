@@ -122,7 +122,7 @@
 
 		<?php echo $form->hiddenField($model,'idestatus',array("value"=>8)); ?>
 
-	<div id="botonRenov" class="row buttons" style="display:none">
+	
 		<?php echo CHtml::ajaxSubmitButton('Agregar', $this->createAbsoluteUrl('neumaticos/agregarNeumaticosRenovar'), 
         array(	 'dataType' => 'json',
                  'type' => 'post',
@@ -133,32 +133,39 @@
 					 $.fn.yiiGridView.update("renovaciones");
 					 $("#arenovar").hide();
 					 $("#agregarRenovacion").show();
+					 $("#botonRenov").attr("disabled", true);
 	
 				 }',
-                ), array('name' => 'value')) 
+                ), array('id' => 'botonRenov')) 
 		?>
-	</div>
+	<?php
+		echo CHtml::link('Cancelar', "",array('title'=>'Cancelar',
+        'style'=>'cursor: pointer;font-size:10px;float:right;',
+        'onclick'=>"{cancelar()}"));?>
 
 <?php $this->endWidget(); ?>
 
 </div><!-- form -->
 
 <script>
-function mostrarBotonRenovacion(){
+$('#botonRenov').attr("disabled", true);
 
-}
 $('#conductor').hide();
 $("#lista").change(function(){
 	$.fn.yiiGridView.update('vehic',{ data : "idvehiculo="+$(this).val()});
 	obtenerConductor($(this).val());
 });
+function cancelar(){
+	$('#arenovar').hide();
+	$('#agregarRenovacion').show();
+	
+}
 function obtenerConductor(id){
 	$('#conductor').show();
 	if(id==""){
 		$('#conductor').hide();
 		id=0;
 	}
-		
 	var dir="<?php echo Yii::app()->baseUrl;?>"+"/mttoCorrectivo/AjaxObtenerConductor/";
 	$.ajax({  		
           url: dir+id,
@@ -167,50 +174,16 @@ function obtenerConductor(id){
     	     $('#Detalleeventoca_idempleado').html(result);
   	});	
 }
-
-	$(function($){
-	    $.datepicker.regional['es'] = {
-	        closeText: 'Cerrar',
-	        prevText: 'Anterior',
-	        nextText: 'Siguiente',
-	        currentText: 'Hoy',
-	        monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
-	        monthNamesShort: ['Ene','Feb','Mar','Abr', 'May','Jun','Jul','Ago','Sep', 'Oct','Nov','Dic'],
-	        dayNames: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
-	        dayNamesShort: ['Dom','Lun','Mar','Mié','Juv','Vie','Sáb'],
-	        dayNamesMin: ['Do','Lu','Ma','Mi','Ju','Vi','Sá'],
-	        weekHeader: 'Sm',
-	        dateFormat: 'dd/mm/yy',
-	        firstDay: 1,
-	        isRTL: false,
-			changeMonth: true,
-            changeYear: true,
-	        showMonthAfterYear: false,
-	        yearSuffix: '',
-	        maxDate: '0d',
-	        //minDate: '0d',
-	    };
-	    $.datepicker.setDefaults($.datepicker.regional['es']);
-	});      		
-	$("#Detalleeventoca_fechaFalla").datepicker({
-		onSelect: function(selected){
-
-		}
-});
 function setId(){
-	
-	
-	
 	var id=$.fn.yiiGridView.getSelection('vehic');
 	if(id=="")
-		$('#botonRenov').hide(300);
+		$('#botonRenov').attr("disabled", true);
 	else
-		$('#botonRenov').show(300);
+		$('#botonRenov').attr("disabled", false);
 	
 	$("#Detalleeventoca_idhistoricoCaucho").val(id);
 }
 </script>
-
 <style>
 #titulo {
     float: left;
