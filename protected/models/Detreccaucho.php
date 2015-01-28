@@ -50,7 +50,7 @@ class Detreccaucho extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-			'idhistoricoCaucho0' => array(self::BELONGS_TO, 'Historicocaucho', 'idhistoricoCaucho'),
+			'iddetalleEventoCa0' => array(self::BELONGS_TO, 'Detalleeventoca', 'iddetalleEventoCa'),
 			'idrecursoCaucho0' => array(self::BELONGS_TO, 'Recursocaucho', 'idrecursoCaucho'),
 		);
 	}
@@ -66,7 +66,7 @@ class Detreccaucho extends CActiveRecord
 			'costoUnitario' => 'Costo Unitario',
 			'costoTotal' => 'Costo Total',
 			'idrecursoCaucho' => 'Idrecurso Caucho',
-			'idhistoricoCaucho' => 'Idhistorico Caucho',
+			'iddetalleEventoCa' => 'Idhistorico Caucho',
 		);
 	}
 
@@ -93,7 +93,7 @@ class Detreccaucho extends CActiveRecord
 		$criteria->compare('costoUnitario',$this->costoUnitario);
 		$criteria->compare('costoTotal',$this->costoTotal);
 		$criteria->compare('idrecursoCaucho',$this->idrecursoCaucho);
-		$criteria->compare('idhistoricoCaucho',$this->idhistoricoCaucho);
+		$criteria->compare('iddetalleEventoCa',$this->iddetalleEventoCa);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,

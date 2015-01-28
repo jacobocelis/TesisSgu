@@ -25,6 +25,12 @@ class Detalleeventoca extends CActiveRecord
 	/**
 	 * @return string the associated database table name
 	 */
+	public function color($id,$estatus){
+		if($id==4)
+			return '<strong><span style="color:orange">'.$estatus.'</span></strong>';
+		if($id==3)
+			return '<strong><span style="color:green">'.$estatus.'</span></strong>';
+    }
 	public function tableName()
 	{
 		return 'sgu_detalleEventoCa';
@@ -39,11 +45,11 @@ class Detalleeventoca extends CActiveRecord
 		// will receive user inputs.
 		return array(
 			array('fechaFalla, fechaRealizada, idhistoricoCaucho, idaccionCaucho, idestatus', 'required'),
-			array('idhistoricoCaucho, idfallaCaucho, idaccionCaucho, idestatus,idempleado,posicionOrigen, cauchoOrigen, posicionDestino, cauchoDestino', 'numerical', 'integerOnly'=>true),
+			array('idhistoricoCaucho, idfallaCaucho, idaccionCaucho, idestatus,idempleado,posicionOrigen, cauchoOrigen, posicionDestino, cauchoDestino,idrotacionCauchos', 'numerical', 'integerOnly'=>true),
 			array('comentario', 'length', 'max'=>100),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, fechaFalla, fechaRealizada, comentario, idhistoricoCaucho, idfallaCaucho, idaccionCaucho, idestatus,idempleado', 'safe', 'on'=>'search'),
+			array('id, fechaFalla, fechaRealizada, comentario, idhistoricoCaucho, idfallaCaucho, idaccionCaucho, idestatus,idempleado,idrotacionCauchos', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -65,6 +71,8 @@ class Detalleeventoca extends CActiveRecord
 			'cauchoDestino0' => array(self::BELONGS_TO, 'Historicocaucho', 'cauchoDestino'),
 			'posicionOrigen0' => array(self::BELONGS_TO, 'Detallerueda', 'posicionOrigen'),
 			'posicionDestino0' => array(self::BELONGS_TO, 'Detallerueda', 'posicionDestino'),
+			'idrotacionCauchos0' => array(self::BELONGS_TO, 'Rotacioncauchos', 'idrotacionCauchos'),
+			'detreccauchos' => array(self::HAS_MANY, 'Detreccaucho', 'iddetalleEventoCa'),
 		);
 	}
 	public function beforeValidate() {
@@ -95,6 +103,7 @@ class Detalleeventoca extends CActiveRecord
 			'cauchoOrigen' => 'Caucho Origen',
 			'posicionDestino' => 'Posicion Destino',
 			'cauchoDestino' => 'Caucho Destino',
+			'idrotacionCauchos' => 'Idrotacion Cauchos',
 		);
 	}
 
@@ -115,7 +124,6 @@ class Detalleeventoca extends CActiveRecord
 		// @todo Please modify the following code to remove attributes that should not be searched.
 
 		$criteria=new CDbCriteria;
-
 		$criteria->compare('id',$this->id);
 		$criteria->compare('fechaFalla',$this->fechaFalla,true);
 		$criteria->compare('fechaRealizada',$this->fechaRealizada,true);
@@ -125,17 +133,17 @@ class Detalleeventoca extends CActiveRecord
 		$criteria->compare('idaccionCaucho',$this->idaccionCaucho);
 		$criteria->compare('idestatus',$this->idestatus);
 		$criteria->compare('idempleado',$this->idempleado);
-		
 		$criteria->compare('idaccionCaucho',$this->idaccionCaucho);
 		$criteria->compare('posicionOrigen',$this->posicionOrigen);
 		$criteria->compare('cauchoOrigen',$this->cauchoOrigen);
 		$criteria->compare('posicionDestino',$this->posicionDestino);
 		$criteria->compare('cauchoDestino',$this->cauchoDestino);
+		$criteria->compare('idrotacionCauchos',$this->idrotacionCauchos);
+		
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
 		));
 	}
-
 	/**
 	 * Returns the static model of the specified AR class.
 	 * Please note that you should have this exact method in all your CActiveRecord descendants!

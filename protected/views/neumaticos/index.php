@@ -22,13 +22,14 @@ $this->menu=array(
 	array('label'=>'<div id="menu"><strong>Órdenes de neumaticos</strong></div>'),
 	
 	array('label'=>'      Crear órden de neumaticos', 'url'=>array('crearOrdenNeumaticos')),
-	array('label'=>'      Ver órdenes abiertas <span class="badge badge-'.$this->Color($abiertas).' pull-right">'.$abiertas.'</span>', 'url'=>array('')),
-	array('label'=>'      Órdenes listas para cerrar <span class="badge badge-'.$this->Color($listas).' pull-right">'.$listas.'</span>', 'url'=>array('')),
+	array('label'=>'      Ver órdenes abiertas <span class="badge badge-'.$this->Color($abiertas).' pull-right">'.$abiertas.'</span>', 'url'=>array('verOrdenes')),
+	array('label'=>'      Órdenes listas para cerrar <span class="badge badge-'.$this->Color($listas).' pull-right">'.$listas.'</span>', 'url'=>array('cerrarOrdenes')),
 	
 	
 	array('label'=>'<div id="menu"><strong>Historial</strong></div>'),
-	array('label'=>'      Histórico de montajes', 'url'=>array('historicoPreventivo')),
-	array('label'=>'      Histórico de rotaciones', 'url'=>array('historicoPreventivo')),
+	array('label'=>'      Histórico de averías', 'url'=>array('historicoAverias')),
+	array('label'=>'      Histórico de montajes', 'url'=>array('historicoMontajes')),
+	array('label'=>'      Histórico de rotaciones', 'url'=>array('historicoRotaciones')),
 	array('label'=>'      Histórico de gastos', 'url'=>array('historicoGastos')),
 	array('label'=>'      Histórico de ordenes', 'url'=>array('historicoOrdenes')),
 	
@@ -48,9 +49,6 @@ $this->beginWidget('zii.widgets.jui.CJuiDialog', array( // the dialog
 ));?>
 <?php $this->endWidget();?>
 <div class='crugepanel user-assignments-detail'>
-
-
-
 <h1>Neumáticos</h1>
 <i style='float: left' >Mostrar alerta sí un neumatico no se ha reemplazado luego de
 <select id="lista" >

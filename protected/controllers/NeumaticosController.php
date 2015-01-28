@@ -32,7 +32,7 @@ class NeumaticosController extends Controller
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create','update','plantilla','ActualizarListaPlantillas','MostrarLinkEje','actualizarListaPosicionesEje','MostrarLinkCaucho','actualizarEstado','MostrarLinkRep','MostrarDivRep','TieneGrupo','montajeInicial','montar','alertaCambioCauchos','ActualizarSpan','averiaNeumatico','RegistrarAveriaNeumatico','AgregarAveriaNueva','ajaxActualizarAverias','CrearOrdenNeumaticos','crearOrden','agregarNeumaticosRenovar','agregarNeumaticosRotar'),
+				'actions'=>array('create','update','plantilla','ActualizarListaPlantillas','MostrarLinkEje','actualizarListaPosicionesEje','MostrarLinkCaucho','actualizarEstado','MostrarLinkRep','MostrarDivRep','TieneGrupo','montajeInicial','montar','alertaCambioCauchos','ActualizarSpan','averiaNeumatico','RegistrarAveriaNeumatico','AgregarAveriaNueva','ajaxActualizarAverias','CrearOrdenNeumaticos','crearOrden','agregarNeumaticosRenovar','agregarNeumaticosRotar','verOrdenes','vistaPrevia'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -105,7 +105,7 @@ class NeumaticosController extends Controller
 		
 	}*/
 	public function getOrdenesAbiertas(){
-		$abiertas=Yii::app()->db->createCommand("select count(*) as total from sgu_ordenMtto where idestatus=5 and tipo=1")->queryRow();
+		$abiertas=Yii::app()->db->createCommand("select count(*) as total from sgu_ordenMtto where idestatus=5 and tipo=2")->queryRow();
 		return $abiertas["total"];
 	}
 	public function getOrdenesListas(){
@@ -359,18 +359,117 @@ class NeumaticosController extends Controller
 			
 		));
 	}
+		public function actionVistaPrevia($id,$nom,$dir){
+		$orden=new CActiveDataProvider('Ordenmtto',array('criteria' => array(
+			'condition' =>'id='.$id."")
+			,'pagination'=>array('pageSize'=>9999999)));
+			
+		// and idfallaCaucho is not null (para solo fallas)
+		$idvehiculoAver=Yii::app()->db->createCommand("select distinct(h.idvehiculo), count(*) as totAct from sgu_detalleEventoCa de, sgu_detOrdNeumatico d, sgu_historicoCaucho h where de.idfallaCaucho is not null and de.idhistoricoCaucho=h.id and de.id=d.iddetalleEventoCa and d.idordenMtto=".$id." group by h.idvehiculo")->queryAll();
+		$totalVehAver=count($idvehiculoAver);
+		
+		for($i=0;$i<$totalVehAver;$i++){
+			$vehiculosAver[]=new CActiveDataProvider('Vehiculo',array('criteria' => array(
+			'condition' =>'id="'.$idvehiculoAver[$i]["idvehiculo"].'"',
+			)));
+			
+		$totAct=Yii::app()->db->createCommand('select iddetalleEventoCa as id from sgu_detOrdNeumatico where idordenMtto="'.$id.'" and iddetalleEventoCa in(select de.id from sgu_detalleEventoCa de, sgu_historicoCaucho h where h.id=de.idhistoricoCaucho and de.idfallaCaucho is not null and h.idvehiculo="'.$idvehiculoAver[$i]["idvehiculo"].'")')->queryAll();
+		
+		for($j=0;$j<$idvehiculoAver[$i]["totAct"];$j++){		
+				$actividadesAver[$i][$j]=new CActiveDataProvider('Detalleeventoca',array('criteria' => array(
+				'condition' =>'id="'.$totAct[$j]["id"].'"',
+				)));
+				$recursosAver[$i][$j]=new CActiveDataProvider('Detreccaucho',array('criteria' => array(
+				'condition' =>'iddetalleEventoCa="'.$totAct[$j]["id"].'"',
+				)));
+			}
+		}
+		//para solo renovaciones and idaccionCaucho=1
+		$idvehiculoMont=Yii::app()->db->createCommand("select distinct(h.idvehiculo), count(*) as totAct from sgu_detalleEventoCa de, sgu_detOrdNeumatico d, sgu_historicoCaucho h where de.idaccionCaucho=1 and de.idhistoricoCaucho=h.id and de.id=d.iddetalleEventoCa and d.idordenMtto=".$id." group by h.idvehiculo")->queryAll();
+		$totalVehMont=count($idvehiculoMont);
+		
+		for($i=0;$i<$totalVehMont;$i++){
+			$vehiculosMont[]=new CActiveDataProvider('Vehiculo',array('criteria' => array(
+			'condition' =>'id="'.$idvehiculoMont[$i]["idvehiculo"].'"',
+			)));
+		
+				$actividadesMont[$i]=new CActiveDataProvider('Detalleeventoca',array('criteria' => array(
+				'condition' =>'id in (select iddetalleEventoCa as id from sgu_detOrdNeumatico where idordenMtto="'.$id.'" and iddetalleEventoCa in(select de.id from sgu_detalleEventoCa de, sgu_historicoCaucho h where h.id=de.idhistoricoCaucho and idaccionCaucho=1 and h.idvehiculo="'.$idvehiculoMont[$i]["idvehiculo"].'"))',
+				)));
+		}
+		
+		$totFactura=Yii::app()->db->createCommand('select (round(sum(ar.costoTotal),2)) as Total from sgu_detRecCaucho ar, sgu_detOrdNeumatico d where d.iddetalleEventoCa=ar.iddetalleEventoCa and d.idordenMtto="'.$id.'"')->queryRow();
+
+		$factura=new CActiveDataProvider('Factura',array('criteria' => array(
+			'condition'=>'idordenMtto="'.$id.'"'),
+			'pagination'=>array('pageSize'=>9999999)));
+			
+		$this->render('vistaPrevia',array(
+			'vehiculosAver'=>$vehiculosAver,
+			'totalVehAver'=>$totalVehAver,
+			'actividadesAver'=>$actividadesAver,
+			'idvehiculoAver'=>$idvehiculoAver,
+			'recursosAver'=>$recursosAver,
+			
+			'vehiculosMont'=>$vehiculosMont,
+			'totalVehMont'=>$totalVehMont,
+			'actividadesMont'=>$actividadesMont,
+			'idvehiculoMont'=>$idvehiculoMont,
+			
+			'orden'=>$orden,
+			'factura'=>$factura,
+			'totFactura'=>$totFactura,
+			'nom'=>$nom,
+			'dir'=>$dir,
+		));
+	
+	}
+	public function actionVerOrdenes(){
+		$dataProvider=new CActiveDataProvider('Ordenmtto',array('criteria' => array(
+			'condition' =>'id in (select id from sgu_ordenMtto where (idestatus=5 or idestatus=6) and tipo=2)',
+			'order'=>'idestatus '
+			)));
+		$this->render('verOrdenes',array(
+			'dataProvider'=>$dataProvider,
+			'abiertas'=>$this->getOrdenesAbiertas(),
+			'color'=>$this->getColor($this->getOrdenesAbiertas()),
+			'listas'=>$this->getOrdenesListas(),
+			));
+	}
 	public function actionCrearOrden(){
 		$model=new Ordenmtto;
 		if(isset($_POST['Ordenmtto'])){
             $model->attributes=$_POST['Ordenmtto'];
+		
             if($model->save()){
 			if(isset($_POST['idfalla'])){
+				if($_POST['idfalla']!=""){
 				$fal = explode(",", $_POST['idfalla']);
 				foreach($fal as $idfal){
 					Yii::app()->db->createCommand("INSERT INTO `tsg`.`sgu_detOrdNeumatico` (`iddetalleEventoCa`,`idordenMtto`) VALUES (".$idfal.",".$model->id.")")->query();
 					Yii::app()->db->createCommand("update `tsg`.`sgu_detalleEventoCa` set `idestatus` = '4' where `sgu_detalleEventoCa`.`id` = ".$idfal."")->query();
+					}
 				}
 			}
+			if(isset($_POST['idren'])){
+				if($_POST['idren']!=""){
+				$ren = explode(",", $_POST['idren']);
+				foreach($ren as $idren){
+					Yii::app()->db->createCommand("INSERT INTO `tsg`.`sgu_detOrdNeumatico` (`iddetalleEventoCa`,`idordenMtto`) VALUES (".$idren.",".$model->id.")")->query();
+					Yii::app()->db->createCommand("update `tsg`.`sgu_detalleEventoCa` set `idestatus` = '4' where `sgu_detalleEventoCa`.`id` = ".$idren."")->query();
+					}	
+				}
+			}
+			if(isset($_POST['idrot'])){
+				if($_POST['idrot']!=""){
+				$rot = explode(",", $_POST['idrot']);
+				foreach($rot as $idrot){
+					Yii::app()->db->createCommand("INSERT INTO `tsg`.`sgu_detOrdNeumatico` (`iddetalleEventoCa`,`idordenMtto`) VALUES (".$idrot.",".$model->id.")")->query();
+					Yii::app()->db->createCommand("update `tsg`.`sgu_detalleEventoCa` set `idestatus` = '4' where `sgu_detalleEventoCa`.`id` = ".$idrot."")->query();
+					}
+				}
+			}
+			
                 if (Yii::app()->request->isAjaxRequest){
 				   /*inserts por debajo del plan de mantenimiento a cada vehiculo del grupo*/
                     echo CJSON::encode(array(
@@ -394,7 +493,7 @@ class NeumaticosController extends Controller
 			 foreach ($_POST["ids"] as $ids){ 
 				$model = new Detalleeventoca;
 				$model->fechaFalla=date("Y-m-d");
-				$model->fechaRealizada="0001-00-00";
+				$model->fechaRealizada="0000-01-01";
 				$model->idaccionCaucho=1;
 				$model->idhistoricoCaucho=$ids;
 				$model->idestatus=8;
@@ -413,7 +512,7 @@ class NeumaticosController extends Controller
 			
 				$model = new Detalleeventoca;
 				$model->fechaFalla=date("Y-m-d");
-				$model->fechaRealizada="0001-00-00";
+				$model->fechaRealizada="0000-01-01";
 				$model->idaccionCaucho=2;
 				$model->idhistoricoCaucho=$origen->id;
 				$model->posicionOrigen=$origen->iddetalleRueda;
@@ -425,9 +524,9 @@ class NeumaticosController extends Controller
 				
 				$model = new Detalleeventoca;
 				$model->fechaFalla=date("Y-m-d");
-				$model->fechaRealizada="0001-00-00";
+				$model->fechaRealizada="0000-01-01";
 				$model->idaccionCaucho=2;
-				$model->idhistoricoCaucho=$origen->id;
+				$model->idhistoricoCaucho=$destino->id;
 				$model->posicionOrigen=$destino->iddetalleRueda;
 				$model->cauchoOrigen=$destino->id;
 				$model->posicionDestino=$origen->iddetalleRueda;
@@ -452,10 +551,10 @@ class NeumaticosController extends Controller
 				else
 					$idv=$_GET["idvehiculo"];
 			}	
-		$montados=new CActiveDataProvider('Historicocaucho',array("criteria"=>array("condition"=>"idvehiculo=".$idv." and idestatusCaucho=1 and id not in (select idhistoricoCaucho from sgu_detalleEventoCa where idaccionCaucho=1)"),'pagination' => false));
+			/*ojo con and idestatus=8 */
+		$montados=new CActiveDataProvider('Historicocaucho',array("criteria"=>array("condition"=>"idvehiculo=".$idv." and idestatusCaucho=1 and id not in (select idhistoricoCaucho from sgu_detalleEventoCa where idaccionCaucho=1 and (idestatus=8 or idestatus=4))"),'pagination' => false));
 		
-		
-		$montadosR=new CActiveDataProvider('Historicocaucho',array("criteria"=>array("condition"=>"idvehiculo=".$idv." and (idestatusCaucho=1 or idestatusCaucho=4)"),'pagination' => false));
+		$montadosR=new CActiveDataProvider('Historicocaucho',array("criteria"=>array("condition"=>"idvehiculo=".$idv." and (idestatusCaucho=1 or idestatusCaucho=4) and id not in (select idhistoricoCaucho from sgu_detalleEventoCa where idaccionCaucho=2 and (idestatus=8 or idestatus=4))"),'pagination' => false));
 		
 		$fallas=new CActiveDataProvider('Detalleeventoca',array('criteria' => array(
 			//'condition' =>'idestatus=2 and atraso >=-5',

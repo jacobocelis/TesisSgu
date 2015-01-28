@@ -32,6 +32,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
 					//'header'=>'Seleccione las actividades a incluir',
 					'class'=>'CCheckBoxColumn',
 					'htmlOptions'=>array('style'=>'text-align:center;'),
+					//'cssClassExpression'=>'$data->idestatus=="accept" ? "" : "hidden"',
 				),
 				array(
 					'header'=>'Unidad',
@@ -189,13 +190,13 @@ $this->widget('zii.widgets.grid.CGridView', array(
 				),
 				array(
 					'header'=>'Eje',
-					'value'=>'$data->posicionOrigen0->iddetalleEje0->idposicionEje0->posicionEje',
+					'value'=>'$data->posicionOrigen==null?\'-\':$data->posicionOrigen0->iddetalleEje0->idposicionEje0->posicionEje',
 					'name'=>'iddetalleRueda',
 					'htmlOptions'=>array('style'=>'text-align:center;width:85px'),
 				),
 				array(
 					'header'=>'Posición',
-					'value'=>'$data->posicionOrigen0->idposicionRueda0->posicionRueda',
+					'value'=>'$data->posicionOrigen==null?\'Repuesto\':$data->posicionOrigen0->idposicionRueda0->posicionRueda',
 					'name'=>'iddetalleRueda',
 					'htmlOptions'=>array('style'=>'text-align:center;width:85px'),
 				),
@@ -214,13 +215,13 @@ $this->widget('zii.widgets.grid.CGridView', array(
 				),
 				array(
 					'header'=>'Eje',
-					'value'=>'$data->posicionDestino0->iddetalleEje0->idposicionEje0->posicionEje',
+					'value'=>'$data->posicionDestino==null?\'-\':$data->posicionDestino0->iddetalleEje0->idposicionEje0->posicionEje',
 					'name'=>'iddetalleRueda',
 					'htmlOptions'=>array('style'=>'text-align:center;width:85px'),
 				),
 				array(
 					'header'=>'Posición',
-					'value'=>'$data->posicionDestino0->idposicionRueda0->posicionRueda',
+					'value'=>'$data->posicionDestino==null?\'Repuesto\':$data->posicionDestino0->idposicionRueda0->posicionRueda',
 					'name'=>'iddetalleRueda',
 					'htmlOptions'=>array('style'=>'text-align:center;width:85px'),
 				),
@@ -244,8 +245,12 @@ $this->widget('zii.widgets.grid.CGridView', array(
         'onclick'=>"{agregarRotacion(); }"));
 		?>	
 		<div id="arotar" style="display:none"><?php $this->renderPartial('_formRotacion', array('model'=>new detalleEventoCa,'montadosR'=>$montadosR)); ?></div>
+		<div id='formulario' class='crugepanel user-assignments-role-list'>
 </div>
 <style>
+.hidden {
+    display: none;
+}
 .grid-view table.items tr.selected {
     background: none repeat scroll 0% 0% rgba(0, 249, 3, 0.3);
 }
@@ -289,7 +294,7 @@ var idrot = $.fn.yiiGridView.getSelection('rotaciones');
 		
 jQuery.ajax({
                 url: "crearOrden",
-                'data':$(this).serialize()+ '&idfalla=' + idfalla,
+                'data':$(this).serialize()+'&idfalla=' + idfalla + '&idren=' + idren + '&idrot=' + idrot,
                 'type':'post',
                 'dataType':'json',
                 'success':function(data){
@@ -311,7 +316,9 @@ function agregarRenovacion(){
 	$('#agregarRenovacion').hide();
 }
 function agregarRotacion(){
-	$('#arotar').show(800);
+	$("#listaA").val("").change();
+	$("#listaB").val("").change();
+	$('#arotar').show();
 	$('#agregarRotacion').hide();
 }
 </script>

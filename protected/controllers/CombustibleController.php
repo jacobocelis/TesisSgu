@@ -141,13 +141,13 @@ class CombustibleController extends Controller
 	 * @param integer $id the ID of the model to be deleted
 	 */
 	public function actionDelete($id)
-	{
+	{/*ojo aqui por si hay algun error*/
 		$modelo=$this->loadModel($id);
 		if($modelo->historico==1)
 			$this->loadModel($id)->delete();
 		else{
 			$consulta=Yii::app()->db->createCommand("select id,fecha from sgu_historicoCombustible where idvehiculo=".$modelo->idvehiculo." order by fecha,id desc limit 1 offset 1")->queryAll();
-			
+			if(count($consulta)>0)
 			Yii::app()->db->createCommand("update `tsg`.`sgu_historicoCombustible` set `historico` = 0 where `sgu_historicoCombustible`.`id` = ".$consulta[0]["id"]."")->query();
 			$this->loadModel($id)->delete();
 		}

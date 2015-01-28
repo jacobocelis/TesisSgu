@@ -20,7 +20,7 @@
 		<?php echo $form->hiddenField($model,'fecha',array('value'=>date("Y-m-d"),'size'=>20,'maxlength'=>10,'style'=>'width:80px;')); ?>
 		<?php //echo $form->error($model,'fecha'); ?>
 		
-		<?php echo $form->hiddenField($model,'tipo',array('value'=>1)); ?>
+		<?php echo $form->hiddenField($model,'tipo',array('value'=>2)); ?>
 		<?php 
 		$models = Empleado::model()->findAll('idtipoEmpleado=2');
 		$data = array();

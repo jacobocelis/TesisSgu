@@ -27,7 +27,13 @@
 	<i>Buscar vehiculo por #:  </i>
 		<?php 
 		//echo CHtml::submitButton('Buscar',array("id"=>"boton","style"=>"float:right;margin-top:2px;margin-left:10px;")); 
-		echo $form->dropDownList(new Vehiculo,'id',CHtml::listData(Vehiculo::model()->findAll(),'id','numeroUnidad'),array('id'=>'listaA','prompt'=>'Seleccione ','style' => 'width:110px;float:left')); ?>
+		echo $form->dropDownList(new Vehiculo,'id',CHtml::listData(Vehiculo::model()->findAll(),'id','numeroUnidad'),array('id'=>'listaA','prompt'=>'Seleccione ','style' => 'width:110px;float:right')); ?>
+	</div>
+	<div id="sepB">
+			<i>Buscar vehiculo por #:  </i>
+		<?php 
+		//echo CHtml::submitButton('Buscar',array("id"=>"boton","style"=>"float:right;margin-top:2px;margin-left:10px;")); 
+		echo $form->dropDownList(new Vehiculo,'id',CHtml::listData(Vehiculo::model()->findAll(),'id','numeroUnidad'),array('id'=>'listaB','prompt'=>'Seleccione ','style' => 'width:110px;float:right')); ?>
 	</div>
 	<?php echo $form->error($model,'idhistoricoCaucho'); ?>
 	<?php $this->widget('zii.widgets.grid.CGridView', array(
@@ -42,7 +48,7 @@
 				'afterAjaxUpdate'=>'js:function(id,data){$("#botonRot").attr("disabled", true)}',
 				'selectionChanged'=>'setId1',
                 'dataProvider'=>$montadosR,
-				'htmlOptions'=>array('style'=>'margin-top:-15px;float: left;margin-right:2%;width:40%;cursor:pointer;'),
+				'htmlOptions'=>array('style'=>'margin-top:-15px;float: left;margin-right:2%;width:49%;cursor:pointer;'),
 				'columns'=>array(
 				array(
 					'class'=>'CCheckBoxColumn',
@@ -78,12 +84,7 @@
 				),
 			),
         ));?>
-		<div id="sepB">
-			<i>Buscar vehiculo por #:  </i>
-		<?php 
-		//echo CHtml::submitButton('Buscar',array("id"=>"boton","style"=>"float:right;margin-top:2px;margin-left:10px;")); 
-		echo $form->dropDownList(new Vehiculo,'id',CHtml::listData(Vehiculo::model()->findAll(),'id','numeroUnidad'),array('id'=>'listaB','prompt'=>'Seleccione ','style' => 'width:110px;float:right')); ?>
-	</div>
+		
 	<?php echo $form->error($model,'idhistoricoCaucho'); ?>
 	<?php $this->widget('zii.widgets.grid.CGridView', array(
 				'id'=>'vehicB',
@@ -96,7 +97,7 @@
 				'selectionChanged'=>'setId1',
 				'afterAjaxUpdate'=>'js:function(id,data){$("#botonRot").attr("disabled", true)}',
                 'dataProvider'=>$montadosR,
-				'htmlOptions'=>array('style'=>'margin-top:-15px;float: left;width:40%;cursor:pointer;'),
+				'htmlOptions'=>array('style'=>'margin-top:-15px;float: right;width:49%;cursor:pointer;'),
 				'columns'=>array(
 				array(
 					'class'=>'CCheckBoxColumn',
@@ -181,29 +182,40 @@
 </div><!-- form -->
 
 <script>
+var id1;
+var id2;
 $('#botonRot').attr("disabled", true);
 $('#conductorA').hide();
 $("#listaA").change(function(){
+	id1=$.fn.yiiGridView.getSelection('vehicA');
+	id2=$.fn.yiiGridView.getSelection('vehicB');
 	$.fn.yiiGridView.update('vehicA',{ data : "idvehiculo="+$(this).val()});
-setId1();
+
 });
 $("#listaB").change(function(){
+	id1=$.fn.yiiGridView.getSelection('vehicA');
+	id2=$.fn.yiiGridView.getSelection('vehicB');
 	$.fn.yiiGridView.update('vehicB',{ data : "idvehiculo="+$(this).val()});
-setId1();
+
 });
 function cancelarA(){
 	$('#arotar').hide();
 	$('#agregarRotacion').show();
 }
 function setId1(){
-	var id1=$.fn.yiiGridView.getSelection('vehicA');
-	var id2=$.fn.yiiGridView.getSelection('vehicB');
+	id1=$.fn.yiiGridView.getSelection('vehicA');
+	id2=$.fn.yiiGridView.getSelection('vehicB');
 
 	if(id1=="" || id2=="")
 		$('#botonRot').attr("disabled", true);
 	else
 		$('#botonRot').attr("disabled", false);
-	
+
+	if(id1[0]!==undefined && id2[0]!==undefined)
+	if((id1[0]==id2[0])){
+		$('#botonRot').attr("disabled", true);
+		alert("El neumático a rotar no puede ser el mismo");
+	}
 	$("#Detalleeventoca_idhistoricoCaucho").val(id1);
 }
 </script>
@@ -215,6 +227,8 @@ function setId1(){
 #sepA {
     text-align: left;
     font-size: 120%;
+
+	float: left;
 }
 #tituloB {
     float: left;
@@ -223,6 +237,8 @@ function setId1(){
 #sepB {
     text-align: right;
     font-size: 120%;
+	width: 40%;
+	float: right;
 }
 #azulA {
     background: none repeat scroll 0% 0% #F9FDFD;

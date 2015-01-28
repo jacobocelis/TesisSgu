@@ -271,7 +271,7 @@ class MttoCorrectivoController extends Controller
 	}
 	public function actionVerOrdenes(){
 		$dataProvider=new CActiveDataProvider('Ordenmtto',array('criteria' => array(
-			'condition' =>'id in (select id from sgu_ordenMtto where idestatus=5 or idestatus=6)',
+			'condition' =>'id in (select id from sgu_ordenMtto where (idestatus=5 or idestatus=6) and tipo=1)',
 			'order'=>'idestatus '
 			)));
 		$this->render('verOrdenes',array(
