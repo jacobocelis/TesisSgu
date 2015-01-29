@@ -156,23 +156,26 @@
 	</div>
 
 		<?php echo $form->hiddenField($model,'idestatus',array("value"=>8)); ?>
+		
+		<?php echo $form->hiddenField($model,'idrotacionCauchos',array("value"=>8)); ?>
 
 	
 		<?php echo CHtml::ajaxSubmitButton('Agregar rotación', $this->createAbsoluteUrl('neumaticos/agregarNeumaticosRotar'), 
         array(	 'dataType' => 'json',
                  'type' => 'post',
-				 'data'=>array("origen"=>"js:$.fn.yiiGridView.getSelection('vehicA')","destino"=>"js:$.fn.yiiGridView.getSelection('vehicB')"),
+				 'data'=>array("origen"=>"js:$.fn.yiiGridView.getSelection('vehicA')","destino"=>"js:$.fn.yiiGridView.getSelection('vehicB')","idRot"=>"js:$.fn.yiiGridView.getSelection('rotaciones')"),
 				 'success'=>'js:function(data){
 					 alert(data.status);
 					 $.fn.yiiGridView.update("vehicA");
-					 $.fn.yiiGridView.update("rotaciones");
-					 $("#arotar").hide();
-					 $("#agregarRotacion").show();
+					 $.fn.yiiGridView.update("vehicB");
+					 $.fn.yiiGridView.update("movimientos");
+					$("#agregarmovimiento").hide();
+					$("#agregarMovimiento").show();
 					 $("#botonRot").attr("disabled", true);
 				 }',
                 ), array('id' => 'botonRot')) 
 		?>
-	<?php
+	<?php 
 		echo CHtml::link('Cancelar', "",array('title'=>'Cancelar',
         'style'=>'cursor: pointer;font-size:10px;float:right;',
         'onclick'=>"{cancelarA()}"));?>
@@ -182,6 +185,7 @@
 </div><!-- form -->
 
 <script>
+
 var id1;
 var id2;
 $('#botonRot').attr("disabled", true);
@@ -199,8 +203,9 @@ $("#listaB").change(function(){
 
 });
 function cancelarA(){
-	$('#arotar').hide();
-	$('#agregarRotacion').show();
+	$('#agregarmovimiento').hide();
+	$('#agregarMovimiento').show();
+	
 }
 function setId1(){
 	id1=$.fn.yiiGridView.getSelection('vehicA');

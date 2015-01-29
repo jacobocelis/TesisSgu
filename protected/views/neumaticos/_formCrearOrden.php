@@ -54,7 +54,17 @@
 	
 		<?php echo CHtml::submitButton($model->isNewRecord ? 'Crear orden' : 'Save',array('style'=>'margin-left:20px;margin-bottom: 9px;')); ?>
 	
+	<?php 
+		echo CHtml::link('Cancelar', "",array('title'=>'Cancelar',
+        'style'=>'cursor: pointer;font-size:10px;float:right;',
+        'onclick'=>"{cancelarC()}"));?>
 	</div>
 <?php $this->endWidget(); ?>
 
 </div><!-- form -->
+<script>
+function cancelarC(){
+	$('#scrollingDiv').show(300);
+	$('#formulario').dialog('close')
+}
+</script>

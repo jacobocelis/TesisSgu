@@ -76,7 +76,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
         ));
 		?>
 </div>
-
+<?php if($totalVehAver>0){?>
 <div class='crugepanel user-assignments-role-list'>
 <h2>Averías</h2>
 <?php
@@ -239,8 +239,10 @@ $this->widget('zii.widgets.grid.CGridView', array(
 	}
 	}
 }
+
 ?>
-</div>
+</div><?php }?>
+<?php if($totalVehMont>0){?>
 <div class='crugepanel user-assignments-role-list'>
 <h2>Renovaciones</h2>
 <?php
@@ -317,7 +319,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
 }
 ?>
 </div>
-
+<?php }?>
 <?php
 if(count($factura->getData())>0){?>
 <div class='crugepanel user-assignments-role-list'>
@@ -377,10 +379,9 @@ $this->widget('zii.widgets.grid.CGridView', array(
 				),
 			)
     ));
-}
-?>
-		
-</div>
+
+?>	
+</div><?php }?>
 <style>
 strong {
     font-weight: bold;

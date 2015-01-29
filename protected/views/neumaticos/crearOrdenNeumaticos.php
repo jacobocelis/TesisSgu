@@ -1,4 +1,5 @@
 
+<div id="scrollingDiv" class="btn" style="display:none">Crear órden de neumáticos</div>
 <?php 
 	$this->breadcrumbs=array(
 	'Neumáticos'=>array('neumaticos/index'),
@@ -158,7 +159,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
 </div>
 
 <div class='crugepanel user-assignments-role-list'>
-	<h2>Neumáticos a rotar</h2>
+	<h2>Rotaciones</h2>
 <?php
 $this->widget('zii.widgets.grid.CGridView', array(
                 'id'=>'rotaciones',
@@ -169,6 +170,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
 				'selectableRows'=>2,
 				'emptyText'=>'No hay neumáticos agregados para renovar',
                 'dataProvider'=>$rotaciones,
+				'htmlOptions'=>array('style'=>'cursor:pointer;'),
 				'columns'=>array(
 				array(
 					//'header'=>'Seleccione las actividades a incluir',
@@ -177,10 +179,82 @@ $this->widget('zii.widgets.grid.CGridView', array(
 				),
 				array(
 					'type'=>'raw',
+					'header'=>'Nombre',
+					'name'=>'nombre',
+					'htmlOptions'=>array('style'=>'text-align:center;width:85px'),
+				),
+				array(
+					'header'=>'Descripción',
+					'name'=>'descripcion',
+					'htmlOptions'=>array('style'=>'text-align:center;width:200px'),
+				),
+				array(
+						'headerHtmlOptions'=>array('style'=>'text-align:center;width:12px;'),
+						'htmlOptions'=>array('style'=>'text-align:center;'),
+						'header'=>'Movimientos',
+						'type'=>'raw',
+						'value'=>'($data->id==0?\'-\':$data->id).CHtml::link(
+                        CHtml::image(Yii::app()->request->baseUrl."/imagenes/ver.png",
+                                          "Agregar",array("title"=>"Agregar movimiento de neumáticos")),
+                        "",
+                        array(
+                                \'style\'=>\'cursor: pointer;text-decoration: underline;text-align:center;\',
+                                \'onclick\'=>\'{mostrarMovimientos("\'.$data["id"].\'");}\'
+                        )
+                );',),
+				array(
+						'headerHtmlOptions'=>array('style'=>'text-align:center;width:30px;'),
+						'htmlOptions'=>array('style'=>'text-align:center;'),
+						'header'=>'Editar',
+						'type'=>'raw',
+						'value'=>'CHtml::link(
+                        CHtml::image(Yii::app()->request->baseUrl."/imagenes/agregar.png",
+                                          "Agregar",array("title"=>"Editar")),
+                        "",
+                        array(
+                                \'style\'=>\'cursor: pointer;text-decoration: underline;text-align:center;\',
+                                \'onclick\'=>\'{editarRotacion("\'.Yii::app()->createUrl("Rotacioncauchos/update",array("id"=>$data["id"])).\'"); $("#dialog").dialog("open");}\'
+                        )
+                );',),
+				array(
+					'header'=>'Eliminar',
+					'class'=>'CButtonColumn',
+					 'template'=>'{delete}',
+					     'buttons'=>array(
+							'delete' => array(
+								'url'=>'Yii::app()->createUrl("Rotacioncauchos/delete", array("id"=>$data->id))',
+						),
+					),
+				),
+			)
+        ));
+		?>
+				<?php echo CHtml::link('nueva rotación(+)', "",  // the link for open the dialog
+    array(
+		'id'=>'agregarRotacion',
+        'style'=>'cursor: pointer; text-decoration: underline;',
+        'onclick'=>"{agregarRotacion(); }"));
+		?>	
+		
+<div id="amovimiento" style="display:none">
+<i>La rotación seleccionada incluye los siguientes movimientos:</i>
+<?php $this->widget('zii.widgets.grid.CGridView', array(
+                'id'=>'movimientos',
+				'selectionChanged'=>'validar',
+				'summaryText'=>'',
+			    'enableSorting' => true,
+				'template'=>"{items}\n{summary}\n{pager}",
+				'selectableRows'=>0,
+				'emptyText'=>'No hay movimientos agregados',
+                'dataProvider'=>$movimientos,
+				'columns'=>array(
+			
+				/*array(
+					'type'=>'raw',
 					'header'=>'',
 					'value'=>'\'<strong>Origen</strong>\'',
 					'htmlOptions'=>array('style'=>'text-align:center;width:85px'),
-				),
+				),*/
 				array(
 					'header'=>'Unidad',
 					'name'=>'idhistoricoCaucho',
@@ -195,15 +269,23 @@ $this->widget('zii.widgets.grid.CGridView', array(
 					'htmlOptions'=>array('style'=>'text-align:center;width:85px'),
 				),
 				array(
-					'header'=>'Posición',
+					'header'=>'Lado',
 					'value'=>'$data->posicionOrigen==null?\'Repuesto\':$data->posicionOrigen0->idposicionRueda0->posicionRueda',
 					'name'=>'iddetalleRueda',
 					'htmlOptions'=>array('style'=>'text-align:center;width:85px'),
 				),
-				array(
+				/*array(
 					'type'=>'raw',
 					'header'=>'',
 					'value'=>'\'<strong>Destino</strong>\'',
+					'htmlOptions'=>array('style'=>'text-align:center;width:85px'),
+				),*/
+				array(
+					'type'=>'raw',
+					'header'=>'Movimiento',
+					'value'=>'
+                        CHtml::image(Yii::app()->request->baseUrl."/imagenes/arrow_right.png",
+                                          "Movimiento",array("title"=>"desde->hacia"))',
 					'htmlOptions'=>array('style'=>'text-align:center;width:85px'),
 				),
 				array(
@@ -220,7 +302,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
 					'htmlOptions'=>array('style'=>'text-align:center;width:85px'),
 				),
 				array(
-					'header'=>'Posición',
+					'header'=>'Lado',
 					'value'=>'$data->posicionDestino==null?\'Repuesto\':$data->posicionDestino0->idposicionRueda0->posicionRueda',
 					'name'=>'iddetalleRueda',
 					'htmlOptions'=>array('style'=>'text-align:center;width:85px'),
@@ -237,16 +319,55 @@ $this->widget('zii.widgets.grid.CGridView', array(
 				),
 			)
         ));
-		?>				
-		<?php echo CHtml::link('agregar rotación(+)', "",  // the link for open the dialog
+		 echo CHtml::link('agregar movimiento(+)', "",  // the link for open the dialog
     array(
-		'id'=>'agregarRotacion',
+		'id'=>'agregarMovimiento',
         'style'=>'cursor: pointer; text-decoration: underline;',
-        'onclick'=>"{agregarRotacion(); }"));
-		?>	
-		<div id="arotar" style="display:none"><?php $this->renderPartial('_formRotacion', array('model'=>new detalleEventoCa,'montadosR'=>$montadosR)); ?></div>
-		<div id='formulario' class='crugepanel user-assignments-role-list'>
+        'onclick'=>"{agregarMovimiento(); }"));
+		
+		echo CHtml::link('Cancelar', "",array('title'=>'Cancelar',
+        'style'=>'cursor: pointer;font-size:10px;float:right;',
+        'onclick'=>"{cancelarB()}"));
+		
+		?>				
 </div>
+		<div id="agregarmovimiento" style="display:none"><?php $this->renderPartial('_formRotacion', array('model'=>new detalleEventoCa,'montadosR'=>$montadosR)); ?></div>
+</div>
+<?php
+/*ventana agregar recurso*/
+$this->beginWidget('zii.widgets.jui.CJuiDialog', array( // the dialog
+    'id'=>'formulario',
+    'options'=>array(
+        'title'=>'Crear orden de neumáticos',
+        'autoOpen'=>false,
+        'modal'=>true,
+        'width'=>490,
+        //'height'=>360,
+		'position'=>array(null,100),
+		'resizable'=>false
+    ),
+));?>
+<div class="divForForm"></div>
+ 
+<?php $this->endWidget();?>
+
+<?php
+/*ventana agregar informacion*/
+$this->beginWidget('zii.widgets.jui.CJuiDialog', array( // the dialog
+    'id'=>'dialog',
+    'options'=>array(
+        'title'=>'Nueva rotación',
+        'autoOpen'=>false,
+        'modal'=>true,
+        'width'=>400,
+        //'height'=>255,
+		'position'=>array(null,100),
+		'resizable'=>false
+    ),
+));?>
+<div class="divForForm">
+</div>
+<?php $this->endWidget();?>
 <style>
 .hidden {
     display: none;
@@ -278,19 +399,86 @@ h2{
 	font-size: 200%;
     line-height: 40px;
 }
+#scrollingDiv{
+	position: fixed;
+}
+.btn {
+	-moz-box-shadow:inset 0px 1px 0px 0px #54a3f7;
+	-webkit-box-shadow:inset 0px 1px 0px 0px #54a3f7;
+	box-shadow:inset 0px 1px 0px 0px #54a3f7;
+	background:-webkit-gradient(linear, left top, left bottom, color-stop(0.05, #007dc1), color-stop(1, #0061a7));
+	background:-moz-linear-gradient(top, #007dc1 5%, #0061a7 100%);
+	background:-webkit-linear-gradient(top, #007dc1 5%, #0061a7 100%);
+	background:-o-linear-gradient(top, #007dc1 5%, #0061a7 100%);
+	background:-ms-linear-gradient(top, #007dc1 5%, #0061a7 100%);
+	background:linear-gradient(to bottom, #007dc1 5%, #0061a7 100%);
+	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#007dc1', endColorstr='#0061a7',GradientType=0);
+	background-color:#007dc1;
+	-moz-border-radius:3px;
+	-webkit-border-radius:3px;
+	border-radius:3px;
+	border:1px solid #124d77;
+	display:inline-block;
+	cursor:pointer;
+	color:#ffffff;
+	font-family:Verdana;
+	font-size:13px;
+	font-weight:bold;
+	padding:6px 4px;
+	text-decoration:none;
+	text-shadow:0px 1px 0px #154682;
+}
+.btn:hover {
+	background:-webkit-gradient(linear, left top, left bottom, color-stop(0.05, #0061a7), color-stop(1, #007dc1));
+	background:-moz-linear-gradient(top, #0061a7 5%, #007dc1 100%);
+	background:-webkit-linear-gradient(top, #0061a7 5%, #007dc1 100%);
+	background:-o-linear-gradient(top, #0061a7 5%, #007dc1 100%);
+	background:-ms-linear-gradient(top, #0061a7 5%, #007dc1 100%);
+	background:linear-gradient(to bottom, #0061a7 5%, #007dc1 100%);
+	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#0061a7', endColorstr='#007dc1',GradientType=0);
+	background-color:#0061a7;
+	color: #fff;
+}
 
 </style>
 <script>
-$('#formulario').hide();
+var ancho=$(window).width()-($(window).width()*0.20);
+$('#scrollingDiv').css({
+  'right':ancho,
+  'bottom': '50px'
+ });
+	/*$().ready(function() {
+		var $scrollingDiv = $("#scrollingDiv");
+ 
+		$(window).scroll(function(){			
+			$scrollingDiv
+				.stop()
+				.animate({"marginTop": ($(window).scrollTop()  -30) + "px"}, "fast" );			
+		});
+	});*/
+	
+var idRotacion;
+
+$( "#scrollingDiv" ).click(function() {
+	$('#scrollingDiv').hide(300);
+	$("#formulario").dialog('open');
+});
+
 function validar(){
 var idren = $.fn.yiiGridView.getSelection('renovaciones');
 var idfalla = $.fn.yiiGridView.getSelection('fallas');
 var idrot = $.fn.yiiGridView.getSelection('rotaciones');
 
 	if(idfalla=="" && idrot=="" && idren=="")
-		$('#formulario').hide();
+		/*$('#formulario').hide(); */
+		$('#scrollingDiv').hide(300);
 	else
-		$('#formulario').show();
+		$('#scrollingDiv').show(300);
+		/*$('#formulario').show();*/
+	
+	var idrot = $.fn.yiiGridView.getSelection('rotaciones');
+	if(idrot=="")
+		$('#amovimiento').hide();
 		
 jQuery.ajax({
                 url: "crearOrden",
@@ -299,12 +487,14 @@ jQuery.ajax({
                 'dataType':'json',
                 'success':function(data){
                                 if (data.status == 'failure'){
-                                        $('#formulario').html(data.div);
+                                        $('#formulario div.divForForm').html(data.div);
                                         // Here is the trick: on submit-> once again this function!
-                                        $('#formulario form').submit(validar); // 
+                                        $('#formulario div.divForForm form').submit(validar); // 
                                 }
                                 else{
-                                        $('#formulario').html(data.div);
+                                        $('#formulario div.divForForm').html(data.div);
+										setTimeout("$('#formulario').dialog('close') ",1);
+										$('#scrollingDiv').hide();
 										window.setTimeout('location.reload()', 1);
                                 }
                         } ,
@@ -315,10 +505,58 @@ function agregarRenovacion(){
 	$('#arenovar').show(800);
 	$('#agregarRenovacion').hide();
 }
+
+function agregarMovimiento(){
+	$('#agregarmovimiento').show(800);
+	$('#agregarMovimiento').hide();
+}
+
 function agregarRotacion(){
+	$("#dialog").dialog("open");
+	
+	var dir="<?php echo Yii::app()->baseUrl;?>"+"/neumaticos/AgregarRotacionNueva/";
+	jQuery.ajax({
+                url: dir,
+                'data':$(this).serialize(),
+                'type':'post',
+                'dataType':'json',
+                'success':function(data){
+                                if (data.status == 'failure')
+                                {
+                                        $('#dialog div.divForForm').html(data.div);
+                                        // Here is the trick: on submit-> once again this function!
+                                        $('#dialog div.divForForm form').submit(agregarRotacion); // updatePaymentComment
+                                }
+                                else
+                                {
+                                        $('#dialog div.divForForm').html(data.div);
+                                        setTimeout("$('#dialog').dialog('close') ",1000);
+										$.fn.yiiGridView.update('rotaciones');
+                                }
+                        },
+                'cache':false});
+    return false; 
+	/*
 	$("#listaA").val("").change();
-	$("#listaB").val("").change();
-	$('#arotar').show();
+	$("#listaB").val("").change();*/
 	$('#agregarRotacion').hide();
+}
+function mostrarMovimientos(id){
+	idRotacion=id;
+$('#agregarRotacion').hide();
+var altura = $(document).height();
+//$("html, body").animate({scrollTop:altura+"px"},500);
+//$('#recur').show(500);
+	//var idAct = $.fn.yiiGridView.getSelection('act');
+	$('#amovimiento').show(500);
+	//if(idAct=="")
+	//	$('#recur').hide();
+	$.fn.yiiGridView.update('movimientos',{ data : "idRot="+id});
+	$("html, body").animate({scrollTop:altura+"px"},1000);
+}
+function cancelarB(){
+	$("#agregarRotacion").show();
+	$('#amovimiento').hide(500);
+	$('#agregarmovimiento').hide();
 }
 </script>

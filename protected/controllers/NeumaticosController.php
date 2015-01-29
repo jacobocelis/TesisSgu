@@ -32,7 +32,7 @@ class NeumaticosController extends Controller
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create','update','plantilla','ActualizarListaPlantillas','MostrarLinkEje','actualizarListaPosicionesEje','MostrarLinkCaucho','actualizarEstado','MostrarLinkRep','MostrarDivRep','TieneGrupo','montajeInicial','montar','alertaCambioCauchos','ActualizarSpan','averiaNeumatico','RegistrarAveriaNeumatico','AgregarAveriaNueva','ajaxActualizarAverias','CrearOrdenNeumaticos','crearOrden','agregarNeumaticosRenovar','agregarNeumaticosRotar','verOrdenes','vistaPrevia'),
+				'actions'=>array('create','update','plantilla','ActualizarListaPlantillas','MostrarLinkEje','actualizarListaPosicionesEje','MostrarLinkCaucho','actualizarEstado','MostrarLinkRep','MostrarDivRep','TieneGrupo','montajeInicial','montar','alertaCambioCauchos','ActualizarSpan','averiaNeumatico','RegistrarAveriaNeumatico','AgregarAveriaNueva','ajaxActualizarAverias','CrearOrdenNeumaticos','crearOrden','agregarNeumaticosRenovar','agregarNeumaticosRotar','verOrdenes','vistaPrevia','AgregarRotacionNueva'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -72,6 +72,32 @@ class NeumaticosController extends Controller
             echo CJSON::encode(array(
                 'status'=>'failure', 
                 'div'=>$this->renderPartial('_formNuevaAveria', array('model'=>$model), true)));
+            exit;               
+        }
+	}
+	public function actionAgregarRotacionNueva(){
+		$model=new Rotacioncauchos;
+        // Uncomment the following line if AJAX validation is needed
+         //$this->performAjaxValidation($model);
+ 
+    if(isset($_POST['Rotacioncauchos'])){
+            $model->attributes=$_POST['Rotacioncauchos'];
+            if($model->save()){
+                if (Yii::app()->request->isAjaxRequest){
+				   /*inserts por debajo del plan de mantenimiento a cada vehiculo del grupo*/
+				   
+					echo CJSON::encode(array(
+                        'status'=>'success', 
+                        'div'=>"se agregó la rotación"
+                        ));
+                    exit;
+                }
+            }
+        }
+        if (Yii::app()->request->isAjaxRequest){
+            echo CJSON::encode(array(
+                'status'=>'failure', 
+                'div'=>$this->renderPartial('_formNuevaRotacion', array('model'=>$model), true)));
             exit;               
         }
 	}
@@ -367,8 +393,21 @@ class NeumaticosController extends Controller
 		// and idfallaCaucho is not null (para solo fallas)
 		$idvehiculoAver=Yii::app()->db->createCommand("select distinct(h.idvehiculo), count(*) as totAct from sgu_detalleEventoCa de, sgu_detOrdNeumatico d, sgu_historicoCaucho h where de.idfallaCaucho is not null and de.idhistoricoCaucho=h.id and de.id=d.iddetalleEventoCa and d.idordenMtto=".$id." group by h.idvehiculo")->queryAll();
 		$totalVehAver=count($idvehiculoAver);
+		//necesario cuando no existan averias
+		if($totalVehAver==0){
+			$vehiculosAver[]=new CActiveDataProvider('Vehiculo',array('criteria' => array(
+			'condition' =>'id="0"',
+			)));
+			$actividadesAver[][]=new CActiveDataProvider('Detalleeventoca',array('criteria' => array(
+				'condition' =>'id="0"',
+			)));
+			$recursosAver[][]=new CActiveDataProvider('Detreccaucho',array('criteria' => array(
+				'condition' =>'iddetalleEventoCa="0"',
+			)));
+		}
 		
 		for($i=0;$i<$totalVehAver;$i++){
+			
 			$vehiculosAver[]=new CActiveDataProvider('Vehiculo',array('criteria' => array(
 			'condition' =>'id="'.$idvehiculoAver[$i]["idvehiculo"].'"',
 			)));
@@ -387,6 +426,19 @@ class NeumaticosController extends Controller
 		//para solo renovaciones and idaccionCaucho=1
 		$idvehiculoMont=Yii::app()->db->createCommand("select distinct(h.idvehiculo), count(*) as totAct from sgu_detalleEventoCa de, sgu_detOrdNeumatico d, sgu_historicoCaucho h where de.idaccionCaucho=1 and de.idhistoricoCaucho=h.id and de.id=d.iddetalleEventoCa and d.idordenMtto=".$id." group by h.idvehiculo")->queryAll();
 		$totalVehMont=count($idvehiculoMont);
+		//necesario cuando no existan renovaciones
+		
+		if($totalVehMont==0){
+			$vehiculosMont[]=new CActiveDataProvider('Vehiculo',array('criteria' => array(
+			'condition' =>'id="0"',
+			)));
+			$actividadesMont[][]=new CActiveDataProvider('Detalleeventoca',array('criteria' => array(
+				'condition' =>'id="0"',
+			)));
+			$recursosMont[][]=new CActiveDataProvider('Detreccaucho',array('criteria' => array(
+				'condition' =>'iddetalleEventoCa="0"',
+			)));
+		}
 		
 		for($i=0;$i<$totalVehMont;$i++){
 			$vehiculosMont[]=new CActiveDataProvider('Vehiculo',array('criteria' => array(
@@ -436,6 +488,62 @@ class NeumaticosController extends Controller
 			'listas'=>$this->getOrdenesListas(),
 			));
 	}
+	
+	public function actionAgregarNeumaticosRenovar(){
+		if(isset($_POST["ids"])){
+			 foreach ($_POST["ids"] as $ids){ 
+				$model = new Detalleeventoca;
+				$model->fechaFalla=date("Y-m-d");
+				$model->fechaRealizada="0000-01-01";
+				$model->idaccionCaucho=1;
+				$model->idhistoricoCaucho=$ids;
+				$model->idestatus=8;
+				$model->save();
+			}
+            echo CJSON::encode(array(
+                'status'=>'neumáticos agregados', 
+				));
+            exit;
+		}	 
+	}
+	public function actionAgregarNeumaticosRotar(){
+		if(isset($_POST["origen"]) and isset($_POST["destino"])and isset($_POST["idRot"])) {
+			$origen=Historicocaucho::model()->findByPk($_POST["origen"][0]);
+			$destino=Historicocaucho::model()->findByPk($_POST["destino"][0]);
+			$idrot=$_POST["idRot"][0];
+			
+				$model = new Detalleeventoca;
+				$model->fechaFalla=date("Y-m-d");
+				$model->fechaRealizada="0000-01-01";
+				$model->idaccionCaucho=2;
+				$model->idhistoricoCaucho=$origen->id;
+				$model->posicionOrigen=$origen->iddetalleRueda;
+				$model->cauchoOrigen=$origen->id;
+				$model->posicionDestino=$destino->iddetalleRueda;
+				$model->cauchoDestino=$destino->id;
+				$model->idestatus=8;
+				$model->idrotacionCauchos=$idrot;
+				$model->save();
+				
+				$model = new Detalleeventoca;
+				$model->fechaFalla=date("Y-m-d");
+				$model->fechaRealizada="0000-01-01";
+				$model->idaccionCaucho=2;
+				$model->idhistoricoCaucho=$destino->id;
+				$model->posicionOrigen=$destino->iddetalleRueda;
+				$model->cauchoOrigen=$destino->id;
+				$model->posicionDestino=$origen->iddetalleRueda;
+				$model->cauchoDestino=$origen->id;
+				$model->idestatus=8;
+				$model->idrotacionCauchos=$idrot;
+				$model->save();
+			}
+            echo CJSON::encode(array(
+                'status'=>'Rotación agregada', 
+				));
+            exit;
+		 
+	}
 	public function actionCrearOrden(){
 		$model=new Ordenmtto;
 		if(isset($_POST['Ordenmtto'])){
@@ -464,8 +572,12 @@ class NeumaticosController extends Controller
 				if($_POST['idrot']!=""){
 				$rot = explode(",", $_POST['idrot']);
 				foreach($rot as $idrot){
-					Yii::app()->db->createCommand("INSERT INTO `tsg`.`sgu_detOrdNeumatico` (`iddetalleEventoCa`,`idordenMtto`) VALUES (".$idrot.",".$model->id.")")->query();
-					Yii::app()->db->createCommand("update `tsg`.`sgu_detalleEventoCa` set `idestatus` = '4' where `sgu_detalleEventoCa`.`id` = ".$idrot."")->query();
+					Yii::app()->db->createCommand("update `tsg`.`sgu_rotacionCauchos` set `idestatus` = '4' where `sgu_rotacionCauchos`.`id` = ".$idrot."")->query();
+					$id=Yii::app()->db->createCommand("select id from sgu_detalleEventoCa where idrotacionCauchos=".$idrot." ")->queryAll();
+					for($i=0;$i<count($id);$i++){
+						Yii::app()->db->createCommand("INSERT INTO `tsg`.`sgu_detOrdNeumatico` (`iddetalleEventoCa`,`idordenMtto`) VALUES (".$id[$i]['id'].",".$model->id.")")->query();
+						Yii::app()->db->createCommand("update `tsg`.`sgu_detalleEventoCa` set `idestatus` = '4' where `sgu_detalleEventoCa`.`id` = ".$id[$i]['id']."")->query();
+						}
 					}
 				}
 			}
@@ -488,62 +600,10 @@ class NeumaticosController extends Controller
             exit;               
         }
 	}
-	public function actionAgregarNeumaticosRenovar(){
-		if(isset($_POST["ids"])){
-			 foreach ($_POST["ids"] as $ids){ 
-				$model = new Detalleeventoca;
-				$model->fechaFalla=date("Y-m-d");
-				$model->fechaRealizada="0000-01-01";
-				$model->idaccionCaucho=1;
-				$model->idhistoricoCaucho=$ids;
-				$model->idestatus=8;
-				$model->save();
-			}
-            echo CJSON::encode(array(
-                'status'=>'neumáticos agregados', 
-				));
-            exit;
-		}	 
-	}
-	public function actionAgregarNeumaticosRotar(){
-		if(isset($_POST["origen"]) and isset($_POST["destino"])) {
-			$origen=Historicocaucho::model()->findByPk($_POST["origen"][0]);
-			$destino=Historicocaucho::model()->findByPk($_POST["destino"][0]);
-			
-				$model = new Detalleeventoca;
-				$model->fechaFalla=date("Y-m-d");
-				$model->fechaRealizada="0000-01-01";
-				$model->idaccionCaucho=2;
-				$model->idhistoricoCaucho=$origen->id;
-				$model->posicionOrigen=$origen->iddetalleRueda;
-				$model->cauchoOrigen=$origen->id;
-				$model->posicionDestino=$destino->iddetalleRueda;
-				$model->cauchoDestino=$destino->id;
-				$model->idestatus=8;
-				$model->save();
-				
-				$model = new Detalleeventoca;
-				$model->fechaFalla=date("Y-m-d");
-				$model->fechaRealizada="0000-01-01";
-				$model->idaccionCaucho=2;
-				$model->idhistoricoCaucho=$destino->id;
-				$model->posicionOrigen=$destino->iddetalleRueda;
-				$model->cauchoOrigen=$destino->id;
-				$model->posicionDestino=$origen->iddetalleRueda;
-				$model->cauchoDestino=$origen->id;
-				$model->idestatus=8;
-				$model->save();
-			}
-            echo CJSON::encode(array(
-                'status'=>'Rotación agregada', 
-				));
-            exit;
-		 
-	}
 	public function actionCrearOrdenNeumaticos(){
 		
 		//$modeloOrdenMtto=new Ordenmtto;
-
+		$idRot=0;
 		$idv=0;
 			if(isset($_GET["idvehiculo"])){
 				if($_GET["idvehiculo"]=="")
@@ -565,8 +625,15 @@ class NeumaticosController extends Controller
 			'condition' =>'idaccionCaucho=1 and idestatus=8',
 			//'order'=>'fechaFalla'
 			)));
-		$rotaciones=new CActiveDataProvider('Detalleeventoca',array('criteria' => array(
-			'condition' =>'idaccionCaucho=2 and idestatus=8',
+		$rotaciones=new CActiveDataProvider('Rotacioncauchos',array('criteria' => array(
+			'condition' =>'idestatus=8',
+			//'order'=>'fechaFalla'
+			)));
+		if(isset($_GET["idRot"])){
+			$idRot=$_GET["idRot"];
+		}
+		$movimientos=new CActiveDataProvider('Detalleeventoca',array('criteria' => array(
+			'condition' =>'idrotacionCauchos='.$idRot.'',
 			//'order'=>'fechaFalla'
 			)));
 			
@@ -578,6 +645,7 @@ class NeumaticosController extends Controller
 			'renovaciones'=>$renovaciones,
 			'rotaciones'=>$rotaciones,
 			'montadosR'=>$montadosR,
+			'movimientos'=>$movimientos,
 		));
 	}
 	
