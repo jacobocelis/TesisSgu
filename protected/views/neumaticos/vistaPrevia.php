@@ -320,6 +320,117 @@ $this->widget('zii.widgets.grid.CGridView', array(
 ?>
 </div>
 <?php }?>
+<?php if($totalRot>0){?>
+<div class='crugepanel user-assignments-role-list'>
+<h2>Rotaciones</h2>
+<?php
+for($i=0;$i<$totalRot;$i++){
+$this->widget('zii.widgets.grid.CGridView', array(
+                'id'=>'rota',
+				//'hideHeader'=>true,
+				//'selectionChanged'=>'validar',
+				'summaryText'=>'',
+			    'enableSorting' => true,
+				'template'=>"{items}\n{summary}\n{pager}",
+				'selectableRows'=>0,
+				'emptyText'=>'No hay ordenes listas para cerrar',
+                'dataProvider'=>$Rotaciones[$i],
+				'columns'=>array(
+				/*array(
+					'type'=>'raw',
+					'headerHtmlOptions'=>array('style'=>'width:7%;text-align:left;background:#F3FDA4'),
+					'header'=>'Vehiculo',
+					'value'=>'\'<strong>Unidad: </strong> #0\'.$data->numeroUnidad.\' \'.$data->idmodelo0->idmarca0->marca.\'  \'.$data->idmodelo0->modelo.\' \'.$data->anno.\' \'.$data->idcolor0->color',
+					'htmlOptions'=>array('style'=>'text-align:left;width:100px;background:#F3FDA4'
+				),
+			),*/
+			array(
+					'header'=>'Nombre',
+					//'value'=>'$data->posicionDestino==null?\'Repuesto\':$data->posicionDestino0->idposicionRueda0->posicionRueda',
+					'name'=>'nombre',
+					'htmlOptions'=>array('style'=>'text-align:center;width:85px'),
+				),
+				array(
+					'header'=>'Detalle',
+					//'value'=>'$data->posicionDestino==null?\'Repuesto\':$data->posicionDestino0->idposicionRueda0->posicionRueda',
+					'name'=>'descripcion',
+					'htmlOptions'=>array('style'=>'text-align:center;width:285px'),
+				),
+		)
+    ));?>
+	<i><strong>Movimientos a realizar:</strong></i><?php
+	$this->widget('zii.widgets.grid.CGridView', array(
+                'id'=>'detallerot',
+				//'selectionChanged'=>'validar',
+				'summaryText'=>'',
+				//'hideHeader'=>true,
+			    'enableSorting' => true,
+				'template'=>"{items}\n{summary}\n{pager}",
+				'selectableRows'=>0,
+				'emptyText'=>'',
+                'dataProvider'=>$actividadesRot[$i],
+				'columns'=>array(
+				
+				array(
+					'header'=>'Unidad',
+					'name'=>'idhistoricoCaucho',
+					'value'=>'str_pad((int) $data->cauchoOrigen0->idvehiculo0->numeroUnidad,2,"0",STR_PAD_LEFT);',
+					//'value'=>'$data->idplan0->idplanGrupo0->CompiledColour->$data-id.\' \'.$data->CompiledColour',
+					'htmlOptions'=>array('style'=>'text-align:center;width:40px'),
+				),
+				array(
+					'header'=>'Eje',
+					'value'=>'$data->posicionOrigen==null?\'-\':$data->posicionOrigen0->iddetalleEje0->idposicionEje0->posicionEje',
+					'name'=>'iddetalleRueda',
+					'htmlOptions'=>array('style'=>'text-align:center;width:85px'),
+				),
+				array(
+					'header'=>'Lado',
+					'value'=>'$data->posicionOrigen==null?\'Repuesto\':$data->posicionOrigen0->idposicionRueda0->posicionRueda',
+					'name'=>'iddetalleRueda',
+					'htmlOptions'=>array('style'=>'text-align:center;width:85px'),
+				),
+				/*array(
+					'type'=>'raw',
+					'header'=>'',
+					'value'=>'\'<strong>Destino</strong>\'',
+					'htmlOptions'=>array('style'=>'text-align:center;width:85px'),
+				),*/
+				array(
+					'type'=>'raw',
+					'header'=>'Movimiento',
+					'value'=>'
+                        CHtml::image(Yii::app()->request->baseUrl."/imagenes/arrow_right.png",
+                                          "Movimiento",array("title"=>"desde->hacia"))',
+					'htmlOptions'=>array('style'=>'text-align:center;width:85px'),
+				),
+				array(
+					'header'=>'Unidad',
+					'name'=>'idhistoricoCaucho',
+					'value'=>'str_pad((int) $data->cauchoDestino0->idvehiculo0->numeroUnidad,2,"0",STR_PAD_LEFT);',
+					//'value'=>'$data->idplan0->idplanGrupo0->CompiledColour->$data-id.\' \'.$data->CompiledColour',
+					'htmlOptions'=>array('style'=>'text-align:center;width:40px'),
+				),
+				array(
+					'header'=>'Eje',
+					'value'=>'$data->posicionDestino==null?\'-\':$data->posicionDestino0->iddetalleEje0->idposicionEje0->posicionEje',
+					'name'=>'iddetalleRueda',
+					'htmlOptions'=>array('style'=>'text-align:center;width:85px'),
+				),
+				array(
+					'header'=>'Lado',
+					'value'=>'$data->posicionDestino==null?\'Repuesto\':$data->posicionDestino0->idposicionRueda0->posicionRueda',
+					'name'=>'iddetalleRueda',
+					'htmlOptions'=>array('style'=>'text-align:center;width:85px'),
+				),
+			)
+    ));
+	
+}
+?>
+</div>
+<?php }?>
+
 <?php
 if(count($factura->getData())>0){?>
 <div class='crugepanel user-assignments-role-list'>

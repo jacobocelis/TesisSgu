@@ -1,3 +1,4 @@
+<div id="scrollingDiv" class="btn" style="display:none">Crear órden de neumáticos</div>
 <?php 
 	$this->breadcrumbs=array(
 	'Mantenimiento preventivo'=>array('mttoPreventivo/index'),
@@ -8,11 +9,8 @@
 	array('label'=>'      Crear orden de mantenimiento', 'url'=>array('crearOrdenPreventiva')),
 	array('label'=>'      Ver órdenes abiertas <span class="badge badge-'.$Colorabi.' pull-right">'.$abiertas.'</span>', 'url'=>array('verOrdenes')),
 	array('label'=>'      Órdenes listas para cerrar <span class="badge badge-'.$Colorli.' pull-right">'.$listas.'</span>', 'url'=>array('cerrarOrdenes')),
-	
-	
 );
 ?>
-
 <div class='crugepanel user-assignments-role-list'>
 	<h1>Seleccione las actividades a incluir en la orden de mantenimiento</h1>
 	<?php //<p><b>Nota: </b><i>Sólo se mostrarán las actividades con menos de 5 dias restantes o que posean atraso</p></i>?>
@@ -91,9 +89,25 @@ $this->widget('zii.widgets.grid.CGridView', array(
         ));
 		?>
 		</div>
-<div id='formulario' class='crugepanel user-assignments-role-list'>
 <?php 
 	/*$this->renderPartial('_formCrearOrden',array('model'=>$modeloOrdenMtto));*/?>
+	
+<?php
+/*ventana agregar recurso*/
+$this->beginWidget('zii.widgets.jui.CJuiDialog', array( // the dialog
+    'id'=>'formulario',
+    'options'=>array(
+        'title'=>'Crear orden de neumáticos',
+        'autoOpen'=>false,
+        'modal'=>true,
+        'width'=>490,
+        //'height'=>360,
+		'position'=>array(null,100),
+		'resizable'=>false
+    ),
+));?>
+<div class="divForForm"></div>
+<?php $this->endWidget();?>
 </div>
 <style>
 .rojo{
@@ -135,6 +149,46 @@ h1 {
     border: 1px solid #A8C5F0;
     padding: 0.3em;
 }
+#scrollingDiv{
+	position: fixed;
+}
+.btn {
+	-moz-box-shadow:inset 0px 1px 0px 0px #54a3f7;
+	-webkit-box-shadow:inset 0px 1px 0px 0px #54a3f7;
+	box-shadow:inset 0px 1px 0px 0px #54a3f7;
+	background:-webkit-gradient(linear, left top, left bottom, color-stop(0.05, #007dc1), color-stop(1, #0061a7));
+	background:-moz-linear-gradient(top, #007dc1 5%, #0061a7 100%);
+	background:-webkit-linear-gradient(top, #007dc1 5%, #0061a7 100%);
+	background:-o-linear-gradient(top, #007dc1 5%, #0061a7 100%);
+	background:-ms-linear-gradient(top, #007dc1 5%, #0061a7 100%);
+	background:linear-gradient(to bottom, #007dc1 5%, #0061a7 100%);
+	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#007dc1', endColorstr='#0061a7',GradientType=0);
+	background-color:#007dc1;
+	-moz-border-radius:3px;
+	-webkit-border-radius:3px;
+	border-radius:3px;
+	border:1px solid #124d77;
+	display:inline-block;
+	cursor:pointer;
+	color:#ffffff;
+	font-family:Verdana;
+	font-size:13px;
+	font-weight:bold;
+	padding:6px 4px;
+	text-decoration:none;
+	text-shadow:0px 1px 0px #154682;
+}
+.btn:hover {
+	background:-webkit-gradient(linear, left top, left bottom, color-stop(0.05, #0061a7), color-stop(1, #007dc1));
+	background:-moz-linear-gradient(top, #0061a7 5%, #007dc1 100%);
+	background:-webkit-linear-gradient(top, #0061a7 5%, #007dc1 100%);
+	background:-o-linear-gradient(top, #0061a7 5%, #007dc1 100%);
+	background:-ms-linear-gradient(top, #0061a7 5%, #007dc1 100%);
+	background:linear-gradient(to bottom, #0061a7 5%, #007dc1 100%);
+	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#0061a7', endColorstr='#007dc1',GradientType=0);
+	background-color:#0061a7;
+	color: #fff;
+}
 </style>
 <style>
 .ui-progressbar .ui-widget-header {
@@ -169,13 +223,24 @@ h1 {
 }
 </style>
 <script>
+var ancho=$(window).width()-($(window).width()*0.20);
+$('#scrollingDiv').css({
+  'right':ancho,
+  'bottom': '50px'
+ });
+ 
+ $( "#scrollingDiv" ).click(function() {
+	$('#scrollingDiv').hide(300);
+	$("#formulario").dialog('open');
+});
+
 $('#formulario').hide();
 function validar(){
 var idAct = $.fn.yiiGridView.getSelection('actividades');
 	if(idAct=="")
-		$('#formulario').hide();
+		$('#scrollingDiv').hide(300);//$('#formulario').hide();
 	else
-		$('#formulario').show();
+		$('#scrollingDiv').show(300);//$('#formulario').show();
 		
 jQuery.ajax({
                 url: "crearOrden",
@@ -184,13 +249,16 @@ jQuery.ajax({
                 'dataType':'json',
                 'success':function(data){
                                 if (data.status == 'failure'){
-                                        $('#formulario').html(data.div);
+                                        $('#formulario div.divForForm').html(data.div);
                                         // Here is the trick: on submit-> once again this function!
-                                        $('#formulario form').submit(validar); // 
+                                        $('#formulario div.divForForm form').submit(validar); // 
                                 }
                                 else{
                                         $('#formulario').html(data.div);
+										setTimeout("$('#formulario').dialog('close') ",1);
+										$('#scrollingDiv').hide();
 										window.setTimeout('location.reload()', 1);
+										
                                 }
                         } ,
                 'cache':false});

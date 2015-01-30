@@ -435,9 +435,6 @@ class NeumaticosController extends Controller
 			$actividadesMont[][]=new CActiveDataProvider('Detalleeventoca',array('criteria' => array(
 				'condition' =>'id="0"',
 			)));
-			$recursosMont[][]=new CActiveDataProvider('Detreccaucho',array('criteria' => array(
-				'condition' =>'iddetalleEventoCa="0"',
-			)));
 		}
 		
 		for($i=0;$i<$totalVehMont;$i++){
@@ -448,6 +445,30 @@ class NeumaticosController extends Controller
 				$actividadesMont[$i]=new CActiveDataProvider('Detalleeventoca',array('criteria' => array(
 				'condition' =>'id in (select iddetalleEventoCa as id from sgu_detOrdNeumatico where idordenMtto="'.$id.'" and iddetalleEventoCa in(select de.id from sgu_detalleEventoCa de, sgu_historicoCaucho h where h.id=de.idhistoricoCaucho and idaccionCaucho=1 and h.idvehiculo="'.$idvehiculoMont[$i]["idvehiculo"].'"))',
 				)));
+		}
+		//para solo rotaciones and idaccionCaucho=2
+		$Rot=Yii::app()->db->createCommand("select de.idrotacionCauchos as id,count(de.idrotacionCauchos) as totRot from sgu_detOrdNeumatico d, sgu_detalleEventoCa de where d.iddetalleEventoCa=de.id and d.idordenMtto=".$id." and de.idaccionCaucho=2 group by de.idrotacionCauchos")->queryAll();
+		$totalRot=count($Rot);
+		
+		//necesario cuando no existan rotaciones
+		if($totalRot==0){
+			$Rotaciones[$i]=new CActiveDataProvider('Rotacioncauchos',array('criteria' => array(
+				'condition' =>'id=0',
+				)));
+				
+		$actividadesRot[$i]=new CActiveDataProvider('Detalleeventoca',array('criteria' => array(
+				'condition' =>'idrotacionCauchos=0',
+				)));
+		}
+		
+		for($i=0;$i<$totalRot;$i++){
+		$Rotaciones[$i]=new CActiveDataProvider('Rotacioncauchos',array('criteria' => array(
+				'condition' =>'id="'.$Rot[$i]["id"].'"',
+				)));
+				
+		$actividadesRot[$i]=new CActiveDataProvider('Detalleeventoca',array('criteria' => array(
+				'condition' =>'idrotacionCauchos="'.$Rot[$i]["id"].'"',
+				)));	
 		}
 		
 		$totFactura=Yii::app()->db->createCommand('select (round(sum(ar.costoTotal),2)) as Total from sgu_detRecCaucho ar, sgu_detOrdNeumatico d where d.iddetalleEventoCa=ar.iddetalleEventoCa and d.idordenMtto="'.$id.'"')->queryRow();
@@ -467,6 +488,10 @@ class NeumaticosController extends Controller
 			'totalVehMont'=>$totalVehMont,
 			'actividadesMont'=>$actividadesMont,
 			'idvehiculoMont'=>$idvehiculoMont,
+			
+			'Rotaciones'=>$Rotaciones,
+			'actividadesRot'=>$actividadesRot,
+			'totalRot'=>$totalRot,
 			
 			'orden'=>$orden,
 			'factura'=>$factura,
@@ -548,7 +573,6 @@ class NeumaticosController extends Controller
 		$model=new Ordenmtto;
 		if(isset($_POST['Ordenmtto'])){
             $model->attributes=$_POST['Ordenmtto'];
-		
             if($model->save()){
 			if(isset($_POST['idfalla'])){
 				if($_POST['idfalla']!=""){
@@ -573,7 +597,7 @@ class NeumaticosController extends Controller
 				$rot = explode(",", $_POST['idrot']);
 				foreach($rot as $idrot){
 					Yii::app()->db->createCommand("update `tsg`.`sgu_rotacionCauchos` set `idestatus` = '4' where `sgu_rotacionCauchos`.`id` = ".$idrot."")->query();
-					$id=Yii::app()->db->createCommand("select id from sgu_detalleEventoCa where idrotacionCauchos=".$idrot." ")->queryAll();
+					$id=Yii::app()->db->createCommand("select id from sgu_detalleEventoCa where idrotacionCauchos=".$idrot."")->queryAll();
 					for($i=0;$i<count($id);$i++){
 						Yii::app()->db->createCommand("INSERT INTO `tsg`.`sgu_detOrdNeumatico` (`iddetalleEventoCa`,`idordenMtto`) VALUES (".$id[$i]['id'].",".$model->id.")")->query();
 						Yii::app()->db->createCommand("update `tsg`.`sgu_detalleEventoCa` set `idestatus` = '4' where `sgu_detalleEventoCa`.`id` = ".$id[$i]['id']."")->query();
