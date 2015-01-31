@@ -68,9 +68,9 @@ $this->widget('zii.widgets.grid.CGridView', array(
 						'type'=>'raw',
 						'value'=>'CHtml::link(
                         CHtml::image(Yii::app()->request->baseUrl."/imagenes/pdf.png",
-                                          "Ver detalle",array("title"=>"Ver")),
+                                          "Ver pdf",array("title"=>"Exportar órden a archivo pdf")),
 										  
-                        Yii::app()->createUrl("mttoCorrectivo/vistaPreviaPDF", array("id"=>$data->id)),
+                        Yii::app()->createUrl("neumaticos/vistaPreviaPDF", array("id"=>$data->id)),
                         array(
 								
                                 \'style\'=>\'cursor: pointer;text-decoration: underline;text-align:center;\',
@@ -116,7 +116,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
                         CHtml::image(Yii::app()->request->baseUrl."/imagenes/agregar.png",
                                           "Agregar",array("title"=>"Editar")),
 										  
-                        Yii::app()->createUrl("mttoCorrectivo/mttocRealizados", array("id"=>$data->id,"nom"=>"Órdenes abiertas","dir"=>"mttoCorrectivo/verOrdenes")),
+                        Yii::app()->createUrl("neumaticos/mttonRealizados", array("id"=>$data->id,"nom"=>"Órdenes abiertas","dir"=>"neumaticos/verOrdenes")),
                         array(
                                 \'style\'=>\'cursor: pointer;text-decoration: underline;text-align:center;\',
                         )

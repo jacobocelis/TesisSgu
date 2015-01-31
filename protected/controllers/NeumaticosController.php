@@ -32,7 +32,7 @@ class NeumaticosController extends Controller
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create','update','plantilla','ActualizarListaPlantillas','MostrarLinkEje','actualizarListaPosicionesEje','MostrarLinkCaucho','actualizarEstado','MostrarLinkRep','MostrarDivRep','TieneGrupo','montajeInicial','montar','alertaCambioCauchos','ActualizarSpan','averiaNeumatico','RegistrarAveriaNeumatico','AgregarAveriaNueva','ajaxActualizarAverias','CrearOrdenNeumaticos','crearOrden','agregarNeumaticosRenovar','agregarNeumaticosRotar','verOrdenes','vistaPrevia','AgregarRotacionNueva'),
+				'actions'=>array('create','update','plantilla','ActualizarListaPlantillas','MostrarLinkEje','actualizarListaPosicionesEje','MostrarLinkCaucho','actualizarEstado','MostrarLinkRep','MostrarDivRep','TieneGrupo','montajeInicial','montar','alertaCambioCauchos','ActualizarSpan','averiaNeumatico','RegistrarAveriaNeumatico','AgregarAveriaNueva','ajaxActualizarAverias','CrearOrdenNeumaticos','crearOrden','agregarNeumaticosRenovar','agregarNeumaticosRotar','verOrdenes','vistaPrevia','AgregarRotacionNueva','MttonRealizados'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -500,6 +500,38 @@ class NeumaticosController extends Controller
 			'dir'=>$dir,
 		));
 	
+	}
+	public function actionMttonRealizados($id,$nom,$dir){
+		$orden=new CActiveDataProvider('Ordenmtto',array('criteria' => array(
+			'condition' =>'id='.$id."")
+			,'pagination'=>array('pageSize'=>9999999)));
+			
+		$averias=new CActiveDataProvider('Detalleeventoca',array('criteria' => array(
+			'condition' =>'idfallaCaucho is not null and id in (select iddetalleEventoCa from sgu_detOrdNeumatico where idordenMtto="'.$id.'")',
+			'order'=>'fechaFalla DESC'
+			)));
+			
+		$renovaciones=new CActiveDataProvider('Detalleeventoca',array('criteria' => array(
+			'condition' =>'idaccionCaucho=1 and id in (select iddetalleEventoCa from sgu_detOrdNeumatico where idordenMtto="'.$id.'")',
+			'order'=>'fechaFalla DESC'
+			)));
+		$rotaciones=new CActiveDataProvider('Rotacioncauchos',array('criteria' => array(
+			'condition' =>'id in (select de.idrotacionCauchos as id from sgu_detOrdNeumatico d, sgu_detalleEventoCa de where d.iddetalleEventoCa=de.id and d.idordenMtto='.$id.' and de.idaccionCaucho=2 group by de.idrotacionCauchos)',
+			'order'=>'id'
+			)));
+			
+		$totMov=Yii::app()->db->createCommand("select count(de.idrotacionCauchos) as tot from sgu_detOrdNeumatico d, sgu_detalleEventoCa de where d.iddetalleEventoCa=de.id and d.idordenMtto=".$id." and de.idaccionCaucho=2 group by de.idrotacionCauchos")->queryRow();
+		
+		$this->render('mttonRealizados',array(
+			'averias'=>$averias,
+			'renovaciones'=>$renovaciones,
+			'rotaciones'=>$rotaciones,
+			'orden'=>$orden,
+			'id'=>$id,
+			'nom'=>$nom,
+			'dir'=>$dir,
+			'totMov'=>$totMov['tot']
+		));
 	}
 	public function actionVerOrdenes(){
 		$dataProvider=new CActiveDataProvider('Ordenmtto',array('criteria' => array(
