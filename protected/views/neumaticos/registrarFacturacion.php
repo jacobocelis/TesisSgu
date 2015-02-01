@@ -304,13 +304,13 @@ $this->widget('zii.widgets.grid.CGridView', array(
 					'name'=>'iddetalleRueda',
 					'htmlOptions'=>array('style'=>'text-align:center;width:85px'),
 				),
-				array(
+				/*array(
 					'header'=>'Fecha de renovación',
 					'name'=>'fechaRealizada',
 					'type'=>'raw',
 					'value'=>'$data->valores($data->fechaRealizada)?date("d/m/Y",strtotime($data->fechaRealizada)):$data->noasignado()',
 					'htmlOptions'=>array('style'=>'width:80px;text-align:center;'),
-				),
+				),*/
 				array(
 					'header'=>'Estado',
 					'name'=>'idestatus',
@@ -318,6 +318,20 @@ $this->widget('zii.widgets.grid.CGridView', array(
 					'value'=>'$data->color($data->idestatus,$data->idestatus0->estatus)',
 					'htmlOptions'=>array('style'=>'width:80px;text-align:center;'),
 				),
+				array(
+						'headerHtmlOptions'=>array('style'=>'text-align:center;width:30px;'),
+						'htmlOptions'=>array('style'=>'text-align:center;'),
+						'header'=>'Facturar',
+						'type'=>'raw',
+						'value'=>'CHtml::link(
+                        CHtml::image(Yii::app()->request->baseUrl."/imagenes/agregar.png",
+                                          "Agregar",array("title"=>"Editar")),
+                        "",
+                        array(
+                                \'style\'=>\'cursor: pointer;text-decoration: underline;text-align:center;\',
+                                \'onclick\'=>\'{editarFactura("\'.Yii::app()->createUrl("factura/update",array("id"=>$data["id"])).\'");}\'
+                        )
+                );',),
 			)
         ));
 		
@@ -361,13 +375,13 @@ $this->widget('zii.widgets.grid.CGridView', array(
                                 \'onclick\'=>\'{mostrarMovimientos("\'.$data["id"].\'");}\'
                         )
                 );',),
-				array(
+				/*array(
 					'header'=>'Fecha de reparación',
 					'name'=>'fechaRealizada',
 					'type'=>'raw',
 					'value'=>'$data->valores($data->fechaRealizada)?date("d/m/Y",strtotime($data->fechaRealizada)):$data->noasignado()',
 					'htmlOptions'=>array('style'=>'width:80px;text-align:center;'),
-				),
+				),*/
 
 				array(
 					'header'=>'Estado',
@@ -376,6 +390,20 @@ $this->widget('zii.widgets.grid.CGridView', array(
 					'value'=>'$data->color($data->idestatus,$data->idestatus0->estatus)',
 					'htmlOptions'=>array('style'=>'width:80px;text-align:center;'),
 				),
+				array(
+						'headerHtmlOptions'=>array('style'=>'text-align:center;width:30px;'),
+						'htmlOptions'=>array('style'=>'text-align:center;'),
+						'header'=>'Facturar',
+						'type'=>'raw',
+						'value'=>'CHtml::link(
+                        CHtml::image(Yii::app()->request->baseUrl."/imagenes/agregar.png",
+                                          "Agregar",array("title"=>"Editar")),
+                        "",
+                        array(
+                                \'style\'=>\'cursor: pointer;text-decoration: underline;text-align:center;\',
+                                \'onclick\'=>\'{editarFactura("\'.Yii::app()->createUrl("factura/update",array("id"=>$data["id"])).\'");}\'
+                        )
+                );',),
 				
 			)
         ));

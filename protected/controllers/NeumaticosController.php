@@ -32,7 +32,7 @@ class NeumaticosController extends Controller
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create','update','plantilla','ActualizarListaPlantillas','MostrarLinkEje','actualizarListaPosicionesEje','MostrarLinkCaucho','actualizarEstado','MostrarLinkRep','MostrarDivRep','TieneGrupo','montajeInicial','montar','alertaCambioCauchos','ActualizarSpan','averiaNeumatico','RegistrarAveriaNeumatico','AgregarAveriaNueva','ajaxActualizarAverias','CrearOrdenNeumaticos','crearOrden','agregarNeumaticosRenovar','agregarNeumaticosRotar','verOrdenes','vistaPrevia','AgregarRotacionNueva','MttonRealizados','agregarFactura','registrarFacturacion','actualizarCheck','agregarRecursoAveria','estatusOrden','vistaPreviaPDF'),
+				'actions'=>array('create','update','plantilla','ActualizarListaPlantillas','MostrarLinkEje','actualizarListaPosicionesEje','MostrarLinkCaucho','actualizarEstado','MostrarLinkRep','MostrarDivRep','TieneGrupo','montajeInicial','montar','alertaCambioCauchos','ActualizarSpan','averiaNeumatico','RegistrarAveriaNeumatico','AgregarAveriaNueva','ajaxActualizarAverias','CrearOrdenNeumaticos','crearOrden','agregarNeumaticosRenovar','agregarNeumaticosRotar','verOrdenes','vistaPrevia','AgregarRotacionNueva','MttonRealizados','agregarFactura','registrarFacturacion','actualizarCheck','agregarRecursoAveria','estatusOrden','vistaPreviaPDF','nuevoRec','actualizarListaRecursos'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -393,6 +393,31 @@ class NeumaticosController extends Controller
 			
 		));
 	}
+	public function actionNuevoRec()
+	{
+		$model=new Recursocaucho;
+
+		
+		if(isset($_POST['Recursocaucho'])){
+            $model->attributes=$_POST['Recursocaucho'];
+			if($model->save()){
+                if (Yii::app()->request->isAjaxRequest){
+                    echo CJSON::encode(array(
+                        'status'=>'success', 
+                        'div'=>"nuevo recurso agregado"
+                        ));
+					exit;
+                }
+            }
+        }
+		 if (Yii::app()->request->isAjaxRequest){	
+            echo CJSON::encode(array(
+                'status'=>'failure', 
+                'div'=>$this->renderPartial('_formNuevoRec', array('model'=>$model), true)
+				));
+            exit;               
+        }
+	}
 	public function actionVistaPreviaPDF($id){
 		$orden=new CActiveDataProvider('Ordenmtto',array('criteria' => array(
 			'condition' =>'id='.$id."")
@@ -487,7 +512,7 @@ class NeumaticosController extends Controller
 			
 		
 		
-		$mPDF1 = Yii::app()->ePdf->mpdf(); //Esto lo pueden configurar como quieren, para eso deben de entrar en la web de MPDF para ver todo lo que permite.
+		$mPDF1 = Yii::app()->ePdf->mpdf('utf-8', 'Letter'); //Esto lo pueden configurar como quieren, para eso deben de entrar en la web de MPDF para ver todo lo que permite.
 		 //$mPDF1->useOnlyCoreFonts = true;
 		 $mPDF1->SetTitle("Solicitud de servicio SIRCA");
 		 $mPDF1->SetAuthor("J&M");
@@ -496,6 +521,7 @@ class NeumaticosController extends Controller
 		 $mPDF1->watermark_font = 'DejaVuSansCondensed';
 		 $mPDF1->watermarkTextAlpha = 0.1;
 		 $mPDF1->SetDisplayMode('fullpage');
+		 //$mPDF1->use_kwt = true; 
 		 $mPDF1->WriteHTML($this->renderPartial('vistaPreviaPDF',array(
 			'vehiculosAver'=>$vehiculosAver,
 			'totalVehAver'=>$totalVehAver,
@@ -1197,5 +1223,13 @@ class NeumaticosController extends Controller
                 'estado'=>$estado, 
                 ));
 			exit;
+	}
+	public function actionActualizarListaRecursos(){
+	
+			$lista2=Recursocaucho::model()->findAll('1 order by id desc');
+			foreach($lista2 as $li){
+				echo CHtml::tag('option',array('type'=>'text','value'=>(($li->id))),Chtml::encode(($li->recurso)),true);
+			
+		}
 	}
 }

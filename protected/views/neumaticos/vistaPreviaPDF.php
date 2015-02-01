@@ -143,12 +143,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
 					'value'=>'$data->idempleado==""?\' \':$data->idempleado0->nombre.\' \'.$data->idempleado0->apellido',
 					'htmlOptions'=>array('style'=>'text-align:center;width:100px'),
 				),
-				array(
-					'type'=>'raw',
-					'header'=>'Estado',
-					'value'=>'$data->idestatus0->estatus',
-					'htmlOptions'=>array('style'=>'text-align:center;width:60px'),
-				),
+	
 				array(
 					'type'=>'raw',
 					'header'=>'Comentario',
@@ -291,8 +286,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
 					'htmlOptions'=>array('style'=>'text-align:center;width:85px'),
 				),
 				)
-    ));
-	
+    ));	
 }
 ?>
 </div>
@@ -304,7 +298,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
 for($i=0;$i<$totalRot;$i++){
 $this->widget('zii.widgets.grid.CGridView', array(
                 'id'=>'rota',
-				//'hideHeader'=>true,
+				'hideHeader'=>true,
 				//'selectionChanged'=>'validar',
 				'summaryText'=>'',
 			    'enableSorting' => false,
@@ -312,6 +306,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
 				'selectableRows'=>0,
 				'emptyText'=>'No hay ordenes listas para cerrar',
                 'dataProvider'=>$Rotaciones[$i],
+				'htmlOptions'=>array('style'=>'padding: 0px 0px 15px;'),
 				'columns'=>array(
 				/*array(
 					'type'=>'raw',
@@ -323,16 +318,17 @@ $this->widget('zii.widgets.grid.CGridView', array(
 			),*/
 			array(
 					'header'=>'Nombre',
-					//'value'=>'$data->posicionDestino==null?\'Repuesto\':$data->posicionDestino0->idposicionRueda0->posicionRueda',
+					'type'=>'raw',
 					'name'=>'nombre',
-					
-					'htmlOptions'=>array('style'=>'text-align:center;width:85px'),
+					'value'=>'\' <strong>\'.$data->nombre.\'</strong>\'',
+					'htmlOptions'=>array('style'=>'text-align:center;width:85px;background:#F3FDA4'),
 				),
 				array(
+					'type'=>'raw',
 					'header'=>'Detalle',
-					//'value'=>'$data->posicionDestino==null?\'Repuesto\':$data->posicionDestino0->idposicionRueda0->posicionRueda',
+					'value'=>'\' <strong>Detalle: </strong>\'.$data->descripcion',
 					'name'=>'descripcion',
-					'htmlOptions'=>array('style'=>'text-align:center;width:285px'),
+					'htmlOptions'=>array('style'=>'text-align:center;background:#F3FDA4'),
 				),
 		)
     ));?>
@@ -347,11 +343,10 @@ $this->widget('zii.widgets.grid.CGridView', array(
 				'selectableRows'=>0,
 				'emptyText'=>'',
                 'dataProvider'=>$actividadesRot[$i],
+				'htmlOptions'=>array('style'=>'padding: 0px 0px 20px;'),
 				'columns'=>array(
-				
 				array(
 					'header'=>'Unidad',
-					
 					'value'=>'str_pad((int) $data->cauchoOrigen0->idvehiculo0->numeroUnidad,2,"0",STR_PAD_LEFT);',
 					//'value'=>'$data->idplan0->idplanGrupo0->CompiledColour->$data-id.\' \'.$data->CompiledColour',
 					'htmlOptions'=>array('style'=>'text-align:center;width:40px'),
@@ -392,30 +387,27 @@ $this->widget('zii.widgets.grid.CGridView', array(
 				array(
 					'header'=>'Eje',
 					'value'=>'$data->posicionDestino==null?\'-\':$data->posicionDestino0->iddetalleEje0->idposicionEje0->posicionEje',
-					
 					'htmlOptions'=>array('style'=>'text-align:center;width:85px'),
 				),
 				array(
 					'header'=>'Lado',
 					'value'=>'$data->posicionDestino==null?\'Repuesto\':$data->posicionDestino0->idposicionRueda0->posicionRueda',
-					
 					'htmlOptions'=>array('style'=>'text-align:center;width:85px'),
 				),
 			)
     ));
-	
 }
 ?>
 </div>
 <?php }?>
 <style>
+
 body {
     font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
     font-size: 14px;
     line-height: 20px;
     color: #333;
 }
-
 .list-view div.view {
     background: none repeat scroll 0% 0% rgba(54, 255, 41, 0.19);
 }
@@ -612,50 +604,3 @@ h1 {
 	color: #000;
 }
 </style>
-<script>
-$('#formulario').hide();
-function validar(){
-var idAct = $.fn.yiiGridView.getSelection('actividades');
-	if(idAct=="")
-		$('#formulario').hide(500);
-	else
-		$('#formulario').show(500);
-		
-jQuery.ajax({
-                url: "crearOrden",
-                'data':$(this).serialize()+ '&idAct=' + idAct,
-                'type':'post',
-                'dataType':'json',
-                'success':function(data){
-                                if (data.status == 'failure'){
-                                        $('#formulario').html(data.div);
-                                        // Here is the trick: on submit-> once again this function!
-                                        $('#formulario form').submit(validar); // 
-                                }
-                                else{
-                                        $('#formulario').html(data.div);
-                                }
-                        } ,
-                'cache':false});
-	
-
-		return false; 
-}
-function cerrar(orden){
-	if(confirm('¿confirma que desea cerrar la orden?')){
-	var dir="<?php echo Yii::app()->baseUrl."/mttoCorrectivo/estatusOrden"?>";
-		x=7;
-	jQuery.ajax({
-                url: dir+"/"+x,
-                'data':$(this).serialize()+ '&id=' + orden,
-                'type':'post',
-                'dataType':'json',
-				'success':function(){
-					window.location.replace("<?php echo Yii::app()->baseUrl."/mttoCorrectivo/index"?>");	
-				},
-                'cache':false});			
-	}
-	$.fn.yiiGridView.update('ordenes');
-}
-
-</script>

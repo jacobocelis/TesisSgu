@@ -18,6 +18,7 @@ $this->menu=array(
 <div class='crugepanel user-assignments-detail'>	
 
 <div id="viaje" ></div>
+
 </div>
 <div class='crugepanel user-assignments-detail'>
 <h1>Listado de viajes rutinarios registrados</h1>
@@ -184,8 +185,7 @@ function actualizarSpan(){
 			 $('#span').text(result.total);
 		},});		
 }
-</script>
-<script>
+
 agregarViajeRutinario();
 function agregarViajeRutinario(){
 	var fecha=$('#fecha').val();
