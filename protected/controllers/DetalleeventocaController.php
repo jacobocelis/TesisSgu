@@ -32,7 +32,7 @@ class DetalleeventocaController extends Controller
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create','update'),
+				'actions'=>array('create','update','actualizar'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -55,7 +55,38 @@ class DetalleeventocaController extends Controller
 			'model'=>$this->loadModel($id),
 		));
 	}
+	public function actionActualizar($id){
+	
+		$model=$this->loadModel($id);
+		
+		if($model->fechaRealizada=='0000-01-01')
+			$var=1;
+		else
+			$var=0;
+			if(isset($_POST['Detalleeventoca'])){
+            $model->attributes=$_POST['Detalleeventoca'];
+			$model->fechaRealizada=date("Y-m-d", strtotime(str_replace('/', '-', $model->fechaRealizada)));
+            if($model->save()){
+			if (Yii::app()->request->isAjaxRequest){
+			
+			Yii::app()->db->createCommand("update `tsg`.`sgu_detalleEventoCa` set idestatus=3 where id=".$id."")->query();
+			
+                    echo CJSON::encode(array(
+                        'status'=>'success', 
+                        'div'=>"se registró la fecha correctamente"
+                        ));
+                    exit;               
+                }
+            }
+        }
+        if (Yii::app()->request->isAjaxRequest){
+            echo CJSON::encode(array(
+                'status'=>'failure', 
+                'div'=>$this->renderPartial('_formRegistrarAR', array('model'=>$model,'id'=>$var), true)));
+            exit;               
+        }
 
+	}
 	/**
 	 * Creates a new model.
 	 * If creation is successful, the browser will be redirected to the 'view' page.

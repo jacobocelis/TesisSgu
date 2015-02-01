@@ -1,8 +1,8 @@
 <?php 
 $this->breadcrumbs=array(
-	'Mantenimiento preventivo'=>array('mttoCorrectivo/index'),
+	'Neumáticos'=>array('neumaticos/index'),
 	$nom=>array($dir),
-	'Actualizar órden de mantenimiento',
+	'Actualizar órden de neumáticos',
 );
 	$this->menu=array(
 	array('label'=>'<div id="menu"><strong>Opciones de mantenimiento</strong></div>'),
@@ -13,7 +13,7 @@ $this->breadcrumbs=array(
 );
 ?>
 <div class='crugepanel user-assignments-role-list'>
-	<h1>Actualizar órden de neumáticos</h1>
+	<h1>Actualizar orden de neumáticos</h1>
 <?php
 $this->widget('zii.widgets.grid.CGridView', array(
                 'id'=>'ordenes',
@@ -66,7 +66,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
 					'htmlOptions'=>array('style'=>'text-align:center;width:80px'),
 				),
 				array(
-						'headerHtmlOptions'=>array('style'=>'text-align:left;width:10px;text-align:center;'),
+						'headerHtmlOptions'=>array('style'=>'text-align:left;width:10px;text-align:center;background:#B0E3FF'),
 						'htmlOptions'=>array('style'=>'text-align:center;width:10px;'),
 						'header'=>'Registrar facturación',
 						'type'=>'raw',
@@ -74,7 +74,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
                         CHtml::image(Yii::app()->request->baseUrl."/imagenes/agregar.png",
                                           "Agregar",array("title"=>"Editar")),
 										  
-                        Yii::app()->createUrl("mttoCorrectivo/registrarFacturacion", array("id"=>$data->id,"nom"=>"'.$nom.'","dir"=>"'.$dir.'")),
+                        Yii::app()->createUrl("neumaticos/registrarFacturacion", array("id"=>$data->id,"nom"=>"'.$nom.'","dir"=>"'.$dir.'")),
                         array(
                                 \'style\'=>\'cursor: pointer;text-decoration: underline;text-align:center;\',
                         )
@@ -88,6 +88,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
 			)
         ));?>
 	</div>
+<?php if(count($averias->getData())>0){?>
 <div class='crugepanel user-assignments-role-list'>
 <h1>Averías</h1>
 <strong><p></p></strong>
@@ -118,7 +119,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
 					'header'=>'Avería reportada',
 					'name'=>'idfallacaucho',
 					'value'=>'$data->idfallaCaucho==null?\' \':$data->idfallaCaucho0->falla',
-					'htmlOptions'=>array('style'=>'text-align:center;width:250px'),
+					'htmlOptions'=>array('style'=>'text-align:center'),
 				),
 				array(
 					'header'=>'Serial',
@@ -152,9 +153,16 @@ $this->widget('zii.widgets.grid.CGridView', array(
 					'htmlOptions'=>array('style'=>'text-align:center;width:100px'),
 				),
 				array(
-					'headerHtmlOptions'=>array('style'=>'text-align:center;width:30px;'),
+					'header'=>'Fecha de reparación',
+					'name'=>'fechaRealizada',
+					'type'=>'raw',
+					'value'=>'$data->valores($data->fechaRealizada)?date("d/m/Y",strtotime($data->fechaRealizada)):$data->noasignado()',
+					'htmlOptions'=>array('style'=>'width:80px;text-align:center;'),
+				),
+				array(
+					'headerHtmlOptions'=>array('style'=>'text-align:center;width:30px;background:#B0E3FF'),
 					'htmlOptions'=>array('style'=>'text-align:center;'),
-					'header'=>'Registrar renovación realizada',
+					'header'=>'Registrar fecha',
 					'type'=>'raw',
 					'value'=>'CHtml::link(
                      CHtml::image(Yii::app()->request->baseUrl."/imagenes/agregar.png",
@@ -162,7 +170,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
                         "",
                         array(
                                 \'style\'=>\'cursor: pointer;text-decoration: underline;text-align:center;\',
-                                \'onclick\'=>\'{registrarMR("\'.Yii::app()->createUrl("reportefalla/actualizar",array("id"=>$data["id"])).\'"); $("#dialog").dialog("open");}\'
+                                \'onclick\'=>\'{registrarMR("\'.Yii::app()->createUrl("Detalleeventoca/actualizar",array("id"=>$data["id"])).\'"); $("#dialog").dialog("open");}\'
                         )
                 );',),
 				array(
@@ -177,6 +185,8 @@ $this->widget('zii.widgets.grid.CGridView', array(
 		
 ?>
 </div>
+<?php }?>
+<?php if(count($renovaciones->getData())>0){?>
 <div class='crugepanel user-assignments-role-list'>
 <h1>Renovaciones</h1>
 <strong><p></p></strong>
@@ -229,9 +239,16 @@ $this->widget('zii.widgets.grid.CGridView', array(
 					'htmlOptions'=>array('style'=>'text-align:center;width:85px'),
 				),
 				array(
-					'headerHtmlOptions'=>array('style'=>'text-align:center;width:30px;'),
+					'header'=>'Fecha de renovación',
+					'name'=>'fechaRealizada',
+					'type'=>'raw',
+					'value'=>'$data->valores($data->fechaRealizada)?date("d/m/Y",strtotime($data->fechaRealizada)):$data->noasignado()',
+					'htmlOptions'=>array('style'=>'width:80px;text-align:center;'),
+				),
+				array(
+					'headerHtmlOptions'=>array('style'=>'text-align:center;width:30px;background:#B0E3FF'),
 					'htmlOptions'=>array('style'=>'text-align:center;'),
-					'header'=>'Registrar reparación realizada',
+					'header'=>'Registrar fecha',
 					'type'=>'raw',
 					'value'=>'CHtml::link(
                      CHtml::image(Yii::app()->request->baseUrl."/imagenes/agregar.png",
@@ -239,7 +256,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
                         "",
                         array(
                                 \'style\'=>\'cursor: pointer;text-decoration: underline;text-align:center;\',
-                                \'onclick\'=>\'{registrarMR("\'.Yii::app()->createUrl("reportefalla/actualizar",array("id"=>$data["id"])).\'"); $("#dialog").dialog("open");}\'
+                                \'onclick\'=>\'{registrarMR("\'.Yii::app()->createUrl("Detalleeventoca/actualizar",array("id"=>$data["id"])).\'"); $("#dialog").dialog("open");}\'
                         )
                 );',),
 				array(
@@ -254,12 +271,14 @@ $this->widget('zii.widgets.grid.CGridView', array(
 		
 ?>
 </div>
+<?php }?>
+<?php if(count($rotaciones->getData())>0){?>
 <div class='crugepanel user-assignments-role-list'>
 <h1>Rotaciones</h1>
 <strong><p></p></strong>
 	<?php
 	$this->widget('zii.widgets.grid.CGridView', array(
-                'id'=>'renovaciones',
+                'id'=>'rotaciones',
 				'selectableRows'=>0,
 				'summaryText'=>'',
 			    //'enableSorting' => true,
@@ -292,9 +311,16 @@ $this->widget('zii.widgets.grid.CGridView', array(
                         )
                 );',),
 				array(
-					'headerHtmlOptions'=>array('style'=>'text-align:center;width:30px;'),
+					'header'=>'Fecha de reparación',
+					'name'=>'fechaRealizada',
+					'type'=>'raw',
+					'value'=>'$data->valores($data->fechaRealizada)?date("d/m/Y",strtotime($data->fechaRealizada)):$data->noasignado()',
+					'htmlOptions'=>array('style'=>'width:80px;text-align:center;'),
+				),
+				array(
+					'headerHtmlOptions'=>array('style'=>'text-align:center;width:30px;background:#B0E3FF'),
 					'htmlOptions'=>array('style'=>'text-align:center;'),
-					'header'=>'Registrar rotación realizada',
+					'header'=>'Registrar fecha',
 					'type'=>'raw',
 					'value'=>'CHtml::link(
                      CHtml::image(Yii::app()->request->baseUrl."/imagenes/agregar.png",
@@ -302,7 +328,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
                         "",
                         array(
                                 \'style\'=>\'cursor: pointer;text-decoration: underline;text-align:center;\',
-                                \'onclick\'=>\'{registrarMR("\'.Yii::app()->createUrl("reportefalla/actualizar",array("id"=>$data["id"])).\'"); $("#dialog").dialog("open");}\'
+                                \'onclick\'=>\'{registrarR("\'.Yii::app()->createUrl("Rotacioncauchos/actualizar",array("id"=>$data["id"])).\'"); $("#dialog").dialog("open");}\'
                         )
                 );',),
 				array(
@@ -318,13 +344,13 @@ $this->widget('zii.widgets.grid.CGridView', array(
 		
 ?>
 </div>
-
+<?php }?>
 <?php
 /*ventana agregar informacion*/
 $this->beginWidget('zii.widgets.jui.CJuiDialog', array( // the dialog
     'id'=>'dialog',
     'options'=>array(
-        'title'=>'Registrar mantenimiento realizado',
+        'title'=>'Registrar fecha',
         'autoOpen'=>false,
         'modal'=>true,
         'width'=>500,
@@ -381,7 +407,7 @@ h1 {
 var idorden="<?php echo $id;?>";
 actualizarCheck(idorden);
 function actualizarCheck(idorden){	
-var dir="<?php echo Yii::app()->baseUrl."/mttoCorrectivo/actualizarCheck"?>";	
+var dir="<?php echo Yii::app()->baseUrl."/neumaticos/actualizarCheck"?>";	
 		jQuery.ajax({
                 url: dir+"/"+idorden,
                 'data':$(this).serialize(),
@@ -417,21 +443,51 @@ function registrarMR(id){
                                 else
                                 {
                                         $('#dialog div.divForForm').html(data.div);
+										$.fn.yiiGridView.update('averias');
+										$.fn.yiiGridView.update('renovaciones');
                                         setTimeout("$('#dialog').dialog('close') ",1000);
-                                        $.fn.yiiGridView.update('final');
 										actualizarCheck(idorden);
                                 }
                         } ,
                 'cache':false});
     return false; 
 }
+function registrarR(id){
+
+	 if (typeof(id)=='string')
+                Uurl=id;
+	jQuery.ajax({
+                url: Uurl,
+                'data':$(this).serialize(),
+                'type':'post',
+                'dataType':'json',
+                'success':function(data)
+                        {
+                                if (data.status == 'failure')
+                                {
+                                        $('#dialog div.divForForm').html(data.div);
+                                        // Here is the trick: on submit-> once again this function!
+                                        $('#dialog div.divForForm form').submit(registrarR); // updatePaymentComment
+                                }
+                                else
+                                {
+                                        $('#dialog div.divForForm').html(data.div);
+										$.fn.yiiGridView.update('rotaciones');
+                                        setTimeout("$('#dialog').dialog('close') ",1000);
+										actualizarCheck(idorden);
+                                }
+                        } ,
+                'cache':false});
+    return false; 
+}
+
 function recargar(){
-	window.location.replace("<?php echo Yii::app()->baseUrl."/mttoCorrectivo/verOrdenes"?>");	
+	window.location.replace("<?php echo Yii::app()->baseUrl."/neumaticos/verOrdenes"?>");	
 }
 function validar(id){
 
 //var id="<?php echo $id?>";
-	var dir="<?php echo Yii::app()->baseUrl."/mttoCorrectivo/estatusOrden"?>";
+	var dir="<?php echo Yii::app()->baseUrl."/neumaticos/estatusOrden"?>";
 	var y = document.getElementById("campo1").checked;
 	if(y==true){
 		if(confirm('Confirma que desea poner la orden como lista?')){

@@ -20,6 +20,14 @@ class Rotacioncauchos extends CActiveRecord
 	/**
 	 * @return string the associated database table name
 	 */
+	public function noasignado(){
+			return '<span style="color:red">no registrado</span>';
+    }
+	public function valores($id){
+		if($id=='0000-01-01'||$id==-1)
+			return 0;
+		return 1;
+    }
 	public function color($id,$estatus){
 		if($id==4)
 			return '<strong><span style="color:orange">'.$estatus.'</span></strong>';

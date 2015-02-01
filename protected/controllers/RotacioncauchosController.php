@@ -32,7 +32,7 @@ class RotacioncauchosController extends Controller
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create','update'),
+				'actions'=>array('create','update','actualizar'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -49,6 +49,39 @@ class RotacioncauchosController extends Controller
 	 * Displays a particular model.
 	 * @param integer $id the ID of the model to be displayed
 	 */
+	public function actionActualizar($id){
+	
+		$model=$this->loadModel($id);
+		if($model->fechaRealizada=='0000-01-01')
+			$var=1;
+		else
+			$var=0;
+			if(isset($_POST['Rotacioncauchos'])){
+            $model->attributes=$_POST['Rotacioncauchos'];
+			$model->fechaRealizada=date("Y-m-d", strtotime(str_replace('/', '-', $model->fechaRealizada)));
+            if($model->save()){
+			if (Yii::app()->request->isAjaxRequest){
+			
+			Yii::app()->db->createCommand("update `tsg`.`sgu_rotacionCauchos` set idestatus=3 where id=".$id."")->query();
+				
+                
+                    echo CJSON::encode(array(
+                        'status'=>'success', 
+                        'div'=>"se registró la rotación correctamente"
+                        ));
+                    exit;               
+                }
+            }
+        }
+        if (Yii::app()->request->isAjaxRequest){
+            echo CJSON::encode(array(
+                'status'=>'failure', 
+                'div'=>$this->renderPartial('_formRegistrarR', array('model'=>$model,'id'=>$var), true)));
+            exit;               
+        }
+
+	}
+	
 	public function actionView($id)
 	{
 		$this->render('view',array(

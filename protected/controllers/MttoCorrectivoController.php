@@ -118,14 +118,6 @@ class MttoCorrectivoController extends Controller
 			}
 		}
 		
-		$a=$this->renderPartial('vistaPreviaPDF',array(
-			'vehiculos'=>$vehiculos,
-			'totalVeh'=>$totalVeh,
-			'actividades'=>$actividades,
-			'idvehiculo'=>$idvehiculo,
-			'recursos'=>$recursos,
-			'orden'=>$orden,
-		),true);
 		
 		 $mPDF1 = Yii::app()->ePdf->mpdf(); //Esto lo pueden configurar como quieren, para eso deben de entrar en la web de MPDF para ver todo lo que permite.
 		 //$mPDF1->useOnlyCoreFonts = true;

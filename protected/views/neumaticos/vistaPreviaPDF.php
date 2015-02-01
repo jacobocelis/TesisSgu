@@ -1,13 +1,68 @@
 <div class='crugepanel user-assignments-role-list'>
-	<h1>SIRCA</h1>
-	<p>Empresa rental de la UNET</p>
-	<p>RIF:G-200007525-2</p>
-	<p>Gerencia de negocios Dpto. de transporte</p>
-	<h1>Solicitud de servicio correctivo</h1>	
-</div>
-<div class='crugepanel user-assignments-role-list'>
+	<h1>Detalle de orden de neumáticos</h1>
 <?php
-for($i=0;$i<$totalVeh;$i++){
+$this->widget('zii.widgets.grid.CGridView', array(
+                'id'=>'factura',
+				'summaryText'=>'',
+			   // 'enableSorting' => false,
+				'template'=>"{items}\n{summary}\n{pager}",
+				'selectableRows'=>0,
+				'emptyText'=>'',
+                'dataProvider'=>$orden,
+				//'htmlOptions'=>array('style'=>'cursor:pointer'),
+				'columns'=>array(
+				array(
+					'type'=>'raw',
+					'headerHtmlOptions'=>array('style'=>'width:7%'),
+					'header'=>'<PRE>Orden #</PRE>',
+					//'name'=>'id',
+					'value'=>'str_pad((int) $data->id,6,"0",STR_PAD_LEFT);',
+					//'value'=>'$data->idplan0->idplanGrupo0->CompiledColour->$data-id.\' \'.$data->CompiledColour',
+					'htmlOptions'=>array('style'=>'text-align:center;width:150px'),
+				),
+				array(
+					'type'=>'raw',
+					'header'=>'<PRE>Fecha y hora</PRE>',
+					//'name'=>'fecha',
+					'value'=>'date("d/m/Y h:i A",strtotime($data->fecha))',
+					'htmlOptions'=>array('style'=>'text-align:center;width:100px'),
+				),
+				/*array(
+					'header'=>'Estado',
+					//'name'=>'idestatus',
+					'value'=>'$data->idestatus0->estatus',
+					'htmlOptions'=>array('style'=>'text-align:center;width:100px'),
+				),*/
+				array(
+					'type'=>'raw',
+					'header'=>'<PRE>C. operativo</PRE>',
+					//'name'=>'cOperativo',
+					'value'=>'$data->cOperativo0->nombre.\'  \'.$data->cOperativo0->apellido',
+					'htmlOptions'=>array('style'=>'text-align:center;width:80px'),
+				),
+				array(
+					'type'=>'raw',
+					'header'=>'<PRE>C. de transporte</PRE>',
+					//'name'=>'cTaller',
+					'value'=>'$data->cTaller0->nombre.\'  \'.$data->cTaller0->apellido',
+					'htmlOptions'=>array('style'=>'text-align:center;width:80px'),
+				),
+				array(
+					'type'=>'raw',
+					'header'=>'<PRE>Taller asignado</PRE>',
+					//'name'=>'taller',
+					'value'=>'$data->taller0->nombre',
+					'htmlOptions'=>array('style'=>'text-align:center;width:80px'),
+				),
+			)
+        ));
+		?>
+</div>
+<?php if($totalVehAver>0){?>
+<div class='crugepanel user-assignments-role-list'>
+<h2>Averías</h2>
+<?php
+for($i=0;$i<$totalVehAver;$i++){
 $this->widget('zii.widgets.grid.CGridView', array(
                 'id'=>'vehiculos',
 				'hideHeader'=>true,
@@ -17,98 +72,353 @@ $this->widget('zii.widgets.grid.CGridView', array(
 				'template'=>"{items}\n{summary}\n{pager}",
 				'selectableRows'=>0,
 				'emptyText'=>'No hay ordenes listas para cerrar',
-                'dataProvider'=>$vehiculos[$i],
+                'dataProvider'=>$vehiculosAver[$i],
+				'htmlOptions'=>array('style'=>'width:100%'),
 				'columns'=>array(
 				array(
 					'type'=>'raw',
 					'headerHtmlOptions'=>array('style'=>'width:100%;text-align:left;background:#F3FDA4'),
 					'header'=>'Vehiculo',
-					'value'=>'\'<strong>Unidad: </strong> #\'.str_pad((int) $data->numeroUnidad,2,"0",STR_PAD_LEFT).\' \'.$data->idgrupo0->idtipo0->tipo.\' \'.$data->idmodelo0->idmarca0->marca.\'  \'.$data->idmodelo0->modelo.\' Año \'.$data->anno.\' Color \'.$data->idcolor0->color.\' #puestos \'.$data->nroPuestos.\' placa:\'.$data->placa',
-					//'value'=>'$data->idplan0->idplanGrupo0->CompiledColour->$data-id.\' \'.$data->CompiledColour',
-					'htmlOptions'=>array('style'=>'text-align:left;background:#ADEAE6'
-				),
+					'value'=>'\'<strong>Unidad: </strong> #0\'.$data->numeroUnidad.\' \'.$data->idmodelo0->idmarca0->marca.\'  \'.$data->idmodelo0->modelo.\' \'.$data->anno.\' \'.$data->idcolor0->color',
+					'htmlOptions'=>array('style'=>'text-align:left;width:100%;background:#F3FDA4'),
 			),
 		)
     ));
-	for($j=0;$j<$idvehiculo[$i]["totAct"];$j++){
+	for($j=0;$j<$idvehiculoAver[$i]["totAct"];$j++){
 	$this->widget('zii.widgets.grid.CGridView', array(
-                'id'=>'actividades',
+                'id'=>'fallas',
 				//'selectionChanged'=>'validar',
 				'summaryText'=>'',
-				'hideHeader'=>true,
+				//'hideHeader'=>true,
 			    'enableSorting' => true,
 				'template'=>"{items}\n{summary}\n{pager}",
 				'selectableRows'=>0,
-				'emptyText'=>'No hay ordenes listas para cerrar',
-                'dataProvider'=>$actividades[$i][$j],
+				'emptyText'=>'',
+                'dataProvider'=>$actividadesAver[$i][$j],
 				'columns'=>array(
 					array(
-						'type'=>'raw',
-						//'headerHtmlOptions'=>array('style'=>'width:80%;text-align:left;'),
-						'header'=>'         Falla',
-						'value'=>'\'<strong>Falla:</strong> \'.$data->idfalla0->falla',
-						'htmlOptions'=>array('style'=>'text-align:left;background:#F3FDA4'),
-					),
-				)
+					'type'=>'raw',
+					'header'=>'Fecha avería',
+					'value'=>'date("d/m/Y",strtotime($data->fechaFalla))',
+					'htmlOptions'=>array('style'=>'text-align:center;width:80px'),
+				),
+				array(
+					'type'=>'raw',
+					'header'=>'Avería reportada',
+					
+					'value'=>'$data->idfallaCaucho==null?\' \':$data->idfallaCaucho0->falla',
+					'htmlOptions'=>array('style'=>'text-align:center;width:200px'),
+				),
+				array(
+					'type'=>'raw',
+					'header'=>'Serial',
+					
+					'value'=>'$data->idhistoricoCaucho0->serial',
+					'htmlOptions'=>array('style'=>'text-align:center;width:50px'),
+				),
+				array(
+					'type'=>'raw',
+					'header'=>'Medida',
+					'value'=>'$data->idhistoricoCaucho0->idcaucho0->idmedidaCaucho0->medida.\' R\'.$data->idhistoricoCaucho0->idcaucho0->idrin0->rin.\' \'.$data->idhistoricoCaucho0->idcaucho0->idpiso0->piso',
+					'name'=>'idcaucho',
+					'htmlOptions'=>array('style'=>'text-align:center;width:85px'),
+				),
+				array(
+					'type'=>'raw',
+					'header'=>'Eje',
+					'value'=>'$data->idhistoricoCaucho0->iddetalleRueda0->iddetalleEje0->idposicionEje0->posicionEje',
+					
+					'htmlOptions'=>array('style'=>'text-align:center;width:85px'),
+				),
+				array(
+					'type'=>'raw',
+					'header'=>'Lado',
+					'value'=>'$data->idhistoricoCaucho0->iddetalleRueda0->idposicionRueda0->posicionRueda',
+					'htmlOptions'=>array('style'=>'text-align:center;width:85px'),
+				),
+				
+				array(
+					'type'=>'raw',
+					'header'=>'Reportó',
+					'value'=>'$data->idempleado==""?\' \':$data->idempleado0->nombre.\' \'.$data->idempleado0->apellido',
+					'htmlOptions'=>array('style'=>'text-align:center;width:100px'),
+				),
+				array(
+					'type'=>'raw',
+					'header'=>'Estado',
+					'value'=>'$data->idestatus0->estatus',
+					'htmlOptions'=>array('style'=>'text-align:center;width:60px'),
+				),
+				array(
+					'type'=>'raw',
+					'header'=>'Comentario',
+					'value'=>'$data->comentario',
+					'htmlOptions'=>array('style'=>'text-align:center;width:50px'),
+				),
+		)
     ));
-	if(count($recursos[$i][$j]->getData())>0){
+	if(count($recursosAver[$i][$j]->getData())>0){
 	$this->widget('zii.widgets.grid.CGridView', array(
                 'id'=>'recursos',
 				//'selectionChanged'=>'validar',
 				'summaryText'=>'',
 			    'enableSorting' => true,
-				'hideHeader'=>true,
 				'template'=>"{items}\n{summary}\n{pager}",
 				'selectableRows'=>0,
 				'emptyText'=>'Esta actividad no tiene recursos asociados',
-                'dataProvider'=>$recursos[$i][$j],
+                'dataProvider'=>$recursosAver[$i][$j],
 				'columns'=>array(
-					array(
-						'type'=>'raw',
-						'headerHtmlOptions'=>array('style'=>'width:60%;text-align:left;'),
+					/*array(
+						'headerHtmlOptions'=>array('style'=>'width:35%;text-align:left;'),
 						'header'=>'<PRE>Recursos',
-						'value'=>'\'<strong>Recurso: </strong>\'.(($data->idinsumo == null?\'\':$data->idinsumo0->insumo).\'\'.($data->idrepuesto == null?\'\':$data->idrepuesto0->repuesto).\'\'.($data->idservicio == null?\'\':$data->idservicio0->servicio)).\',  \'.$data->cantidad.\' \'.$data->idunidad0->unidad',
-						'htmlOptions'=>array('style'=>'text-align:left;width:200px;background:#E5F1F4'),
-					), 
-					
-					/*
+						'value'=>'\'\'.(($data->idinsumo == null?\'\':$data->idinsumo0->insumo).\'\'.($data->idrepuesto == null?\'\':$data->idrepuesto0->repuesto).\'\'.($data->idservicio == null?\'\':$data->idservicio0->servicio)).\'\'',
+						'htmlOptions'=>array('style'=>'text-align:left;width:150px'),
+					),
 					array(
-					'type'=>'raw',
-					'headerHtmlOptions'=>array('style'=>'text-align:center;'),
-					'header'=>'<PRE>Cantidad',
-					'value'=>'\'<strong>Cantidad: </strong>\'.$data->cantidad',
-					'htmlOptions'=>array('style'=>'text-align:center;background:#AEE7AA'),
-					
-					//'footer'=>'',
-				),
-				array(
-					'type'=>'raw',
-					'headerHtmlOptions'=>array('style'=>'text-align:center;'),
-					'header'=>'<PRE>Unidad',
-					'value'=>'\'<strong>Unidad: </strong>\'.$data->idunidad0->unidad',
-					'htmlOptions'=>array('style'=>'text-align:center;background:#AEE7AA'),
-					
-					//'footer'=>'',
-				),
-				array(
-					'type'=>'raw',
-					'headerHtmlOptions'=>array('style'=>'text-align:center;'),
+					'headerHtmlOptions'=>array('style'=>'text-align:left;'),
 					'header'=>'<PRE>Tipo',
-					'value'=>'\'<strong>Tipo: </strong>\'.(($data->idinsumo == null?\'\':\'Insumo\').\'\'.($data->idrepuesto == null?\'\':\'Repuesto\').\'\'.($data->idservicio == null?\'\':\'Servicio\')).\' \'.$data->detalle',
-					'htmlOptions'=>array('style'=>'text-align:center;background:#AEE7AA'),
+					'value'=>'(($data->idinsumo == null?\'\':\'Insumo\').\'\'.($data->idrepuesto == null?\'\':\'Repuesto\').\'\'.($data->idservicio == null?\'\':\'Servicio\')).\' \'',
+					'htmlOptions'=>array('style'=>'width:40px;'),
+					//'footer'=>'',
+				),
+					array(
+					'headerHtmlOptions'=>array('style'=>'text-align:left;'),
+					'header'=>'<PRE>Cantidad',
+					'value'=>'$data->cantidad',
+					'htmlOptions'=>array('style'=>'width:40px;'),
+					
+					//'footer'=>'',
+					),
+					array(
+					'headerHtmlOptions'=>array('style'=>'text-align:left;'),
+					'header'=>'<PRE>Unidad',
+					'value'=>'$data->idunidad0->unidad',
+					'htmlOptions'=>array('style'=>'width:40px;'),
+					//'footer'=>'',
+					),
+					array(
+					'headerHtmlOptions'=>array('style'=>'text-align:left; width:50px;'),
+					'header'=>'<PRE>Costo unitario',
+					'value'=>'number_format($data->costoUnitario, 2,",",".").\' Bs.\'',
+					'htmlOptions'=>array('style'=>'width:50px;'),
+					//'footer'=>'',
+					),
+				array(
+					'headerHtmlOptions'=>array('style'=>'text-align:right;'),
+					'header'=>'<PRE>Total',
+					'value'=>'$data->costoTotal',
+					'value'=>'number_format($data->costoTotal, 2,",",".").\' Bs.\'',
+					'htmlOptions'=>array('style'=>'width:50px;text-align:right;'),
 					//'footer'=>'',
 				),*/
 			)
-    ));
+		));
 	}
-}}
+	}
+}
+
 ?>
-		
+</div><?php }?>
+<?php if($totalVehMont>0){?>
+<div class='crugepanel user-assignments-role-list'>
+<h2>Renovaciones</h2>
+<?php
+for($i=0;$i<$totalVehMont;$i++){
+$this->widget('zii.widgets.grid.CGridView', array(
+                'id'=>'vehiculos',
+				'hideHeader'=>true,
+				//'selectionChanged'=>'validar',
+				'summaryText'=>'',
+			    'enableSorting' => false,
+				'template'=>"{items}\n{summary}\n{pager}",
+				'selectableRows'=>0,
+				'emptyText'=>'No hay ordenes listas para cerrar',
+                'dataProvider'=>$vehiculosMont[$i],
+				'columns'=>array(
+				array(
+					'type'=>'raw',
+					'headerHtmlOptions'=>array('style'=>'width:100%;text-align:left;background:#F3FDA4'),
+					'header'=>'Vehiculo',
+					'value'=>'\'<strong>Unidad: </strong> #0\'.$data->numeroUnidad.\' \'.$data->idmodelo0->idmarca0->marca.\'  \'.$data->idmodelo0->modelo.\' \'.$data->anno.\' \'.$data->idcolor0->color',
+					'htmlOptions'=>array('style'=>'text-align:left;width:100%;background:#F3FDA4'
+				),
+			),
+		)
+    ));
+	
+	$this->widget('zii.widgets.grid.CGridView', array(
+                'id'=>'fallas2',
+				//'selectionChanged'=>'validar',
+				'summaryText'=>'',
+				//'hideHeader'=>true,
+			    'enableSorting' => true,
+				'template'=>"{items}\n{summary}\n{pager}",
+				'selectableRows'=>0,
+				'emptyText'=>'',
+                'dataProvider'=>$actividadesMont[$i],
+				'columns'=>array(
+				
+				array(
+					'type'=>"raw",
+					'header'=>'Serial',
+					'value'=>'$data->idhistoricoCaucho0->serial=="0"?$data->porDefinir($data->idhistoricoCaucho0->serial):strtoupper($data->idhistoricoCaucho0->serial);',
+					//'name'=>'serial',
+					'htmlOptions'=>array('style'=>'text-align:center;width:65px'),
+				),
+				array(
+					'type'=>'raw',
+					'header'=>'Marca',
+					'value'=>'$data->idhistoricoCaucho0->idmarcaCaucho==""?$data->porDefinir(""):$data->idhistoricoCaucho0->idmarcaCaucho0->nombre',
+					'name'=>'idmarcaCaucho',
+					'htmlOptions'=>array('style'=>'text-align:center;width:85px'),
+				),
+				array(
+					'header'=>'Detalle',
+					'value'=>'$data->idhistoricoCaucho0->idcaucho0->idmedidaCaucho0->medida.\' R\'.$data->idhistoricoCaucho0->idcaucho0->idrin0->rin.\' \'.$data->idhistoricoCaucho0->idcaucho0->idpiso0->piso',
+					'name'=>'idcaucho',
+					'htmlOptions'=>array('style'=>'text-align:center;width:85px'),
+				),
+				array(
+					'header'=>'Eje',
+					'value'=>'$data->idhistoricoCaucho0->iddetalleRueda0->iddetalleEje0->idposicionEje0->posicionEje',
+					'name'=>'iddetalleRueda',
+					'htmlOptions'=>array('style'=>'text-align:center;width:85px'),
+				),
+				array(
+					'header'=>'Posición',
+					'value'=>'$data->idhistoricoCaucho0->iddetalleRueda0->idposicionRueda0->posicionRueda',
+					'name'=>'iddetalleRueda',
+					'htmlOptions'=>array('style'=>'text-align:center;width:85px'),
+				),
+				)
+    ));
+	
+}
+?>
 </div>
-<div class='crugepanel user-assignments-role-list' id="ob">
-		Observaciones:<hr><hr><hr><hr><hr><hr>
-		</div>
+<?php }?>
+<?php if($totalRot>0){?>
+<div class='crugepanel user-assignments-role-list'>
+<h2>Rotaciones</h2>
+<?php
+for($i=0;$i<$totalRot;$i++){
+$this->widget('zii.widgets.grid.CGridView', array(
+                'id'=>'rota',
+				//'hideHeader'=>true,
+				//'selectionChanged'=>'validar',
+				'summaryText'=>'',
+			    'enableSorting' => false,
+				'template'=>"{items}\n{summary}\n{pager}",
+				'selectableRows'=>0,
+				'emptyText'=>'No hay ordenes listas para cerrar',
+                'dataProvider'=>$Rotaciones[$i],
+				'columns'=>array(
+				/*array(
+					'type'=>'raw',
+					'headerHtmlOptions'=>array('style'=>'width:7%;text-align:left;background:#F3FDA4'),
+					'header'=>'Vehiculo',
+					'value'=>'\'<strong>Unidad: </strong> #0\'.$data->numeroUnidad.\' \'.$data->idmodelo0->idmarca0->marca.\'  \'.$data->idmodelo0->modelo.\' \'.$data->anno.\' \'.$data->idcolor0->color',
+					'htmlOptions'=>array('style'=>'text-align:left;width:100px;background:#F3FDA4'
+				),
+			),*/
+			array(
+					'header'=>'Nombre',
+					//'value'=>'$data->posicionDestino==null?\'Repuesto\':$data->posicionDestino0->idposicionRueda0->posicionRueda',
+					'name'=>'nombre',
+					
+					'htmlOptions'=>array('style'=>'text-align:center;width:85px'),
+				),
+				array(
+					'header'=>'Detalle',
+					//'value'=>'$data->posicionDestino==null?\'Repuesto\':$data->posicionDestino0->idposicionRueda0->posicionRueda',
+					'name'=>'descripcion',
+					'htmlOptions'=>array('style'=>'text-align:center;width:285px'),
+				),
+		)
+    ));?>
+	<i><strong>Movimientos a realizar:</strong></i><?php
+	$this->widget('zii.widgets.grid.CGridView', array(
+                'id'=>'detallerot',
+				//'selectionChanged'=>'validar',
+				'summaryText'=>'',
+				//'hideHeader'=>true,
+			    'enableSorting' => true,
+				'template'=>"{items}\n{summary}\n{pager}",
+				'selectableRows'=>0,
+				'emptyText'=>'',
+                'dataProvider'=>$actividadesRot[$i],
+				'columns'=>array(
+				
+				array(
+					'header'=>'Unidad',
+					
+					'value'=>'str_pad((int) $data->cauchoOrigen0->idvehiculo0->numeroUnidad,2,"0",STR_PAD_LEFT);',
+					//'value'=>'$data->idplan0->idplanGrupo0->CompiledColour->$data-id.\' \'.$data->CompiledColour',
+					'htmlOptions'=>array('style'=>'text-align:center;width:40px'),
+				),
+				array(
+					'header'=>'Eje',
+					'value'=>'$data->posicionOrigen==null?\'-\':$data->posicionOrigen0->iddetalleEje0->idposicionEje0->posicionEje',
+					
+					'htmlOptions'=>array('style'=>'text-align:center;width:85px'),
+				),
+				array(
+					'header'=>'Lado',
+					'value'=>'$data->posicionOrigen==null?\'Repuesto\':$data->posicionOrigen0->idposicionRueda0->posicionRueda',
+					
+					'htmlOptions'=>array('style'=>'text-align:center;width:85px'),
+				),
+				/*array(
+					'type'=>'raw',
+					'header'=>'',
+					'value'=>'\'<strong>Destino</strong>\'',
+					'htmlOptions'=>array('style'=>'text-align:center;width:85px'),
+				),*/
+				array(
+					'type'=>'raw',
+					'header'=>'Movimiento',
+					'value'=>'
+                        CHtml::image(Yii::app()->request->baseUrl."/imagenes/arrow_right.png",
+                                          "Movimiento",array("title"=>"desde->hacia"))',
+					'htmlOptions'=>array('style'=>'text-align:center;width:85px'),
+				),
+				array(
+					'header'=>'Unidad',
+					
+					'value'=>'str_pad((int) $data->cauchoDestino0->idvehiculo0->numeroUnidad,2,"0",STR_PAD_LEFT);',
+					//'value'=>'$data->idplan0->idplanGrupo0->CompiledColour->$data-id.\' \'.$data->CompiledColour',
+					'htmlOptions'=>array('style'=>'text-align:center;width:40px'),
+				),
+				array(
+					'header'=>'Eje',
+					'value'=>'$data->posicionDestino==null?\'-\':$data->posicionDestino0->iddetalleEje0->idposicionEje0->posicionEje',
+					
+					'htmlOptions'=>array('style'=>'text-align:center;width:85px'),
+				),
+				array(
+					'header'=>'Lado',
+					'value'=>'$data->posicionDestino==null?\'Repuesto\':$data->posicionDestino0->idposicionRueda0->posicionRueda',
+					
+					'htmlOptions'=>array('style'=>'text-align:center;width:85px'),
+				),
+			)
+    ));
+	
+}
+?>
+</div>
+<?php }?>
 <style>
+body {
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    font-size: 14px;
+    line-height: 20px;
+    color: #333;
+}
+
+.list-view div.view {
+    background: none repeat scroll 0% 0% rgba(54, 255, 41, 0.19);
+}
 .grid-view .summary {
     margin: 0px 0px 0px;
     text-align: right;
@@ -182,8 +492,6 @@ h1 {
     border: 1px solid #A8C5F0;
     padding: 0.3em;
 }
-</style>
-<style>
 .grid-view
 {
 	padding: 0px 0px;
@@ -304,3 +612,50 @@ h1 {
 	color: #000;
 }
 </style>
+<script>
+$('#formulario').hide();
+function validar(){
+var idAct = $.fn.yiiGridView.getSelection('actividades');
+	if(idAct=="")
+		$('#formulario').hide(500);
+	else
+		$('#formulario').show(500);
+		
+jQuery.ajax({
+                url: "crearOrden",
+                'data':$(this).serialize()+ '&idAct=' + idAct,
+                'type':'post',
+                'dataType':'json',
+                'success':function(data){
+                                if (data.status == 'failure'){
+                                        $('#formulario').html(data.div);
+                                        // Here is the trick: on submit-> once again this function!
+                                        $('#formulario form').submit(validar); // 
+                                }
+                                else{
+                                        $('#formulario').html(data.div);
+                                }
+                        } ,
+                'cache':false});
+	
+
+		return false; 
+}
+function cerrar(orden){
+	if(confirm('¿confirma que desea cerrar la orden?')){
+	var dir="<?php echo Yii::app()->baseUrl."/mttoCorrectivo/estatusOrden"?>";
+		x=7;
+	jQuery.ajax({
+                url: dir+"/"+x,
+                'data':$(this).serialize()+ '&id=' + orden,
+                'type':'post',
+                'dataType':'json',
+				'success':function(){
+					window.location.replace("<?php echo Yii::app()->baseUrl."/mttoCorrectivo/index"?>");	
+				},
+                'cache':false});			
+	}
+	$.fn.yiiGridView.update('ordenes');
+}
+
+</script>

@@ -57,7 +57,7 @@ public function actionActualizar($id){
             if($model->save()){
 			if (Yii::app()->request->isAjaxRequest){
 			
-			Yii::app()->db->createCommand("update `tsg`.`sgu_reporteFalla` set idestatus=3")->query();
+			Yii::app()->db->createCommand("update `tsg`.`sgu_reporteFalla` set idestatus=3 where id=".$id."")->query();
 				
                 
                     echo CJSON::encode(array(

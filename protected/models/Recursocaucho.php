@@ -20,7 +20,20 @@ class Recursocaucho extends CActiveRecord
 	{
 		return 'sgu_recursoCaucho';
 	}
-
+	public function color($id,$estatus){
+		if($id==4)
+			return '<strong><span style="color:orange">'.$estatus.'</span></strong>';
+		if($id==3)
+			return '<strong><span style="color:green">'.$estatus.'</span></strong>';
+    }
+	public function noasignado(){
+			return '<span style="color:red">no registrado</span>';
+    }
+	public function valores($id){
+		if($id=='0000-01-01'||$id==-1)
+			return 0;
+		return 1;
+    }
 	/**
 	 * @return array validation rules for model attributes.
 	 */

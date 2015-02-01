@@ -9,11 +9,13 @@
  * @property double $costoUnitario
  * @property double $costoTotal
  * @property integer $idrecursoCaucho
- * @property integer $idhistoricoCaucho
+ * @property integer $iddetalleEventoCa
+ * @property integer $idunidad
  *
  * The followings are the available model relations:
- * @property Historicocaucho $idhistoricoCaucho0
+ * @property Detalleeventoca $iddetalleEventoCa0
  * @property Recursocaucho $idrecursoCaucho0
+ * @property Unidad $idunidad0
  */
 class Detreccaucho extends CActiveRecord
 {
@@ -33,12 +35,12 @@ class Detreccaucho extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('cantidad, costoUnitario, costoTotal, idrecursoCaucho, idhistoricoCaucho', 'required'),
-			array('cantidad, idrecursoCaucho, idhistoricoCaucho', 'numerical', 'integerOnly'=>true),
+			array('cantidad, costoUnitario, costoTotal, idrecursoCaucho, iddetalleEventoCa, idunidad', 'required'),
+			array('cantidad, idrecursoCaucho, iddetalleEventoCa, idunidad', 'numerical', 'integerOnly'=>true),
 			array('costoUnitario, costoTotal', 'numerical'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, cantidad, costoUnitario, costoTotal, idrecursoCaucho, idhistoricoCaucho', 'safe', 'on'=>'search'),
+			array('id, cantidad, costoUnitario, costoTotal, idrecursoCaucho, iddetalleEventoCa, idunidad', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -52,6 +54,7 @@ class Detreccaucho extends CActiveRecord
 		return array(
 			'iddetalleEventoCa0' => array(self::BELONGS_TO, 'Detalleeventoca', 'iddetalleEventoCa'),
 			'idrecursoCaucho0' => array(self::BELONGS_TO, 'Recursocaucho', 'idrecursoCaucho'),
+			'idunidad0' => array(self::BELONGS_TO, 'Unidad', 'idunidad'),
 		);
 	}
 
@@ -65,8 +68,9 @@ class Detreccaucho extends CActiveRecord
 			'cantidad' => 'Cantidad',
 			'costoUnitario' => 'Costo Unitario',
 			'costoTotal' => 'Costo Total',
-			'idrecursoCaucho' => 'Idrecurso Caucho',
-			'iddetalleEventoCa' => 'Idhistorico Caucho',
+			'idrecursoCaucho' => 'Recurso',
+			'iddetalleEventoCa' => 'Iddetalle Evento Ca',
+			'idunidad' => 'Idunidad',
 		);
 	}
 
@@ -94,6 +98,7 @@ class Detreccaucho extends CActiveRecord
 		$criteria->compare('costoTotal',$this->costoTotal);
 		$criteria->compare('idrecursoCaucho',$this->idrecursoCaucho);
 		$criteria->compare('iddetalleEventoCa',$this->iddetalleEventoCa);
+		$criteria->compare('idunidad',$this->idunidad);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
