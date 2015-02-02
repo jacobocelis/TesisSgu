@@ -32,7 +32,7 @@ class NeumaticosController extends Controller
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create','update','plantilla','ActualizarListaPlantillas','MostrarLinkEje','actualizarListaPosicionesEje','MostrarLinkCaucho','actualizarEstado','MostrarLinkRep','MostrarDivRep','TieneGrupo','montajeInicial','montar','alertaCambioCauchos','ActualizarSpan','averiaNeumatico','RegistrarAveriaNeumatico','AgregarAveriaNueva','ajaxActualizarAverias','CrearOrdenNeumaticos','crearOrden','agregarNeumaticosRenovar','agregarNeumaticosRotar','verOrdenes','vistaPrevia','AgregarRotacionNueva','MttonRealizados','agregarFactura','registrarFacturacion','actualizarCheck','agregarRecursoAveria','estatusOrden','vistaPreviaPDF','nuevoRec','actualizarListaRecursos'),
+				'actions'=>array('create','update','plantilla','ActualizarListaPlantillas','MostrarLinkEje','actualizarListaPosicionesEje','MostrarLinkCaucho','actualizarEstado','MostrarLinkRep','MostrarDivRep','TieneGrupo','montajeInicial','montar','alertaCambioCauchos','ActualizarSpan','averiaNeumatico','RegistrarAveriaNeumatico','AgregarAveriaNueva','ajaxActualizarAverias','CrearOrdenNeumaticos','crearOrden','agregarNeumaticosRenovar','agregarNeumaticosRotar','verOrdenes','vistaPrevia','AgregarRotacionNueva','MttonRealizados','agregarFactura','registrarFacturacion','actualizarCheck','agregarRecursoAveria','estatusOrden','vistaPreviaPDF','nuevoRec','actualizarListaRecursos','montarNuevo'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -143,7 +143,7 @@ class NeumaticosController extends Controller
 		return $abiertas["total"];
 	}
 	public function getOrdenesListas(){
-		$abiertas=Yii::app()->db->createCommand("select count(*) as total from sgu_ordenMtto where idestatus=6 and tipo=1")->queryRow();
+		$abiertas=Yii::app()->db->createCommand("select count(*) as total from sgu_ordenMtto where idestatus=6 and tipo=2")->queryRow();
 		return $abiertas["total"];
 	}
 	public function getColor($tot){
@@ -335,6 +335,7 @@ class NeumaticosController extends Controller
             exit;               
         }
 	}
+	
 	/**
 	 * Deletes a particular model.
 	 * If deletion is successful, the browser will be redirected to the 'admin' page.
@@ -746,12 +747,49 @@ class NeumaticosController extends Controller
             exit;               
         }
 	}
+	public function actionMontarNuevo($id){
+		
+		$model=new Historicocaucho;
+
+		if(isset($_POST['Historicocaucho'])){
+			 $model->attributes=$_POST['Historicocaucho'];
+			 $model->fecha=date("Y-m-d", strtotime(str_replace('/', '-',$model->fecha)));
+			if($model->save()){
+                if (Yii::app()->request->isAjaxRequest){
+                    echo CJSON::encode(array(
+                        'status'=>'success', 
+                        'div'=>"Montaje realizado",
+                        ));
+					exit;
+                }
+            }
+		}
+			if (Yii::app()->request->isAjaxRequest){	
+				if($model->iddetalleRueda=="")
+					$model->idestatusCaucho=4;
+				else
+					$model->idestatusCaucho=1;
+			
+            echo CJSON::encode(array(
+                'status'=>'failure', 
+                'div'=>$this->renderPartial('_formMnuevo', array('model'=>$model), true),
+				'ui'=>$model->idvehiculo,
+				));
+            exit;               
+        }
+	}
 	public function actionRegistrarFacturacion($id,$nom,$dir){
 		$model = new Factura;
 		$idrecurso=0;
+		$iddetalleEventoCa=0;
 		if(isset($_GET['idAct'])){	
 			$idrecurso=$_GET['idAct'];
 		}
+		if(isset($_GET['idrenov'])){	
+			$iddetalleEventoCa=$_GET['idrenov'];
+		}
+		$nuevomont=new CActiveDataProvider('Historicocaucho',array('criteria'=>array('condition'=>'id in (select idhistoricoCaucho from sgu_detalleEventoCa where id="'.$iddetalleEventoCa.'")')));
+		
 		$recurso=new CActiveDataProvider('Detreccaucho',array('criteria'=>array('condition'=>'iddetalleEventoCa="'.$idrecurso.'"')));
 		
 		$averias=new CActiveDataProvider('Detalleeventoca',array('criteria' => array(
@@ -784,6 +822,7 @@ class NeumaticosController extends Controller
 			'recurso'=>$recurso,
 			'total'=>$total,
 			'nom'=>$nom,
+			'nuevomont'=>$nuevomont,
 			'dir'=>$dir,
 			'totMov'=>$totMov['tot']
 			

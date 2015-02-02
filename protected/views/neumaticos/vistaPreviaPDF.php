@@ -152,6 +152,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
 				),
 		)
     ));
+	/*
 	if(count($recursosAver[$i][$j]->getData())>0){
 	$this->widget('zii.widgets.grid.CGridView', array(
                 'id'=>'recursos',
@@ -163,7 +164,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
 				'emptyText'=>'Esta actividad no tiene recursos asociados',
                 'dataProvider'=>$recursosAver[$i][$j],
 				'columns'=>array(
-					/*array(
+					array(
 						'headerHtmlOptions'=>array('style'=>'width:35%;text-align:left;'),
 						'header'=>'<PRE>Recursos',
 						'value'=>'\'\'.(($data->idinsumo == null?\'\':$data->idinsumo0->insumo).\'\'.($data->idrepuesto == null?\'\':$data->idrepuesto0->repuesto).\'\'.($data->idservicio == null?\'\':$data->idservicio0->servicio)).\'\'',
@@ -205,10 +206,10 @@ $this->widget('zii.widgets.grid.CGridView', array(
 					'value'=>'number_format($data->costoTotal, 2,",",".").\' Bs.\'',
 					'htmlOptions'=>array('style'=>'width:50px;text-align:right;'),
 					//'footer'=>'',
-				),*/
+				),
 			)
 		));
-	}
+	}*/
 	}
 }
 

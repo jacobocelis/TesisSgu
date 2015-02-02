@@ -154,13 +154,13 @@ $this->widget('zii.widgets.grid.CGridView', array(
 					'htmlOptions'=>array('style'=>'text-align:center;width:100px'),
 				),
 				
-				array(
+				/*array(
 					'header'=>'Estado',
 					'name'=>'idestatus',
 					'type'=>'raw',
 					'value'=>'$data->color($data->idestatus,$data->idestatus0->estatus)',
 					'htmlOptions'=>array('style'=>'width:80px;text-align:center;'),
-				),
+				),*/
 			)
         ));
 		
@@ -255,15 +255,17 @@ $this->widget('zii.widgets.grid.CGridView', array(
 <?php if(count($renovaciones->getData())>0){?>
 <div id="mostrarRenovaciones" class='crugepanel user-assignments-role-list'> 
 <h1>Renovaciones</h1>
-<strong><p></p></strong>
+<i>Seleccione un neumático para registrar la renovación del mismo</i>
 	<?php
 	$this->widget('zii.widgets.grid.CGridView', array(
                 'id'=>'renovaciones',
-				'selectableRows'=>0,
+				'selectableRows'=>1,
+				'selectionChanged'=>'mostrarNuevoCaucho',
 				'summaryText'=>'',
 			    //'enableSorting' => true,
 				'emptyText'=>'no existen renovaciones a realizar en ésta orden',
                 'dataProvider'=>$renovaciones,
+				'htmlOptions'=>array('style'=>'cursor:pointer;'),
 				'columns'=>array(
 				array(
 					'header'=>'Unidad',
@@ -299,7 +301,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
 					'htmlOptions'=>array('style'=>'text-align:center;width:85px'),
 				),
 				array(
-					'header'=>'Posición',
+					'header'=>'Lado',
 					'value'=>'$data->idhistoricoCaucho0->iddetalleRueda0->idposicionRueda0->posicionRueda',
 					'name'=>'iddetalleRueda',
 					'htmlOptions'=>array('style'=>'text-align:center;width:85px'),
@@ -318,24 +320,99 @@ $this->widget('zii.widgets.grid.CGridView', array(
 					'value'=>'$data->color($data->idestatus,$data->idestatus0->estatus)',
 					'htmlOptions'=>array('style'=>'width:80px;text-align:center;'),
 				),
-				array(
+				/*array(
 						'headerHtmlOptions'=>array('style'=>'text-align:center;width:30px;'),
 						'htmlOptions'=>array('style'=>'text-align:center;'),
-						'header'=>'Facturar',
+						'header'=>'Renovar',
 						'type'=>'raw',
 						'value'=>'CHtml::link(
                         CHtml::image(Yii::app()->request->baseUrl."/imagenes/agregar.png",
-                                          "Agregar",array("title"=>"Editar")),
+                                          "Agregar",array("title"=>"Registrar renovacion")),
                         "",
                         array(
                                 \'style\'=>\'cursor: pointer;text-decoration: underline;text-align:center;\',
-                                \'onclick\'=>\'{editarFactura("\'.Yii::app()->createUrl("factura/update",array("id"=>$data["id"])).\'");}\'
+                                \'onclick\'=>\'{montarNeumatico("\'.Yii::app()->createUrl("neumaticos/montar",array("id"=>$data["id"])).\'");}\'
                         )
-                );',),
+                );',),*/
 			)
         ));
 		
-?></div> 
+		
+?>
+<div id="divRenovacion" style="display:none">
+<?php
+		$this->widget('zii.widgets.grid.CGridView', array(
+				'id'=>'nuevoMontaje',
+				'summaryText'=>'',
+				
+				//se deben definir inicialmente los neumaticos que posee cada vehiculo
+			   // 'enableSorting' => false,
+				'template'=>"{items}\n{summary}\n{pager}",
+				'selectableRows'=>1,
+				'emptyText'=>'No hay registros',
+                'dataProvider'=>$nuevomont,
+				'htmlOptions'=>array('style'=>'margin-top:10px;float: left;width:100%'),
+				'columns'=>array(
+				array(
+					'type'=>"raw",
+					'header'=>'Fecha de montaje',
+					'value'=>'$data->fecha=="0000-01-01"?$data->porDefinir($data->fecha):date("d/m/Y",strtotime($data->fecha))',
+					'name'=>'fecha',
+					'htmlOptions'=>array('style'=>'text-align:center;width:5px'),
+				),
+				array(
+					'type'=>"raw",
+					'header'=>'Serial',
+					'value'=>'$data->serial=="0"?$data->porDefinir($data->serial):strtoupper($data->serial);',
+					'name'=>'serial',
+					'htmlOptions'=>array('style'=>'text-align:center;width:65px'),
+				),
+				array(
+					'type'=>'raw',
+					'header'=>'Marca',
+					'value'=>'$data->idmarcaCaucho==""?$data->porDefinir(""):$data->idmarcaCaucho0->nombre',
+					'name'=>'idmarcaCaucho',
+					'htmlOptions'=>array('style'=>'text-align:center;width:85px'),
+				),
+				
+				array(
+					'header'=>'Detalle',
+					'value'=>'$data->idcaucho0->idmedidaCaucho0->medida.\' R\'.$data->idcaucho0->idrin0->rin.\' \'.$data->idcaucho0->idpiso0->piso',
+					'name'=>'idcaucho',
+					'htmlOptions'=>array('style'=>'text-align:center;width:85px'),
+				),
+				array(
+					'header'=>'Eje',
+					'value'=>'$data->iddetalleRueda0->iddetalleEje0->idposicionEje0->posicionEje',
+					'name'=>'iddetalleRueda',
+					'htmlOptions'=>array('style'=>'text-align:center;width:85px'),
+				),
+				array(
+					'header'=>'Posición',
+					'value'=>'$data->iddetalleRueda0->idposicionRueda0->posicionRueda',
+					'name'=>'iddetalleRueda',
+					'htmlOptions'=>array('style'=>'text-align:center;width:85px'),
+				),
+				array(
+					'type'=>"raw",
+					'headerHtmlOptions'=>array('style'=>'text-align:center;width:50px;'),
+					'header'=>'Estatus',
+					'value'=>'$data->coloresEstatus($data)',
+					'name'=>'idestatusCaucho',
+					'htmlOptions'=>array('style'=>'text-align:center;width:45px;font-weight: bold;'),
+				),
+			),
+        ));
+		
+		echo CHtml::link('Renovar neumático', "",  // the link for open the dialog
+    array(
+		'id'=>"linkRenovacion",
+        'style'=>'cursor: pointer; text-decoration: underline;',
+        'onclick'=>"{montarNeumatico(); }"));
+		
+		?>
+</div>
+</div> 
 <?php }?>
 <?php if(count($rotaciones->getData())>0){?>
 <div id="mostrarRotaciones" class='crugepanel user-assignments-role-list'>
@@ -383,17 +460,17 @@ $this->widget('zii.widgets.grid.CGridView', array(
 					'htmlOptions'=>array('style'=>'width:80px;text-align:center;'),
 				),*/
 
-				array(
+				/*array(
 					'header'=>'Estado',
 					'name'=>'idestatus',
 					'type'=>'raw',
 					'value'=>'$data->color($data->idestatus,$data->idestatus0->estatus)',
 					'htmlOptions'=>array('style'=>'width:80px;text-align:center;'),
-				),
+				),*/
 				array(
 						'headerHtmlOptions'=>array('style'=>'text-align:center;width:30px;'),
 						'htmlOptions'=>array('style'=>'text-align:center;'),
-						'header'=>'Facturar',
+						'header'=>'Rotar',
 						'type'=>'raw',
 						'value'=>'CHtml::link(
                         CHtml::image(Yii::app()->request->baseUrl."/imagenes/agregar.png",
@@ -462,6 +539,22 @@ $this->beginWidget('zii.widgets.jui.CJuiDialog', array( // the dialog
 <div class="divForForm"></div>
  
 <?php $this->endWidget();?>
+
+<?php
+/*ventana agregar recurso*/
+$this->beginWidget('zii.widgets.jui.CJuiDialog', array( // the dialog
+    'id'=>'montaje',
+    'options'=>array(
+        'title'=>'Registrar información de neumático nuevo',
+        'autoOpen'=>false,
+        'modal'=>true,
+        'width'=>890,
+		'position'=>array(null,100),
+		'resizable'=>false
+    ),
+));?>
+<div class="divForForm"></div>
+<?php $this->endWidget();?>
 <style>
 .crugepanel {
     background-color: #FFF;
@@ -471,6 +564,7 @@ $this->beginWidget('zii.widgets.jui.CJuiDialog', array( // the dialog
     display: block;
     margin-top: 10px;
     padding: 10px;
+	overflow:auto;
 }
 .grid-view table.items tr.selected {
     background: none repeat scroll 0% 0% rgba(0, 249, 3, 0.3);
@@ -500,6 +594,44 @@ $this->beginWidget('zii.widgets.jui.CJuiDialog', array( // the dialog
 }
 </style>
 <script>
+function mostrarNuevoCaucho(){
+	$('#divRenovacion').show(500);
+	var idrenov = $.fn.yiiGridView.getSelection('renovaciones');
+	if(idrenov=="")
+		$('#divRenovacion').hide();
+	$.fn.yiiGridView.update('nuevoMontaje',{ data : "idrenov="+idrenov});
+	
+}
+function montarNeumatico(id){
+	$('#montaje').dialog('open');
+	 var idrenov = $.fn.yiiGridView.getSelection('renovaciones');
+	 
+	jQuery.ajax({
+                url: "<?php echo Yii::app()->baseUrl."/neumaticos/montarNuevo/"?>"+idrenov,
+                'data':$(this).serialize(),
+                'type':'post',
+                'dataType':'json',
+                'success':function(data)
+                        {		
+                                if (data.status == 'failure')
+                                {
+                                        $('#montaje div.divForForm').html(data.div);
+                                        // Here is the trick: on submit-> once again this function!
+                                        $('#montaje div.divForForm form').submit(montarNeumatico); 
+                                }
+                                else
+                                {		
+                                        $('#montaje div.divForForm').html(data.div);
+										setTimeout(function() {
+											
+										}, 1000);
+										$.fn.yiiGridView.update('renovaciones');
+										
+                                }
+                        } ,
+                'cache':false});
+    return false; 
+}
 cargar();
 function cargar(){
 var data=<?php echo $total?>;
