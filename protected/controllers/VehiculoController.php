@@ -339,9 +339,9 @@ class VehiculoController extends Controller
 						}
 				}	
 				/*insertar los neumaticos en el vehiculo*/
-				$asigChasis=Asigchasis::model()->find("idgrupo=".$model->idgrupo."");
-				$ruedas=Yii::app()->db->createCommand("select dr.idcaucho, dr.id from sgu_detalleRueda dr, sgu_detalleEje de, sgu_chasis c where dr.iddetalleEje=de.id and de.idchasis=c.id and de.idchasis=".$asigChasis["idchasis"]."")->queryAll();
-				$repuesto=Yii::app()->db->createCommand("select * from sgu_chasis c, sgu_cauchoRep cr where c.id=cr.idchasis and cr.idchasis=".$asigChasis["idchasis"]."")->queryRow();
+				$asigChasis=Asigchasis::model()->find("idgrupo='".$model->idgrupo."'");
+				$ruedas=Yii::app()->db->createCommand("select dr.idcaucho, dr.id from sgu_detalleRueda dr, sgu_detalleEje de, sgu_chasis c where dr.iddetalleEje=de.id and de.idchasis=c.id and de.idchasis='".$asigChasis["idchasis"]."'")->queryAll();
+				$repuesto=Yii::app()->db->createCommand("select * from sgu_chasis c, sgu_cauchoRep cr where c.id=cr.idchasis and cr.idchasis='".$asigChasis["idchasis"]."'")->queryRow();
 				foreach($ruedas as $rue){
 						$historico=new Historicocaucho;
 						$historico->idasigChasis=$asigChasis["id"];
