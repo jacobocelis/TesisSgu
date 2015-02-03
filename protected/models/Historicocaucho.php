@@ -54,13 +54,13 @@ class Historicocaucho extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('idestatusCaucho, idcaucho, idvehiculo, idasigChasis,serial', 'required'),
-			array('idestatusCaucho, idcaucho, idmarcaCaucho, idvehiculo, iddetalleRueda, idasigChasis', 'numerical', 'integerOnly'=>true),
+			array('idestatusCaucho, idcaucho, idvehiculo, idasigChasis,serial,costounitario', 'required'),
+			array('idestatusCaucho, idcaucho, idmarcaCaucho, idvehiculo, iddetalleRueda, idasigChasis,costounitario', 'numerical', 'integerOnly'=>true),
 			array('serial', 'length', 'max'=>45),
 			array('fecha', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, fecha, serial, idestatusCaucho, idcaucho, idmarcaCaucho, idvehiculo, iddetalleRueda, idasigChasis', 'safe', 'on'=>'search'),
+			array('id, fecha, serial, idestatusCaucho, idcaucho, idmarcaCaucho, idvehiculo, iddetalleRueda, idasigChasis,costounitario', 'safe', 'on'=>'search'),
 		);
 	}
 	
@@ -97,6 +97,8 @@ class Historicocaucho extends CActiveRecord
 			'idvehiculo' => 'Idvehiculo',
 			'iddetalleRueda' => 'Iddetalle Rueda',
 			'idasigChasis' => 'Idasig Chasis',
+			'costounitario' => 'Costo',
+			
 		);
 	}
 

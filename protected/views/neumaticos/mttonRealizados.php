@@ -157,23 +157,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
 					'header'=>'Fecha de reparación',
 					'name'=>'fechaRealizada',
 					'type'=>'raw',
-					'value'=>'$data->valores($data->fechaRealizada)?date("d/m/Y",strtotime($data->fechaRealizada)).CHtml::link(
-                     CHtml::image(Yii::app()->request->baseUrl."/imagenes/agregar.png",
-                                          "Agregar",array("title"=>"Editar")),
-                        "",
-                        array(
-                                \'style\'=>\'cursor: pointer;text-decoration: underline;text-align:center;\',
-                                \'onclick\'=>\'{registrarMR("\'.Yii::app()->createUrl("Detalleeventoca/actualizar",array("id"=>$data["id"])).\'"); $("#dialog").dialog("open");}\'
-                        )
-                ):$data->noasignado().CHtml::link(
-                     CHtml::image(Yii::app()->request->baseUrl."/imagenes/agregar.png",
-                                          "Agregar",array("title"=>"Editar")),
-                        "",
-                        array(
-                                \'style\'=>\'cursor: pointer;text-decoration: underline;text-align:center;\',
-                                \'onclick\'=>\'{registrarMR("\'.Yii::app()->createUrl("Detalleeventoca/actualizar",array("id"=>$data["id"])).\'"); $("#dialog").dialog("open");}\'
-                        )
-                )',
+					'value'=>'$data->valores($data->fechaRealizada)?date("d/m/Y",strtotime($data->fechaRealizada)):$data->noasignado()',
 					'htmlOptions'=>array('style'=>'width:80px;text-align:center;'),
 				),
 				/*array(
@@ -259,23 +243,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
 					'header'=>'Fecha de renovación',
 					'name'=>'fechaRealizada',
 					'type'=>'raw',
-					'value'=>'$data->valores($data->fechaRealizada)?date("d/m/Y",strtotime($data->fechaRealizada)).CHtml::link(
-                     CHtml::image(Yii::app()->request->baseUrl."/imagenes/agregar.png",
-                                          "Agregar",array("title"=>"Editar")),
-                        "",
-                        array(
-                                \'style\'=>\'cursor: pointer;text-decoration: underline;text-align:center;\',
-                                \'onclick\'=>\'{registrarMR("\'.Yii::app()->createUrl("Detalleeventoca/actualizar",array("id"=>$data["id"])).\'"); $("#dialog").dialog("open");}\'
-                        )
-                ):$data->noasignado().CHtml::link(
-                     CHtml::image(Yii::app()->request->baseUrl."/imagenes/agregar.png",
-                                          "Agregar",array("title"=>"Editar")),
-                        "",
-                        array(
-                                \'style\'=>\'cursor: pointer;text-decoration: underline;text-align:center;\',
-                                \'onclick\'=>\'{registrarMR("\'.Yii::app()->createUrl("Detalleeventoca/actualizar",array("id"=>$data["id"])).\'"); $("#dialog").dialog("open");}\'
-                        )
-                )',
+					'value'=>'$data->valores($data->fechaRealizada)?date("d/m/Y",strtotime($data->fechaRealizada)):$data->noasignado()',
 					'htmlOptions'=>array('style'=>'width:80px;text-align:center;'),
 				),
 				/*array(
@@ -347,23 +315,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
 					'header'=>'Fecha de reparación',
 					'name'=>'fechaRealizada',
 					'type'=>'raw',
-					'value'=>'$data->valores($data->fechaRealizada)?date("d/m/Y",strtotime($data->fechaRealizada)).CHtml::link(
-                     CHtml::image(Yii::app()->request->baseUrl."/imagenes/agregar.png",
-                                          "Agregar",array("title"=>"Editar")),
-                        "",
-                        array(
-                                \'style\'=>\'cursor: pointer;text-decoration: underline;text-align:center;\',
-                                \'onclick\'=>\'{registrarR("\'.Yii::app()->createUrl("Rotacioncauchos/actualizar",array("id"=>$data["id"])).\'"); $("#dialog").dialog("open");}\'
-                        )
-                ):$data->noasignado().CHtml::link(
-                     CHtml::image(Yii::app()->request->baseUrl."/imagenes/agregar.png",
-                                          "Agregar",array("title"=>"Editar")),
-                        "",
-                        array(
-                                \'style\'=>\'cursor: pointer;text-decoration: underline;text-align:center;\',
-                                \'onclick\'=>\'{registrarR("\'.Yii::app()->createUrl("Rotacioncauchos/actualizar",array("id"=>$data["id"])).\'"); $("#dialog").dialog("open");}\'
-                        )
-                )',
+					'value'=>'$data->valores($data->fechaRealizada)?date("d/m/Y",strtotime($data->fechaRealizada)):$data->noasignado()',
 					'htmlOptions'=>array('style'=>'width:80px;text-align:center;'),
 				),
 				/*array(

@@ -401,13 +401,27 @@ $this->widget('zii.widgets.grid.CGridView', array(
 					'name'=>'idestatusCaucho',
 					'htmlOptions'=>array('style'=>'text-align:center;width:45px;font-weight: bold;'),
 				),
+				array(
+						'headerHtmlOptions'=>array('style'=>'text-align:center;width:30px;'),
+						'htmlOptions'=>array('style'=>'text-align:center;'),
+						'header'=>'editar',
+						'type'=>'raw',
+						'value'=>'CHtml::link(
+                        CHtml::image(Yii::app()->request->baseUrl."/imagenes/agregar.png",
+                                          "Agregar",array("title"=>"Editar")),
+                        "",
+                        array(
+                                \'style\'=>\'cursor: pointer;text-decoration: underline;text-align:center;\',
+                                \'onclick\'=>\'{editarMontado("\'.Yii::app()->createUrl("neumaticos/EditarMontado",array("id"=>$data["id"])).\'");}\'
+                        )
+                );',),
 			),
         ));
 		
 		echo CHtml::link('Renovar neumático', "",  // the link for open the dialog
     array(
 		'id'=>"linkRenovacion",
-        'style'=>'cursor: pointer; text-decoration: underline;',
+        'style'=>'cursor: pointer; text-decoration: underline;display:none',
         'onclick'=>"{montarNeumatico(); }"));
 		
 		?>
@@ -548,7 +562,23 @@ $this->beginWidget('zii.widgets.jui.CJuiDialog', array( // the dialog
         'title'=>'Registrar información de neumático nuevo',
         'autoOpen'=>false,
         'modal'=>true,
-        'width'=>890,
+        'width'=>390,
+		'position'=>array(null,100),
+		'resizable'=>false
+    ),
+));?>
+<div class="divForForm"></div>
+<?php $this->endWidget();?>
+
+<?php
+/*ventana agregar recurso*/
+$this->beginWidget('zii.widgets.jui.CJuiDialog', array( // the dialog
+    'id'=>'montajeN',
+    'options'=>array(
+        'title'=>'Actualizar informacióntua',
+        'autoOpen'=>false,
+        'modal'=>true,
+        'width'=>390,
 		'position'=>array(null,100),
 		'resizable'=>false
     ),
@@ -594,14 +624,63 @@ $this->beginWidget('zii.widgets.jui.CJuiDialog', array( // the dialog
 }
 </style>
 <script>
+var Uurl;
+function editarMontado(id){
+	
+	$('#montajeN').dialog('open');
+	 if (typeof(id)=='string')
+                Uurl=id;
+	jQuery.ajax({
+                url: Uurl,
+                'data':$(this).serialize(),
+                'type':'post',
+                'dataType':'json',
+                'success':function(data)
+                        {		
+                                if (data.status == 'failure')
+                                {
+                                        $('#montajeN div.divForForm').html(data.div);
+                                        // Here is the trick: on submit-> once again this function!
+                                        $('#montajeN div.divForForm form').submit(editarMontado); 
+                                }
+                                else
+                                {		
+                                        $('#montajeN div.divForForm').html(data.div);
+										 setTimeout("$('#montajeN').dialog('close') ",1000);
+										$.fn.yiiGridView.update('nuevoMontaje');
+										
+                                }
+                        } ,
+                'cache':false});
+    return false; 
+}
 function mostrarNuevoCaucho(){
 	$('#divRenovacion').show(500);
 	var idrenov = $.fn.yiiGridView.getSelection('renovaciones');
-	if(idrenov=="")
-		$('#divRenovacion').hide();
-	$.fn.yiiGridView.update('nuevoMontaje',{ data : "idrenov="+idrenov});
-	
+	if(idrenov==""){
+		$('#divRenovacion').hide();	
+		idrenov=0;
+	}
+	$.fn.yiiGridView.update('nuevoMontaje',{ data : {idrenov:idrenov.toString()},
+			complete: function(jqXHR, status) {
+            if (status=='success'){
+                verificar(idrenov.toString());
+			}
+		}
+	});
 }
+function verificar(id){
+	$.ajax({  		
+          url: "<?php echo Yii::app()->baseUrl;?>"+"/neumaticos/verificarEstadoRenovacion/"+id,
+        })
+  	.done(function( result ) {    	
+			if(result==3)
+    	     $('#linkRenovacion').hide(500);
+			if(result==4)
+				$('#linkRenovacion').show(500);
+  	});
+}
+
 function montarNeumatico(id){
 	$('#montaje').dialog('open');
 	 var idrenov = $.fn.yiiGridView.getSelection('renovaciones');
@@ -622,10 +701,11 @@ function montarNeumatico(id){
                                 else
                                 {		
                                         $('#montaje div.divForForm').html(data.div);
-										setTimeout(function() {
+										/*setTimeout(function() {
 											
-										}, 1000);
-										$.fn.yiiGridView.update('renovaciones');
+										}, 1000);*/
+										 setTimeout("$('#montaje').dialog('close') ",1000);
+										$.fn.yiiGridView.update('nuevoMontaje');
 										
                                 }
                         } ,
@@ -672,7 +752,7 @@ $('#recur').show(500);
 		$('#recur').hide();
 	$.fn.yiiGridView.update('rec',{ data : "idAct="+idAct});
 }
-var Uurl;
+
 function editarActividad(id){
 <?php $factura=$factura->getData();
 	if(isset($factura[0]["id"]))

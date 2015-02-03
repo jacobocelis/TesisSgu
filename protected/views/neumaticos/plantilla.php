@@ -458,6 +458,7 @@ estado{
     float: left;
     overflow: auto;
     margin-right: 10px;
+	min-height:117px;
 	
 }
 #desplegable{

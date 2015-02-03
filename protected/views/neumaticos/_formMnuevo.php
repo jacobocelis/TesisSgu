@@ -16,16 +16,20 @@
 )); ?>
 
 	<div class="row">
-		<?php echo $form->labelEx($model,'fecha'); ?>
-		<?php echo $form->textField($model,'fecha',array("value"=>"0000-01-01",'readonly'=>'readonly',"style"=>"width:80px;cursor:pointer;")); ?>
+		<?php echo $form->labelEx($model,'fecha de montaje'); ?>
+		<?php echo $form->textField($model,'fecha',array("value"=>date('d/m/Y'),'readonly'=>'readonly',"style"=>"width:90px;cursor:pointer;")); ?>
 		<?php echo $form->error($model,'fecha'); ?>
-	
+	</div>
+	<div class="row">
 		<?php echo $form->labelEx($model,'serial'); ?>
 		<?php echo $form->textField($model,'serial',array("value"=>$model->serial=="0"?"":$model->serial,'size'=>20,'maxlength'=>20,"style"=>"width:90px;")); ?>
-		
+		<?php echo $form->error($model,'serial'); ?>
+	</div>
+	<div class="row">
 		<?php echo $form->labelEx($model,'idmarcaCaucho'); ?>
 		<?php echo $form->dropDownList($model,'idmarcaCaucho',CHtml::listData(Marcacaucho::model()->findAll(),'id','nombre'),array('style' => 'width:150px;'));?>
-		
+		<?php echo $form->error($model,'idmarcaCaucho'); ?>
+	</div>
 	<?php $models = Caucho::model()->findAll();
 		$data = array();
 		foreach($models as $mode){
@@ -38,9 +42,16 @@
 		<?php echo $form->labelEx($model,'idcaucho'); ?>
 		<?php echo $form->dropDownList($model,'idcaucho',$data,array('style' => 'width:240px;')); ?>
 		<?php echo $form->error($model,'idcaucho'); ?>
+	
+	<div class="row">
+		<?php echo $form->labelEx($model,'costounitario'); ?>
+		<?php echo $form->textField($model,'costounitario',array('size'=>20,'maxlength'=>20,"style"=>"width:90px;")); ?> Bs.
+		<?php echo $form->error($model,'costounitario'); ?>
 	</div>
+	
+	
 <div class="row">
-		<?php echo $form->hiddenField($model,'idestatusCaucho'); ?>
+		<?php echo $form->hiddenField($model,'idestatusCaucho',array("value"=>1)); ?>
 	</div>
 	<div class="row">
 		<?php echo $form->hiddenField($model,'idvehiculo'); ?>
@@ -54,8 +65,8 @@
 		<?php echo $form->hiddenField($model,'idasigChasis'); ?>
 	</div>
 
-	<div id="boton"class="row buttons">
-		<?php echo CHtml::submitButton($model->isNewRecord ? 'Montar' : 'Montar'); ?>
+	<div class="row buttons">
+		<?php echo CHtml::submitButton($model->isNewRecord ? 'Montar' : 'Actualizar'); ?>
 	</div>
 		<?php echo $form->error($model,'serial'); ?>
 		<?php echo $form->error($model,'idmarcaCaucho'); ?>
@@ -93,16 +104,12 @@
 
 </script>
 <style>
-#boton{
-	float:right;
-}
+
 #azul {
     background: none repeat scroll 0% 0% #F9FDFD;
     padding: 5px;
     border: 1px solid #94A8FF;
-	overflow:auto;
-    width:100%;
-	clear:both;
+	
 	margin-bottom:5px;
 }
 </style>

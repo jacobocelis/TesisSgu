@@ -32,7 +32,7 @@ class NeumaticosController extends Controller
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create','update','plantilla','ActualizarListaPlantillas','MostrarLinkEje','actualizarListaPosicionesEje','MostrarLinkCaucho','actualizarEstado','MostrarLinkRep','MostrarDivRep','TieneGrupo','montajeInicial','montar','alertaCambioCauchos','ActualizarSpan','averiaNeumatico','RegistrarAveriaNeumatico','AgregarAveriaNueva','ajaxActualizarAverias','CrearOrdenNeumaticos','crearOrden','agregarNeumaticosRenovar','agregarNeumaticosRotar','verOrdenes','vistaPrevia','AgregarRotacionNueva','MttonRealizados','agregarFactura','registrarFacturacion','actualizarCheck','agregarRecursoAveria','estatusOrden','vistaPreviaPDF','nuevoRec','actualizarListaRecursos','montarNuevo'),
+				'actions'=>array('create','EditarMontado','plantilla','ActualizarListaPlantillas','MostrarLinkEje','actualizarListaPosicionesEje','MostrarLinkCaucho','actualizarEstado','MostrarLinkRep','MostrarDivRep','TieneGrupo','montajeInicial','montar','alertaCambioCauchos','ActualizarSpan','averiaNeumatico','RegistrarAveriaNeumatico','AgregarAveriaNueva','ajaxActualizarAverias','CrearOrdenNeumaticos','crearOrden','agregarNeumaticosRenovar','agregarNeumaticosRotar','verOrdenes','vistaPrevia','AgregarRotacionNueva','MttonRealizados','agregarFactura','registrarFacturacion','actualizarCheck','agregarRecursoAveria','estatusOrden','vistaPreviaPDF','nuevoRec','actualizarListaRecursos','montarNuevo','verificarEstadoRenovacion'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -285,23 +285,33 @@ class NeumaticosController extends Controller
 	 * If update is successful, the browser will be redirected to the 'view' page.
 	 * @param integer $id the ID of the model to be updated
 	 */
-	public function actionUpdate($id)
+	public function actionEditarMontado($id)
 	{
 		$model=$this->loadModel($id);
-
-		// Uncomment the following line if AJAX validation is needed
-		// $this->performAjaxValidation($model);
-
-		if(isset($_POST['Historicocaucho']))
-		{
-			$model->attributes=$_POST['Historicocaucho'];
-			if($model->save())
-				$this->redirect(array('view','id'=>$model->id));
+		//$model=new Historicocaucho;
+		if(isset($_POST['Historicocaucho'])){
+			 $model->attributes=$_POST['Historicocaucho'];
+			 $model->fecha=date("Y-m-d", strtotime(str_replace('/', '-',$model->fecha)));
+			if($model->save()){
+				
+                if (Yii::app()->request->isAjaxRequest){
+                    echo CJSON::encode(array(
+                        'status'=>'success', 
+                        'div'=>"Información actualizada",
+						
+                        ));
+					exit;
+                }
+            }
 		}
-
-		$this->render('update',array(
-			'model'=>$model,
-		));
+			if (Yii::app()->request->isAjaxRequest){	
+            echo CJSON::encode(array(
+                'status'=>'failure', 
+                'div'=>$this->renderPartial('_formMnuevo', array('model'=>$model), true),
+				
+				));
+            exit;               
+        }
 	}
 	public function actionMontar($id){
 		
@@ -749,12 +759,25 @@ class NeumaticosController extends Controller
 	}
 	public function actionMontarNuevo($id){
 		
+		$det = Detalleeventoca::model()->findByPk($id);
+		$viejo=  Historicocaucho::model()->findByPk($det->idhistoricoCaucho);
 		$model=new Historicocaucho;
 
 		if(isset($_POST['Historicocaucho'])){
 			 $model->attributes=$_POST['Historicocaucho'];
+			 $model->idvehiculo=$viejo->idvehiculo;
+			 $model->idcaucho=$viejo->idcaucho;
+			 $model->iddetalleRueda=$viejo->iddetalleRueda;
+			 $model->idasigChasis=$viejo->idasigChasis;
 			 $model->fecha=date("Y-m-d", strtotime(str_replace('/', '-',$model->fecha)));
+			
 			if($model->save()){
+				$det->idestatus=3;
+				$det->fechaRealizada=$model->fecha;
+				$det->save();
+				$viejo->idestatusCaucho=3;
+				
+				$viejo->save();
                 if (Yii::app()->request->isAjaxRequest){
                     echo CJSON::encode(array(
                         'status'=>'success', 
@@ -773,7 +796,6 @@ class NeumaticosController extends Controller
             echo CJSON::encode(array(
                 'status'=>'failure', 
                 'div'=>$this->renderPartial('_formMnuevo', array('model'=>$model), true),
-				'ui'=>$model->idvehiculo,
 				));
             exit;               
         }
@@ -781,14 +803,26 @@ class NeumaticosController extends Controller
 	public function actionRegistrarFacturacion($id,$nom,$dir){
 		$model = new Factura;
 		$idrecurso=0;
+		
 		$iddetalleEventoCa=0;
 		if(isset($_GET['idAct'])){	
 			$idrecurso=$_GET['idAct'];
 		}
-		if(isset($_GET['idrenov'])){	
-			$iddetalleEventoCa=$_GET['idrenov'];
+		if(isset($_GET['idrenov'])){
+			$estatus=Yii::app()->db->createCommand('select idestatus from sgu_detalleEventoCa where id='.$_GET['idrenov'].'')->queryRow();
+			echo CJSON::encode(array(
+                'dat'=>$estatus["idestatus"], 
+				));
+			if($estatus["idestatus"]==4){
+				
+				$iddetalleEventoCa=0;
+			}
+			if($estatus["idestatus"]==3){
+				
+				$iddetalleEventoCa=$_GET['idrenov'];
+			}	
 		}
-		$nuevomont=new CActiveDataProvider('Historicocaucho',array('criteria'=>array('condition'=>'id in (select idhistoricoCaucho from sgu_detalleEventoCa where id="'.$iddetalleEventoCa.'")')));
+		$nuevomont=new CActiveDataProvider('Historicocaucho',array('criteria'=>array('condition'=>'iddetalleRueda in (select iddetalleRueda from sgu_historicoCaucho where id in (select idhistoricoCaucho from sgu_detalleEventoCa where id="'.$iddetalleEventoCa.'" )) and idestatusCaucho=1 and idvehiculo in (select idvehiculo from sgu_historicoCaucho where id in (select idhistoricoCaucho from sgu_detalleEventoCa where id="'.$iddetalleEventoCa.'"))')));
 		
 		$recurso=new CActiveDataProvider('Detreccaucho',array('criteria'=>array('condition'=>'iddetalleEventoCa="'.$idrecurso.'"')));
 		
@@ -824,11 +858,13 @@ class NeumaticosController extends Controller
 			'nom'=>$nom,
 			'nuevomont'=>$nuevomont,
 			'dir'=>$dir,
-			'totMov'=>$totMov['tot']
-			
+			'totMov'=>$totMov['tot'],
 		));
 	}
-	
+	public function actionVerificarEstadoRenovacion($id){
+		$estatus=Yii::app()->db->createCommand('select idestatus from sgu_detalleEventoCa where id='.$id.'')->queryRow();
+		echo $estatus["idestatus"];
+	}
 	public function actionVerOrdenes(){
 		$dataProvider=new CActiveDataProvider('Ordenmtto',array('criteria' => array(
 			'condition' =>'id in (select id from sgu_ordenMtto where (idestatus=5 or idestatus=6) and tipo=2)',
