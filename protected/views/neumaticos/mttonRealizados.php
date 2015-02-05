@@ -157,7 +157,23 @@ $this->widget('zii.widgets.grid.CGridView', array(
 					'header'=>'Fecha de reparación',
 					'name'=>'fechaRealizada',
 					'type'=>'raw',
-					'value'=>'$data->valores($data->fechaRealizada)?date("d/m/Y",strtotime($data->fechaRealizada)):$data->noasignado()',
+					'value'=>'$data->valores($data->fechaRealizada)?date("d/m/Y",strtotime($data->fechaRealizada)).CHtml::link(
+                     CHtml::image(Yii::app()->request->baseUrl."/imagenes/agregar.png",
+                                          "Agregar",array("title"=>"Editar")),
+                        "",
+                        array(
+                                \'style\'=>\'cursor: pointer;text-decoration: underline;text-align:center;\',
+                                \'onclick\'=>\'{registrarMR("\'.Yii::app()->createUrl("Detalleeventoca/actualizar",array("id"=>$data["id"])).\'"); $("#dialog").dialog("open");}\'
+                        )
+                ):$data->noasignado().CHtml::link(
+                     CHtml::image(Yii::app()->request->baseUrl."/imagenes/agregar.png",
+                                          "Agregar",array("title"=>"Editar")),
+                        "",
+                        array(
+                                \'style\'=>\'cursor: pointer;text-decoration: underline;text-align:center;\',
+                                \'onclick\'=>\'{registrarMR("\'.Yii::app()->createUrl("Detalleeventoca/actualizar",array("id"=>$data["id"])).\'"); $("#dialog").dialog("open");}\'
+                        )
+                )',
 					'htmlOptions'=>array('style'=>'width:80px;text-align:center;'),
 				),
 				/*array(
@@ -312,7 +328,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
                         )
                 );',),
 				array(
-					'header'=>'Fecha de reparación',
+					'header'=>'Fecha realizada',
 					'name'=>'fechaRealizada',
 					'type'=>'raw',
 					'value'=>'$data->valores($data->fechaRealizada)?date("d/m/Y",strtotime($data->fechaRealizada)):$data->noasignado()',
@@ -341,8 +357,101 @@ $this->widget('zii.widgets.grid.CGridView', array(
 				),
 				
 			)
-        ));
+        ));?>
 		
+		<div id="amovimiento" style="display:none">
+<i>La rotación seleccionada incluye los siguientes movimientos:</i>
+<?php $this->widget('zii.widgets.grid.CGridView', array(
+                'id'=>'movimientos',
+				//'selectionChanged'=>'validar',
+				'summaryText'=>'',
+			    'enableSorting' => true,
+				'template'=>"{items}\n{summary}\n{pager}",
+				'selectableRows'=>0,
+				'emptyText'=>'No hay movimientos agregados',
+                'dataProvider'=>$movimientos,
+				'columns'=>array(
+			
+				/*array(
+					'type'=>'raw',
+					'header'=>'',
+					'value'=>'\'<strong>Origen</strong>\'',
+					'htmlOptions'=>array('style'=>'text-align:center;width:85px'),
+				),*/
+				array(
+					'header'=>'Unidad',
+					'name'=>'idhistoricoCaucho',
+					'value'=>'str_pad((int) $data->cauchoOrigen0->idvehiculo0->numeroUnidad,2,"0",STR_PAD_LEFT);',
+					//'value'=>'$data->idplan0->idplanGrupo0->CompiledColour->$data-id.\' \'.$data->CompiledColour',
+					'htmlOptions'=>array('style'=>'text-align:center;width:40px'),
+				),
+				array(
+					'header'=>'Eje',
+					'value'=>'$data->posicionOrigen==null?\'-\':$data->posicionOrigen0->iddetalleEje0->idposicionEje0->posicionEje',
+					'name'=>'iddetalleRueda',
+					'htmlOptions'=>array('style'=>'text-align:center;width:85px'),
+				),
+				array(
+					'header'=>'Lado',
+					'value'=>'$data->posicionOrigen==null?\'Repuesto\':$data->posicionOrigen0->idposicionRueda0->posicionRueda',
+					'name'=>'iddetalleRueda',
+					'htmlOptions'=>array('style'=>'text-align:center;width:85px'),
+				),
+				/*array(
+					'type'=>'raw',
+					'header'=>'',
+					'value'=>'\'<strong>Destino</strong>\'',
+					'htmlOptions'=>array('style'=>'text-align:center;width:85px'),
+				),*/
+				array(
+					'type'=>'raw',
+					'header'=>'Movimiento',
+					'value'=>'
+                        CHtml::image(Yii::app()->request->baseUrl."/imagenes/arrow_right.png",
+                                          "Movimiento",array("title"=>"desde->hacia"))',
+					'htmlOptions'=>array('style'=>'text-align:center;width:85px'),
+				),
+				array(
+					'header'=>'Unidad',
+					'name'=>'idhistoricoCaucho',
+					'value'=>'str_pad((int) $data->cauchoDestino0->idvehiculo0->numeroUnidad,2,"0",STR_PAD_LEFT);',
+					//'value'=>'$data->idplan0->idplanGrupo0->CompiledColour->$data-id.\' \'.$data->CompiledColour',
+					'htmlOptions'=>array('style'=>'text-align:center;width:40px'),
+				),
+				array(
+					'header'=>'Eje',
+					'value'=>'$data->posicionDestino==null?\'-\':$data->posicionDestino0->iddetalleEje0->idposicionEje0->posicionEje',
+					'name'=>'iddetalleRueda',
+					'htmlOptions'=>array('style'=>'text-align:center;width:85px'),
+				),
+				array(
+					'header'=>'Lado',
+					'value'=>'$data->posicionDestino==null?\'Repuesto\':$data->posicionDestino0->idposicionRueda0->posicionRueda',
+					'name'=>'iddetalleRueda',
+					'htmlOptions'=>array('style'=>'text-align:center;width:85px'),
+				),
+				/*array(
+					'header'=>'Eliminar',
+					'class'=>'CButtonColumn',
+					 'template'=>'{delete}',
+					     'buttons'=>array(
+							'delete' => array(
+								'url'=>'Yii::app()->createUrl("detalleEventoCa/delete", array("id"=>$data->id))',
+						),
+					),
+				),*/
+			)
+        ));
+	/*	 echo CHtml::link('agregar movimiento(+)', "",  // the link for open the dialog
+    array(
+		'id'=>'agregarMovimiento',
+        'style'=>'cursor: pointer; text-decoration: underline;',
+        'onclick'=>"{agregarMovimiento(); }"));
+		
+		echo CHtml::link('Cancelar', "",array('title'=>'Cancelar',
+        'style'=>'cursor: pointer;font-size:10px;float:right;',
+        'onclick'=>"{cancelarB()}"));*/
+
 ?>
 </div>
 <?php }?>
@@ -405,6 +514,20 @@ h1 {
 }
 </style>
 <script>
+function mostrarMovimientos(id){
+	idRotacion=id;
+$('#agregarRotacion').hide();
+var altura = $(document).height();
+//$("html, body").animate({scrollTop:altura+"px"},500);
+//$('#recur').show(500);
+	//var idAct = $.fn.yiiGridView.getSelection('act');
+	$('#amovimiento').show(500);
+	//if(idAct=="")
+	//	$('#recur').hide();
+	$.fn.yiiGridView.update('movimientos',{ data : "idRot="+id});
+	$("html, body").animate({scrollTop:altura+"px"},1000);
+}
+
 var idorden="<?php echo $id;?>";
 actualizarCheck(idorden);
 function actualizarCheck(idorden){	

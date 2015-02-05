@@ -76,9 +76,6 @@ if ($rol == "Jefe Departamento") {
 
 
 ?>
-
-
-
     <div class="span8">  
 			
 				
@@ -110,6 +107,10 @@ if ($rol == "Jefe Departamento") {
 				<a href="<?php echo Yii::app()->request->baseUrl;?>/viajes" id="viajes">
 				
 				</a>
+				
+				<a href="<?php echo Yii::app()->request->baseUrl;?>/indicadores" id="indicadores">
+				
+				</a>
 			
             
   
@@ -117,13 +118,14 @@ if ($rol == "Jefe Departamento") {
 </div>
 <style>
 .span8 {
-    width: 79%;
+    width: 95%;
     margin-top: 2%;
-    border: 1px dotted #AAA;
+    //border: 1px dotted #AAA;
     overflow: auto;
-    margin-left: 10%;
+    //margin-left: 10%;
     border-radius: 2px;
     padding: 5px;
+	//float:left;
 }
 #vehiculos{
 margin-top: 4%;
@@ -193,7 +195,7 @@ display: block;
 }
 #viajes{
 margin-top: 4%;
- margin-right: 0%;
+ margin-right: 2%;
 background-image: url("<?php echo Yii::app()->request->baseUrl;?>/imagenes/viajes.png");
 height: 145px;
 width: 125px;
@@ -202,6 +204,16 @@ display: block;
   text-indent: -9999px;
   float:left;
 }
-
+#indicadores{
+margin-top: 4%;
+ margin-right: 0%;
+background-image: url("<?php echo Yii::app()->request->baseUrl;?>/imagenes/indicadores.png");
+height: 140px;
+width: 130px;
+display: block;
+  //margin: 0 auto;
+  text-indent: -9999px;
+  float:left;
+}
 
 </style>

@@ -259,7 +259,7 @@ class MttoPreventivoController extends Controller
 	}
 	public function actionCerrarOrdenes(){
 		$dataProvider=new CActiveDataProvider('Ordenmtto',array('criteria' => array(
-			'condition' =>'id in (select id from sgu_ordenMtto where idestatus=6)',
+			'condition' =>'id in (select id from sgu_ordenMtto where idestatus=6 and tipo = 0)',
 			'order'=>'fecha'
 			)));
 		$this->render('cerrarOrdenes',array(

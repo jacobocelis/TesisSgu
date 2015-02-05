@@ -47,7 +47,7 @@ class Rotacioncauchos extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('nombre, idestatus', 'required'),
+			array('nombre, idestatus,costoTotal', 'required'),
 			array('idestatus', 'numerical', 'integerOnly'=>true),
 			array('costoTotal', 'numerical'),
 			array('nombre, descripcion', 'length', 'max'=>45),
@@ -80,7 +80,7 @@ class Rotacioncauchos extends CActiveRecord
 			'id' => 'ID',
 			'nombre' => 'Nombre',
 			'descripcion' => 'Descripcion',
-			'costoTotal' => 'Costo Total',
+			'costoTotal' => 'Costo',
 			'fechaRealizada' => 'Fecha Realizada',
 			'idestatus' => 'Idestatus',
 		);

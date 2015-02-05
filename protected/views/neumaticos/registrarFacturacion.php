@@ -394,6 +394,12 @@ $this->widget('zii.widgets.grid.CGridView', array(
 					'htmlOptions'=>array('style'=>'text-align:center;width:85px'),
 				),
 				array(
+					'header'=>'Costo',
+					'value'=>'number_format($data->costounitario, 2,",",".").\' Bs.\'',
+					'name'=>'costounitario',
+					'htmlOptions'=>array('style'=>'text-align:center;width:85px'),
+				),
+				array(
 					'type'=>"raw",
 					'headerHtmlOptions'=>array('style'=>'text-align:center;width:50px;'),
 					'header'=>'Estatus',
@@ -404,7 +410,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
 				array(
 						'headerHtmlOptions'=>array('style'=>'text-align:center;width:30px;'),
 						'htmlOptions'=>array('style'=>'text-align:center;'),
-						'header'=>'editar',
+						'header'=>'Editar',
 						'type'=>'raw',
 						'value'=>'CHtml::link(
                         CHtml::image(Yii::app()->request->baseUrl."/imagenes/agregar.png",
@@ -435,7 +441,8 @@ $this->widget('zii.widgets.grid.CGridView', array(
 	<?php
 	$this->widget('zii.widgets.grid.CGridView', array(
                 'id'=>'rotaciones',
-				'selectableRows'=>0,
+				'selectableRows'=>1,
+				//'selectionChanged'=>'validar',
 				'summaryText'=>'',
 			    //'enableSorting' => true,
 				'emptyText'=>'no existen rotaciones en ésta orden',
@@ -466,25 +473,30 @@ $this->widget('zii.widgets.grid.CGridView', array(
                                 \'onclick\'=>\'{mostrarMovimientos("\'.$data["id"].\'");}\'
                         )
                 );',),
-				/*array(
-					'header'=>'Fecha de reparación',
+				array(
+					'header'=>'Realizada',
 					'name'=>'fechaRealizada',
 					'type'=>'raw',
 					'value'=>'$data->valores($data->fechaRealizada)?date("d/m/Y",strtotime($data->fechaRealizada)):$data->noasignado()',
 					'htmlOptions'=>array('style'=>'width:80px;text-align:center;'),
-				),*/
-
-				/*array(
+				),
+				array(
+					'header'=>'Costo',
+					'value'=>'number_format($data->costoTotal, 2,",",".").\' Bs.\'',
+					'name'=>'costoTotal',
+					'htmlOptions'=>array('style'=>'text-align:center;width:85px'),
+				),
+				array(
 					'header'=>'Estado',
 					'name'=>'idestatus',
 					'type'=>'raw',
 					'value'=>'$data->color($data->idestatus,$data->idestatus0->estatus)',
 					'htmlOptions'=>array('style'=>'width:80px;text-align:center;'),
-				),*/
+				),
 				array(
 						'headerHtmlOptions'=>array('style'=>'text-align:center;width:30px;'),
 						'htmlOptions'=>array('style'=>'text-align:center;'),
-						'header'=>'Rotar',
+						'header'=>'Registrar',
 						'type'=>'raw',
 						'value'=>'CHtml::link(
                         CHtml::image(Yii::app()->request->baseUrl."/imagenes/agregar.png",
@@ -492,13 +504,105 @@ $this->widget('zii.widgets.grid.CGridView', array(
                         "",
                         array(
                                 \'style\'=>\'cursor: pointer;text-decoration: underline;text-align:center;\',
-                                \'onclick\'=>\'{editarFactura("\'.Yii::app()->createUrl("factura/update",array("id"=>$data["id"])).\'");}\'
+                                \'onclick\'=>\'{facturarRot("\'.Yii::app()->createUrl("rotacioncauchos/facturar",array("id"=>$data["id"])).\'");}\'
                         )
                 );',),
 				
 			)
         ));
+		?>
+	<div id="amovimiento" style="display:none">
+<i>La rotación seleccionada incluye los siguientes movimientos:</i>
+<?php $this->widget('zii.widgets.grid.CGridView', array(
+                'id'=>'movimientos',
+				//'selectionChanged'=>'validar',
+				'summaryText'=>'',
+			    'enableSorting' => true,
+				'template'=>"{items}\n{summary}\n{pager}",
+				'selectableRows'=>0,
+				'emptyText'=>'No hay movimientos agregados',
+                'dataProvider'=>$movimientos,
+				'columns'=>array(
+			
+				/*array(
+					'type'=>'raw',
+					'header'=>'',
+					'value'=>'\'<strong>Origen</strong>\'',
+					'htmlOptions'=>array('style'=>'text-align:center;width:85px'),
+				),*/
+				array(
+					'header'=>'Unidad',
+					'name'=>'idhistoricoCaucho',
+					'value'=>'str_pad((int) $data->cauchoOrigen0->idvehiculo0->numeroUnidad,2,"0",STR_PAD_LEFT);',
+					//'value'=>'$data->idplan0->idplanGrupo0->CompiledColour->$data-id.\' \'.$data->CompiledColour',
+					'htmlOptions'=>array('style'=>'text-align:center;width:40px'),
+				),
+				array(
+					'header'=>'Eje',
+					'value'=>'$data->posicionOrigen==null?\'-\':$data->posicionOrigen0->iddetalleEje0->idposicionEje0->posicionEje',
+					'name'=>'iddetalleRueda',
+					'htmlOptions'=>array('style'=>'text-align:center;width:85px'),
+				),
+				array(
+					'header'=>'Lado',
+					'value'=>'$data->posicionOrigen==null?\'Repuesto\':$data->posicionOrigen0->idposicionRueda0->posicionRueda',
+					'name'=>'iddetalleRueda',
+					'htmlOptions'=>array('style'=>'text-align:center;width:85px'),
+				),
+				/*array(
+					'type'=>'raw',
+					'header'=>'',
+					'value'=>'\'<strong>Destino</strong>\'',
+					'htmlOptions'=>array('style'=>'text-align:center;width:85px'),
+				),*/
+				array(
+					'type'=>'raw',
+					'header'=>'Movimiento',
+					'value'=>'
+                        CHtml::image(Yii::app()->request->baseUrl."/imagenes/arrow_right.png",
+                                          "Movimiento",array("title"=>"desde->hacia"))',
+					'htmlOptions'=>array('style'=>'text-align:center;width:85px'),
+				),
+				array(
+					'header'=>'Unidad',
+					'name'=>'idhistoricoCaucho',
+					'value'=>'str_pad((int) $data->cauchoDestino0->idvehiculo0->numeroUnidad,2,"0",STR_PAD_LEFT);',
+					//'value'=>'$data->idplan0->idplanGrupo0->CompiledColour->$data-id.\' \'.$data->CompiledColour',
+					'htmlOptions'=>array('style'=>'text-align:center;width:40px'),
+				),
+				array(
+					'header'=>'Eje',
+					'value'=>'$data->posicionDestino==null?\'-\':$data->posicionDestino0->iddetalleEje0->idposicionEje0->posicionEje',
+					'name'=>'iddetalleRueda',
+					'htmlOptions'=>array('style'=>'text-align:center;width:85px'),
+				),
+				array(
+					'header'=>'Lado',
+					'value'=>'$data->posicionDestino==null?\'Repuesto\':$data->posicionDestino0->idposicionRueda0->posicionRueda',
+					'name'=>'iddetalleRueda',
+					'htmlOptions'=>array('style'=>'text-align:center;width:85px'),
+				),
+				/*array(
+					'header'=>'Eliminar',
+					'class'=>'CButtonColumn',
+					 'template'=>'{delete}',
+					     'buttons'=>array(
+							'delete' => array(
+								'url'=>'Yii::app()->createUrl("detalleEventoCa/delete", array("id"=>$data->id))',
+						),
+					),
+				),*/
+			)
+        ));
+	/*	 echo CHtml::link('agregar movimiento(+)', "",  // the link for open the dialog
+    array(
+		'id'=>'agregarMovimiento',
+        'style'=>'cursor: pointer; text-decoration: underline;',
+        'onclick'=>"{agregarMovimiento(); }"));
 		
+		echo CHtml::link('Cancelar', "",array('title'=>'Cancelar',
+        'style'=>'cursor: pointer;font-size:10px;float:right;',
+        'onclick'=>"{cancelarB()}"));*/
 ?>
 </div>
 <?php }?>
@@ -654,6 +758,50 @@ function editarMontado(id){
                 'cache':false});
     return false; 
 }
+function facturarRot(id){
+	
+	$('#montajeN').dialog('open');
+	 if (typeof(id)=='string')
+                Uurl=id;
+	jQuery.ajax({
+                url: Uurl,
+                'data':$(this).serialize(),
+                'type':'post',
+                'dataType':'json',
+                'success':function(data)
+                        {		
+                                if (data.status == 'failure')
+                                {
+                                        $('#montajeN div.divForForm').html(data.div);
+                                        // Here is the trick: on submit-> once again this function!
+                                        $('#montajeN div.divForForm form').submit(facturarRot); 
+                                }
+                                else
+                                {		
+                                        $('#montajeN div.divForForm').html(data.div);
+										 setTimeout("$('#montajeN').dialog('close') ",1000);
+										$.fn.yiiGridView.update('rotaciones');
+										
+                                }
+                        } ,
+                'cache':false});
+    return false; 
+}
+function mostrarMovimientos(id){
+	idRotacion=id;
+$('#agregarRotacion').hide();
+var altura = $(document).height();
+//$("html, body").animate({scrollTop:altura+"px"},500);
+//$('#recur').show(500);
+	
+	$('#amovimiento').show(500);
+	var idr = $.fn.yiiGridView.getSelection('rotaciones');
+	if(idr=="")
+		$('#amovimiento').hide();
+	$.fn.yiiGridView.update('movimientos',{ data : "idRot="+id});
+	$("html, body").animate({scrollTop:altura+"px"},1000);
+}
+
 function mostrarNuevoCaucho(){
 	$('#divRenovacion').show(500);
 	var idrenov = $.fn.yiiGridView.getSelection('renovaciones');

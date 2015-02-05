@@ -32,7 +32,7 @@ class RotacioncauchosController extends Controller
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create','update','actualizar'),
+				'actions'=>array('create','update','actualizar','facturar'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -63,8 +63,11 @@ class RotacioncauchosController extends Controller
 			if (Yii::app()->request->isAjaxRequest){
 			
 			Yii::app()->db->createCommand("update `tsg`.`sgu_rotacionCauchos` set idestatus=3 where id=".$id."")->query();
-				
-                
+				$estado=Yii::app()->db->createCommand("select idestatus from sgu_rotacionCauchos where id=".$id."")->queryRow();
+					if($estado["idestatus"]==3){
+						$movimientos=Yii::app()->db->createCommand("select * from sgu_detalleEventoCa where idrotacionCauchos=".$id."")->queryAll();
+						
+					}
                     echo CJSON::encode(array(
                         'status'=>'success', 
                         'div'=>"se registró la rotación correctamente"
@@ -81,7 +84,33 @@ class RotacioncauchosController extends Controller
         }
 
 	}
+	public function actionFacturar($id){
 	
+		$model=$this->loadModel($id);
+		
+			if(isset($_POST['Rotacioncauchos'])){
+            $model->attributes=$_POST['Rotacioncauchos'];
+			$model->fechaRealizada=date("Y-m-d", strtotime(str_replace('/', '-', $model->fechaRealizada)));
+            if($model->save()){
+				Yii::app()->db->createCommand("update `tsg`.`sgu_rotacionCauchos` set idestatus=3 where id=".$id."")->query();
+			
+				if (Yii::app()->request->isAjaxRequest){
+                    echo CJSON::encode(array(
+                        'status'=>'success', 
+                        'div'=>"se registró la rotación correctamente"
+                        ));
+                    exit;               
+                }
+            }
+        }
+        if (Yii::app()->request->isAjaxRequest){
+            echo CJSON::encode(array(
+                'status'=>'failure', 
+                'div'=>$this->renderPartial('_formfacturarR', array('model'=>$model), true)));
+            exit;               
+        }
+
+	}
 	public function actionView($id)
 	{
 		$this->render('view',array(

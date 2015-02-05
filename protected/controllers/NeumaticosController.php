@@ -32,7 +32,7 @@ class NeumaticosController extends Controller
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create','EditarMontado','plantilla','ActualizarListaPlantillas','MostrarLinkEje','actualizarListaPosicionesEje','MostrarLinkCaucho','actualizarEstado','MostrarLinkRep','MostrarDivRep','TieneGrupo','montajeInicial','montar','alertaCambioCauchos','ActualizarSpan','averiaNeumatico','RegistrarAveriaNeumatico','AgregarAveriaNueva','ajaxActualizarAverias','CrearOrdenNeumaticos','crearOrden','agregarNeumaticosRenovar','agregarNeumaticosRotar','verOrdenes','vistaPrevia','AgregarRotacionNueva','MttonRealizados','agregarFactura','registrarFacturacion','actualizarCheck','agregarRecursoAveria','estatusOrden','vistaPreviaPDF','nuevoRec','actualizarListaRecursos','montarNuevo','verificarEstadoRenovacion'),
+				'actions'=>array('create','EditarMontado','plantilla','ActualizarListaPlantillas','MostrarLinkEje','actualizarListaPosicionesEje','MostrarLinkCaucho','actualizarEstado','MostrarLinkRep','MostrarDivRep','TieneGrupo','montajeInicial','montar','alertaCambioCauchos','ActualizarSpan','averiaNeumatico','RegistrarAveriaNeumatico','AgregarAveriaNueva','ajaxActualizarAverias','CrearOrdenNeumaticos','crearOrden','agregarNeumaticosRenovar','agregarNeumaticosRotar','verOrdenes','vistaPrevia','AgregarRotacionNueva','MttonRealizados','agregarFactura','registrarFacturacion','actualizarCheck','agregarRecursoAveria','estatusOrden','vistaPreviaPDF','nuevoRec','actualizarListaRecursos','montarNuevo','verificarEstadoRenovacion','cerrarOrdenes','HistoricoOrdenes','HistoricoAverias','historicoMontajes','historicoRotaciones'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -703,6 +703,7 @@ class NeumaticosController extends Controller
 	
 	
 	public function actionMttonRealizados($id,$nom,$dir){
+		$idRot=0;
 		$orden=new CActiveDataProvider('Ordenmtto',array('criteria' => array(
 			'condition' =>'id='.$id."")
 			,'pagination'=>array('pageSize'=>9999999)));
@@ -720,7 +721,13 @@ class NeumaticosController extends Controller
 			'condition' =>'id in (select de.idrotacionCauchos as id from sgu_detOrdNeumatico d, sgu_detalleEventoCa de where d.iddetalleEventoCa=de.id and d.idordenMtto='.$id.' and de.idaccionCaucho=2 group by de.idrotacionCauchos)',
 			'order'=>'id'
 			)));
-			
+		if(isset($_GET["idRot"])){
+			$idRot=$_GET["idRot"];
+		}
+		$movimientos=new CActiveDataProvider('Detalleeventoca',array('criteria' => array(
+			'condition' =>'idrotacionCauchos='.$idRot.'',
+			//'order'=>'fechaFalla'
+			)));
 		$totMov=Yii::app()->db->createCommand("select count(de.idrotacionCauchos) as tot from sgu_detOrdNeumatico d, sgu_detalleEventoCa de where d.iddetalleEventoCa=de.id and d.idordenMtto=".$id." and de.idaccionCaucho=2 group by de.idrotacionCauchos")->queryRow();
 		
 		$this->render('mttonRealizados',array(
@@ -731,9 +738,65 @@ class NeumaticosController extends Controller
 			'id'=>$id,
 			'nom'=>$nom,
 			'dir'=>$dir,
-			'totMov'=>$totMov['tot']
+			'totMov'=>$totMov['tot'],
+			'movimientos'=>$movimientos
 		));
 	}
+	public function actionHistoricoMontajes(){
+	//idplan in (select id from sgu_plan) and ??
+			
+			$des=new CActiveDataProvider('Historicocaucho',array("criteria"=>array("condition"=>"idestatusCaucho=3")));
+			//$mi=Yii::app()->db->createCommand("select count(*) as total from sgu_reporteFalla where idestatus=8")->queryRow();
+		$this->render('historicoMontajes',array(
+				'dataProvider'=>$des,
+				/*'mi'=>$mi['total'],
+				'color'=>$this->getColor($mi["total"]),
+				'abiertas'=>$this->getOrdenesAbiertas(),
+				'Colorabi'=>$this->getColor($this->getOrdenesAbiertas()),
+				'Colorli'=>$this->getColor($this->getOrdenesListas()),
+				'listas'=>$this->getOrdenesListas(),*/
+			));
+	}
+	public function actionHistoricoAverias(){
+	//idplan in (select id from sgu_plan) and ??
+			$dataProvider=new CActiveDataProvider('Detalleeventoca',array('criteria' => array(
+			'condition' =>'idestatus=3 and idfallaCaucho is not null',
+			'order'=>'id'
+			)));
+			//$mi=Yii::app()->db->createCommand("select count(*) as total from sgu_reporteFalla where idestatus=8")->queryRow();
+		$this->render('historicoAverias',array(
+				'dataProvider'=>$dataProvider,
+				/*'mi'=>$mi['total'],
+				'color'=>$this->getColor($mi["total"]),
+				'abiertas'=>$this->getOrdenesAbiertas(),
+				'Colorabi'=>$this->getColor($this->getOrdenesAbiertas()),
+				'Colorli'=>$this->getColor($this->getOrdenesListas()),
+				'listas'=>$this->getOrdenesListas(),*/
+			));
+	}
+	public function actionHistoricoOrdenes(){
+	$dataProvider=new CActiveDataProvider('Ordenmtto',array('criteria' => array(
+			'condition' =>'id in (select id from sgu_ordenMtto where idestatus=7 and tipo =2)',
+			'order'=>'fecha'
+			)));
+		$this->render('historicoOrdenes',array(
+			'dataProvider'=>$dataProvider,
+			'abiertas'=>$this->getOrdenesAbiertas(),
+			'color'=>$this->getColor($this->getOrdenesAbiertas()),
+			));
+	}
+	public function actionCerrarOrdenes(){
+		$dataProvider=new CActiveDataProvider('Ordenmtto',array('criteria' => array(
+			'condition' =>'id in (select id from sgu_ordenMtto where idestatus=6 and tipo=2)',
+			'order'=>'fecha'
+			)));
+		$this->render('cerrarOrdenes',array(
+			'dataProvider'=>$dataProvider,
+			'abiertas'=>$this->getOrdenesAbiertas(),
+			'color'=>$this->getColor($this->getOrdenesAbiertas()),
+			));
+	}
+	
 	public function actionAgregarFactura($id){
 		$model=new Factura;
 		if(isset($_POST['Factura'])){
@@ -803,7 +866,7 @@ class NeumaticosController extends Controller
 	public function actionRegistrarFacturacion($id,$nom,$dir){
 		$model = new Factura;
 		$idrecurso=0;
-		
+		$idRot=0;
 		$iddetalleEventoCa=0;
 		if(isset($_GET['idAct'])){	
 			$idrecurso=$_GET['idAct'];
@@ -846,6 +909,15 @@ class NeumaticosController extends Controller
 			'pagination'=>array('pageSize'=>9999999)));
 		$tot=Yii::app()->db->createCommand('select * from sgu_factura where idordenMtto="'.$id.'"')->queryAll();
 		$total=count($tot);
+		
+		if(isset($_GET["idRot"])){
+			$idRot=$_GET["idRot"];
+		}
+		$movimientos=new CActiveDataProvider('Detalleeventoca',array('criteria' => array(
+			'condition' =>'idrotacionCauchos='.$idRot.'',
+			//'order'=>'fechaFalla'
+			)));
+			
 		$this->render('registrarFacturacion',array(
 			'averias'=>$averias,
 			'renovaciones'=>$renovaciones,
@@ -859,6 +931,7 @@ class NeumaticosController extends Controller
 			'nuevomont'=>$nuevomont,
 			'dir'=>$dir,
 			'totMov'=>$totMov['tot'],
+			'movimientos'=>$movimientos
 		));
 	}
 	public function actionVerificarEstadoRenovacion($id){

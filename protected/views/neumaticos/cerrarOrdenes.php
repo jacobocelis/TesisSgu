@@ -1,15 +1,15 @@
 <?php 
 	$this->breadcrumbs=array(
-	'Mantenimiento correctivo'=>array('mttoCorrectivo/index'),
+	'neumáticos'=>array('neumaticos/index'),
 	'Cerrar órdenes',
 );
 $this->menu=array(
-	array('label'=>'<div id="menu"><strong>Órdenes de mantenimiento</strong></div>'),
-	array('label'=>'      Crear orden de mantenimiento', 'url'=>array('crearOrdenCorrectiva')),
+	array('label'=>'<div id="menu"><strong>Órdenes de neumáticos</strong></div>'),
+	array('label'=>'      Crear orden de neumáticos', 'url'=>array('crearOrdenNeumaticos')),
 );
 ?>
 <div class='crugepanel user-assignments-role-list'>
-	<h1>Cerrar órdenes de mantenimiento</h1>
+	<h1>Cerrar órdenes de neumáticos</h1>
 <?php
 $this->widget('zii.widgets.grid.CGridView', array(
                 'id'=>'ordenes',
@@ -70,7 +70,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
                         CHtml::image(Yii::app()->request->baseUrl."/imagenes/ver.png",
                                           "Ver detalle",array("title"=>"Ver")),
 										  
-                        Yii::app()->createUrl("mttoCorrectivo/vistaPrevia", array("id"=>$data->id,"nom"=>"Cerrar órdenes","dir"=>"mttoCorrectivo/cerrarOrdenes")),
+                        Yii::app()->createUrl("neumaticos/vistaPrevia", array("id"=>$data->id,"nom"=>"Cerrar órdenes","dir"=>"neumaticos/cerrarOrdenes")),
                         array(	
                                 \'style\'=>\'cursor: pointer;text-decoration: underline;text-align:center;\',
                         )
@@ -84,7 +84,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
                         CHtml::image(Yii::app()->request->baseUrl."/imagenes/agregar.png",
                                           "Agregar",array("title"=>"Editar")),
 										  
-                        Yii::app()->createUrl("mttoCorrectivo/mttocRealizados", array("id"=>$data->id,"nom"=>"Cerrar órdenes","dir"=>"mttoCorrectivo/cerrarOrdenes")),
+                        Yii::app()->createUrl("neumaticos/mttonRealizados", array("id"=>$data->id,"nom"=>"Cerrar órdenes","dir"=>"neumaticos/cerrarOrdenes")),
                         array(
                                 \'style\'=>\'cursor: pointer;text-decoration: underline;text-align:center;\',
                         )
