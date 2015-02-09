@@ -257,7 +257,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
 <h1>Renovaciones</h1>
 <i>Seleccione un neumático para registrar la renovación del mismo</i>
 	<?php
-	$this->widget('zii.widgets.grid.CGridView', array(
+	$this->widget('ext.selgridview.SelGridView', array(
                 'id'=>'renovaciones',
 				'selectableRows'=>1,
 				'selectionChanged'=>'mostrarNuevoCaucho',
@@ -728,6 +728,14 @@ $this->beginWidget('zii.widgets.jui.CJuiDialog', array( // the dialog
 }
 </style>
 <script>
+<?php $factura=$factura->getData();
+	if(isset($factura[0]["id"]))
+		$idfac=$factura[0]["id"];
+	else
+		$idfac=0;
+?>;
+var idfac=<?php echo $idfac?>;
+
 var Uurl;
 function editarMontado(id){
 	
@@ -736,7 +744,7 @@ function editarMontado(id){
                 Uurl=id;
 	jQuery.ajax({
                 url: Uurl,
-                'data':$(this).serialize(),
+                'data':$(this).serialize()+'&idfac='+idfac,
                 'type':'post',
                 'dataType':'json',
                 'success':function(data)
@@ -752,6 +760,7 @@ function editarMontado(id){
                                         $('#montajeN div.divForForm').html(data.div);
 										 setTimeout("$('#montajeN').dialog('close') ",1000);
 										$.fn.yiiGridView.update('nuevoMontaje');
+										$.fn.yiiGridView.update('factu');
 										
                                 }
                         } ,
@@ -765,7 +774,7 @@ function facturarRot(id){
                 Uurl=id;
 	jQuery.ajax({
                 url: Uurl,
-                'data':$(this).serialize(),
+                'data':$(this).serialize()+'&idfac='+idfac,
                 'type':'post',
                 'dataType':'json',
                 'success':function(data)
@@ -781,6 +790,7 @@ function facturarRot(id){
                                         $('#montajeN div.divForForm').html(data.div);
 										 setTimeout("$('#montajeN').dialog('close') ",1000);
 										$.fn.yiiGridView.update('rotaciones');
+										$.fn.yiiGridView.update('factu');
 										
                                 }
                         } ,
@@ -812,6 +822,7 @@ function mostrarNuevoCaucho(){
 	$.fn.yiiGridView.update('nuevoMontaje',{ data : {idrenov:idrenov.toString()},
 			complete: function(jqXHR, status) {
             if (status=='success'){
+				$.fn.yiiGridView.update('factu');
                 verificar(idrenov.toString());
 			}
 		}
@@ -835,7 +846,7 @@ function montarNeumatico(id){
 	 
 	jQuery.ajax({
                 url: "<?php echo Yii::app()->baseUrl."/neumaticos/montarNuevo/"?>"+idrenov,
-                'data':$(this).serialize(),
+                'data':$(this).serialize()+'&idfac='+idfac,
                 'type':'post',
                 'dataType':'json',
                 'success':function(data)
@@ -853,7 +864,8 @@ function montarNeumatico(id){
 											
 										}, 1000);*/
 										 setTimeout("$('#montaje').dialog('close') ",1000);
-										$.fn.yiiGridView.update('nuevoMontaje');
+										mostrarNuevoCaucho();
+										$.fn.yiiGridView.update('renovaciones');
 										
                                 }
                         } ,
@@ -902,13 +914,7 @@ $('#recur').show(500);
 }
 
 function editarActividad(id){
-<?php $factura=$factura->getData();
-	if(isset($factura[0]["id"]))
-		$idfac=$factura[0]["id"];
-	else
-		$idfac=0;
-?>;
-var idfac=<?php echo $idfac?>;
+
 $('#dialog').dialog('open');
 	 if (typeof(id)=='string')
                 Uurl=id;

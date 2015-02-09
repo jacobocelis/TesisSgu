@@ -61,13 +61,22 @@ class RotacioncauchosController extends Controller
 			$model->fechaRealizada=date("Y-m-d", strtotime(str_replace('/', '-', $model->fechaRealizada)));
             if($model->save()){
 			if (Yii::app()->request->isAjaxRequest){
-			
-			Yii::app()->db->createCommand("update `tsg`.`sgu_rotacionCauchos` set idestatus=3 where id=".$id."")->query();
+				
+			/*Yii::app()->db->createCommand("update `tsg`.`sgu_rotacionCauchos` set idestatus=3 where id=".$id."")->query();
 				$estado=Yii::app()->db->createCommand("select idestatus from sgu_rotacionCauchos where id=".$id."")->queryRow();
 					if($estado["idestatus"]==3){
 						$movimientos=Yii::app()->db->createCommand("select * from sgu_detalleEventoCa where idrotacionCauchos=".$id."")->queryAll();
+						foreach($movimientos as $mov){
+							$actual=Historicocaucho::model()->findByPk($mov["idhistoricoCaucho"]);
+							$actual->iddetalleRueda=$mov->posicionDestino;
+							$actual->save();
+							
+							echo $actual->iddetalleRueda; echo "-";
+							echo $mov->posicionDestino;
+						}
 						
-					}
+						Yii::app()->db->createCommand("update `tsg`.`sgu_detalleEventoCa` set idestatus=3 where id=".$id."")->query();
+					}*/
                     echo CJSON::encode(array(
                         'status'=>'success', 
                         'div'=>"se registró la rotación correctamente"
@@ -92,8 +101,35 @@ class RotacioncauchosController extends Controller
             $model->attributes=$_POST['Rotacioncauchos'];
 			$model->fechaRealizada=date("Y-m-d", strtotime(str_replace('/', '-', $model->fechaRealizada)));
             if($model->save()){
-				Yii::app()->db->createCommand("update `tsg`.`sgu_rotacionCauchos` set idestatus=3 where id=".$id."")->query();
-			
+				
+				$estado=Yii::app()->db->createCommand("select idestatus from sgu_rotacionCauchos where id=".$id."")->queryRow();
+					if($estado["idestatus"]==4){
+						$movimientos=Yii::app()->db->createCommand("select * from sgu_detalleEventoCa where idrotacionCauchos=".$id."")->queryAll();
+						foreach($movimientos as $mov){
+							
+							//$destino=Historicocaucho::model()->findByPk($mov["cauchoDestino"]);
+							$actual=Historicocaucho::model()->findByPk($mov["idhistoricoCaucho"]);
+							
+							$actual->iddetalleRueda=$mov["posicionDestino"];
+							if($mov["posicionDestino"]==null)
+								$actual->idestatusCaucho=4;
+							else
+								$actual->idestatusCaucho=1;
+							$actual->save();
+						}
+					Yii::app()->db->createCommand("update `tsg`.`sgu_detalleEventoCa` set idestatus=3 where idrotacionCauchos=".$id."")->query();
+					Yii::app()->db->createCommand("update `tsg`.`sgu_rotacionCauchos` set idestatus=3 where id=".$id."")->query();
+				}
+				
+				if(isset($_POST['idfac'])){
+						
+						$iva=Parametro::model()->findByAttributes(array('nombre'=>'IVA'));
+                        $total = Factura::model()->totalFacturaOrdenNeumaticos($_POST['idfac']);
+						$factura=Factura::model()->findByPk($_POST['idfac']);
+				
+						Yii::app()->db->createCommand("update `tsg`.`sgu_factura` set `total`=".$total.",`iva`=".(($total)*($iva["valor"]/100)).",`totalFactura`=".(($total)+($total)*($iva["valor"]/100))."   where `sgu_factura`.`id` = ".$_POST['idfac']."")->query();
+				}
+				
 				if (Yii::app()->request->isAjaxRequest){
                     echo CJSON::encode(array(
                         'status'=>'success', 

@@ -17,7 +17,7 @@
 <h1>Datos para la orden</h1>
 <div class="row">
 		<?php //echo $form->labelEx($model,'fecha'); ?>
-		<?php echo $form->hiddenField($model,'fecha',array('value'=>date("Y-m-d h:i"),'size'=>20,'maxlength'=>10,'style'=>'width:80px;')); ?>
+		<?php echo $form->hiddenField($model,'fecha',array('value'=>date("Y-m-d H:i"),'size'=>20,'maxlength'=>10,'style'=>'width:80px;')); ?>
 		<?php //echo $form->error($model,'fecha'); ?>
 		
 		<?php echo $form->hiddenField($model,'tipo',array('value'=>2)); ?>

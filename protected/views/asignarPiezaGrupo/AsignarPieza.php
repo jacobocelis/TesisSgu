@@ -44,7 +44,7 @@
 	//print_r($uno);
 	//echo 'separoo';
 	//print_r($dos);
-		$this->widget('zii.widgets.grid.CGridView', array(
+		$this->widget('ext.selgridview.SelGridView', array(
 			'id'=>'_lista1',
 			'selectableRows'=>2,
 			'dataProvider'=>$piezasGrupo,
@@ -90,8 +90,8 @@
 		echo CrugeTranslator::t("Agregar piezas");?></div>
 
 	<?php 
-	
-		$this->widget('zii.widgets.grid.CGridView', array(
+	//zii.widgets.grid.CGridView
+		$this->widget('ext.selgridview.SelGridView', array(
 			'id'=>'_lista2',
 			'filter'=>$model,
 			'selectableRows'=>2,

@@ -19,7 +19,6 @@ class Parametro extends CActiveRecord
 	{
 		return 'sgu_parametro';
 	}
-
 	/**
 	 * @return array validation rules for model attributes.
 	 */

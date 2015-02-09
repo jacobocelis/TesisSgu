@@ -27,7 +27,38 @@ class Factura extends CActiveRecord
 	{
 		return 'sgu_factura';
 	}
-
+	public function totalFacturaOrdenNeumaticos($id){
+		
+		$iva=Parametro::model()->findByAttributes(array('nombre'=>'IVA'));
+		$factura=Factura::model()->findByPk($id);
+		
+						$actividades=Detordneumatico::model()->findAll(array("condition"=>"idordenMtto = '".$factura->idordenMtto."' and iddetalleEventoCa in (select id from sgu_detalleEventoCa where idfallaCaucho is not null) "));
+						$subTotal=0;
+						//averias
+						for($i=0;$i<count($actividades);$i++){
+							$averias=Detreccaucho::model()->findAll(array("condition"=>"iddetalleEventoCa = '".$actividades[$i]["iddetalleEventoCa"]."'"));
+							for($j=0;$j<count($averias);$j++){
+								$subTotal+=$averias[$j]["costoTotal"];
+							}
+						}
+					
+						//renovaciones
+						$actividades=Detordneumatico::model()->findAll(array("condition"=>"idordenMtto = '".$factura->idordenMtto."' and iddetalleEventoCa in (select id from sgu_detalleEventoCa where idaccionCaucho=1 and idestatus = 3)"));
+						for($i=0;$i<count($actividades);$i++){
+							$renovaciones=Historicocaucho::model()->find(array('condition'=>'iddetalleRueda in (select iddetalleRueda from sgu_historicoCaucho where id in (select idhistoricoCaucho from sgu_detalleEventoCa where id="'.$actividades[$i]["iddetalleEventoCa"].'" )) and idestatusCaucho=1 and idvehiculo in (select idvehiculo from sgu_historicoCaucho where id in (select idhistoricoCaucho from sgu_detalleEventoCa where id="'.$actividades[$i]["iddetalleEventoCa"].'"))'));
+								$subTotal+=$renovaciones["costounitario"];
+						}
+					
+						//rotaciones
+						$rotaciones=Rotacioncauchos::model()->findAll(array(
+						'condition' =>'id in (select de.idrotacionCauchos as id from sgu_detOrdNeumatico d, sgu_detalleEventoCa de where d.iddetalleEventoCa=de.id and d.idordenMtto='.$factura->idordenMtto.' and de.idaccionCaucho=2 group by de.idrotacionCauchos) and idestatus= 3','order'=>'id'));
+						
+						for($i=0;$i<count($rotaciones);$i++)
+							$subTotal+=$rotaciones[$i]["costoTotal"];
+						
+		return $subTotal;
+	}
+	
 	/**
 	 * @return array validation rules for model attributes.
 	 */

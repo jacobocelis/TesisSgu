@@ -293,7 +293,14 @@ class NeumaticosController extends Controller
 			 $model->attributes=$_POST['Historicocaucho'];
 			 $model->fecha=date("Y-m-d", strtotime(str_replace('/', '-',$model->fecha)));
 			if($model->save()){
+				if(isset($_POST['idfac'])){
+						
+						$iva=Parametro::model()->findByAttributes(array('nombre'=>'IVA'));
+                        $total = Factura::model()->totalFacturaOrdenNeumaticos($_POST['idfac']);
+						$factura=Factura::model()->findByPk($_POST['idfac']);
 				
+						Yii::app()->db->createCommand("update `tsg`.`sgu_factura` set `total`=".$total.",`iva`=".(($total)*($iva["valor"]/100)).",`totalFactura`=".(($total)+($total)*($iva["valor"]/100))."   where `sgu_factura`.`id` = ".$_POST['idfac']."")->query();
+					}
                 if (Yii::app()->request->isAjaxRequest){
                     echo CJSON::encode(array(
                         'status'=>'success', 
@@ -839,8 +846,17 @@ class NeumaticosController extends Controller
 				$det->fechaRealizada=$model->fecha;
 				$det->save();
 				$viejo->idestatusCaucho=3;
-				
 				$viejo->save();
+				
+				if(isset($_POST['idfac'])){
+						
+						$iva=Parametro::model()->findByAttributes(array('nombre'=>'IVA'));
+                        $total = Factura::model()->totalFacturaOrdenNeumaticos($_POST['idfac']);
+						$factura=Factura::model()->findByPk($_POST['idfac']);
+				
+						Yii::app()->db->createCommand("update `tsg`.`sgu_factura` set `total`=".$total.",`iva`=".(($total)*($iva["valor"]/100)).",`totalFactura`=".(($total)+($total)*($iva["valor"]/100))."   where `sgu_factura`.`id` = ".$_POST['idfac']."")->query();
+					}
+					
                 if (Yii::app()->request->isAjaxRequest){
                     echo CJSON::encode(array(
                         'status'=>'success', 

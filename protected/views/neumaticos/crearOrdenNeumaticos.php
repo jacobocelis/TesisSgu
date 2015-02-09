@@ -495,7 +495,8 @@ jQuery.ajax({
                                         $('#formulario div.divForForm').html(data.div);
 										setTimeout("$('#formulario').dialog('close') ",1);
 										$('#scrollingDiv').hide();
-										window.setTimeout('location.reload()', 1);
+										//window.setTimeout('location.reload()', 1);
+										window.location.replace("<?php echo Yii::app()->baseUrl."/neumaticos/verOrdenes"?>");	
                                 }
                         } ,
                 'cache':false});

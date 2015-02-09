@@ -107,7 +107,14 @@ class DetreccauchoController extends Controller
             if($model->save()){
                 if (Yii::app()->request->isAjaxRequest){
 					if(isset($_POST['idfac'])){
+						
 						$iva=Parametro::model()->findByAttributes(array('nombre'=>'IVA'));
+                        $total = Factura::model()->totalFacturaOrdenNeumaticos($_POST['idfac']);
+						$factura=Factura::model()->findByPk($_POST['idfac']);
+						
+						Yii::app()->db->createCommand("update `tsg`.`sgu_factura` set `total`=".$total.",`iva`=".(($total)*($iva["valor"]/100)).",`totalFactura`=".(($total)+($total)*($iva["valor"]/100))."   where `sgu_factura`.`id` = ".$_POST['idfac']."")->query();
+						
+						/*$iva=Parametro::model()->findByAttributes(array('nombre'=>'IVA'));
 						$factura=Factura::model()->findByPk($_POST['idfac']);
 						$actividades=Detordneumatico::model()->findAll(array("condition"=>"idordenMtto = '".$factura->idordenMtto."'"));
 						$subTotal=0;
@@ -119,7 +126,7 @@ class DetreccauchoController extends Controller
 						}
 						Yii::app()->db->createCommand("update `tsg`.`sgu_factura` set `total`=".$subTotal." where `sgu_factura`.`id` = ".$_POST['idfac']."")->query();
 						$factura=Factura::model()->findByPk($_POST['idfac']);
-						Yii::app()->db->createCommand("update `tsg`.`sgu_factura` set `iva`=".(($factura->total)*($iva["valor"]/100)).",`totalFactura`=".(($factura->total)+($factura->total)*($iva["valor"]/100))."   where `sgu_factura`.`id` = ".$_POST['idfac']."")->query();
+						Yii::app()->db->createCommand("update `tsg`.`sgu_factura` set `iva`=".(($factura->total)*($iva["valor"]/100)).",`totalFactura`=".(($factura->total)+($factura->total)*($iva["valor"]/100))."   where `sgu_factura`.`id` = ".$_POST['idfac']."")->query();*/
 					}
                     echo CJSON::encode(array(
                         'status'=>'success', 
