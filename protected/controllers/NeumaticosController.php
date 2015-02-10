@@ -764,6 +764,28 @@ class NeumaticosController extends Controller
 				'listas'=>$this->getOrdenesListas(),*/
 			));
 	}
+	public function actionHistoricoRotaciones(){
+	//idplan in (select id from sgu_plan) and ??
+			$rotaciones=new CActiveDataProvider('Rotacioncauchos',array('criteria' => array(
+			'condition' =>'idestatus=3',
+			//'order'=>'fechaFalla'
+			)));
+			
+		$this->render('historicoRotaciones',array(
+				'rotaciones'=>$rotaciones,
+				/*'mi'=>$mi['total'],
+				'color'=>$this->getColor($mi["total"]),
+				'abiertas'=>$this->getOrdenesAbiertas(),
+				'Colorabi'=>$this->getColor($this->getOrdenesAbiertas()),
+				'Colorli'=>$this->getColor($this->getOrdenesListas()),
+				'listas'=>$this->getOrdenesListas(),*/
+			));
+	}
+	
+	
+			
+			
+			
 	public function actionHistoricoAverias(){
 	//idplan in (select id from sgu_plan) and ??
 			$dataProvider=new CActiveDataProvider('Detalleeventoca',array('criteria' => array(

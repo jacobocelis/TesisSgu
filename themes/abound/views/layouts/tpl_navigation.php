@@ -7,7 +7,7 @@ $sql = 'SELECT `logondate` FROM `cruge_user` WHERE iduser=' . Yii::app()->user->
 $connection = Yii::app()->db;
 $command = $connection->createCommand($sql);
 $value = $command->queryScalar();
-$fecha = date('d-m-Y H:i', $value);
+$fecha = date('d/m/Y h:i a', $value);
 
 //(Yii::app()->getSession()->get('rolActual') == 'Estudiante') ? true : false
 if (!Yii::app()->user->isGuest) {

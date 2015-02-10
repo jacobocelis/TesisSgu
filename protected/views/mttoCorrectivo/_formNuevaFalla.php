@@ -21,6 +21,11 @@
 		<?php echo $form->textArea($model,'falla',array('size'=>60,'maxlength'=>120)); ?>
 		<?php echo $form->error($model,'falla'); ?>
 	</div>
+	<div class="row">
+		
+		<?php echo $form->hiddenField($model,'tipo',array('value'=>0); ?>
+		
+	</div>
 	<?php
 		echo CHtml::link('Cancelar', "",array('title'=>'Cancelar',
         'style'=>'cursor: pointer;font-size:10px;float:right;',

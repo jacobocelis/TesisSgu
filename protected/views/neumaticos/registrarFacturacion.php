@@ -12,6 +12,12 @@ $this->breadcrumbs=array(
 	array('label'=>'      Histórico de ordenes', 'url'=>array('historicoOrdenes')),	
 );
 ?>
+<?php $factur=$factura->getData();
+	if(isset($factur[0]["id"]))
+		$idfac=$factur[0]["id"];
+	else
+		$idfac=0;
+?>
 <div id="factura" class='crugepanel user-assignments-role-list'></div>
 
 <div id="detalle" class='crugepanel user-assignments-role-list'>
@@ -153,14 +159,39 @@ $this->widget('zii.widgets.grid.CGridView', array(
 					'value'=>'$data->idempleado==""?\' \':$data->idempleado0->nombre.\' \'.$data->idempleado0->apellido',
 					'htmlOptions'=>array('style'=>'text-align:center;width:100px'),
 				),
+				array(
+					'headerHtmlOptions'=>array('style'=>'text-align:center;width:30px;background:#B0E3FF'),
+					'header'=>'Fecha de reparación',
+					'name'=>'fechaRealizada',
+					'type'=>'raw',
+					'value'=>'$data->valores($data->fechaRealizada)?date("d/m/Y",strtotime($data->fechaRealizada)).CHtml::link(
+                     CHtml::image(Yii::app()->request->baseUrl."/imagenes/agregar.png",
+                                          "Agregar",array("title"=>"Editar")),
+                        "",
+                        array(
+                                \'style\'=>\'cursor: pointer;text-decoration: underline;text-align:center;\',
+                                \'onclick\'=>\'{registrarMR("\'.Yii::app()->createUrl("Detalleeventoca/actualizar",array("id"=>$data["id"])).\'"); $("#dialog").dialog("open");}\'
+                        )
+                ):$data->noasignado().CHtml::link(
+                     CHtml::image(Yii::app()->request->baseUrl."/imagenes/agregar.png",
+                                          "Agregar",array("title"=>"Editar")),
+                        "",
+                        array(
+                                \'style\'=>\'cursor: pointer;text-decoration: underline;text-align:center;\',
+                                \'onclick\'=>\'{registrarMR("\'.Yii::app()->createUrl("Detalleeventoca/actualizar",array("id"=>$data["id"])).\'"); $("#dialog").dialog("open");}\'
+                        )
+                )',
+					'htmlOptions'=>array('style'=>'width:80px;text-align:center;'),
+				),
 				
-				/*array(
+				array(
 					'header'=>'Estado',
 					'name'=>'idestatus',
 					'type'=>'raw',
 					'value'=>'$data->color($data->idestatus,$data->idestatus0->estatus)',
 					'htmlOptions'=>array('style'=>'width:80px;text-align:center;'),
-				),*/
+				),
+				
 			)
         ));
 		
@@ -232,16 +263,19 @@ $this->widget('zii.widgets.grid.CGridView', array(
                                 \'onclick\'=>\'{editarActividad("\'.Yii::app()->createUrl("Detreccaucho/update",array("id"=>$data["id"])).\'"); $("#dialog").dialog("open");}\'
                         )
                 );',),
-				/*array(
+				array(
 					'header'=>'Eliminar',
 					'class'=>'CButtonColumn',
 					 'template'=>'{delete}',
+					 'afterDelete'=>'function(link,success,data){
+	                               $.fn.yiiGridView.update("factu");
+	                        }',
 					     'buttons'=>array(
 							'delete' => array(
-								'url'=>'Yii::app()->createUrl("actividadrecursogrupo/delete", array("id"=>$data->id))',
+								'url'=>'Yii::app()->createUrl("detreccaucho/delete", array("id"=>$data->id,"idfac"=>'.$idfac.'))',
 						),
 					),
-				),*/
+				),
 			),
 	));
 	 echo CHtml::link('Agregar recurso', "",  // the link for open the dialog
@@ -679,7 +713,7 @@ $this->beginWidget('zii.widgets.jui.CJuiDialog', array( // the dialog
 $this->beginWidget('zii.widgets.jui.CJuiDialog', array( // the dialog
     'id'=>'montajeN',
     'options'=>array(
-        'title'=>'Actualizar informacióntua',
+        'title'=>'Actualizar información',
         'autoOpen'=>false,
         'modal'=>true,
         'width'=>390,
@@ -728,12 +762,7 @@ $this->beginWidget('zii.widgets.jui.CJuiDialog', array( // the dialog
 }
 </style>
 <script>
-<?php $factura=$factura->getData();
-	if(isset($factura[0]["id"]))
-		$idfac=$factura[0]["id"];
-	else
-		$idfac=0;
-?>;
+
 var idfac=<?php echo $idfac?>;
 
 var Uurl;
@@ -990,6 +1019,36 @@ $('#recurso').dialog('open');
 										
                                 }
                         },
+                'cache':false});
+    return false; 
+}
+var Uurl;
+function registrarMR(id){
+
+	 if (typeof(id)=='string')
+                Uurl=id;
+	jQuery.ajax({
+                url: Uurl,
+                'data':$(this).serialize(),
+                'type':'post',
+                'dataType':'json',
+                'success':function(data)
+                        {
+                                if (data.status == 'failure')
+                                {
+                                        $('#dialog div.divForForm').html(data.div);
+                                        // Here is the trick: on submit-> once again this function!
+                                        $('#dialog div.divForForm form').submit(registrarMR); // updatePaymentComment
+                                }
+                                else
+                                {
+                                        $('#dialog div.divForForm').html(data.div);
+										$.fn.yiiGridView.update('averias');
+										$.fn.yiiGridView.update('renovaciones');
+                                        setTimeout("$('#dialog').dialog('close') ",1000);
+										actualizarCheck(idorden);
+                                }
+                        } ,
                 'cache':false});
     return false; 
 }

@@ -111,4 +111,5 @@ function cancelar(){
 	clear:both;
 	margin-bottom:5px;
 }
-</style>
+
+<style>

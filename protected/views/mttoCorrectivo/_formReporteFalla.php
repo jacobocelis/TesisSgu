@@ -60,7 +60,7 @@
 	
 	<div class="row">
 		<?php echo $form->labelEx($model,'idfalla'); ?>
-		<?php echo $form->dropDownList($model,'idfalla',CHtml::listData(Falla::model()->findAll('1 order by id desc'),'id','falla'),array('prompt'=>'Seleccione: ','style' => 'width:320px;')); ?>
+		<?php echo $form->dropDownList($model,'idfalla',CHtml::listData(Falla::model()->findAll('tipo=0 order by id desc'),'id','falla'),array('prompt'=>'Seleccione: ','style' => 'width:320px;')); ?>
 		<?php echo $form->error($model,'idfalla'); ?>
 	</div>
 			

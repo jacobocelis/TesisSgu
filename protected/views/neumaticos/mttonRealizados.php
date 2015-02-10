@@ -152,30 +152,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
 					'value'=>'$data->idempleado==""?\' \':$data->idempleado0->nombre.\' \'.$data->idempleado0->apellido',
 					'htmlOptions'=>array('style'=>'text-align:center;width:100px'),
 				),
-				array(
-					'headerHtmlOptions'=>array('style'=>'text-align:center;width:30px;background:#B0E3FF'),
-					'header'=>'Fecha de reparación',
-					'name'=>'fechaRealizada',
-					'type'=>'raw',
-					'value'=>'$data->valores($data->fechaRealizada)?date("d/m/Y",strtotime($data->fechaRealizada)).CHtml::link(
-                     CHtml::image(Yii::app()->request->baseUrl."/imagenes/agregar.png",
-                                          "Agregar",array("title"=>"Editar")),
-                        "",
-                        array(
-                                \'style\'=>\'cursor: pointer;text-decoration: underline;text-align:center;\',
-                                \'onclick\'=>\'{registrarMR("\'.Yii::app()->createUrl("Detalleeventoca/actualizar",array("id"=>$data["id"])).\'"); $("#dialog").dialog("open");}\'
-                        )
-                ):$data->noasignado().CHtml::link(
-                     CHtml::image(Yii::app()->request->baseUrl."/imagenes/agregar.png",
-                                          "Agregar",array("title"=>"Editar")),
-                        "",
-                        array(
-                                \'style\'=>\'cursor: pointer;text-decoration: underline;text-align:center;\',
-                                \'onclick\'=>\'{registrarMR("\'.Yii::app()->createUrl("Detalleeventoca/actualizar",array("id"=>$data["id"])).\'"); $("#dialog").dialog("open");}\'
-                        )
-                )',
-					'htmlOptions'=>array('style'=>'width:80px;text-align:center;'),
-				),
+				
 				/*array(
 					'headerHtmlOptions'=>array('style'=>'text-align:center;width:30px;background:#B0E3FF'),
 					'htmlOptions'=>array('style'=>'text-align:center;'),

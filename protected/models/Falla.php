@@ -30,7 +30,7 @@ class Falla extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('falla', 'required'),
+			array('falla,tipo', 'required'),
 			
 			array('falla', 'length', 'max'=>120),
 			// The following rule is used by search().
@@ -60,6 +60,7 @@ class Falla extends CActiveRecord
 		return array(
 			'id' => 'ID',
 			'falla' => 'Falla',
+			'tipo'=>'Tipo',
 		);
 	}
 

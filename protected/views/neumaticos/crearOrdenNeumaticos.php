@@ -12,8 +12,10 @@
 	array('label'=>'      Órdenes listas para cerrar <span class="badge badge-'.$this->Color($listas).' pull-right">'.$listas.'</span>', 'url'=>array('cerrarOrdenes')),
 );
 ?>
+<div class='crugepanel user-assignments-role-list'>
 <h1>Crear órden de neumáticos</h1>
 <i>Puede crear una orden de neumáticos para reparar una <strong>avería</strong> previamente registrada, realizar una <strong>rotación</strong> entre neumáticos de la misma unidad ó entre varias unidades ó para solicitar una <strong>renovación</strong> de los neumáticos actuales en una unidad.</i>
+</div>
 <div class='crugepanel user-assignments-role-list'>
 
 	<h2>Averías por atender</h2>
@@ -193,7 +195,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
 						'htmlOptions'=>array('style'=>'text-align:center;'),
 						'header'=>'Movimientos',
 						'type'=>'raw',
-						'value'=>'($data->id==0?\'-\':$data->id).CHtml::link(
+						'value'=>'($data->id==0?\'-\':\' \').CHtml::link(
                         CHtml::image(Yii::app()->request->baseUrl."/imagenes/ver.png",
                                           "Agregar",array("title"=>"Agregar movimiento de neumáticos")),
                         "",
@@ -220,6 +222,10 @@ $this->widget('zii.widgets.grid.CGridView', array(
 					'header'=>'Eliminar',
 					'class'=>'CButtonColumn',
 					 'template'=>'{delete}',
+					 'afterDelete'=>'function(link,success,data){
+	                                cancelarB();
+	                        }',
+					
 					     'buttons'=>array(
 							'delete' => array(
 								'url'=>'Yii::app()->createUrl("Rotacioncauchos/delete", array("id"=>$data->id))',
@@ -307,7 +313,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
 					'name'=>'iddetalleRueda',
 					'htmlOptions'=>array('style'=>'text-align:center;width:85px'),
 				),
-				array(
+				/*array(
 					'header'=>'Eliminar',
 					'class'=>'CButtonColumn',
 					 'template'=>'{delete}',
@@ -316,7 +322,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
 								'url'=>'Yii::app()->createUrl("detalleEventoCa/delete", array("id"=>$data->id))',
 						),
 					),
-				),
+				),*/
 			)
         ));
 		 echo CHtml::link('agregar movimiento(+)', "",  // the link for open the dialog
@@ -325,7 +331,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
         'style'=>'cursor: pointer; text-decoration: underline;',
         'onclick'=>"{agregarMovimiento(); }"));
 		
-		echo CHtml::link('Cancelar', "",array('title'=>'Cancelar',
+		echo CHtml::link('Cerrar', "",array('title'=>'Cancelar',
         'style'=>'cursor: pointer;font-size:10px;float:right;',
         'onclick'=>"{cancelarB()}"));
 		

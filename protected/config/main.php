@@ -148,7 +148,7 @@ return array(
             'debug' => true,
         ),
         'format' => array(
-            'datetimeFormat' => "d M, Y h:m:s a",
+            'datetimeFormat' => "d/m/Y h:i a",
         ),
         // uncomment the following to enable URLs in path-format (Acortador de URL | URL Amigables)     
         'urlManager' => array(

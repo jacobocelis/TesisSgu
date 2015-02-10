@@ -28,7 +28,7 @@ class MttoCorrectivoController extends Controller
 	{
 		return array(
 			array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array('index','view','falla','registrarFalla','ajaxObtenerFallas','ajaxObtenerConductor','nuevaFalla','ajaxActualizarListaFallas','crearOrdenCorrectiva','obtenerActividad','agregarRecurso','iniciales','crearordenpreventiva','crearOrden','verOrdenes','cambiarFecha','mttocRealizados','registrarFacturacion','agregarFactura','estatusOrden','cerrarOrdenes','HistoricoCorrectivo','historicoOrdenes','historicoGastos','vistaPrevia','vistaPreviaPDF','generarPdf','correo','actualizarSpan','agregarRecursoAdicional','insumos','repuesto','ActualizarCheck'),
+				'actions'=>array('index','view','falla','registrarFalla','ajaxObtenerFallas','ajaxObtenerConductor','nuevaFalla','ajaxActualizarListaFallas','ajaxActualizarListaMejora','crearOrdenCorrectiva','obtenerActividad','agregarRecurso','iniciales','crearordenpreventiva','crearOrden','verOrdenes','cambiarFecha','mttocRealizados','registrarFacturacion','agregarFactura','estatusOrden','cerrarOrdenes','HistoricoCorrectivo','historicoOrdenes','historicoGastos','vistaPrevia','vistaPreviaPDF','generarPdf','correo','actualizarSpan','agregarRecursoAdicional','insumos','repuesto','ActualizarCheck','RegistrarMejora','Mejora','nuevaMejora'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
@@ -592,12 +592,50 @@ class MttoCorrectivoController extends Controller
             exit;               
         }
 	}
+	public function actionMejora(){
+		
+		$model=new Reportefalla;
+        // Uncomment the following line if AJAX validation is needed
+         //$this->performAjaxValidation($model);
+ 
+    if(isset($_POST['Reportefalla'])){
+			
+            $model->attributes=$_POST['Reportefalla'];
+			$model->fechaFalla=date("Y-m-d", strtotime(str_replace('/', '-',$model->fechaFalla )));
+            if($model->save()){
+                if (Yii::app()->request->isAjaxRequest){
+				   /*inserts por debajo del plan de mantenimiento a cada vehiculo del grupo*/
+				   
+					echo CJSON::encode(array(
+                        'status'=>'success', 
+                        'div'=>"se agregó la mejora"
+                        ));
+                    exit;
+                }
+            }
+        }
+        if (Yii::app()->request->isAjaxRequest){
+            echo CJSON::encode(array(
+                'status'=>'failure', 
+                'div'=>$this->renderPartial('_formReporteMejora', array('model'=>$model), true)));
+            exit;               
+        }
+	}
 	public function actionRegistrarFalla(){
 		$dataProvider=new CActiveDataProvider('Reportefalla',array('criteria' => array(
-			'condition' =>'idestatus=8',
+			'condition' =>'t.idestatus=8 and t.idfalla in (select a.id from sgu_falla a where a.tipo =0)',
 			'order'=>'fechaFalla DESC'
 			)));
 		$this->render('registrarFalla',array(
+			'dataProvider'=>$dataProvider,
+		));
+	}
+	public function actionRegistrarMejora(){
+		$dataProvider=new CActiveDataProvider('Reportefalla',array('criteria' => array(
+			'condition' =>'idestatus=8 and idfalla in (select id from sgu_falla where tipo =1)',
+			'order'=>'fechaFalla DESC'
+			)));
+		$this->render('registrarMejora',array(
 			'dataProvider'=>$dataProvider,
 		));
 	}
@@ -772,9 +810,42 @@ class MttoCorrectivoController extends Controller
         }
 		
 	}
+	public function actionNuevaMejora() {
+		$model=new Falla;
+		if(isset($_POST['Falla'])){
+			
+            $model->attributes=$_POST['Falla'];
+			
+			if($model->save()){
+                if (Yii::app()->request->isAjaxRequest){
+                    echo CJSON::encode(array(
+                        'status'=>'success', 
+                        'div'=>"Mejora agregada"
+                        ));
+					exit;
+                }
+            }
+        }
+		 if (Yii::app()->request->isAjaxRequest){	
+            echo CJSON::encode(array(
+                'status'=>'failure', 
+                'div'=>$this->renderPartial('_formNuevaMejora', array('model'=>$model), true)
+				));
+            exit;               
+        }
+		echo $model->tipo;
+		
+	}
 	public function actionAjaxActualizarListaFallas(){
 		
-		$models = Falla::model()->findAll('id<>0 order by id DESC');
+		$models = Falla::model()->findAll('tipo=0 order by id DESC');
+		foreach ($models as $mode){
+			echo CHtml::tag('option',array('type'=>'text','value'=>(($mode->id))),Chtml::encode(($mode->falla)),true);
+		}
+	}
+	public function actionAjaxActualizarListaMejora(){
+		
+		$models = Falla::model()->findAll('tipo=1 order by id DESC');
 		foreach ($models as $mode){
 			echo CHtml::tag('option',array('type'=>'text','value'=>(($mode->id))),Chtml::encode(($mode->falla)),true);
 		}
