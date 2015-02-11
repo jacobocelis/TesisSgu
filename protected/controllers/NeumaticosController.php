@@ -138,6 +138,10 @@ class NeumaticosController extends Controller
         }
 		
 	}*/
+	public function getTotalFallas(){
+		$totFalla=Yii::app()->db->createCommand("select count(*) as total from sgu_detalleEventoCa where idestatus=8 and idfallaCaucho is not null")->queryRow();
+		return $totFalla["total"];
+	}
 	public function getOrdenesAbiertas(){
 		$abiertas=Yii::app()->db->createCommand("select count(*) as total from sgu_ordenMtto where idestatus=5 and tipo=2")->queryRow();
 		return $abiertas["total"];
@@ -188,14 +192,22 @@ class NeumaticosController extends Controller
 					'dataProvider'=>$dataProvider,
 					'montados'=>$montados,
 					'model'=>$model,
-					'registrado'=>$reg
+					'registrado'=>$reg,
+					'iniciales'=>$this->getPorDefinir(),
+					'totalFalla'=>$this->getTotalFallas(),
+					'listas'=>$this->getOrdenesListas(),
+					'abiertas'=>$this->getOrdenesAbiertas(),
 				));
 			}else
 				$this->render('averiaNeumatico',array(
 					'dataProvider'=>$dataProvider,
 					'montados'=>$montados,
 					'model'=>$model,
-					'registrado'=>$reg
+					'registrado'=>$reg,
+					'iniciales'=>$this->getPorDefinir(),
+					'totalFalla'=>$this->getTotalFallas(),
+					'listas'=>$this->getOrdenesListas(),
+					'abiertas'=>$this->getOrdenesAbiertas(),
 				));	
 		}
 		else{
@@ -203,7 +215,11 @@ class NeumaticosController extends Controller
 				'dataProvider'=>$dataProvider,
 				'montados'=>$montados,
 				'model'=>$model,
-				'registrado'=>$reg
+				'registrado'=>$reg,
+				'iniciales'=>$this->getPorDefinir(),
+				'totalFalla'=>$this->getTotalFallas(),
+				'listas'=>$this->getOrdenesListas(),
+				'abiertas'=>$this->getOrdenesAbiertas(),
 			));
 		}
 	}
@@ -245,7 +261,11 @@ class NeumaticosController extends Controller
 			'ca'=>$ca,
 			'grup'=>$grup,
 			'todo'=>$todo,	
-			'iniciales'=>$this->getPorDefinir()
+			
+			'iniciales'=>$this->getPorDefinir(),
+			'totalFalla'=>$this->getTotalFallas(),
+			'listas'=>$this->getOrdenesListas(),
+			'abiertas'=>$this->getOrdenesAbiertas(),
 			
 		));
 	}
@@ -376,7 +396,7 @@ class NeumaticosController extends Controller
 		$veh=array();
 		$idveh=Vehiculo::model()->findAll();
 		$reposicionDias=Parametro::model()->findByAttributes(array('nombre'=>'alertaCambioCauchos'));
-		$totFalla=Yii::app()->db->createCommand("select count(*) as total from sgu_detalleEventoCa where idestatus=8 and idfallaCaucho is not null")->queryRow();
+		
 		if(isset($_POST["Vehiculo"])){
 			if($_POST["Vehiculo"]["id"]==""){
 				foreach($idveh as $idv){
@@ -403,9 +423,10 @@ class NeumaticosController extends Controller
 			'montados'=>$montados,
 			'rep'=>$rep,
 			'veh'=>$veh,
-			'iniciales'=>$this->getPorDefinir(),
 			'reposicionDias'=>$reposicionDias["valor"],
-			'totalFalla'=>$totFalla["total"],
+			
+			'iniciales'=>$this->getPorDefinir(),
+			'totalFalla'=>$this->getTotalFallas(),
 			'listas'=>$this->getOrdenesListas(),
 			'abiertas'=>$this->getOrdenesAbiertas(),
 			
@@ -756,12 +777,10 @@ class NeumaticosController extends Controller
 			//$mi=Yii::app()->db->createCommand("select count(*) as total from sgu_reporteFalla where idestatus=8")->queryRow();
 		$this->render('historicoMontajes',array(
 				'dataProvider'=>$des,
-				/*'mi'=>$mi['total'],
-				'color'=>$this->getColor($mi["total"]),
-				'abiertas'=>$this->getOrdenesAbiertas(),
-				'Colorabi'=>$this->getColor($this->getOrdenesAbiertas()),
-				'Colorli'=>$this->getColor($this->getOrdenesListas()),
-				'listas'=>$this->getOrdenesListas(),*/
+				'iniciales'=>$this->getPorDefinir(),
+					'totalFalla'=>$this->getTotalFallas(),
+					'listas'=>$this->getOrdenesListas(),
+					'abiertas'=>$this->getOrdenesAbiertas(),
 			));
 	}
 	public function actionHistoricoRotaciones(){
@@ -773,34 +792,27 @@ class NeumaticosController extends Controller
 			
 		$this->render('historicoRotaciones',array(
 				'rotaciones'=>$rotaciones,
-				/*'mi'=>$mi['total'],
-				'color'=>$this->getColor($mi["total"]),
-				'abiertas'=>$this->getOrdenesAbiertas(),
-				'Colorabi'=>$this->getColor($this->getOrdenesAbiertas()),
-				'Colorli'=>$this->getColor($this->getOrdenesListas()),
-				'listas'=>$this->getOrdenesListas(),*/
+				'iniciales'=>$this->getPorDefinir(),
+					'totalFalla'=>$this->getTotalFallas(),
+					'listas'=>$this->getOrdenesListas(),
+					'abiertas'=>$this->getOrdenesAbiertas(),
 			));
 	}
 	
-	
-			
-			
-			
 	public function actionHistoricoAverias(){
 	//idplan in (select id from sgu_plan) and ??
 			$dataProvider=new CActiveDataProvider('Detalleeventoca',array('criteria' => array(
 			'condition' =>'idestatus=3 and idfallaCaucho is not null',
 			'order'=>'id'
 			)));
-			//$mi=Yii::app()->db->createCommand("select count(*) as total from sgu_reporteFalla where idestatus=8")->queryRow();
+			
 		$this->render('historicoAverias',array(
 				'dataProvider'=>$dataProvider,
-				/*'mi'=>$mi['total'],
-				'color'=>$this->getColor($mi["total"]),
-				'abiertas'=>$this->getOrdenesAbiertas(),
-				'Colorabi'=>$this->getColor($this->getOrdenesAbiertas()),
-				'Colorli'=>$this->getColor($this->getOrdenesListas()),
-				'listas'=>$this->getOrdenesListas(),*/
+				'iniciales'=>$this->getPorDefinir(),
+					'totalFalla'=>$this->getTotalFallas(),
+					'listas'=>$this->getOrdenesListas(),
+					'abiertas'=>$this->getOrdenesAbiertas(),
+				
 			));
 	}
 	public function actionHistoricoOrdenes(){
@@ -810,6 +822,9 @@ class NeumaticosController extends Controller
 			)));
 		$this->render('historicoOrdenes',array(
 			'dataProvider'=>$dataProvider,
+			'iniciales'=>$this->getPorDefinir(),
+			'totalFalla'=>$this->getTotalFallas(),
+			'listas'=>$this->getOrdenesListas(),
 			'abiertas'=>$this->getOrdenesAbiertas(),
 			'color'=>$this->getColor($this->getOrdenesAbiertas()),
 			));
@@ -823,6 +838,10 @@ class NeumaticosController extends Controller
 			'dataProvider'=>$dataProvider,
 			'abiertas'=>$this->getOrdenesAbiertas(),
 			'color'=>$this->getColor($this->getOrdenesAbiertas()),
+			'iniciales'=>$this->getPorDefinir(),
+			'totalFalla'=>$this->getTotalFallas(),
+			'listas'=>$this->getOrdenesListas(),
+					
 			));
 	}
 	
@@ -985,7 +1004,10 @@ class NeumaticosController extends Controller
 			'dataProvider'=>$dataProvider,
 			'abiertas'=>$this->getOrdenesAbiertas(),
 			'color'=>$this->getColor($this->getOrdenesAbiertas()),
+			'iniciales'=>$this->getPorDefinir(),
+			'totalFalla'=>$this->getTotalFallas(),
 			'listas'=>$this->getOrdenesListas(),
+			'abiertas'=>$this->getOrdenesAbiertas(),
 			));
 	}
 	
@@ -1145,6 +1167,8 @@ class NeumaticosController extends Controller
 			'rotaciones'=>$rotaciones,
 			'montadosR'=>$montadosR,
 			'movimientos'=>$movimientos,
+			'iniciales'=>$this->getPorDefinir(),
+			'totalFalla'=>$this->getTotalFallas(),
 		));
 	}
 	
@@ -1175,7 +1199,11 @@ class NeumaticosController extends Controller
 		$this->render('montajeInicial',array(
 			'montados'=>$montados,
 			'rep'=>$rep,
-			'veh'=>$veh
+			'veh'=>$veh,
+			'iniciales'=>$this->getPorDefinir(),
+			'totalFalla'=>$this->getTotalFallas(),
+			'listas'=>$this->getOrdenesListas(),
+			'abiertas'=>$this->getOrdenesAbiertas(),
 		));
 	}
 

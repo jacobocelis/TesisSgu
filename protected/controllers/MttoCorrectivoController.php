@@ -359,7 +359,7 @@ class MttoCorrectivoController extends Controller
 		$modeloOrdenMtto=new Ordenmtto;
 		$dataProvider=new CActiveDataProvider('Reportefalla',array('criteria' => array(
 			//'condition' =>'idestatus=2 and atraso >=-5',
-			'condition' =>'idestatus=8',
+			'condition' =>'idestatus=8 and idfalla in (select id from sgu_falla where tipo=0)',
 			'order'=>'fechaFalla'
 			)));
 		$this->render('crearOrdenCorrectiva',array(
@@ -717,16 +717,16 @@ class MttoCorrectivoController extends Controller
 			));
 	}
 	public function actionIndex(){
-			$cond='idestatus=8';
+			$cond='idestatus=8 and idfalla in (select id from sgu_falla where tipo = 0)';
 			if(isset($_GET["filtro"])){
 				if($_GET["filtro"]==1)
-					$cond='idestatus=8';
+					$cond='idestatus=8  and idfalla in (select id from sgu_falla where tipo = 0)';
 				if($_GET["filtro"]==2)
-					$cond='idestatus=4';
+					$cond='idestatus=4  and idfalla in (select id from sgu_falla where tipo = 0)';
 				if($_GET["filtro"]==3)
-					$cond='idestatus=3';
+					$cond='idestatus=3  and idfalla in (select id from sgu_falla where tipo = 0)';
 				if($_GET["filtro"]==4){
-					$cond='1';
+					$cond='1  and idfalla in (select id from sgu_falla where tipo = 0)';
 				}
 			}
 			$dataProvider=new CActiveDataProvider('Reportefalla',array('criteria' => array(
@@ -734,7 +734,7 @@ class MttoCorrectivoController extends Controller
 			'order'=>'fechaFalla DESC'
 			)));
 			
-			$mi=Yii::app()->db->createCommand("select count(*) as total from sgu_reporteFalla where idestatus=8")->queryRow();
+			$mi=Yii::app()->db->createCommand("select count(*) as total from sgu_reporteFalla where idestatus=8  and idfalla in (select id from sgu_falla where tipo = 0)")->queryRow();
 		$this->render('index',array(
 			'dataProvider'=>$dataProvider,
 			'mi'=>$mi['total'],
@@ -833,7 +833,6 @@ class MttoCorrectivoController extends Controller
 				));
             exit;               
         }
-		echo $model->tipo;
 		
 	}
 	public function actionAjaxActualizarListaFallas(){

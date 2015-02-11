@@ -8,9 +8,16 @@ $this->breadcrumbs=array(
 );
 
 $this->menu=array(
+
+	array('label'=>'<div id="menu"><strong>Combustible</strong></div>'),
+	array('label'=>'      Registrar reposición', 'url'=>array('registrarReposicion')),
 	array('label'=>'      Autonomía de combustible', 'url'=>array('autonomia')),
-	array('label'=>'      Histórico de reposición', 'url'=>array('admin')),
-	array('label'=>'      Estadísticas', 'url'=>array('admin')),
+	array('label'=>'      Histórico de reposición', 'url'=>array('historicoReposicion')),
+	
+	array('label'=>'      Administración de parámetros', 'url'=>array('admin')),
+	
+	array('label'=>'<div id="menu"><strong>Estadísticas</strong></div>'),
+	array('label'=>'      Consumo real vs estimado ', 'url'=>array('realVsEstimado')),
 );
 ?>
 <div class='crugepanel user-assignments-detail'>

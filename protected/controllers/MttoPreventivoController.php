@@ -226,8 +226,10 @@ class MttoPreventivoController extends Controller
         'allDay'=>true,
         //'url'=>'',
 		'editable'=>$editable,
-		'selectable' => true,
+		'selectable' => true
     );}
+	if($tot==0)
+		$items="";
 	$this->render('calendar',array(
 		'items'=>$items
 	));

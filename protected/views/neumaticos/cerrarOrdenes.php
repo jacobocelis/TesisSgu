@@ -4,8 +4,32 @@
 	'Cerrar órdenes',
 );
 $this->menu=array(
-	array('label'=>'<div id="menu"><strong>Órdenes de neumáticos</strong></div>'),
-	array('label'=>'      Crear orden de neumáticos', 'url'=>array('crearOrdenNeumaticos')),
+	array('label'=>'<div id="menu"><strong>Neumáticos</strong></div>'),
+	array('label'=>'      Plantillas de montaje', 'url'=>array('plantilla')),
+	array('label'=>'      Montajes iniciales <span title="hay '.$iniciales.' montajes iniciales por definir" class="badge badge-'.$this->Color($iniciales).' pull-right">'.$iniciales.'</span>', 'url'=>array('montajeInicial')),
+	
+	array('label'=>'<div id="menu"><strong>Averías</strong></div>'),
+	array('label'=>'      Registro de averías', 'url'=>array('averiaNeumatico')),
+	
+	array('label'=>'      Averías por atender <span title="hay '.$totalFalla.' averías en neumaticos por atender" class="badge badge-'.$this->Color($totalFalla).' pull-right">'.$totalFalla.'</span>', 'url'=>array('crearOrdenNeumaticos')),
+	
+	
+	array('label'=>'<div id="menu"><strong>Órdenes de neumaticos</strong></div>'),
+	
+	array('label'=>'      Crear órden de neumaticos', 'url'=>array('crearOrdenNeumaticos')),
+	array('label'=>'      Ver órdenes abiertas <span class="badge badge-'.$this->Color($abiertas).' pull-right">'.$abiertas.'</span>', 'url'=>array('verOrdenes')),
+	array('label'=>'      Órdenes listas para cerrar <span class="badge badge-'.$this->Color($listas).' pull-right">'.$listas.'</span>', 'url'=>array('cerrarOrdenes')),
+	
+	
+	array('label'=>'<div id="menu"><strong>Historial</strong></div>'),
+	array('label'=>'      Histórico de averías', 'url'=>array('historicoAverias')),
+	array('label'=>'      Histórico de montajes', 'url'=>array('historicoMontajes')),
+	array('label'=>'      Histórico de rotaciones', 'url'=>array('historicoRotaciones')),
+	array('label'=>'      Histórico de gastos', 'url'=>array('historicoGastos')),
+	array('label'=>'      Histórico de ordenes', 'url'=>array('historicoOrdenes')),
+	
+	array('label'=>'<div id="menu"><strong>Parámetros</strong></div>'),
+	array('label'=>'      Admin. de parámetros', 'url'=>array('')),
 );
 ?>
 <div class='crugepanel user-assignments-role-list'>

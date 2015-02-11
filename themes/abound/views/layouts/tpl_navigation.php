@@ -50,7 +50,7 @@ else{
 	$spanPre='';
 	$diPre='/mttoPreventivo';
 }
-$alertasCor = Yii::app()->db->createCommand('SELECT count(*) as total from sgu_reporteFalla where idestatus=8')->queryRow();
+$alertasCor = Yii::app()->db->createCommand('SELECT count(*) as total from sgu_reporteFalla where idestatus=8 and idfalla in (select id from sgu_falla where tipo = 0)')->queryRow();
 
 if($alertasCor["total"]>0){
 	$spanCor='<span class="badge badge-important pull-right">'.$alertasCor["total"].'</span>';

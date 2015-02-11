@@ -28,21 +28,17 @@
 	</div>
 
 	<div class="row">
-		
-		<?php echo $form->hiddenField($model,'kmRealizada'); ?>
-		
+		<?php echo $form->hiddenField($model,'kmRealizada'); ?>		
 	</div>
 	
 	<div class="row">
-		
 		<?php echo $form->hiddenField($model,'diasParo',array('style' => 'width:60px;')); ?>
 		<?php echo $form->hiddenField($model,'idtiempo'); ?>
-	
 	</div>
 
 	<div class="row">
 	<?php echo $form->labelEx($model,'idvehiculo'); ?>
-		<?php echo $form->dropDownList($model,'idvehiculo',CHtml::listData(Vehiculo::model()->findAll(),'id','numeroUnidad'),array('prompt'=>'Seleccione: ','style' => 'width:110px;','onchange'=>'obtenerConductor(this.value);')); ?>
+		<?php echo $form->dropDownList($model,'idvehiculo',CHtml::listData(Vehiculo::model()->findAll(),'id','numeroUnidad'),array('prompt'=>'Seleccione: ','style' => 'width:170px;','onchange'=>'obtenerConductor(this.value);')); ?>
 		<?php echo $form->error($model,'idvehiculo'); ?>
 	</div>
 	<?php 
@@ -76,7 +72,7 @@
 	<div id="detalle" class="row">
 	<br>
 		<?php echo $form->labelEx($model,'detalle'); ?>
-		<?php echo $form->textArea($model,'detalle',array('size'=>160,'maxlength'=>150)); ?>
+		<?php echo $form->textArea($model,'detalle',array('size'=>160,'maxlength'=>150,'style' => 'width:300px;')); ?>
 		<?php echo $form->error($model,'detalle'); ?>
 	</div>
 

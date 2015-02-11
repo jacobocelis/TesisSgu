@@ -9,7 +9,10 @@ $this->breadcrumbs=array(
 
 $this->menu=array(
 	array('label'=>'<div id="menu"><strong>Viajes</strong></div>'),
+	array('label'=>'      Registrar viajes rutinarios', 'url'=>array('rutinarios')),
 	array('label'=>'      Registrar viajes especiales', 'url'=>array('especiales')),
+	array('label'=>'<div id="menu"><strong>Conductores</strong></div>'),
+	array('label'=>'      Gestión de conductores', 'url'=>array('empleados/conductores')),
 	array('label'=>'<div id="menu"><strong>Historial</strong></div>'),
 	array('label'=>'      Histórico de viajes', 'url'=>array('admin')),
 	array('label'=>'      Estadísticas de viajes', 'url'=>array('admin')),
