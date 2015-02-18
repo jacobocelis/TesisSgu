@@ -83,6 +83,10 @@
 	<div class="row">
 		<?php echo $form->hiddenField($model,'idestatus',array('value'=>8)); ?>
 	</div>
+	
+	<div class="row">
+		<?php echo $form->hiddenField($model,'tipo',array('value'=>1)); ?>
+	</div>
 
 	<div id="boton" class="row buttons">
 		<?php echo CHtml::submitButton($model->isNewRecord ? 'Registrar' : 'Guardar'); ?>

@@ -22,7 +22,9 @@
 		<?php echo $form->textField($model,'fechaFalla',array('id'=>'fecha','size'=>10,'readonly'=>'readonly','value'=>date('d/m/Y'),'maxlength'=>8, 'style'=>'width:100px;cursor:pointer;')); ?>
 	<?php echo $form->error($model,'fechaFalla'); ?>
 	</div>
-
+	<div class="row">
+		<?php echo $form->hiddenField($model,'tipo',array('value'=>0)); ?>
+	</div>
 	<div class="row">
 		<?php echo $form->hiddenField($model,'fechaRealizada'); ?>
 	</div>

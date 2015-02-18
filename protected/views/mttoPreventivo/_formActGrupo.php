@@ -4,7 +4,7 @@
 /* @var $form CActiveForm */
 ?>
 
-<div id="azul"class="form">
+<div class="form">
 
 <?php $form=$this->beginWidget('CActiveForm', array(
 	'id'=>'actividadesgrupo-form',
@@ -25,6 +25,10 @@
   echo CHtml::link('(+)', "", array('title'=>'Agregar una nueva actividad','style'=>'cursor: pointer; text-decoration: underline;','onclick'=>"{nuevaActividad(); }"));?>	
 		<?php echo $form->error($model,'idactividadMtto'); ?>
 	</div>
+	
+	<div id="nuevaAct"></div>
+	
+	<div id="restante">
 	<div class="row">
 		<?php echo $form->labelEx($model,'frecuenciaKm'); ?>
 		<?php echo $form->textField($model,'frecuenciaKm',array('style' => 'width:60px;'));?> Km
@@ -59,31 +63,18 @@
 		<?php echo $form->error($model,'idprioridad'); ?>
 	</div>
 	
-	<div class="row">
-		<?php echo $form->labelEx($model,'procedimiento'); ?>
-		<?php echo $form->textArea($model,'procedimiento',array('size'=>60,'maxlength'=>200,'style'=>'width: 348px; height: 67px;resize: none;')); ?>
-		<?php echo $form->error($model,'procedimiento'); ?>
-	</div>
-	<?php
-		echo CHtml::link('Cancelar', "",array('title'=>'Cancelar',
-        'style'=>'cursor: pointer;font-size:10px;float:right;',
-        'onclick'=>"{cancelar()}"));?>
+	 
+
 	<div class="row buttons">
 		<?php 
 		echo CHtml::submitButton($model->isNewRecord ? 'Registrar' : 'Guardar'); ?>
 	</div>
-
+	</div>
 <?php $this->endWidget(); ?>
 
 </div><!-- form -->
 <style>
-#azul {
-    background: none repeat scroll 0% 0% rgba(149, 234, 234, 0.22);
-    padding: 5px;
-    border: 1px solid #94A8FF;
-	margin-top:5px;
-	width:500px;
-}
+
 #titulo{
 	font-family: "Carrois Gothic",sans-serif;
     font-size: 26px;
@@ -93,9 +84,3 @@
 	margin: 10px 0px;
 }
 </style>
-<script>
-function cancelar(){
-		$("#link").show();
-		$("#agreAct").hide(500);
-}
-</script>

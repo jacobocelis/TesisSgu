@@ -34,19 +34,23 @@
 		<?php //echo $form->error($tipoInsumo,'idOrigen'); ?>
 		
 		<?php echo $form->labelEx($model,'idinsumo'); ?>
-		<?php echo $form->dropDownList($model,'idinsumo',CHtml::listData(Insumo::model()->findAll(),'id','insumo'),array('style' => 'width:300px;')); ?>
+		<?php echo $form->dropDownList($model,'idinsumo',CHtml::listData(Insumo::model()->findAll('1 order by insumo asc'),'id','insumo'),array('style' => 'width:300px;')); echo CHtml::link('(+)', "", array('title'=>'Agregar un nuevo insumo','style'=>'cursor: pointer; text-decoration: underline;','onclick'=>"{nuevoInsumo(); }"));?>
 		<?php echo $form->error($model,'idinsumo'); ?>
 		
 	</div>
+	
+	<div id="nuevoInsumo"></div>
 
 	<div id="servicio"class="row">
 	
 		<?php echo $form->labelEx($model,'idservicio'); ?>
-		<?php echo $form->dropDownList($model,'idservicio',CHtml::listData(Servicio::model()->findAll(),'id','servicio'),array('style' => 'width:300px;')); ?>
+		<?php echo $form->dropDownList($model,'idservicio',CHtml::listData(Servicio::model()->findAll('1 order by servicio asc'),'id','servicio'),array('style' => 'width:300px;')); echo CHtml::link('(+)', "", array('title'=>'Agregar un nuevo servicio','style'=>'cursor: pointer; text-decoration: underline;','onclick'=>"{nuevoServicio(); }"));?>
 		<?php echo $form->error($model,'idservicio'); ?>
 		
 	</div>
 
+	<div id="nuevoServicio"></div>
+	
 	<div id="repuesto"class="row">
 		
 		<?php echo $form->labelEx($tipoRepuesto,'subTipo'); ?>
@@ -55,10 +59,13 @@
 		<?php //echo $form->error($tipoRepuesto,'idOrigen'); ?>
 		
 		<?php echo $form->labelEx($model,'idrepuesto'); ?>
-		<?php echo $form->dropDownList($model,'idrepuesto',CHtml::listData(Repuesto::model()->findAll(),'id','repuesto'),array('style' => 'width:200px;')); ?>
+		<?php echo $form->dropDownList($model,'idrepuesto',CHtml::listData(Repuesto::model()->findAll(),'id','repuesto'),array('style' => 'width:200px;')); echo CHtml::link('(+)', "", array('title'=>'Agregar un nuevo repuesto','style'=>'cursor: pointer; text-decoration: underline;','onclick'=>"{nuevoRepuesto(); }"));?>
 		<?php echo $form->error($model,'idrepuesto'); ?>
 	</div>
 	
+	<div id="nuevoRepuesto"></div>
+	
+	<div id="restoFormRecurso">
 	<div class="row">
 		<?php echo $form->labelEx($model,'cantidad'); ?>
 		<?php echo $form->textField($model,'cantidad',array('style' => 'width:50px;')); ?>
@@ -71,20 +78,20 @@
 	</div>
 	<div class="row">
 		<?php echo $form->labelEx($model,'detalle'); ?>
-		<?php echo $form->textArea($model,'detalle',array('size'=>60,'maxlength'=>100, 'style' =>'width: 298px; height: 55px;')); ?>
+		<?php echo $form->textArea($model,'detalle',array('size'=>60,'maxlength'=>100, 'style' =>'width: 380px; height: 25px;')); ?>
 		<?php echo $form->error($model,'detalle'); ?>
 	</div>
 
 	<div class="row buttons">
 		<?php echo CHtml::submitButton($model->isNewRecord ? 'Agregar' : 'Guardar'); ?>
 	</div>
-
+	</div>
 <?php $this->endWidget(); ?>
 
 </div><!-- form -->
 <script>
 var iden=$('#Actividadrecursogrupo_idinsumo option:selected').val();
-validarInsumo(iden);
+//validarInsumo(iden);
 var idrep=$('#Actividadrecursogrupo_idrepuesto option:selected').val();
 validarRepuesto(idrep);
 $("#actividadrecursogrupo-form").submit(function(event){
@@ -106,7 +113,15 @@ function validar(){
 	}
 	return true;
 }
-
+function validarInsumoNuevo(id){
+var dir="<?php echo Yii::app()->baseUrl;?>"+"/mttoPreventivo/ActualizarInsumos/"+id;
+$.ajax({  		
+          url: dir,
+        })
+  	.done(function( result ) {    	
+    	     $('#Actividadrecursogrupo_idinsumo').html(result);
+  	});
+}
 function validarInsumo(id){
 var dir="<?php echo Yii::app()->baseUrl;?>"+"/mttoPreventivo/insumos/"+id;
 $.ajax({  		
@@ -148,11 +163,11 @@ $("#lista").change(function() {
 		//$("#Actividadrecursogrupo_recurso").val($("#Actividadrecursogrupo_idprovServ option:selected").text());
 	} 
 });
-/*
-$("#insumo").change(function() {
-	$("#Actividadrecursogrupo_recurso").val($("#Actividadrecursogrupo_idinsumo option:selected").text());
+
+$("#Tipoinsumo_tipo").change(function() {
+	$('#Insumo_tipoInsumo').val($('#Tipoinsumo_tipo').val());
 });
-$("#repuesto").change(function() {
+/*$("#repuesto").change(function() {
 	$("#Actividadrecursogrupo_recurso").val($("#Actividadrecursogrupo_idrepuesto option:selected").text());
 });
 $("#servicio").change(function() {

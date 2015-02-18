@@ -3,10 +3,26 @@
 	'Mantenimiento preventivo'=>array('mttoPreventivo/index'),
 	'Actividades de mantenimiento preventivo',
 );
-	$this->menu=array(
+$this->menu=array(
 	array('label'=>'<div id="menu"><strong>Opciones de mantenimiento</strong></div>'),
+	array('label'=>'      Registrar actividades de mantenimiento', 'url'=>array('planes')),
 	array('label'=>'      Registrar matenimientos iniciales <span id="mi" class="badge badge-'.$color.' pull-right">'.$mi.'</span>', 'url'=>array('mttoPreventivo/iniciales/')),
 	array('label'=>'      Ajuste de fechas en calendario', 'url'=>array('calendario')),
+	
+	
+	array('label'=>'<div id="menu"><strong>Órdenes de mantenimiento</strong></div>'),
+	array('label'=>'      Crear orden de mantenimiento', 'url'=>array('crearOrdenPreventiva')),
+	array('label'=>'      Ver órdenes abiertas <span class="badge badge-'.$Colorabi.' pull-right">'.$abiertas.'</span>', 'url'=>array('verOrdenes')),
+	array('label'=>'      Órdenes listas para cerrar <span class="badge badge-'.$Colorli.' pull-right">'.$listas.'</span>', 'url'=>array('cerrarOrdenes')),
+	
+	array('label'=>'<div id="menu"><strong>Gestión de coordinadores</strong></div>'),
+	array('label'=>'      Coordinador operativo y de transporte', 'url'=>array('empleados/coordinadores')),
+	
+	
+	array('label'=>'<div id="menu"><strong>Historial</strong></div>'),
+	array('label'=>'      Histórico de mantenimientos', 'url'=>array('historicoPreventivo')),
+	array('label'=>'      Histórico de gastos', 'url'=>array('historicoGastos')),
+	array('label'=>'      Histórico de ordenes', 'url'=>array('historicoOrdenes')),
 );
 ?>
 <div class='form'>
@@ -23,7 +39,7 @@
 	</ul>
 <h6><div id='mostrarSeleccion'>Seleccione un grupo para asignarle actividades de mantenimiento</div></h6>
 	</div>
-<div id='activ' class='crugepanel user-assignments-detail'>
+<div id='activ' style="display:none" class='crugepanel user-assignments-detail'>
 			<div id='actividades'>Actividades</div>
 			<?php 
 			$this->widget('zii.widgets.grid.CGridView', array(
@@ -63,13 +79,13 @@
 					'value'=>'$data->idprioridad0->prioridad',
 					//'footer'=>'',
 				),
-				array(
+				/*array(
 					'headerHtmlOptions'=>array('style'=>'text-align:left;'),
 					'header'=>'Procedimiento',
 					'name'=>'procedimiento',
 					
 					//'footer'=>'',
-				),
+				),*/
 				array(
 						'headerHtmlOptions'=>array('style'=>'text-align:left;width:12px;'),
 						'htmlOptions'=>array('style'=>'text-align:center;'),
@@ -96,7 +112,7 @@
                         "",
                         array(
                                 \'style\'=>\'cursor: pointer;text-decoration: underline;text-align:center;\',
-                                \'onclick\'=>\'{editarActividad("\'.Yii::app()->createUrl("actividadesgrupo/update",array("id"=>$data["id"])).\'"); $("#dialog").dialog("open");}\'
+                                \'onclick\'=>\'{editarActividad("\'.Yii::app()->createUrl("actividadesgrupo/update",array("id"=>$data["id"])).\'"); $("#agregarAct").dialog("open");}\'
                         )
                 );',),
 				array(
@@ -112,15 +128,15 @@
 			),
 		));?>
 		<div id="link">
-<?php echo CHtml::link('agregar actividad(+)', "",  // the link for open the dialog
+<?php echo CHtml::link('Registrar actividad(+)', "",  // the link for open the dialog
     array(
         'style'=>'cursor: pointer; text-decoration: underline;',
-        'onclick'=>"{agregarActividad(); }"));
+        'onclick'=>"{agregarActividad(); $('#agregarAct').dialog('open');}"));
 		?>	
 		</div>
 		<div id="agreAct"></div>
 	</div>
-<div id='recur' class='crugepanel user-assignments-detail'>
+<div id='recur' style="display:none" class='crugepanel user-assignments-detail'>
 			<div id='recursos'>Recursos</div>
 		    <div id='activi'><negro>
 			Actividad seleccionada:
@@ -149,7 +165,7 @@
 				array(
 					'headerHtmlOptions'=>array('style'=>'text-align:left;'),
 					'header'=>'Tipo',
-					'value'=>'(($data->idinsumo == null?\'\':\'Insumo\').\'\'.($data->idrepuesto == null?\'\':\'Repuesto\').\'\'.($data->idservicio == null?\'\':\'Servicio\')).\' \'.$data->detalle',
+					'value'=>'(($data->idinsumo == null?\'\':\'Insumo\').\'\'.($data->idrepuesto == null?\'\':\'Repuesto\').\'\'.($data->idservicio == null?\'\':\'Servicio\'))',
 					'htmlOptions'=>array('style'=>'width:70px;'),
 				),
 				array(
@@ -182,21 +198,21 @@
     array(
         'style'=>'cursor: pointer; text-decoration: underline;',
         'onclick'=>"{agregarRecurso(); }"));
-		?>	
+?>	
 </div>
 
 <?php
 /*ventana agregar actividad*/
 $this->beginWidget('zii.widgets.jui.CJuiDialog', array( // the dialog
-    'id'=>'nuevaAct',
+    'id'=>'agregarAct',
     'options'=>array(
-        'title'=>'Agregar actividad',
+        'title'=>'',
         'autoOpen'=>false,
         'modal'=>true,
-        'width'=>340,
+        'width'=>540,
         //'height'=>480,
 		'resizable'=>false,	
-		'position'=>array(900,130),
+		'position'=>array(null,100),
     ),
 ));?>
 <div class="divForForm"></div>
@@ -210,7 +226,7 @@ $this->beginWidget('zii.widgets.jui.CJuiDialog', array( // the dialog
         'title'=>'Agregar recurso',
         'autoOpen'=>false,
         'modal'=>true,
-        'width'=>390,
+        'width'=>420,
         //'height'=>360,
 		'position'=>array(null,100),
 		'resizable'=>false
@@ -592,9 +608,7 @@ var idGrupo;
 			$("#link").show();
 		});
 	});
-</script>
 
-<script>
 /*
 $('#plan > table > tbody > tr').live('click',function(){
 									if($(this).hasClass('selected'))
@@ -615,7 +629,8 @@ if(total==0)
 	$('#recur').hide();
 }
 function nuevaActividad(){
-$('#nuevaAct').dialog('open');
+	$('#nuevaAct').show(500);
+	$("#restante").hide(500);
 	jQuery.ajax({
                 url: "<?php echo Yii::app()->baseUrl;?>"+"/Actividadmtto/create",
                 'data':$(this).serialize(),
@@ -623,14 +638,14 @@ $('#nuevaAct').dialog('open');
                 'dataType':'json',
                 'success':function(data){
                                 if (data.status == 'failure'){
-                                        $('#nuevaAct div.divForForm').html(data.div);
+                                        $('#nuevaAct ').html(data.div);
                                         // Here is the trick: on submit-> once again this function!
-                                        $('#nuevaAct div.divForForm form').submit(nuevaActividad);
+                                        $('#nuevaAct  form').submit(nuevaActividad);
                                 }
                                 else{
-                                        $('#nuevaAct div.divForForm').html(data.div);
-                                        setTimeout("$('#nuevaAct').dialog('close') ",1000);
-										actualizarListaActividades();
+                                        $('#nuevaAct').html(data.div);
+                                        actualizarListaActividades();
+										$("#restante").show(500);
                                 }
                 },
                 'cache':false});
@@ -657,14 +672,11 @@ function ObtenerActividad(id){
     	     $('rojo').text(result);
   	});
       }
-</script>
-<script>
+
 var ida;
-$('#activ').hide();
-$('#recur').hide();
 var Uurl;
 function editarActividad(id){
-$('#dialog').dialog('open');
+
 	 if (typeof(id)=='string')
                 Uurl=id;
 	jQuery.ajax({
@@ -676,14 +688,14 @@ $('#dialog').dialog('open');
                         {
                                 if (data.status == 'failure')
                                 {
-                                        $('#dialog div.divForForm').html(data.div);
+                                        $('#agregarAct div.divForForm').html(data.div);
                                         // Here is the trick: on submit-> once again this function!
-                                        $('#dialog div.divForForm form').submit(editarActividad); // updatePaymentComment
+                                        $('#agregarAct div.divForForm form').submit(editarActividad); // updatePaymentComment
                                 }
                                 else
                                 {
-                                        $('#dialog div.divForForm').html(data.div);
-                                        setTimeout("$('#dialog').dialog('close') ",1000);
+                                        $('#agregarAct div.divForForm').html(data.div);
+                                        setTimeout("$('#agregarAct').dialog('close') ",1000);
                                         $.fn.yiiGridView.update('act');
                                 }
                         } ,
@@ -693,7 +705,7 @@ $('#dialog').dialog('open');
 
 function agregarActividad(){
 	
-//$('#dialog').dialog('open');
+
 	jQuery.ajax({
                 url: "agregarActividad/"+idGrupo,
                 'data':$(this).serialize(),
@@ -702,20 +714,21 @@ function agregarActividad(){
                 'success':function(data){
                                 if (data.status == 'failure'){
                                         //$('#dialog div.divForForm').html(data.div);
-										$('#agreAct').html(data.div);
+										$('#agregarAct div.divForForm').html(data.div);
                                         // Here is the trick: on submit-> once again this function!
                                         //$('#dialog div.divForForm form').submit(agregarActividad); // updatePaymentComment
-										$('#agreAct form').submit(agregarActividad);
-										$("#link").hide();
-										$("#agreAct").show();
+										$('#agregarAct div.divForForm form').submit(agregarActividad);
+										//$("#link").hide();
+										//$("#agreAct").show();
 										//$('body').scrollTo('#agreAct',{duration:'slow', offsetTop : '50'});
-										$.scrollTo($('#agreAct').offset().top-100, { duration:300});
+										//$.scrollTo($('#agreAct').offset().top-100, { duration:300});
                                 }
                                 else{
                                         //$('#dialog div.divForForm').html(data.div);
 										$('#agreAct').html(data.div);
-                                        setTimeout("agregarActividad()",1000);
-                                        $.fn.yiiGridView.update('act');
+                                        //setTimeout("agregarActividad()",1000);
+                                        $('#agregarAct').dialog('close');
+										$.fn.yiiGridView.update('act');
                                 }
                         } ,
                 'cache':false});
@@ -785,4 +798,71 @@ var altura = $(document).height();
 	$.fn.yiiGridView.update('rec',{ data : "idAct="+ida});
 	$("html, body").animate({scrollTop:altura+"px"},1000);
 }
+function nuevoInsumo(){
+	//$('#nuevaAct').show(500);
+	//$("#restante").hide(500);
+	$("#lista").attr('disabled', true);
+	$("#nuevoInsumo").show(500);
+	$("#restoFormRecurso").hide(500);
+	
+	jQuery.ajax({
+                url: "<?php echo Yii::app()->baseUrl;?>"+"/Insumo/create",
+                'data':$(this).serialize(),
+                'type':'post',
+                'dataType':'json',
+                'success':function(data){
+                                if (data.status == 'failure'){
+                                        $('#nuevoInsumo ').html(data.div);
+                                        // Here is the trick: on submit-> once again this function!
+                                   
+										$('#Insumo_tipoInsumo').val($('#Tipoinsumo_tipo').val());
+										$('#nuevoInsumo  form').submit(nuevoInsumo);
+                                }
+                                else{
+                                        $('#nuevoInsumo').html(data.div);
+										$("#nuevoInsumo").hide(500);
+										$("#restoFormRecurso").show(500);
+										$("#lista").attr('disabled', false);
+										//actualizarListaInsumos();
+										validarInsumoNuevo($('#Tipoinsumo_tipo option:selected').val());
+                                }
+                },
+                'cache':false});
+    return false; 
+
+}
+function nuevoRepuesto(){
+	//$('#nuevaAct').show(500);
+	//$("#restante").hide(500);
+	$("#lista").attr('disabled', true);
+	$("#nuevoRepuesto").show(500);
+	$("#restoFormRecurso").hide(500);
+	
+	jQuery.ajax({
+                url: "<?php echo Yii::app()->baseUrl;?>"+"/Repuesto/crear",
+                'data':$(this).serialize(),
+                'type':'post',
+                'dataType':'json',
+                'success':function(data){
+                                if (data.status == 'failure'){
+                                        $('#nuevoRepuesto ').html(data.div);
+                                        // Here is the trick: on submit-> once again this function!
+                                   
+										$('#Insumo_tipoInsumo').val($('#Subtiporepuesto_subTipo').val());
+										$('#nuevoRepuesto  form').submit(nuevoRepuesto);
+                                }
+                                else{
+                                        $('#nuevoRepuesto').html(data.div);
+										$("#nuevoRepuesto").hide(500);
+										$("#restoFormRecurso").show(500);
+										$("#lista").attr('disabled', false);
+										//actualizarListaInsumos();
+										validarInsumoNuevo($('#Subtiporepuesto_subTipo option:selected').val());
+                                }
+                },
+                'cache':false});
+    return false; 
+
+}
+
 </script>

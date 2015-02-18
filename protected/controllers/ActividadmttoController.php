@@ -73,7 +73,7 @@ class ActividadmttoController extends Controller
 				if (Yii::app()->request->isAjaxRequest){
                     echo CJSON::encode(array(
                         'status'=>'success', 
-                        'div'=>"se registró la actividad correctamente"
+                        'div'=>""
                         ));
                     exit;               
                 }

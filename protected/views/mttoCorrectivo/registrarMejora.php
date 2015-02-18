@@ -11,6 +11,8 @@
 ?>
 <div class='crugepanel user-assignments-role-list'>
 <div id="falla"></div>
+</div>
+<div class='crugepanel user-assignments-role-list'>
 <h1>Mejoras registradas</h1>
 <?php
 $this->widget('zii.widgets.grid.CGridView', array(
@@ -28,24 +30,24 @@ $this->widget('zii.widgets.grid.CGridView', array(
 					'htmlOptions'=>array('style'=>'text-align:center;width:40px'),
 				),
 				array(
-					'header'=>'Fecha',
+					'header'=>'Fecha registro',
 					'name'=>'fechaFalla',
 					'value'=>'date("d/m/Y",strtotime($data->fechaFalla))',
-					'htmlOptions'=>array('style'=>'text-align:center;width:50px'),
+					'htmlOptions'=>array('style'=>'text-align:center;width:100px'),
 				),
 			
 				array(
-					'header'=>'Falla reportada',
+					'header'=>'Mejora',
 					'name'=>'idfalla',
 					'value'=>'$data->idfalla0->falla',
 					'htmlOptions'=>array('style'=>'text-align:center;width:250px'),
 				),
-				array(
+				/*array(
 					'header'=>'Reportó',
 					'name'=>'idempleado',
 					'value'=>'$data->idempleado0->nombre.\' \'.$data->idempleado0->apellido',
 					'htmlOptions'=>array('style'=>'text-align:center;width:100px'),
-				),
+				),*/
 				array(
 					'header'=>'Estado',
 					'name'=>'idestatus',

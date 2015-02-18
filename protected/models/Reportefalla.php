@@ -60,6 +60,22 @@ class Reportefalla extends CActiveRecord
 		else
 			return $prox-$km[0]["lectura"];
 	}
+	public function beforeValidate(){
+		
+        if($this->tipo==1 and $this->idfalla==null){
+            $this->addErrors(array(
+            	'idfalla'=>'Debe seleccionar una mejora.',
+            ));
+        }
+		if($this->tipo==0 and $this->idfalla==null){
+			$this->addErrors(array(
+            	'idfalla'=>'Debe seleccionar una falla .',
+            ));
+		}
+		 //var_dump($this->getErrors());
+
+        return parent::beforeValidate();
+    }	
 	/*public function porcentaje($ini,$fin){
 		$datetime1 = new DateTime($fin);
 		$datetime2 = new DateTime("now");
@@ -133,13 +149,13 @@ class Reportefalla extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('fechaFalla, diasParo, idtiempo, idvehiculo, idempleado, idfalla, idestatus', 'required'),
-			array('kmRealizada, diasParo, idtiempo, idvehiculo, idempleado, idfalla, idestatus', 'numerical', 'integerOnly'=>true),
+			array('fechaFalla, diasParo, idtiempo, idvehiculo, idempleado, idfalla, idestatus,tipo', 'required'),
+			array('kmRealizada, diasParo, idtiempo, idvehiculo, idempleado, idfalla, idestatus,tipo', 'numerical', 'integerOnly'=>true),
 			array('detalle', 'length', 'max'=>150),
 			array('fechaRealizada', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, detalle, fechaFalla, fechaRealizada, kmRealizada, diasParo, idtiempo, idvehiculo, idempleado, idfalla, idestatus', 'safe', 'on'=>'search'),
+			array('id, detalle, fechaFalla, fechaRealizada, kmRealizada, diasParo, idtiempo, idvehiculo, idempleado, idfalla, idestatus,tipo', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -178,6 +194,7 @@ class Reportefalla extends CActiveRecord
 			'idempleado' => 'Reportó',
 			'idfalla' => 'Falla',
 			'idestatus' => 'Estatus',
+			'tipo' => 'Tipo',
 		);
 	}
 

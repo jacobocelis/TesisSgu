@@ -77,7 +77,7 @@ class Actividadrecursogrupo extends CActiveRecord
 			'idservicio' => 'Servicio',
 			'idrepuesto' => 'Repuesto',
 			'idunidad' => 'Unidad',
-			'detalle' => 'Información adicional',
+			'detalle' => 'Información adicional del recurso',
 		);
 	}
 

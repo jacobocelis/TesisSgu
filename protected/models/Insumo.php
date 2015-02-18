@@ -31,12 +31,12 @@ class Insumo extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('id, insumo, tipoInsumo', 'required'),
-			array('id, tipoInsumo', 'numerical', 'integerOnly'=>true),
+			array('insumo, tipoInsumo', 'required'),
+			array('tipoInsumo', 'numerical', 'integerOnly'=>true),
 			array('insumo', 'length', 'max'=>100),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, insumo, tipoInsumo', 'safe', 'on'=>'search'),
+			array('insumo, tipoInsumo', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -48,9 +48,9 @@ class Insumo extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-			'sguActividadrecursos' => array(self::HAS_MANY, 'SguActividadrecurso', 'idinsumo'),
-			'sguActividadrecursogrupos' => array(self::HAS_MANY, 'SguActividadrecursogrupo', 'idinsumo'),
-			'tipoInsumo0' => array(self::BELONGS_TO, 'SguTipoinsumo', 'tipoInsumo'),
+			'sguActividadrecursos' => array(self::HAS_MANY, 'Actividadrecurso', 'idinsumo'),
+			'sguActividadrecursogrupos' => array(self::HAS_MANY, 'Actividadrecursogrupo', 'idinsumo'),
+			'tipoInsumo0' => array(self::BELONGS_TO, 'Tipoinsumo', 'tipoInsumo'),
 		);
 	}
 
@@ -62,7 +62,7 @@ class Insumo extends CActiveRecord
 		return array(
 			'id' => 'ID',
 			'insumo' => 'Insumo',
-			'tipoInsumo' => 'Tipo Insumo',
+			'tipoInsumo' => 'Tipo',
 		);
 	}
 

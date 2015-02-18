@@ -15,8 +15,9 @@ class MttoPreventivoController extends Controller
 	public function filters()
 	{
 		return array(
-			'accessControl', // perform access control for CRUD operations
-			'postOnly + delete', // we only allow deletion via POST request
+			//'accessControl', // perform access control for CRUD operations
+			//'postOnly + delete', // we only allow deletion via POST request
+			array('CrugeAccessControlFilter')
 		);
 	}
 	/**
@@ -28,7 +29,7 @@ class MttoPreventivoController extends Controller
 	{
 		return array(
 			array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array('index','view','crearPlan','planes','agregarActividad','obtenerParte','mttopVehiculo','mttopIniciales','calendario','obtenerActividad','agregarRecurso','iniciales','crearordenpreventiva','crearOrden','verOrdenes','cambiarFecha','mttopRealizados','registrarFacturacion','agregarFactura','estatusOrden','cerrarOrdenes','historicoPreventivo','historicoOrdenes','historicoGastos','vistaPrevia','vistaPreviaPDF','generarPdf','correo','actualizarSpan','agregarRecursoAdicional','insumos','repuesto','ActualizarCheck','ActualizarListaActividades'),
+				'actions'=>array('index','view','crearPlan','planes','agregarActividad','obtenerParte','mttopVehiculo','mttopIniciales','calendario','obtenerActividad','agregarRecurso','iniciales','crearordenpreventiva','crearOrden','verOrdenes','cambiarFecha','mttopRealizados','registrarFacturacion','agregarFactura','estatusOrden','cerrarOrdenes','historicoPreventivo','historicoOrdenes','historicoGastos','vistaPrevia','vistaPreviaPDF','generarPdf','correo','actualizarSpan','agregarRecursoAdicional','insumos','repuesto','ActualizarCheck','ActualizarListaActividades','ActualizarInsumos','ActualizarRepuesto','ActualizarServicio'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
@@ -604,6 +605,10 @@ class MttoPreventivoController extends Controller
 			'recurso'=>$recurso,
 			'color'=>$this->getColor($mi["total"]),
 			'mi'=>$mi["total"],
+                        'abiertas'=>$this->getOrdenesAbiertas(),
+                        'Colorabi'=>$this->getColor($this->getOrdenesAbiertas()),
+                        'Colorli'=>$this->getColor($this->getOrdenesListas()),
+                        'listas'=>$this->getOrdenesListas(),
 		));
 	}
 
@@ -764,8 +769,26 @@ class MttoPreventivoController extends Controller
 				echo CHtml::tag('option',array('type'=>'text','value'=>(($li->id))),Chtml::encode(($li->insumo)),true);
 			}
 	}
+	public function actionActualizarInsumos($id){
+			$lista2=Insumo::model()->findAll('tipoInsumo = :id order by id desc',array(':id'=>$id));
+			foreach($lista2 as $li){
+				echo CHtml::tag('option',array('type'=>'text','value'=>(($li->id))),Chtml::encode(($li->insumo)),true);
+			}
+	}
+	public function actionActualizarRepuesto($id){
+			$lista2=Repuesto::model()->findAll('idsubTipoRepuesto = :id order by id desc',array(':id'=>$id));
+			foreach($lista2 as $li){
+				echo CHtml::tag('option',array('type'=>'text','value'=>(($li->id))),Chtml::encode(($li->repuesto)),true);
+			}
+	}
+	public function actionActualizarServicio(){
+			$lista2=Servicio::model()->findAll('order by id desc');
+			foreach($lista2 as $li){
+				echo CHtml::tag('option',array('type'=>'text','value'=>(($li->id))),Chtml::encode(($li->servicio)),true);
+			}
+	}
 	public function actionRepuesto($id){
-			$lista2=Repuesto::model()->findAll('idsubTipoRepuesto = :id',array(':id'=>$id));
+			$lista2=Repuesto::model()->findAll('idsubTipoRepuesto = :id order by repuesto asc',array(':id'=>$id));
 			foreach($lista2 as $li){
 				echo CHtml::tag('option',array('type'=>'text','value'=>(($li->id))),Chtml::encode(($li->repuesto)),true);
 			}

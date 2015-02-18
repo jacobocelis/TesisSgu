@@ -613,6 +613,7 @@ class MttoCorrectivoController extends Controller
                     exit;
                 }
             }
+			
         }
         if (Yii::app()->request->isAjaxRequest){
             echo CJSON::encode(array(

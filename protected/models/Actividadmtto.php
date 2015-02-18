@@ -56,7 +56,7 @@ class Actividadmtto extends CActiveRecord
 	public function attributeLabels()
 	{
 		return array(
-			'actividad' => 'Actividad',
+			'actividad' => 'Nueva actividad',
 		);
 	}
 

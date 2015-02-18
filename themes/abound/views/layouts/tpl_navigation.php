@@ -107,7 +107,7 @@ else{
                             'visible' => !Yii::app()->user->isGuest),
                         
                         //Menu de Super Admin
-                        /*array('label' => 'Administrar<span class="caret"></span>', 'url' => '#', 
+                        array('label' => 'Administrar<span class="caret"></span>', 'url' => '#', 
                             'visible' => Yii::app()->user->isSuperAdmin,
                             'itemOptions' => array('class' => 'dropdown', 'tabindex' => "-1"), 
                             'linkOptions' => array('class' => 'dropdown-toggle', 'data-toggle' => "dropdown"),
@@ -122,7 +122,7 @@ else{
                                 array('label' => 'Asignar Roles', 'url' => array('/cruge/ui/rbacusersassignments')),
                                 array('label' => 'Sesiones', 'url' => array('/cruge/ui/sessionadmin')),
                                 array('label' => 'Opciones', 'url' => array('/cruge/ui/systemupdate')),
-                            )),*/
+                            )),
                         
                      
                         
@@ -139,8 +139,8 @@ else{
                         
                         array('label' => 'Iniciar', 'url' => array('/cruge/ui/login'), 
                             'visible' => Yii::app()->user->isGuest),
-                        
-                        array('label' => 'Cerrar Sesión (' . Yii::app()->user->name . ')', 
+                        //(' . Yii::app()->user->name . ')
+                        array('label' => 'Cerrar Sesión ', 
                             'url' => Yii::app()->user->ui->logoutUrl, 'visible' => !Yii::app()->user->isGuest),
                       ),
                 ));
