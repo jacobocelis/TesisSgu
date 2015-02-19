@@ -232,7 +232,13 @@ class MttoPreventivoController extends Controller
 	if($tot==0)
 		$items="";
 	$this->render('calendar',array(
-		'items'=>$items
+		'items'=>$items,
+		'mi'=>$this->getIniciales(),
+			'color'=>$this->getColor($this->getIniciales()),
+			'abiertas'=>$this->getOrdenesAbiertas(),
+			'Colorabi'=>$this->getColor($this->getOrdenesAbiertas()),
+			'Colorli'=>$this->getColor($this->getOrdenesListas()),
+			'listas'=>$this->getOrdenesListas(),
 	));
     //echo CJSON::encode($items);
     //Yii::app()->end();
@@ -245,6 +251,12 @@ class MttoPreventivoController extends Controller
 		$abiertas=Yii::app()->db->createCommand("select count(*) as total from sgu_ordenMtto where idestatus=5 and tipo=0")->queryRow();
 		return $abiertas["total"];
 	}
+	public function getIniciales(){
+		$mi=Yii::app()->db->createCommand("select count(*) as total from sgu_actividades where idestatus=1")->queryRow();
+		return $mi["total"];
+	}
+	
+	
 	public function getOrdenesListas(){
 		$abiertas=Yii::app()->db->createCommand("select count(*) as total from sgu_ordenMtto where idestatus=6 and tipo=0")->queryRow();
 		return $abiertas["total"];
@@ -266,9 +278,12 @@ class MttoPreventivoController extends Controller
 			'order'=>'fecha'
 			)));
 		$this->render('cerrarOrdenes',array(
-			'dataProvider'=>$dataProvider,
+			'dataProvider'=>$dataProvider,'mi'=>$this->getIniciales(),
+			'color'=>$this->getColor($this->getIniciales()),
 			'abiertas'=>$this->getOrdenesAbiertas(),
-			'color'=>$this->getColor($this->getOrdenesAbiertas()),
+			'Colorabi'=>$this->getColor($this->getOrdenesAbiertas()),
+			'Colorli'=>$this->getColor($this->getOrdenesListas()),
+			'listas'=>$this->getOrdenesListas(),
 			));
 	}
 	public function actionVerOrdenes(){
@@ -278,8 +293,12 @@ class MttoPreventivoController extends Controller
 			)));
 		$this->render('verOrdenes',array(
 			'dataProvider'=>$dataProvider,
+			'mi'=>$this->getIniciales(),
+			'color'=>$this->getColor($this->getIniciales()),
 			'abiertas'=>$this->getOrdenesAbiertas(),
-			'color'=>$this->getColor($this->getOrdenesAbiertas()),
+			'Colorabi'=>$this->getColor($this->getOrdenesAbiertas()),
+			'Colorli'=>$this->getColor($this->getOrdenesListas()),
+			'listas'=>$this->getOrdenesListas(),
 			));
 	}
 	public function actionAgregarFactura($id){
@@ -383,6 +402,8 @@ class MttoPreventivoController extends Controller
 			)));
 		$this->render('crearOrdenPreventiva',array(
 			'dataProvider'=>$dataProvider,
+			'mi'=>$this->getIniciales(),
+			'color'=>$this->getColor($this->getIniciales()),
 			'abiertas'=>$this->getOrdenesAbiertas(),
 			'Colorabi'=>$this->getColor($this->getOrdenesAbiertas()),
 			'Colorli'=>$this->getColor($this->getOrdenesListas()),
@@ -420,6 +441,12 @@ class MttoPreventivoController extends Controller
 		'pagination'=>array('pageSize'=>9999999)));
 			$this->render('iniciales',array(
 			'dataProvider'=>$dataProvider,
+			'mi'=>$this->getIniciales(),
+			'color'=>$this->getColor($this->getIniciales()),
+			'abiertas'=>$this->getOrdenesAbiertas(),
+			'Colorabi'=>$this->getColor($this->getOrdenesAbiertas()),
+			'Colorli'=>$this->getColor($this->getOrdenesListas()),
+			'listas'=>$this->getOrdenesListas(),
 		));
 	}
 	public function actionMttopRealizados($id,$nom,$dir){
@@ -658,23 +685,30 @@ class MttoPreventivoController extends Controller
 		$dataProvider=new CActiveDataProvider('Actividadrecurso',array('criteria'=>array('condition'=>'costoTotal>0')));
 		$this->render('historicoGastos',array(
 			'dataProvider'=>$dataProvider,
+			'mi'=>$this->getIniciales(),
+			'color'=>$this->getColor($this->getIniciales()),
+			'abiertas'=>$this->getOrdenesAbiertas(),
+			'Colorabi'=>$this->getColor($this->getOrdenesAbiertas()),
+			'Colorli'=>$this->getColor($this->getOrdenesListas()),
+			'listas'=>$this->getOrdenesListas(),
 		));
 	}
 	public function actionHistoricoPreventivo(){
 	//idplan in (select id from sgu_plan) and ??
 			$dataProvider=new CActiveDataProvider('Actividades',array('criteria' => array(
 				'condition' =>'idestatus=3',
-				'order'=>'ultimoFecha'
+				'order'=>'ultimoFecha',
+				
 			)));
 			$mi=Yii::app()->db->createCommand("select count(*) as total from sgu_actividades where idestatus=1")->queryRow();
 		$this->render('historicoPreventivo',array(
 				'dataProvider'=>$dataProvider,
-				'mi'=>$mi['total'],
-				'color'=>$this->getColor($mi["total"]),
-				'abiertas'=>$this->getOrdenesAbiertas(),
-				'Colorabi'=>$this->getColor($this->getOrdenesAbiertas()),
-				'Colorli'=>$this->getColor($this->getOrdenesListas()),
-				'listas'=>$this->getOrdenesListas(),
+				'mi'=>$this->getIniciales(),
+			'color'=>$this->getColor($this->getIniciales()),
+			'abiertas'=>$this->getOrdenesAbiertas(),
+			'Colorabi'=>$this->getColor($this->getOrdenesAbiertas()),
+			'Colorli'=>$this->getColor($this->getOrdenesListas()),
+			'listas'=>$this->getOrdenesListas(),
 			));
 	}
 	public function actionHistoricoOrdenes(){
@@ -684,9 +718,13 @@ class MttoPreventivoController extends Controller
 			)));
 		$this->render('historicoOrdenes',array(
 			'dataProvider'=>$dataProvider,
+			'mi'=>$this->getIniciales(),
+			'color'=>$this->getColor($this->getIniciales()),
 			'abiertas'=>$this->getOrdenesAbiertas(),
-			'color'=>$this->getColor($this->getOrdenesAbiertas()),
-			));
+			'Colorabi'=>$this->getColor($this->getOrdenesAbiertas()),
+			'Colorli'=>$this->getColor($this->getOrdenesListas()),
+			'listas'=>$this->getOrdenesListas(),
+		));
 	}
 	public function actionIndex(){
 		$ca=1;
@@ -709,11 +747,11 @@ class MttoPreventivoController extends Controller
 			'condition' =>$cond,
 			'order'=>'proximoFecha'
 			)));
-			$mi=Yii::app()->db->createCommand("select count(*) as total from sgu_actividades where idestatus=1")->queryRow();
+			
 		$this->render('index',array(
 			'dataProvider'=>$dataProvider,
-			'mi'=>$mi['total'],
-			'color'=>$this->getColor($mi["total"]),
+			'mi'=>$this->getIniciales(),
+			'color'=>$this->getColor($this->getIniciales()),
 			'abiertas'=>$this->getOrdenesAbiertas(),
 			'Colorabi'=>$this->getColor($this->getOrdenesAbiertas()),
 			'Colorli'=>$this->getColor($this->getOrdenesListas()),
@@ -782,7 +820,7 @@ class MttoPreventivoController extends Controller
 			}
 	}
 	public function actionActualizarServicio(){
-			$lista2=Servicio::model()->findAll('order by id desc');
+			$lista2=Servicio::model()->findAll('1 order by id desc');
 			foreach($lista2 as $li){
 				echo CHtml::tag('option',array('type'=>'text','value'=>(($li->id))),Chtml::encode(($li->servicio)),true);
 			}

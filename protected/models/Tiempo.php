@@ -6,12 +6,17 @@
  * The followings are the available columns in table 'sgu_tiempo':
  * @property integer $id
  * @property string $tiempo
+ * @property string $sqlTimevalues
+ * @property integer $segundosUnidad
  *
  * The followings are the available model relations:
- * @property SguActividades[] $sguActividades
- * @property SguActividades[] $sguActividades1
- * @property SguActividadesgrupo[] $sguActividadesgrupos
- * @property SguActividadesgrupo[] $sguActividadesgrupos1
+ * @property Actividades[] $actividades
+ * @property Actividades[] $actividades1
+ * @property Actividadesgrupo[] $actividadesgrupos
+ * @property Actividadesgrupo[] $actividadesgrupos1
+ * @property Actividadrecurso[] $actividadrecursos
+ * @property Recursofalla[] $recursofallas
+ * @property Reportefalla[] $reportefallas
  */
 class Tiempo extends CActiveRecord
 {
@@ -32,11 +37,12 @@ class Tiempo extends CActiveRecord
 		// will receive user inputs.
 		return array(
 			array('tiempo', 'required'),
+			array('segundosUnidad', 'numerical', 'integerOnly'=>true),
 			array('tiempo', 'length', 'max'=>10),
 			array('sqlTimevalues', 'length', 'max'=>45),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, tiempo', 'sqlTimevalues', 'safe', 'on'=>'search'),
+			array('id, tiempo, sqlTimevalues, segundosUnidad', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -48,13 +54,13 @@ class Tiempo extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-			'sguActividades' => array(self::HAS_MANY, 'Actividades', 'idtiempod'),
-			'sguActividades1' => array(self::HAS_MANY, 'Actividades', 'idtiempof'),
-			'sguActividadesgrupos' => array(self::HAS_MANY, 'Actividadesgrupo', 'idtiempod'),
-			'sguActividadesgrupos1' => array(self::HAS_MANY, 'Actividadesgrupo', 'idtiempof'),
-			'sguActividadrecursos' => array(self::HAS_MANY, 'Actividadrecurso', 'idtiempoGarantia'),
-			'sguRecursofallas' => array(self::HAS_MANY, 'Recursofalla', 'idtiempo'),
-			'sguReportefallas' => array(self::HAS_MANY, 'Reportefalla', 'idtiempo'),
+			'actividades' => array(self::HAS_MANY, 'Actividades', 'idtiempod'),
+			'actividades1' => array(self::HAS_MANY, 'Actividades', 'idtiempof'),
+			'actividadesgrupos' => array(self::HAS_MANY, 'Actividadesgrupo', 'idtiempod'),
+			'actividadesgrupos1' => array(self::HAS_MANY, 'Actividadesgrupo', 'idtiempof'),
+			'actividadrecursos' => array(self::HAS_MANY, 'Actividadrecurso', 'idtiempoGarantia'),
+			'recursofallas' => array(self::HAS_MANY, 'Recursofalla', 'idtiempo'),
+			'reportefallas' => array(self::HAS_MANY, 'Reportefalla', 'idtiempo'),
 		);
 	}
 
@@ -67,6 +73,7 @@ class Tiempo extends CActiveRecord
 			'id' => 'ID',
 			'tiempo' => 'Tiempo',
 			'sqlTimevalues' => 'Sql Timevalues',
+			'segundosUnidad' => 'Segundos Unidad',
 		);
 	}
 
@@ -90,6 +97,8 @@ class Tiempo extends CActiveRecord
 
 		$criteria->compare('id',$this->id);
 		$criteria->compare('tiempo',$this->tiempo,true);
+		$criteria->compare('sqlTimevalues',$this->sqlTimevalues,true);
+		$criteria->compare('segundosUnidad',$this->segundosUnidad);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,

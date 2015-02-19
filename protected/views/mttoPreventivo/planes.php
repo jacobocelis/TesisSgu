@@ -5,7 +5,7 @@
 );
 $this->menu=array(
 	array('label'=>'<div id="menu"><strong>Opciones de mantenimiento</strong></div>'),
-	array('label'=>'      Registrar actividades de mantenimiento', 'url'=>array('planes')),
+	array('label'=>'      Registrar actividades de mantenimiento', 'url'=>array('mttoPreventivo/planes')),
 	array('label'=>'      Registrar matenimientos iniciales <span id="mi" class="badge badge-'.$color.' pull-right">'.$mi.'</span>', 'url'=>array('mttoPreventivo/iniciales/')),
 	array('label'=>'      Ajuste de fechas en calendario', 'url'=>array('calendario')),
 	
@@ -799,8 +799,6 @@ var altura = $(document).height();
 	$("html, body").animate({scrollTop:altura+"px"},1000);
 }
 function nuevoInsumo(){
-	//$('#nuevaAct').show(500);
-	//$("#restante").hide(500);
 	$("#lista").attr('disabled', true);
 	$("#nuevoInsumo").show(500);
 	$("#restoFormRecurso").hide(500);
@@ -813,8 +811,7 @@ function nuevoInsumo(){
                 'success':function(data){
                                 if (data.status == 'failure'){
                                         $('#nuevoInsumo ').html(data.div);
-                                        // Here is the trick: on submit-> once again this function!
-                                   
+                                        
 										$('#Insumo_tipoInsumo').val($('#Tipoinsumo_tipo').val());
 										$('#nuevoInsumo  form').submit(nuevoInsumo);
                                 }
@@ -823,7 +820,7 @@ function nuevoInsumo(){
 										$("#nuevoInsumo").hide(500);
 										$("#restoFormRecurso").show(500);
 										$("#lista").attr('disabled', false);
-										//actualizarListaInsumos();
+										
 										validarInsumoNuevo($('#Tipoinsumo_tipo option:selected').val());
                                 }
                 },
@@ -832,23 +829,19 @@ function nuevoInsumo(){
 
 }
 function nuevoRepuesto(){
-	//$('#nuevaAct').show(500);
-	//$("#restante").hide(500);
 	$("#lista").attr('disabled', true);
 	$("#nuevoRepuesto").show(500);
 	$("#restoFormRecurso").hide(500);
-	
 	jQuery.ajax({
                 url: "<?php echo Yii::app()->baseUrl;?>"+"/Repuesto/crear",
                 'data':$(this).serialize(),
                 'type':'post',
                 'dataType':'json',
                 'success':function(data){
-                                if (data.status == 'failure'){
+                                if(data.status == 'failure'){
                                         $('#nuevoRepuesto ').html(data.div);
-                                        // Here is the trick: on submit-> once again this function!
                                    
-										$('#Insumo_tipoInsumo').val($('#Subtiporepuesto_subTipo').val());
+										$('#Repuesto_idsubTipoRepuesto').val($('#Subtiporepuesto_subTipo option:selected').val());
 										$('#nuevoRepuesto  form').submit(nuevoRepuesto);
                                 }
                                 else{
@@ -856,13 +849,36 @@ function nuevoRepuesto(){
 										$("#nuevoRepuesto").hide(500);
 										$("#restoFormRecurso").show(500);
 										$("#lista").attr('disabled', false);
-										//actualizarListaInsumos();
-										validarInsumoNuevo($('#Subtiporepuesto_subTipo option:selected').val());
+										validarRepuestoNuevo($('#Subtiporepuesto_subTipo option:selected').val());
                                 }
                 },
                 'cache':false});
     return false; 
-
 }
-
+function nuevoServicio(){
+	$("#lista").attr('disabled', true);
+	$("#nuevoServicio").show(500);
+	$("#restoFormRecurso").hide(500);
+	jQuery.ajax({
+                url: "<?php echo Yii::app()->baseUrl;?>"+"/Servicio/crear",
+                'data':$(this).serialize(),
+                'type':'post',
+                'dataType':'json',
+                'success':function(data){
+                                if(data.status == 'failure'){
+                                        $('#nuevoServicio').html(data.div);
+										//$('#Repuesto_idsubTipoRepuesto').val($('#Subtiporepuesto_subTipo option:selected').val());
+										$('#nuevoServicio  form').submit(nuevoServicio);
+                                }
+                                else{
+                                        $('#nuevoServicio').html(data.div);
+										$("#nuevoServicio").hide(500);
+										$("#restoFormRecurso").show(500);
+										$("#lista").attr('disabled', false);
+										validarServicioNuevo();
+                                }
+                },
+                'cache':false});
+    return false; 
+}
 </script>

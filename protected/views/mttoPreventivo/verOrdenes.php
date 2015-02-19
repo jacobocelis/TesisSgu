@@ -4,9 +4,25 @@
 	'Órdenes abiertas',
 );
 $this->menu=array(
-	array('label'=>'<div id="menu"><strong>Órdenes de mantenimiento</strong></div>'),
-	array('label'=>'      Crear orden de mantenimiento', 'url'=>array('crearOrdenPreventiva')),
+	array('label'=>'<div id="menu"><strong>Opciones de mantenimiento</strong></div>'),
+	array('label'=>'      Registrar actividades de mantenimiento', 'url'=>array('planes')),
+	array('label'=>'      Registrar matenimientos iniciales <span id="mi" class="badge badge-'.$color.' pull-right">'.$mi.'</span>', 'url'=>array('mttoPreventivo/iniciales/')),
+	array('label'=>'      Ajuste de fechas en calendario', 'url'=>array('mttoPreventivo/calendario')),
 	
+	
+	array('label'=>'<div id="menu"><strong>Órdenes de mantenimiento</strong></div>'),
+	array('label'=>'      Crear orden de mantenimiento', 'url'=>array('mttoPreventivo/crearOrdenPreventiva')),
+	array('label'=>'      Ver órdenes abiertas <span class="badge badge-'.$Colorabi.' pull-right">'.$abiertas.'</span>', 'url'=>array('mttoPreventivo/verOrdenes')),
+	array('label'=>'      Órdenes listas para cerrar <span class="badge badge-'.$Colorli.' pull-right">'.$listas.'</span>', 'url'=>array('mttoPreventivo/cerrarOrdenes')),
+	
+	array('label'=>'<div id="menu"><strong>Gestión de coordinadores</strong></div>'),
+	array('label'=>'      Coordinador operativo y de transporte', 'url'=>array('empleados/coordinadores')),
+	
+	
+	array('label'=>'<div id="menu"><strong>Historial</strong></div>'),
+	array('label'=>'      Histórico de mantenimientos', 'url'=>array('mttoPreventivo/historicoPreventivo')),
+	array('label'=>'      Histórico de gastos', 'url'=>array('mttoPreventivo/historicoGastos')),
+	array('label'=>'      Histórico de ordenes', 'url'=>array('mttoPreventivo/historicoOrdenes')),
 );
 ?>
 <div class='crugepanel user-assignments-role-list'>

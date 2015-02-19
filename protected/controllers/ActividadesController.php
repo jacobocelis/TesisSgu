@@ -91,8 +91,9 @@ class ActividadesController extends Controller
 			$var=1;
 		else
 			$var=0;
-			if(isset($_POST['Actividades'])){
+		if(isset($_POST['Actividades'])){
             $model->attributes=$_POST['Actividades'];
+			$model->ultimoFecha=date("Y-m-d", strtotime(str_replace('/', '-',$model->ultimoFecha)));
             if($model->save()){
 			//calculo del proximo mantenimiento a realizarse en base al ultimo ingresado
 				$proximoFecha = new DateTime($model->ultimoFecha);

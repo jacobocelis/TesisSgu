@@ -80,7 +80,29 @@ class RepuestoController extends Controller
 			'tipo'=>$tipo,
 		));
 	}
+	public function actionCrear()
+	{
+		$model=new Repuesto;
 
+		if(isset($_POST['Repuesto'])){
+			$model->attributes=$_POST['Repuesto'];
+			if($model->save()){
+				if (Yii::app()->request->isAjaxRequest){
+                    echo CJSON::encode(array(
+                        'status'=>'success', 
+                        'div'=>""
+                        ));
+                    exit;               
+                }
+			}	
+		}
+		if (Yii::app()->request->isAjaxRequest){
+            echo CJSON::encode(array(
+                'status'=>'failure', 
+                'div'=>$this->renderPartial('_formNuevo', array('model'=>$model), true)));
+            exit;               
+        }
+	}
 	/**
 	 * Updates a particular model.
 	 * If update is successful, the browser will be redirected to the 'view' page.

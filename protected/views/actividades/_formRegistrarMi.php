@@ -35,11 +35,11 @@
 		<?php echo $form->error($model,'ultimoKm'); ?>
 	</div>
 
-<div id="slider-range-min"></div>
+<div id="slider-range-min"><div id="uno" style="float:left;margin-top:10px;"></div><div id="dos" style="float:right;margin-top:10px;">hoy</div></div>
 
 	<div class="row">
 		<?php echo $form->labelEx($model,'ultimoFecha'); ?>
-		<?php echo $form->textField($model,'ultimoFecha',array('value'=>$id?'':$model->ultimoFecha,'readonly'=>'readonly','style' => 'width:100px;cursor:pointer;')); ?>
+		<?php echo $form->textField($model,'ultimoFecha',array('value'=>$id?date("d/m/Y"):date("d/m/Y", strtotime(str_replace('/', '-',$model->ultimoFecha))),'readonly'=>'readonly','style' => 'width:100px;cursor:pointer;')); ?>
 		<?php echo $form->error($model,'ultimoFecha'); ?>
 	</div>
 	
@@ -101,6 +101,10 @@
 
 </div><!-- form -->
 <script>
+<?php $data=Tiempo::model()->findByPk($model->idtiempof);?>
+var tiempo="<?php echo $model->frecuenciaMes;?>";
+var unidad="<?php echo $data->sqlTimevalues;?>";
+
 	$(function($){
 	    $.datepicker.regional['es'] = {
 	        closeText: 'Cerrar',
@@ -113,7 +117,7 @@
 	        dayNamesShort: ['Dom','Lun','Mar','Mié','Juv','Vie','Sáb'],
 	        dayNamesMin: ['Do','Lu','Ma','Mi','Ju','Vi','Sá'],
 	        weekHeader: 'Sm',
-	        dateFormat: 'yy-mm-dd',
+	        dateFormat: 'dd/mm/yy',
 	        firstDay: 1,
 	        isRTL: false,
 			changeMonth: true,
@@ -121,7 +125,7 @@
 	        showMonthAfterYear: false,
 	        yearSuffix: '',
 	        maxDate: '0d',
-	        //minDate: '0d',
+	        minDate: '-'+tiempo+unidad,
 	    };
 	    $.datepicker.setDefaults($.datepicker.regional['es']);
 	});      		
@@ -130,6 +134,8 @@
 </script>
 
  <script>
+$("#uno").html("hace: "+$("#Actividades_frecuenciaKm").val()+"Km");
+$("#dos").html();
 var medio=$("#Kilometraje_lectura").val()-($("#Actividades_frecuenciaKm").val()/2);
 
 var min=$("#Kilometraje_lectura").val()-$("#Actividades_frecuenciaKm").val();

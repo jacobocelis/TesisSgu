@@ -131,6 +131,24 @@ $.ajax({
     	     $('#Actividadrecursogrupo_idinsumo').html(result);
   	});
 }
+function validarRepuestoNuevo(id){
+var dir="<?php echo Yii::app()->baseUrl;?>"+"/mttoPreventivo/ActualizarRepuesto/"+id;
+$.ajax({  		
+          url: dir,
+        })
+  	.done(function( result ) {    	
+    	     $('#Actividadrecursogrupo_idrepuesto').html(result);
+  	});
+}
+function validarServicioNuevo(){
+var dir="<?php echo Yii::app()->baseUrl;?>"+"/mttoPreventivo/ActualizarServicio";
+$.ajax({  		
+          url: dir,
+        })
+  	.done(function( result ) {    	
+    	     $('#Actividadrecursogrupo_idservicio').html(result);
+  	});
+}
 function validarRepuesto(id){
 var dir="<?php echo Yii::app()->baseUrl;?>"+"/mttoPreventivo/repuesto/"+id;
 $.ajax({  		
@@ -167,10 +185,10 @@ $("#lista").change(function() {
 $("#Tipoinsumo_tipo").change(function() {
 	$('#Insumo_tipoInsumo').val($('#Tipoinsumo_tipo').val());
 });
-/*$("#repuesto").change(function() {
-	$("#Actividadrecursogrupo_recurso").val($("#Actividadrecursogrupo_idrepuesto option:selected").text());
+$("#Subtiporepuesto_subTipo").change(function() {
+	$("#Repuesto_idsubTipoRepuesto").val($("#Subtiporepuesto_subTipo option:selected").val());
 });
-$("#servicio").change(function() {
+/*$("#servicio").change(function() {
 	$("#Actividadrecursogrupo_recurso").val($("#Actividadrecursogrupo_idprovServ option:selected").text());
 });*/
 </script>
