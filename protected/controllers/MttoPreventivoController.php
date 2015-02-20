@@ -202,7 +202,9 @@ class MttoPreventivoController extends Controller
 	}
 	public function actionCambiarFecha($id){
 		if(isset($_POST['fecha'])){
-			Yii::app()->db->createCommand("update `tsg`.`sgu_actividades` set `proximoFecha` = '".$_POST['fecha']."' where `sgu_actividades`.`id` = ".$id."")->query();
+			$nueva=date("Y-m-d", strtotime(str_replace('/', '-',$_POST['fecha'])));
+			
+			Yii::app()->db->createCommand("update `tsg`.`sgu_actividades` set `proximoFecha` = '".$nueva."' where `sgu_actividades`.`id` = ".$id."")->query();
 		}
 	}
 	public function actionCalendario(){
@@ -234,11 +236,12 @@ class MttoPreventivoController extends Controller
 	$this->render('calendar',array(
 		'items'=>$items,
 		'mi'=>$this->getIniciales(),
-			'color'=>$this->getColor($this->getIniciales()),
-			'abiertas'=>$this->getOrdenesAbiertas(),
-			'Colorabi'=>$this->getColor($this->getOrdenesAbiertas()),
-			'Colorli'=>$this->getColor($this->getOrdenesListas()),
-			'listas'=>$this->getOrdenesListas(),
+		'color'=>$this->getColor($this->getIniciales()),
+		'abiertas'=>$this->getOrdenesAbiertas(),
+		'Colorabi'=>$this->getColor($this->getOrdenesAbiertas()),
+		'Colorli'=>$this->getColor($this->getOrdenesListas()),
+		'listas'=>$this->getOrdenesListas(),
+		'hoy'=>date("Y-m-d"),
 	));
     //echo CJSON::encode($items);
     //Yii::app()->end();
