@@ -92,15 +92,16 @@ class Actividades extends CActiveRecord
 		return 100-(($diasR/$diasT)*100);
 	}*/
 	public function atraso($fin){
-		$datetime1 = new DateTime($fin);
-		$datetime2 = new DateTime("now");
-		$interval = $datetime2->diff($datetime1);
-		$retraso=$interval->format('%R%a');
+		//$datetime1 = new DateTime($fin);
+		//$datetime2 = new DateTime("now");
+		//$interval = $datetime2->diff($datetime1);
+		//$retraso=$interval->format('%R%a');
 		
+                $retraso =((strtotime($fin)-strtotime(date("Y-m-d")))/86400);
 		if($retraso==-1)
-			return $interval->format('%a Día');
+			return abs($retraso).' Día';
 		if($retraso<-1)
-			return $interval->format('%a Días');
+			return abs($retraso).' Días';
 		return "";
 	}
 	public function atrasoKm($id,$prox){
@@ -113,15 +114,16 @@ class Actividades extends CActiveRecord
 			return "";
 	}
 	public function porcentaje($ini,$fin){
-		$datetime1 = new DateTime($fin);
+		/*$datetime1 = new DateTime($fin);
 		$datetime2 = new DateTime("now");
 		$datetime2=$datetime2->format('Y-m-d');
 		$fecha=new DateTime($datetime2);
-		$interval = $fecha->diff($datetime1);
+		$interval = $fecha->diff($datetime1);*/
 		
-		if($interval->format('%R%a')<0)
+                $interval =((strtotime($fin)-strtotime(date("Y-m-d")))/86400);
+		if($interval<0)
 			return 100;
-		$diasR=$interval->format('%a');
+		$diasR=abs($interval);
 		if($diasR>5)
 			return 0;
 		else	

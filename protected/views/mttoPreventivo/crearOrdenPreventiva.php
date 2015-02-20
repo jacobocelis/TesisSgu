@@ -118,12 +118,13 @@ $this->beginWidget('zii.widgets.jui.CJuiDialog', array( // the dialog
         'width'=>490,
         //'height'=>360,
 		'position'=>array(null,100),
-		'resizable'=>false
+		'resizable'=>false,
+		'close'=>'js:function(){ $("#scrollingDiv").show(300); }',
     ),
 ));?>
 <div class="divForForm"></div>
 <?php $this->endWidget();?>
-</div>
+
 <style>
 .rojo{
 background: none repeat scroll 0% 0% #FFD6D6;
@@ -204,17 +205,10 @@ h1 {
 	background-color:#0061a7;
 	color: #fff;
 }
-</style>
-<style>
 .ui-progressbar .ui-widget-header {
 	background: #FFF;
 }
-.ui-widget-header {
-    border: 1px solid #AAA;
-    background-image: url("<?php echo Yii::app()->request->baseUrl;?>/imagenes/imagen.png");
-    color: #222;
-    font-weight: bold;
-}
+
 .ui-progressbar {
     border: 0px none;
     border-radius: 0px;

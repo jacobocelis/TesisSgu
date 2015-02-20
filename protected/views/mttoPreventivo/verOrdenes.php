@@ -212,12 +212,7 @@ h1 {
 .ui-progressbar .ui-widget-header {
 	background: #FFF;
 }
-.ui-widget-header {
-    border: 1px solid #AAA;
-    background-image: url("<?php echo Yii::app()->request->baseUrl;?>/imagenes/imagen.png");
-    color: #222;
-    font-weight: bold;
-}
+
 .ui-progressbar {
     border: 0px none;
     border-radius: 0px;
@@ -241,9 +236,6 @@ h1 {
 }
 </style>
 <script>
-$( document ).ready(function() {
-	//$.fn.yiiGridView.update('orden');
-});
 
 var Uurl;
 function enviar(id){

@@ -8,6 +8,7 @@
  * @property string $tiempo
  * @property string $sqlTimevalues
  * @property integer $segundosUnidad
+ * @property string $palabraUnidad
  *
  * The followings are the available model relations:
  * @property Actividades[] $actividades
@@ -39,10 +40,10 @@ class Tiempo extends CActiveRecord
 			array('tiempo', 'required'),
 			array('segundosUnidad', 'numerical', 'integerOnly'=>true),
 			array('tiempo', 'length', 'max'=>10),
-			array('sqlTimevalues', 'length', 'max'=>45),
+			array('sqlTimevalues, palabraUnidad', 'length', 'max'=>45),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, tiempo, sqlTimevalues, segundosUnidad', 'safe', 'on'=>'search'),
+			array('id, tiempo, sqlTimevalues, segundosUnidad, palabraUnidad', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -74,6 +75,7 @@ class Tiempo extends CActiveRecord
 			'tiempo' => 'Tiempo',
 			'sqlTimevalues' => 'Sql Timevalues',
 			'segundosUnidad' => 'Segundos Unidad',
+			'palabraUnidad' => 'Palabra Unidad',
 		);
 	}
 
@@ -99,6 +101,7 @@ class Tiempo extends CActiveRecord
 		$criteria->compare('tiempo',$this->tiempo,true);
 		$criteria->compare('sqlTimevalues',$this->sqlTimevalues,true);
 		$criteria->compare('segundosUnidad',$this->segundosUnidad);
+		$criteria->compare('palabraUnidad',$this->palabraUnidad,true);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,

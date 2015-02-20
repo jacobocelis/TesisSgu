@@ -112,7 +112,7 @@ class MttoPreventivoController extends Controller
 				$actividades[$i][$j]=new CActiveDataProvider('Actividades',array('criteria' => array(
 				'condition' =>'id="'.$totAct[$j]["id"].'"',
 				)));
-				$recursos[$i][$j]=new CActiveDataProvider('ActividadRecurso',array('criteria' => array(
+				$recursos[$i][$j]=new CActiveDataProvider('Actividadrecurso',array('criteria' => array(
 				'condition' =>'idactividades="'.$totAct[$j]["id"].'"',
 				)));
 			}
@@ -168,12 +168,12 @@ class MttoPreventivoController extends Controller
 				$actividades[$i][$j]=new CActiveDataProvider('Actividades',array('criteria' => array(
 				'condition' =>'id="'.$totAct[$j]["id"].'"',
 				)));
-				$recursos[$i][$j]=new CActiveDataProvider('ActividadRecurso',array('criteria' => array(
+				$recursos[$i][$j]=new CActiveDataProvider('Actividadrecurso',array('criteria' => array(
 				'condition' =>'idactividades="'.$totAct[$j]["id"].'"',
 				)));
 			}
 		}
-		$totFactura=Yii::app()->db->createCommand('select (round(sum(ar.costoTotal),2)) as Total from sgu_actividadrecurso ar, sgu_detalleorden d where d.idactividades=ar.idactividades and d.idordenMtto="'.$id.'"')->queryRow();
+		$totFactura=Yii::app()->db->createCommand('select (round(sum(ar.costoTotal),2)) as Total from sgu_actividadRecurso ar, sgu_detalleOrden d where d.idactividades=ar.idactividades and d.idordenMtto="'.$id.'"')->queryRow();
 		
 
 		$factura=new CActiveDataProvider('Factura',array('criteria' => array(
@@ -307,7 +307,9 @@ class MttoPreventivoController extends Controller
 	public function actionAgregarFactura($id){
 		$model=new Factura;
 		if(isset($_POST['Factura'])){
+			
             $model->attributes=$_POST['Factura'];
+			$model->fechaFactura=date("Y-m-d", strtotime(str_replace('/', '-',$model->fechaFactura)));
             if($model->save()){
 			
                 if (Yii::app()->request->isAjaxRequest){

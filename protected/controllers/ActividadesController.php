@@ -96,12 +96,13 @@ class ActividadesController extends Controller
 			$model->ultimoFecha=date("Y-m-d", strtotime(str_replace('/', '-',$model->ultimoFecha)));
             if($model->save()){
 			//calculo del proximo mantenimiento a realizarse en base al ultimo ingresado
-				$proximoFecha = new DateTime($model->ultimoFecha);
+				//$proximoFecha = new DateTime($model->ultimoFecha);
 				$proximoKm=$model->ultimoKm+$model->frecuenciaKm;
-				$proximoFecha->add(new DateInterval('P'.$model->frecuenciaMes.$model->idtiempof0->sqlTimevalues));
-				//file_put_contents('prueba.txt', print_r($proximoFecha,true));
+				//$proximoFecha->add(new DateInterval('P'.$model->frecuenciaMes.$model->idtiempof0->sqlTimevalues));
 				
-				Yii::app()->db->createCommand("update `tsg`.`sgu_actividades` set proximoKm='".$proximoKm."', proximoFecha='".$proximoFecha->format("Y-m-d")."', idestatus='".$model->idestatus."'
+                                $proximoFecha=date("Y-m-d",strtotime($model->ultimoFecha . "+".$model->frecuenciaMes.$model->idtiempof0->palabraUnidad));
+                                
+				Yii::app()->db->createCommand("update `tsg`.`sgu_actividades` set proximoKm='".$proximoKm."', proximoFecha='".$proximoFecha."', idestatus='".$model->idestatus."'
 				where id = '".$id."'")->query();
 				
                 if (Yii::app()->request->isAjaxRequest){
