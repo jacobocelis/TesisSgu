@@ -18,7 +18,7 @@ $this->menu=array(
 ?>
 
 <div class='crugepanel user-assignments-detail'>
-<h1>Última reposición de combustible</h1>
+<h1>Reposiciones de combustible</h1>
 <?php $this->widget('zii.widgets.grid.CGridView', array(
                 'id'=>'combustible',
 				'summaryText'=>'',

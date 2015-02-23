@@ -1,11 +1,65 @@
 <div class='crugepanel user-assignments-role-list'>
-	<h1>SIRCA</h1>
-	<p>Empresa rental de la UNET</p>
-	<p>RIF:G-200007525-2</p>
-	<p>Gerencia de negocios Dpto. de transporte</p>
-	<h1>Solicitud de servicio correctivo</h1>	
+	<h1>Orden de mantenimiento correctivo</h1>
+<?php
+$this->widget('zii.widgets.grid.CGridView', array(
+                'id'=>'factura',
+				'summaryText'=>'',
+			   // 'enableSorting' => false,
+				'template'=>"{items}\n{summary}\n{pager}",
+				'selectableRows'=>0,
+				'emptyText'=>'',
+                'dataProvider'=>$orden,
+				//'htmlOptions'=>array('style'=>'cursor:pointer'),
+				'columns'=>array(
+				array(
+					'type'=>'raw',
+					'headerHtmlOptions'=>array('style'=>'width:7%'),
+					'header'=>'Orden #',
+					//'name'=>'id',
+					'value'=>'str_pad((int) $data->id,6,"0",STR_PAD_LEFT);',
+					//'value'=>'$data->idplan0->idplanGrupo0->CompiledColour->$data-id.\' \'.$data->CompiledColour',
+					'htmlOptions'=>array('style'=>'text-align:center;width:50px'),
+				),
+				array(
+					'type'=>'raw',
+					'header'=>'Fecha y hora',
+					//'name'=>'fecha',
+					'value'=>'date("d/m/Y h:i A",strtotime($data->fecha))',
+					'htmlOptions'=>array('style'=>'text-align:center;width:100px'),
+				),
+				/*array(
+					'header'=>'Estado',
+					//'name'=>'idestatus',
+					'value'=>'$data->idestatus0->estatus',
+					'htmlOptions'=>array('style'=>'text-align:center;width:100px'),
+				),*/
+				array(
+					'type'=>'raw',
+					'header'=>'C. operativo',
+					//'name'=>'cOperativo',
+					'value'=>'$data->cOperativo0->nombre.\'  \'.$data->cOperativo0->apellido',
+					'htmlOptions'=>array('style'=>'text-align:center;width:80px'),
+				),
+				array(
+					'type'=>'raw',
+					'header'=>'C. de transporte',
+					//'name'=>'cTaller',
+					'value'=>'$data->cTaller0->nombre.\'  \'.$data->cTaller0->apellido',
+					'htmlOptions'=>array('style'=>'text-align:center;width:80px'),
+				),
+				array(
+					'type'=>'raw',
+					'header'=>'Taller asignado',
+					//'name'=>'taller',
+					'value'=>'$data->taller0->nombre',
+					'htmlOptions'=>array('style'=>'text-align:center;width:80px'),
+				),
+			)
+        ));
+		?>
 </div>
 <div class='crugepanel user-assignments-role-list'>
+<h1>Actividades de mantenimiento a ejecutar</h1>
 <?php
 for($i=0;$i<$totalVeh;$i++){
 $this->widget('zii.widgets.grid.CGridView', array(
@@ -17,16 +71,15 @@ $this->widget('zii.widgets.grid.CGridView', array(
 				'template'=>"{items}\n{summary}\n{pager}",
 				'selectableRows'=>0,
 				'emptyText'=>'No hay ordenes listas para cerrar',
+				'htmlOptions'=>array('style'=>'margin-top:1%'),
                 'dataProvider'=>$vehiculos[$i],
 				'columns'=>array(
 				array(
 					'type'=>'raw',
-					'headerHtmlOptions'=>array('style'=>'width:100%;text-align:left;background:#F3FDA4'),
+					'headerHtmlOptions'=>array('style'=>'width:7%;text-align:left;background:#F3FDA4'),
 					'header'=>'Vehiculo',
-					'value'=>'\'<strong>Unidad: </strong> #\'.str_pad((int) $data->numeroUnidad,2,"0",STR_PAD_LEFT).\' \'.$data->idgrupo0->idtipo0->tipo.\' \'.$data->idmodelo0->idmarca0->marca.\'  \'.$data->idmodelo0->modelo.\' Año \'.$data->anno.\' Color \'.$data->idcolor0->color.\' #puestos \'.$data->nroPuestos.\' placa:\'.$data->placa',
-					//'value'=>'$data->idplan0->idplanGrupo0->CompiledColour->$data-id.\' \'.$data->CompiledColour',
-					'htmlOptions'=>array('style'=>'text-align:left;background:#ADEAE6'
-				),
+					'value'=>'\'<strong>Unidad: </strong> #0\'.$data->numeroUnidad.\' \'.$data->idmodelo0->idmarca0->marca.\'  \'.$data->idmodelo0->modelo.\' \'.$data->anno.\' \'.$data->idcolor0->color',
+					'htmlOptions'=>array('style'=>'text-align:left;width:100px;background:#F3FDA4'),
 			),
 		)
     ));
@@ -44,10 +97,17 @@ $this->widget('zii.widgets.grid.CGridView', array(
 				'columns'=>array(
 					array(
 						'type'=>'raw',
-						//'headerHtmlOptions'=>array('style'=>'width:80%;text-align:left;'),
+						//'headerHtmlOptions'=>array('style'=>'width:10%;text-align:left;'),
 						'header'=>'         Falla',
-						'value'=>'\'<strong>Falla:</strong> \'.$data->idfalla0->falla',
-						'htmlOptions'=>array('style'=>'text-align:left;background:#F3FDA4'),
+						'value'=>'\'<strong>\'.$data->tipo($data->id).\':</strong> \'',
+						'htmlOptions'=>array('style'=>'text-align:left;width:20%;'),
+					),
+					array(
+						'type'=>'raw',
+						//'headerHtmlOptions'=>array('style'=>'width:10%;text-align:left;'),
+						'header'=>'         Falla',
+						'value'=>'$data->idfalla0->falla',
+						'htmlOptions'=>array('style'=>'text-align:left'),
 					),
 				)
     ));
@@ -108,7 +168,18 @@ $this->widget('zii.widgets.grid.CGridView', array(
 <div class='crugepanel user-assignments-role-list' id="ob">
 		Observaciones:<hr><hr><hr><hr><hr><hr>
 		</div>
+
 <style>
+
+body {
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    font-size: 14px;
+    line-height: 20px;
+    color: #333;
+}
+.list-view div.view {
+    background: none repeat scroll 0% 0% rgba(54, 255, 41, 0.19);
+}
 .grid-view .summary {
     margin: 0px 0px 0px;
     text-align: right;
@@ -182,8 +253,6 @@ h1 {
     border: 1px solid #A8C5F0;
     padding: 0.3em;
 }
-</style>
-<style>
 .grid-view
 {
 	padding: 0px 0px;

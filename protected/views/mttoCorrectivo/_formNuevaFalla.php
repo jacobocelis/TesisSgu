@@ -14,28 +14,23 @@
 	// See class documentation of CActiveForm for details on this.
 	'enableAjaxValidation'=>false,
 )); ?>
-<div id="verde">
-<strong>Complete los datos para registrar una falla nueva:</strong>
+
 	<div class="row">
-		<?php echo $form->labelEx($model,'falla'); ?>
-		<?php echo $form->textArea($model,'falla',array('size'=>60,'maxlength'=>120)); ?>
+		<?php echo $form->labelEx($model,'Nueva falla*'); ?>
+		<?php echo $form->textArea($model,'falla',array('size'=>60,'maxlength'=>120,'style'=>"width:250px")); ?>
 		<?php echo $form->error($model,'falla'); ?>
 	</div>
 	<div class="row">
 		
-		<?php echo $form->hiddenField($model,'tipo',array('value'=>0); ?>
+		<?php echo $form->hiddenField($model,'tipo',array('value'=>0)); ?>
 		
 	</div>
-	<?php
-		echo CHtml::link('Cancelar', "",array('title'=>'Cancelar',
-        'style'=>'cursor: pointer;font-size:10px;float:right;',
-        'onclick'=>"{cancelar()}"));?>
+
 	<div class="row buttons">
 		<?php echo CHtml::submitButton($model->isNewRecord ? 'Agregar' : 'Guardar'); ?>
 	</div>
 
 <?php $this->endWidget(); ?>
-</div>
 </div><!-- form -->
 <script>
 function cancelar(){
@@ -45,11 +40,3 @@ function cancelar(){
 	$('#registrarFalla').show();
 }
 </script>
-<style>
-#verde{
-	background: #D9EDFF;
-	width:320px;
-	padding: 5px;
-	border-radius: 2px;
-}
-</style>

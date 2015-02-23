@@ -257,8 +257,12 @@ class MttoCorrectivoController extends Controller
 			)));
 		$this->render('cerrarOrdenes',array(
 			'dataProvider'=>$dataProvider,
+			'mi'=>$this->getFallas(),
+			'color'=>$this->getColor($this->getFallas()),
 			'abiertas'=>$this->getOrdenesAbiertas(),
-			'color'=>$this->getColor($this->getOrdenesAbiertas()),
+			'Colorabi'=>$this->getColor($this->getOrdenesAbiertas()),
+			'Colorli'=>$this->getColor($this->getOrdenesListas()),
+			'listas'=>$this->getOrdenesListas(),
 			));
 	}
 	public function actionVerOrdenes(){
@@ -268,8 +272,12 @@ class MttoCorrectivoController extends Controller
 			)));
 		$this->render('verOrdenes',array(
 			'dataProvider'=>$dataProvider,
+			'mi'=>$this->getFallas(),
+			'color'=>$this->getColor($this->getFallas()),
 			'abiertas'=>$this->getOrdenesAbiertas(),
-			'color'=>$this->getColor($this->getOrdenesAbiertas()),
+			'Colorabi'=>$this->getColor($this->getOrdenesAbiertas()),
+			'Colorli'=>$this->getColor($this->getOrdenesListas()),
+			'listas'=>$this->getOrdenesListas(),
 			));
 	}
 	public function actionAgregarFactura($id){
@@ -304,9 +312,17 @@ class MttoCorrectivoController extends Controller
 		}
 		$recurso=new CActiveDataProvider('Recursofalla',array('criteria'=>array('condition'=>'idreporteFalla="'.$idrecurso.'"')));
 		$dataProvider=new CActiveDataProvider('Reportefalla',array('criteria' => array(
-			'order'=>'fechaFalla desc',
-			'condition'=>'id in (select idreporteFalla from sgu_detalleOrdenCo where idordenMtto="'.$id.'")')
-			,'pagination'=>array('pageSize'=>9999999)));
+			'condition' =>'id in (select idreporteFalla from sgu_detalleOrdenCo where idordenMtto="'.$id.'") and idfalla in (select id from sgu_falla where tipo=0)',
+			
+			'order'=>'fechaFalla DESC'
+			
+			)));
+			$mejoras=new CActiveDataProvider('Reportefalla',array('criteria' => array(
+			'condition' =>'id in (select idreporteFalla from sgu_detalleOrdenCo where idordenMtto="'.$id.'") and idfalla in (select id from sgu_falla where tipo=1)',
+			
+			'order'=>'fechaFalla DESC'
+			
+			)));
 			
 		$factura=new CActiveDataProvider('Factura',array('criteria' => array(
 			'condition'=>'idordenMtto="'.$id.'"'),
@@ -315,6 +331,7 @@ class MttoCorrectivoController extends Controller
 		$total=count($tot);
 		$this->render('registrarFacturacion',array(
 			'dataProvider'=>$dataProvider,
+			'mejoras'=>$mejoras,
 			'modelofactura'=>$model,
 			'factura'=>$factura,
 			'id'=>$id,
@@ -322,6 +339,7 @@ class MttoCorrectivoController extends Controller
 			'total'=>$total,
 			'nom'=>$nom,
 			'dir'=>$dir,
+			'model'=> new Reportefalla,
 		));
 	}
 	public function actionCrearOrden(){
@@ -330,10 +348,21 @@ class MttoCorrectivoController extends Controller
             $model->attributes=$_POST['Ordenmtto'];
             if($model->save()){
 			if(isset($_POST['idfalla'])){
-				$fal = explode(",", $_POST['idfalla']);
-				foreach($fal as $idfal){
-					Yii::app()->db->createCommand("INSERT INTO `tsg`.`sgu_detalleOrdenCo` (`idreporteFalla`,`idordenMtto`) VALUES (".$idfal.",".$model->id.")")->query();
-					Yii::app()->db->createCommand("update `tsg`.`sgu_reporteFalla` set `idestatus` = '4' where `sgu_reporteFalla`.`id` = ".$idfal."")->query();
+				if($_POST['idfalla']!=""){
+					$fal = explode(",", $_POST['idfalla']);
+					foreach($fal as $idfal){
+						Yii::app()->db->createCommand("INSERT INTO `tsg`.`sgu_detalleOrdenCo` (`idreporteFalla`,`idordenMtto`) VALUES (".$idfal.",".$model->id.")")->query();
+						Yii::app()->db->createCommand("update `tsg`.`sgu_reporteFalla` set `idestatus` = '4' where `sgu_reporteFalla`.`id` = ".$idfal."")->query();
+					}
+				}
+			}
+			if(isset($_POST['idmejora'])){
+				if($_POST['idmejora']!=""){
+					$fal = explode(",", $_POST['idmejora']);
+					foreach($fal as $idmej){
+						Yii::app()->db->createCommand("INSERT INTO `tsg`.`sgu_detalleOrdenCo` (`idreporteFalla`,`idordenMtto`) VALUES (".$idmej.",".$model->id.")")->query();
+						Yii::app()->db->createCommand("update `tsg`.`sgu_reporteFalla` set `idestatus` = '4' where `sgu_reporteFalla`.`id` = ".$idmej."")->query();
+					}
 				}
 			}
                 if (Yii::app()->request->isAjaxRequest){
@@ -362,12 +391,20 @@ class MttoCorrectivoController extends Controller
 			'condition' =>'idestatus=8 and idfalla in (select id from sgu_falla where tipo=0)',
 			'order'=>'fechaFalla'
 			)));
+		$mejoras=new CActiveDataProvider('Reportefalla',array('criteria' => array(
+			//'condition' =>'idestatus=2 and atraso >=-5',
+			'condition' =>'idestatus=8 and idfalla in (select id from sgu_falla where tipo=1)',
+			'order'=>'fechaFalla'
+			)));
 		$this->render('crearOrdenCorrectiva',array(
 			'dataProvider'=>$dataProvider,
+			'mejoras'=>$mejoras,
+			'mi'=>$this->getFallas(),
+			'color'=>$this->getColor($this->getFallas()),
+			'abiertas'=>$this->getOrdenesAbiertas(),
 			'Colorabi'=>$this->getColor($this->getOrdenesAbiertas()),
 			'Colorli'=>$this->getColor($this->getOrdenesListas()),
 			'listas'=>$this->getOrdenesListas(),
-			'abiertas'=>$this->getOrdenesAbiertas(),
 		));
 	}
 	public function actionMttopVehiculo($id){
@@ -408,18 +445,24 @@ class MttoCorrectivoController extends Controller
 			'condition' =>'id='.$id."")
 			,'pagination'=>array('pageSize'=>9999999)));
 		$dataProvider=new CActiveDataProvider('Reportefalla',array('criteria' => array(
-			'condition' =>'id in (select idreporteFalla from sgu_detalleOrdenCo where idordenMtto="'.$id.'")',
+			'condition' =>'id in (select idreporteFalla from sgu_detalleOrdenCo where idordenMtto="'.$id.'") and idfalla in (select id from sgu_falla where tipo=0)',
 			
 			'order'=>'fechaFalla DESC'
 			
 			)));
+			$mejoras=new CActiveDataProvider('Reportefalla',array('criteria' => array(
+			'condition' =>'id in (select idreporteFalla from sgu_detalleOrdenCo where idordenMtto="'.$id.'") and idfalla in (select id from sgu_falla where tipo=1)',
 			
+			'order'=>'fechaFalla DESC'
+			
+			)));
 		$this->render('mttocRealizados',array(
 			'dataProvider'=>$dataProvider,
 			'orden'=>$orden,
 			'id'=>$id,
 			'nom'=>$nom,
 			'dir'=>$dir,
+			'mejoras'=>$mejoras,
 		));
 	}
 	public function actionActualizarCheck($id){
@@ -427,11 +470,13 @@ class MttoCorrectivoController extends Controller
 			'order'=>'fechaFalla asc',
 			'condition'=>'id in (select idreporteFalla from sgu_detalleOrdenCo where idordenMtto="'.$id.'")')
 			,'pagination'=>array('pageSize'=>9999999)));
-			
+		$fac=Yii::app()->db->createCommand('select total from sgu_factura where idordenMtto="'.$id.'"')->queryRow();
+                   
 		$data=$dataProvider->getData();
 		for($i=0;$i<count($data);$i++){
 			//if($data[$i]["fechaRealizada"]=="0000-01-01" or $data[$i]["kmRealizada"]==-1){
-			if($data[$i]["idestatus"]<>3){
+
+			if($data[$i]["idestatus"]<>3 or $fac["total"]==0){
 				$estado=0;
 				break;
 			}else	
@@ -629,6 +674,12 @@ class MttoCorrectivoController extends Controller
 			)));
 		$this->render('registrarFalla',array(
 			'dataProvider'=>$dataProvider,
+			'mi'=>$this->getFallas(),
+			'color'=>$this->getColor($this->getFallas()),
+			'abiertas'=>$this->getOrdenesAbiertas(),
+			'Colorabi'=>$this->getColor($this->getOrdenesAbiertas()),
+			'Colorli'=>$this->getColor($this->getOrdenesListas()),
+			'listas'=>$this->getOrdenesListas(),
 		));
 	}
 	public function actionRegistrarMejora(){
@@ -638,6 +689,13 @@ class MttoCorrectivoController extends Controller
 			)));
 		$this->render('registrarMejora',array(
 			'dataProvider'=>$dataProvider,
+			'mi'=>$this->getFallas(),
+			'color'=>$this->getColor($this->getFallas()),
+			'abiertas'=>$this->getOrdenesAbiertas(),
+			'Colorabi'=>$this->getColor($this->getOrdenesAbiertas()),
+			'Colorli'=>$this->getColor($this->getOrdenesListas()),
+			'listas'=>$this->getOrdenesListas(),
+			
 		));
 	}
 
@@ -687,6 +745,13 @@ class MttoCorrectivoController extends Controller
 		$dataProvider=new CActiveDataProvider('Recursofalla',array('criteria'=>array('condition'=>'costoTotal>0')));
 		$this->render('historicoGastos',array(
 			'dataProvider'=>$dataProvider,
+			
+			'mi'=>$this->getFallas(),
+			'color'=>$this->getColor($this->getFallas()),
+			'abiertas'=>$this->getOrdenesAbiertas(),
+			'Colorabi'=>$this->getColor($this->getOrdenesAbiertas()),
+			'Colorli'=>$this->getColor($this->getOrdenesListas()),
+			'listas'=>$this->getOrdenesListas(),
 		));
 	}
 	public function actionHistoricoCorrectivo(){
@@ -698,13 +763,17 @@ class MttoCorrectivoController extends Controller
 			//$mi=Yii::app()->db->createCommand("select count(*) as total from sgu_reporteFalla where idestatus=8")->queryRow();
 		$this->render('historicoCorrectivo',array(
 				'dataProvider'=>$dataProvider,
-				/*'mi'=>$mi['total'],
-				'color'=>$this->getColor($mi["total"]),
-				'abiertas'=>$this->getOrdenesAbiertas(),
-				'Colorabi'=>$this->getColor($this->getOrdenesAbiertas()),
-				'Colorli'=>$this->getColor($this->getOrdenesListas()),
-				'listas'=>$this->getOrdenesListas(),*/
+				'mi'=>$this->getFallas(),
+			'color'=>$this->getColor($this->getFallas()),
+			'abiertas'=>$this->getOrdenesAbiertas(),
+			'Colorabi'=>$this->getColor($this->getOrdenesAbiertas()),
+			'Colorli'=>$this->getColor($this->getOrdenesListas()),
+			'listas'=>$this->getOrdenesListas(),
 			));
+	}
+	public function getFallas(){
+		$mi=Yii::app()->db->createCommand("select count(*) as total from sgu_reporteFalla where idestatus=8  and idfalla in (select id from sgu_falla where tipo = 0)")->queryRow();
+		return $mi["total"];
 	}
 	public function actionHistoricoOrdenes(){
 	$dataProvider=new CActiveDataProvider('Ordenmtto',array('criteria' => array(
@@ -712,9 +781,12 @@ class MttoCorrectivoController extends Controller
 			'order'=>'fecha'
 			)));
 		$this->render('historicoOrdenes',array(
-			'dataProvider'=>$dataProvider,
+			'dataProvider'=>$dataProvider,'mi'=>$this->getFallas(),
+			'color'=>$this->getColor($this->getFallas()),
 			'abiertas'=>$this->getOrdenesAbiertas(),
-			'color'=>$this->getColor($this->getOrdenesAbiertas()),
+			'Colorabi'=>$this->getColor($this->getOrdenesAbiertas()),
+			'Colorli'=>$this->getColor($this->getOrdenesListas()),
+			'listas'=>$this->getOrdenesListas(),
 			));
 	}
 	public function actionIndex(){
@@ -735,11 +807,11 @@ class MttoCorrectivoController extends Controller
 			'order'=>'fechaFalla DESC'
 			)));
 			
-			$mi=Yii::app()->db->createCommand("select count(*) as total from sgu_reporteFalla where idestatus=8  and idfalla in (select id from sgu_falla where tipo = 0)")->queryRow();
+			
 		$this->render('index',array(
 			'dataProvider'=>$dataProvider,
-			'mi'=>$mi['total'],
-			'color'=>$this->getColor($mi["total"]),
+			'mi'=>$this->getFallas(),
+			'color'=>$this->getColor($this->getFallas()),
 			'abiertas'=>$this->getOrdenesAbiertas(),
 			'Colorabi'=>$this->getColor($this->getOrdenesAbiertas()),
 			'Colorli'=>$this->getColor($this->getOrdenesListas()),

@@ -23,14 +23,11 @@
 		));
 		$modelo=new Kilometraje();
 	?>
-	<div class="row">
-		
-		<label>Última lectura del odómetro: </label><?php echo $form->textField($modelo,'lectura',array('value'=>number_format($km[0]["lectura"], 0,",","") ,'readonly'=>'readonly','style' => 'width:100px;cursor:pointer;text-align:right')); ?> Km 
-	</div>
+	
 	
 	<div class="row">
-		<?php echo $form->labelEx($model,'kmRealizada'); ?>
-		<?php echo $form->textField($model,'kmRealizada',array('value'=>$id?'':$model->kmRealizada,'style' => 'width:100px;text-align:right;')); ?> Km
+		
+		<?php echo $form->hiddenField($model,'kmRealizada',array('value'=>$id?$km[0]["lectura"]:$model->kmRealizada,'style' => 'width:100px;text-align:right;')); ?>
 		<?php echo $form->error($model,'kmRealizada'); ?>
 	</div>
 	

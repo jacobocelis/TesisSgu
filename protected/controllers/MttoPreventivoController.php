@@ -29,7 +29,7 @@ class MttoPreventivoController extends Controller
 	{
 		return array(
 			array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array('index','view','crearPlan','planes','agregarActividad','obtenerParte','mttopVehiculo','mttopIniciales','calendario','obtenerActividad','agregarRecurso','iniciales','crearordenpreventiva','crearOrden','verOrdenes','cambiarFecha','mttopRealizados','registrarFacturacion','agregarFactura','estatusOrden','cerrarOrdenes','historicoPreventivo','historicoOrdenes','historicoGastos','vistaPrevia','vistaPreviaPDF','generarPdf','correo','actualizarSpan','agregarRecursoAdicional','insumos','repuesto','ActualizarCheck','ActualizarListaActividades','ActualizarInsumos','ActualizarRepuesto','ActualizarServicio'),
+				'actions'=>array('index','view','crearPlan','planes','agregarActividad','obtenerParte','mttopVehiculo','mttopIniciales','calendario','obtenerActividad','agregarRecurso','iniciales','crearordenpreventiva','crearOrden','verOrdenes','cambiarFecha','mttopRealizados','registrarFacturacion','agregarFactura','estatusOrden','cerrarOrdenes','historicoPreventivo','historicoOrdenes','historicoGastos','vistaPrevia','vistaPreviaPDF','generarPdf','correo','actualizarSpan','agregarRecursoAdicional','insumos','repuesto','ActualizarCheck','ActualizarListaActividades','ActualizarInsumos','ActualizarRepuesto','ActualizarServicio','actualizarSpanListas'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
@@ -52,6 +52,14 @@ class MttoPreventivoController extends Controller
 	 */
 	 public function actionActualizarSpan(){
 		$mi=Yii::app()->db->createCommand("select count(*) as total from sgu_actividades where idestatus=1")->queryRow();
+		
+		echo CJSON::encode(array(
+			'total'=>$mi["total"],
+			'color'=>$this->getColor($mi["total"]),
+		));
+	 }
+	 public function actionActualizarSpanListas(){
+		$mi=Yii::app()->db->createCommand("select count(*) as total from sgu_actividades where idestatus=6")->queryRow();
 		
 		echo CJSON::encode(array(
 			'total'=>$mi["total"],
@@ -118,18 +126,18 @@ class MttoPreventivoController extends Controller
 			}
 		}
 		
-		$a=$this->renderPartial('vistaPreviaPDF',array(
+		/*$this->renderPartial('vistaPreviaPDF',array(
 			'vehiculos'=>$vehiculos,
 			'totalVeh'=>$totalVeh,
 			'actividades'=>$actividades,
 			'idvehiculo'=>$idvehiculo,
 			'recursos'=>$recursos,
 			'orden'=>$orden,
-		),true);
+		));*/
 		
-		 $mPDF1 = Yii::app()->ePdf->mpdf(); //Esto lo pueden configurar como quieren, para eso deben de entrar en la web de MPDF para ver todo lo que permite.
+		 $mPDF1 = Yii::app()->ePdf->mpdf('utf-8', 'Letter'); //Esto lo pueden configurar como quieren, para eso deben de entrar en la web de MPDF para ver todo lo que permite.
 		 //$mPDF1->useOnlyCoreFonts = true;
-		 $mPDF1->SetTitle("Solicitud de servicio SIRCA");
+		 $mPDF1->SetTitle("Solicitud de servicio");
 		 $mPDF1->SetAuthor("J&M");
 		 //$mPDF1->SetWatermarkText("U.N.E.T.");
 		 $mPDF1->showWatermarkText = false;
@@ -258,7 +266,6 @@ class MttoPreventivoController extends Controller
 		$mi=Yii::app()->db->createCommand("select count(*) as total from sgu_actividades where idestatus=1")->queryRow();
 		return $mi["total"];
 	}
-	
 	
 	public function getOrdenesListas(){
 		$abiertas=Yii::app()->db->createCommand("select count(*) as total from sgu_ordenMtto where idestatus=6 and tipo=0")->queryRow();

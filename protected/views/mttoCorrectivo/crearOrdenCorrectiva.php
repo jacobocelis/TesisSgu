@@ -1,19 +1,38 @@
+<div id="scrollingDiv" class="btn" style="display:none">Crear órden de neumáticos</div>
 <?php 
 	$this->breadcrumbs=array(
 	'Mantenimiento preventivo'=>array('mttoCorrectivo/index'),
 	'Crear orden correctiva',
 );
-	$this->menu=array(
+$this->menu=array(
+	array('label'=>'<div id="menu"><strong>Opciones de mantenimiento</strong></div>'),
+	array('label'=>'      Registro de fallas', 'url'=>array('registrarFalla')),
+	array('label'=>'      Registro de mejoras', 'url'=>array('registrarMejora')),
+	//array('label'=>'      Registrar matenimientos iniciales <span class="badge badge-'.$color.' pull-right">'.$mi.'</span>', 'url'=>array('mttoPreventivo/iniciales/')),
+	//array('label'=>'      Ajuste de fechas en calendario', 'url'=>array('calendario')),
+	
+	
 	array('label'=>'<div id="menu"><strong>Órdenes de mantenimiento</strong></div>'),
-	array('label'=>'      Crear orden de mantenimiento', 'url'=>array('crearOrdenCorrectiva')),
+	array('label'=>'      Crear orden de mantenimiento', 'url'=>array('mttoCorrectivo/crearOrdenCorrectiva')),
 	array('label'=>'      Ver órdenes abiertas <span class="badge badge-'.$Colorabi.' pull-right">'.$abiertas.'</span>', 'url'=>array('verOrdenes')),
 	array('label'=>'      Órdenes listas para cerrar <span class="badge badge-'.$Colorli.' pull-right">'.$listas.'</span>', 'url'=>array('cerrarOrdenes')),
+	
+	array('label'=>'<div id="menu"><strong>Gestión de coordinadores</strong></div>'),
+	array('label'=>'      Coordinador operativo y de transporte', 'url'=>array('empleados/coordinadores')),
+	
+	
+	array('label'=>'<div id="menu"><strong>Historial</strong></div>'),
+	array('label'=>'      Histórico de mantenimientos', 'url'=>array('historicoCorrectivo')),
+	array('label'=>'      Histórico de gastos', 'url'=>array('historicoGastos')),
+	array('label'=>'      Histórico de ordenes', 'url'=>array('historicoOrdenes')),
 );
 ?>
-
 <div class='crugepanel user-assignments-role-list'>
-	<h1>Seleccione las fallas a incluir en la orden de mantenimiento</h1>
-	<?php //<p><b>Nota: </b><i>Sólo se mostrarán las actividades con menos de 5 dias restantes o que posean atraso</p></i>?>
+<h1>Crear órden de mantenimiento correctivo</h1>
+<i>Para crear una órden de mantenimiento correctivo seleccione una falla o una mejora de las listadas abajo.</i>
+</div>
+<div class='crugepanel user-assignments-role-list'>
+	<i>*Fallas reportadas</i>
 <?php
 $this->widget('zii.widgets.grid.CGridView', array(
                 'id'=>'fallas',
@@ -67,10 +86,87 @@ $this->widget('zii.widgets.grid.CGridView', array(
         ));
 		?>
 		</div>
-<div id='formulario' class='crugepanel user-assignments-role-list'>
-<?php 
-	/*$this->renderPartial('_formCrearOrden',array('model'=>$modeloOrdenMtto));*/?>
-</div>
+		<div class='crugepanel user-assignments-role-list'>
+	<i>*Mejoras por realizar</i>
+	<?php //<p><b>Nota: </b><i>Sólo se mostrarán las actividades con menos de 5 dias restantes o que posean atraso</p></i>?>
+<?php
+$this->widget('zii.widgets.grid.CGridView', array(
+                'id'=>'mejoras',
+				'selectionChanged'=>'validar',
+				'summaryText'=>'',
+			    'enableSorting' => true,
+				'template'=>"{items}\n{summary}\n{pager}",
+				'selectableRows'=>2,
+				'emptyText'=>'No hay mejoras por realizar',
+                'dataProvider'=>$mejoras,
+				'columns'=>array(
+				array(
+					//'header'=>'Seleccione las actividades a incluir',
+					'class'=>'CCheckBoxColumn',
+					'htmlOptions'=>array('style'=>'text-align:center;'),
+				),
+				array(
+					'header'=>'Unidad',
+					'name'=>'idvehiculo',
+					'value'=>'str_pad((int) $data->idvehiculo0->numeroUnidad,2,"0",STR_PAD_LEFT);',
+					//'value'=>'$data->idplan0->idplanGrupo0->CompiledColour->$data-id.\' \'.$data->CompiledColour',
+					'htmlOptions'=>array('style'=>'text-align:center;width:40px'),
+				),
+				array(
+					'header'=>'Fecha',
+					'name'=>'fechaFalla',
+					'value'=>'date("d/m/Y",strtotime($data->fechaFalla))',
+					'htmlOptions'=>array('style'=>'text-align:center;width:50px'),
+				),
+			
+				array(
+					'header'=>'Mejora',
+					'name'=>'idfalla',
+					'value'=>'$data->idfalla0->falla',
+					'htmlOptions'=>array('style'=>'text-align:center;width:250px'),
+				),
+				array(
+					'header'=>'Detalle',
+					'name'=>'detalle',
+					
+					'htmlOptions'=>array('style'=>'text-align:center;width:200px'),
+				),
+				array(
+					'header'=>'Conductor',
+					'name'=>'idempleado',
+					'value'=>'$data->idempleado0->nombre.\' \'.$data->idempleado0->apellido',
+					'htmlOptions'=>array('style'=>'text-align:center;width:100px'),
+				),
+				array(
+					'header'=>'Estatus',
+					'name'=>'idestatus',
+					'value'=>'$data->idestatus0->estatus',
+					'htmlOptions'=>array('style'=>'text-align:center;width:60px'),
+				),
+				
+			)
+        ));
+		?>
+		</div>
+<?php
+/*ventana agregar recurso*/
+$this->beginWidget('zii.widgets.jui.CJuiDialog', array( // the dialog
+    'id'=>'formulario',
+    'options'=>array(
+        'title'=>'Crear orden de neumáticos',
+        'autoOpen'=>false,
+        'modal'=>true,
+        'width'=>490,
+        //'height'=>360,
+		'position'=>array(null,100),
+		'resizable'=>false,
+		'close'=>'js:function(){ $("#scrollingDiv").show(300); }',
+    ),
+));?>
+<div class="divForForm"></div>
+ 
+<?php $this->endWidget();?>
+
 <style>
 .grid-view table.items tr.selected {
     background: none repeat scroll 0% 0% rgba(0, 249, 3, 0.3);
@@ -113,12 +209,7 @@ h1 {
 .ui-progressbar .ui-widget-header {
 	background: #FFF;
 }
-.ui-widget-header {
-    border: 1px solid #AAA;
-    background-image: url("<?php echo Yii::app()->request->baseUrl;?>/imagenes/imagen.png");
-    color: #222;
-    font-weight: bold;
-}
+
 .ui-progressbar {
     border: 0px none;
     border-radius: 0px;
@@ -140,30 +231,93 @@ h1 {
 .ui-corner-all, .ui-corner-top, .ui-corner-left, .ui-corner-tl {
     border-top-left-radius: 0px;
 }
+#scrollingDiv{
+	position: fixed;
+}
+.btn {
+	-moz-box-shadow:inset 0px 1px 0px 0px #54a3f7;
+	-webkit-box-shadow:inset 0px 1px 0px 0px #54a3f7;
+	box-shadow:inset 0px 1px 0px 0px #54a3f7;
+	background:-webkit-gradient(linear, left top, left bottom, color-stop(0.05, #007dc1), color-stop(1, #0061a7));
+	background:-moz-linear-gradient(top, #007dc1 5%, #0061a7 100%);
+	background:-webkit-linear-gradient(top, #007dc1 5%, #0061a7 100%);
+	background:-o-linear-gradient(top, #007dc1 5%, #0061a7 100%);
+	background:-ms-linear-gradient(top, #007dc1 5%, #0061a7 100%);
+	background:linear-gradient(to bottom, #007dc1 5%, #0061a7 100%);
+	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#007dc1', endColorstr='#0061a7',GradientType=0);
+	background-color:#007dc1;
+	-moz-border-radius:3px;
+	-webkit-border-radius:3px;
+	border-radius:3px;
+	border:1px solid #124d77;
+	display:inline-block;
+	cursor:pointer;
+	color:#ffffff;
+	font-family:Verdana;
+	font-size:13px;
+	font-weight:bold;
+	padding:6px 4px;
+	text-decoration:none;
+	text-shadow:0px 1px 0px #154682;
+}
+.btn:hover {
+	background:-webkit-gradient(linear, left top, left bottom, color-stop(0.05, #0061a7), color-stop(1, #007dc1));
+	background:-moz-linear-gradient(top, #0061a7 5%, #007dc1 100%);
+	background:-webkit-linear-gradient(top, #0061a7 5%, #007dc1 100%);
+	background:-o-linear-gradient(top, #0061a7 5%, #007dc1 100%);
+	background:-ms-linear-gradient(top, #0061a7 5%, #007dc1 100%);
+	background:linear-gradient(to bottom, #0061a7 5%, #007dc1 100%);
+	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#0061a7', endColorstr='#007dc1',GradientType=0);
+	background-color:#0061a7;
+	color: #fff;
+}
 </style>
 <script>
 $('#formulario').hide();
+var ancho=$(window).width()-($(window).width()*0.20);
+$('#scrollingDiv').css({
+  'right':ancho,
+  'bottom': '50px'
+ });
+
+ $( "#scrollingDiv" ).click(function() {
+	$('#scrollingDiv').hide(300);
+	$("#formulario").dialog('open');
+});
+
+var idmejora;
+var idfalla;
 function validar(){
-var idfalla = $.fn.yiiGridView.getSelection('fallas');
+idmejora = $.fn.yiiGridView.getSelection('mejoras');
+idfalla = $.fn.yiiGridView.getSelection('fallas');
+
+	if(idfalla=="" && idmejora=="")
+		$('#scrollingDiv').hide(300);//$('#formulario').hide();
+	else
+		$('#scrollingDiv').show(300);//$('#formulario').show();
+	crear();
+}
+function crear(){
+/*var idfalla = $.fn.yiiGridView.getSelection('fallas');
 	if(idfalla=="")
 		$('#formulario').hide();
 	else
-		$('#formulario').show();
+		$('#formulario').show();*/
 		
 jQuery.ajax({
                 url: "crearOrden",
-                'data':$(this).serialize()+ '&idfalla=' + idfalla,
+                'data':$(this).serialize()+ '&idfalla=' + idfalla + '&idmejora=' + idmejora,
                 'type':'post',
                 'dataType':'json',
                 'success':function(data){
                                 if (data.status == 'failure'){
-                                        $('#formulario').html(data.div);
+                                        $('#formulario div.divForForm').html(data.div);
                                         // Here is the trick: on submit-> once again this function!
-                                        $('#formulario form').submit(validar); // 
+                                        $('#formulario div.divForForm form').submit(crear); // 
                                 }
                                 else{
-                                        $('#formulario').html(data.div);
-										window.setTimeout('location.reload()', 1);
+                                        $('#formulario div.divForForm').html(data.div);
+										window.location.replace("<?php echo Yii::app()->baseUrl."/mttoCorrectivo/verOrdenes"?>");
                                 }
                         } ,
                 'cache':false});

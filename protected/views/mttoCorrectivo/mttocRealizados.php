@@ -1,6 +1,6 @@
 <?php 
 $this->breadcrumbs=array(
-	'Mantenimiento preventivo'=>array('mttoCorrectivo/index'),
+	'Mantenimiento correctivo'=>array('mttoCorrectivo/index'),
 	$nom=>array($dir),
 	'Actualizar órden de mantenimiento',
 );
@@ -88,17 +88,21 @@ $this->widget('zii.widgets.grid.CGridView', array(
 			)
         ));?>
 	</div>
+<?php if(count($dataProvider->getData())>0){?>
 <div class='crugepanel user-assignments-role-list'>
-<strong><p>Listado de actividades a realizar:</p></strong>
-	<?php
-	$this->widget('zii.widgets.grid.CGridView', array(
-                'id'=>'final',
-				'selectableRows'=>0,
+	<i>*Fallas reportadas</i>
+<?php
+$this->widget('zii.widgets.grid.CGridView', array(
+                'id'=>'fallas',
+				'selectionChanged'=>'validar',
 				'summaryText'=>'',
 			    'enableSorting' => true,
-				'emptyText'=>'no existen mantenimientos preventivos registrados',
+				'template'=>"{items}\n{summary}\n{pager}",
+				'selectableRows'=>2,
+				'emptyText'=>'No hay fallas por atender',
                 'dataProvider'=>$dataProvider,
 				'columns'=>array(
+				
 				array(
 					'header'=>'Unidad',
 					'name'=>'idvehiculo',
@@ -125,50 +129,74 @@ $this->widget('zii.widgets.grid.CGridView', array(
 					'value'=>'$data->idempleado0->nombre.\' \'.$data->idempleado0->apellido',
 					'htmlOptions'=>array('style'=>'text-align:center;width:100px'),
 				),
-				
 				array(
-					'header'=>'Fecha de realizada',
-					'name'=>'fechaRealizada',
-					'type'=>'raw',
-					'value'=>'$data->valores($data->fechaRealizada)?date("d/m/Y",strtotime($data->fechaRealizada)):$data->noasignado()',
-					'htmlOptions'=>array('style'=>'width:80px;text-align:center;'),
-				),
-				array(
-					'header'=>'Kilometraje al realizarla',
-					'name'=>'kmRealizada',
-					'type'=>'raw',
-					/*'value'=>function($data){
-						return '<div class="label label-info">'.$data->ultimoKm.'</div>';
-					},*/
-					'value'=>'number_format($data->valores($data->kmRealizada))?number_format($data->kmRealizada).\' Km \':$data->noasignado()',
-					'htmlOptions'=>array('style'=>'width:80px;text-align:center;'),
-				),
-				array(
-					'headerHtmlOptions'=>array('style'=>'text-align:center;width:30px;'),
-					'htmlOptions'=>array('style'=>'text-align:center;'),
-					'header'=>'Registrar mantenimiento realizado',
-					'type'=>'raw',
-					'value'=>'CHtml::link(
-                     CHtml::image(Yii::app()->request->baseUrl."/imagenes/agregar.png",
-                                          "Agregar",array("title"=>"Editar")),
-                        "",
-                        array(
-                                \'style\'=>\'cursor: pointer;text-decoration: underline;text-align:center;\',
-                                \'onclick\'=>\'{registrarMR("\'.Yii::app()->createUrl("reportefalla/actualizar",array("id"=>$data["id"])).\'"); $("#dialog").dialog("open");}\'
-                        )
-                );',),
-				array(
-					'header'=>'Estado',
+					'header'=>'Estatus',
 					'name'=>'idestatus',
 					'type'=>'raw',
 					'value'=>'$data->color($data->idestatus,$data->idestatus0->estatus)',
-					'htmlOptions'=>array('style'=>'width:80px;text-align:center;'),
+					'htmlOptions'=>array('style'=>'text-align:center;width:60px'),
 				),
+				
 			)
         ));
-		
-?>
-</div>
+		?>
+		</div>
+<?php }?>
+<?php if(count($mejoras->getData())>0){?>		
+<div class='crugepanel user-assignments-role-list'>
+	<i>*Mejoras por realizar</i>
+	<?php //<p><b>Nota: </b><i>Sólo se mostrarán las actividades con menos de 5 dias restantes o que posean atraso</p></i>?>
+<?php
+$this->widget('zii.widgets.grid.CGridView', array(
+                'id'=>'mejoras',
+				'selectionChanged'=>'validar',
+				'summaryText'=>'',
+			    'enableSorting' => true,
+				'template'=>"{items}\n{summary}\n{pager}",
+				'selectableRows'=>2,
+				'emptyText'=>'No hay mejoras por realizar',
+                'dataProvider'=>$mejoras,
+				'columns'=>array(
+				
+				array(
+					'header'=>'Unidad',
+					'name'=>'idvehiculo',
+					'value'=>'str_pad((int) $data->idvehiculo0->numeroUnidad,2,"0",STR_PAD_LEFT);',
+					//'value'=>'$data->idplan0->idplanGrupo0->CompiledColour->$data-id.\' \'.$data->CompiledColour',
+					'htmlOptions'=>array('style'=>'text-align:center;width:40px'),
+				),
+				
+				array(
+					'header'=>'Mejora',
+					'name'=>'idfalla',
+					'value'=>'$data->idfalla0->falla',
+					'htmlOptions'=>array('style'=>'text-align:center;width:250px'),
+				),
+				array(
+					'header'=>'Detalle',
+					'name'=>'detalle',
+					
+					'htmlOptions'=>array('style'=>'text-align:center;width:200px'),
+				),
+				array(
+					'header'=>'Conductor',
+					'name'=>'idempleado',
+					'value'=>'$data->idempleado0->nombre.\' \'.$data->idempleado0->apellido',
+					'htmlOptions'=>array('style'=>'text-align:center;width:100px'),
+				),
+				array(
+					'header'=>'Estatus',
+					'name'=>'idestatus',
+					'type'=>'raw',
+					'value'=>'$data->color($data->idestatus,$data->idestatus0->estatus)',
+					'htmlOptions'=>array('style'=>'text-align:center;width:60px'),
+				),
+				
+			)
+        ));
+		?>
+		</div>
+<?php }?>
 <?php
 /*ventana agregar informacion*/
 $this->beginWidget('zii.widgets.jui.CJuiDialog', array( // the dialog

@@ -26,7 +26,7 @@ $this->menu=array(
 );
 ?>
 <div class='crugepanel user-assignments-role-list'>
-	<h1>Órdenes de mantenimiento abiertas</h1>
+	<h1>Ordenes de mantenimiento abiertas</h1>
 <?php
 $this->widget('zii.widgets.grid.CGridView', array(
                 'id'=>'orden',
@@ -140,6 +140,9 @@ $this->widget('zii.widgets.grid.CGridView', array(
 					'header'=>'Eliminar',
 					'class'=>'CButtonColumn',
 					 'template'=>'{delete}',
+					 'afterDelete'=>'function(link,success,data){
+	                               window.setTimeout("location.reload()");
+	                  }',
 					     'buttons'=>array(
 							'delete' => array(
 								'url'=>'Yii::app()->createUrl("ordenmtto/delete", array("id"=>$data->id))',
@@ -156,7 +159,7 @@ $this->beginWidget('zii.widgets.jui.CJuiDialog', array( // the dialog
     'options'=>array(
         'title'=>'Enviar orden por correo electrónico',
         'autoOpen'=>false,
-		'position'=>array(600,200),
+		'position'=>array(null,100),
         'modal'=>true,
         'width'=>400,
         //'height'=>255,
@@ -209,9 +212,6 @@ h1 {
 }
 </style>
 <style>
-.ui-progressbar .ui-widget-header {
-	background: #FFF;
-}
 
 .ui-progressbar {
     border: 0px none;

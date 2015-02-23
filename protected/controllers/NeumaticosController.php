@@ -553,7 +553,7 @@ class NeumaticosController extends Controller
 		
 		$mPDF1 = Yii::app()->ePdf->mpdf('utf-8', 'Letter'); //Esto lo pueden configurar como quieren, para eso deben de entrar en la web de MPDF para ver todo lo que permite.
 		 //$mPDF1->useOnlyCoreFonts = true;
-		 $mPDF1->SetTitle("Solicitud de servicio SIRCA");
+		 $mPDF1->SetTitle("Solicitud de servicio");
 		 $mPDF1->SetAuthor("J&M");
 		 //$mPDF1->SetWatermarkText("U.N.E.T.");
 		 $mPDF1->showWatermarkText = false;

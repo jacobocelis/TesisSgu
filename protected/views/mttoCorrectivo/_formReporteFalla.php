@@ -130,11 +130,12 @@ function obtenerConductor(id){
   	});	
 }
 function falla(){
-	$('#registrarFalla').hide();
-	$('#nuevaFalla').show();
-	$('#detalle').hide();
-	$('#boton').hide();
+	//$('#registrarFalla').hide();
+	//$('#nuevaFalla').show();
+	//$('#detalle').hide();
+	//$('#boton').hide();
 	
+	$("#nuevo").dialog("open");
 	var dir="<?php echo Yii::app()->baseUrl;?>"+"/mttoCorrectivo/nuevaFalla";
 	jQuery.ajax({
                 url: dir,
@@ -145,12 +146,12 @@ function falla(){
 								
                                 if (data.status == 'failure'){
 										
-										$('#nuevaFalla').html(data.div);
-                                        $('#nuevaFalla  form').submit(falla);
+										$('#nuevo div.divForForm').html(data.div);
+                                        $('#nuevo div.divForForm  form').submit(falla);
                                 }
                                 else{
 										
-                                        $('#nuevaFalla form').html(data.div);
+                                        $('#nuevo div.divForForm').html(data.div);
 										$('#nuevaFalla').hide();
 										$('#registrarFalla').show();
                                         //setTimeout("$('#nuevaFalla').hide(); ",0);

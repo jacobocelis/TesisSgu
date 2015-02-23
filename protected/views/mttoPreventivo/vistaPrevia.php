@@ -73,7 +73,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
         ));
 		?>
 		</div>
-		<div class='crugepanel user-assignments-role-list'>
+<div class='crugepanel user-assignments-role-list'>
 <?php
 for($i=0;$i<$totalVeh;$i++){
 $this->widget('zii.widgets.grid.CGridView', array(

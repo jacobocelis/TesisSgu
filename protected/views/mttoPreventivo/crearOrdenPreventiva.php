@@ -124,7 +124,6 @@ $this->beginWidget('zii.widgets.jui.CJuiDialog', array( // the dialog
 ));?>
 <div class="divForForm"></div>
 <?php $this->endWidget();?>
-
 <style>
 .rojo{
 background: none repeat scroll 0% 0% #FFD6D6;
@@ -244,13 +243,17 @@ $('#scrollingDiv').css({
 });
 
 $('#formulario').hide();
+var idAct;
 function validar(){
-var idAct = $.fn.yiiGridView.getSelection('actividades');
+ idAct= $.fn.yiiGridView.getSelection('actividades');
 	if(idAct=="")
 		$('#scrollingDiv').hide(300);//$('#formulario').hide();
 	else
 		$('#scrollingDiv').show(300);//$('#formulario').show();
+	crear();
+}
 		
+function crear(){
 jQuery.ajax({
                 url: "crearOrden",
                 'data':$(this).serialize()+ '&idAct=' + idAct,
@@ -260,13 +263,14 @@ jQuery.ajax({
                                 if (data.status == 'failure'){
                                         $('#formulario div.divForForm').html(data.div);
                                         // Here is the trick: on submit-> once again this function!
-                                        $('#formulario div.divForForm form').submit(validar); // 
+                                        $('#formulario div.divForForm form').submit(crear); // 
                                 }
                                 else{
-                                        $('#formulario').html(data.div);
-										setTimeout("$('#formulario').dialog('close') ",1);
+                                        $.fn.yiiGridView.update("actividades");
+										//$('#formulario').html(data.div);
+										$('#formulario').dialog('close');
 										$('#scrollingDiv').hide();
-										window.setTimeout('location.reload()', 1);
+										window.location.replace("<?php echo Yii::app()->baseUrl."/mttoPreventivo/verOrdenes"?>");
 										
                                 }
                         } ,

@@ -1,4 +1,5 @@
 <?php 
+
 $this->breadcrumbs=array(
 	'Mantenimiento correctivo'=>array('mttoCorrectivo/index'),
 	$nom=>array($dir),
@@ -14,7 +15,7 @@ $this->breadcrumbs=array(
 ?>
 <div id="factura" class='crugepanel user-assignments-role-list'>
 </div>
-<div id="detalle" class='crugepanel user-assignments-role-list'>	
+<div id="detalle" style="display:none" class='crugepanel user-assignments-role-list'>	
 <h1>Información de facturación</h1>
 <?php
 $this->widget('zii.widgets.grid.CGridView', array(
@@ -86,18 +87,20 @@ $this->widget('zii.widgets.grid.CGridView', array(
 			)
     ));
 ?>	
-	<p><b>Nota: </b><i>Seleccione una falla para asignar los gastos individuales por vehiculo</p></i>
-
+	<p><b>Nota: </b><i>Seleccione una actividad para asignar los gastos individuales por vehiculo</p></i>
+<?php if(count($dataProvider->getData())>0){?>
+<div class='crugepanel user-assignments-role-list'>
+	<i>*Fallas reportadas</i>
 <?php
 $this->widget('zii.widgets.grid.CGridView', array(
-                'id'=>'actividad',
+                'id'=>'fallas',
 				'selectionChanged'=>'mostrarRecursos',
 				'summaryText'=>'',
-				'selectableRows'=>1,
 			    'enableSorting' => true,
-				'emptyText'=>'no existen mantenimientos preventivos registrados',
+				'template'=>"{items}\n{summary}\n{pager}",
+				'selectableRows'=>0,
+				'emptyText'=>'No hay fallas por atender',
                 'dataProvider'=>$dataProvider,
-				'htmlOptions'=>array('style'=>'cursor:pointer;'),
 				'columns'=>array(
 				
 				array(
@@ -126,19 +129,187 @@ $this->widget('zii.widgets.grid.CGridView', array(
 					'value'=>'$data->idempleado0->nombre.\' \'.$data->idempleado0->apellido',
 					'htmlOptions'=>array('style'=>'text-align:center;width:100px'),
 				),
+				/*array(
+					'headerHtmlOptions'=>array('style'=>'text-align:center;width:30px;'),
+					'htmlOptions'=>array('style'=>'text-align:center;'),
+					'header'=>'Registrar mantenimiento',
+					'type'=>'raw',
+					'value'=>'CHtml::link(
+                     CHtml::image(Yii::app()->request->baseUrl."/imagenes/agregar.png",
+                                          "Agregar",array("title"=>"Editar")),
+                        "",
+                        array(
+                                \'style\'=>\'cursor: pointer;text-decoration: underline;text-align:center;\',
+                                \'onclick\'=>\'{registrarMR("\'.Yii::app()->createUrl("reportefalla/actualizar",array("id"=>$data["id"])).\'"); $("#dialog2").dialog("open");}\'
+                        )
+                );',),*/
 				array(
+					'headerHtmlOptions'=>array('style'=>'text-align:center;width:30px;background:#B0E3FF'),
+					'header'=>'Fecha de reparación',
+					'name'=>'fechaRealizada',
+					'type'=>'raw',
+					'value'=>'$data->valores($data->fechaRealizada)?date("d/m/Y",strtotime($data->fechaRealizada)).CHtml::link(
+                     CHtml::image(Yii::app()->request->baseUrl."/imagenes/agregar.png",
+                                          "Agregar",array("title"=>"Editar")),
+                        "",
+                        array(
+                                \'style\'=>\'cursor: pointer;text-decoration: underline;text-align:center;\',
+                                \'onclick\'=>\'{registrarMR("\'.Yii::app()->createUrl("reportefalla/actualizar",array("id"=>$data["id"])).\'"); $("#dialog2").dialog("open");}\'
+                        )
+                ):$data->noasignado().CHtml::link(
+                     CHtml::image(Yii::app()->request->baseUrl."/imagenes/agregar.png",
+                                          "Agregar",array("title"=>"Editar")),
+                        "",
+                        array(
+                                \'style\'=>\'cursor: pointer;text-decoration: underline;text-align:center;\',
+                                \'onclick\'=>\'{registrarMR("\'.Yii::app()->createUrl("reportefalla/actualizar",array("id"=>$data["id"])).\'"); $("#dialog2").dialog("open");}\'
+                        )
+                )',
+					'htmlOptions'=>array('style'=>'width:80px;text-align:center;'),
+				),
+				array(
+					'headerHtmlOptions'=>array('style'=>'text-align:center;width:30px;background:#B0E3FF'),
+					'htmlOptions'=>array('style'=>'text-align:center;'),
+					'header'=>'Registrar gastos',
+					'type'=>'raw',
+					'value'=>'CHtml::link(
+                     CHtml::image(Yii::app()->request->baseUrl."/imagenes/agregar.png",
+                                          "Agregar",array("title"=>"Registrar")),
+                        "",
+                        array(
+                                \'style\'=>\'cursor: pointer;text-decoration: underline;text-align:center;\',
+                                \'onclick\'=>\'{ mostrarRecursos("\'.$data->id.\'")}\'
+                        )
+                );',),
+				array(
+					'type'=>'raw',
 					'header'=>'Estatus',
 					'name'=>'idestatus',
-					'value'=>'$data->idestatus0->estatus',
+					'value'=>'$data->color($data->idestatus,$data->idestatus0->estatus)',
 					'htmlOptions'=>array('style'=>'text-align:center;width:60px'),
 				),
+				
 			)
         ));
-?>
+		?>
 </div>
-<div id='recur' class='crugepanel user-assignments-detail'>
+<?php }?>
+<?php if(count($mejoras->getData())>0){?>
+<div  class='crugepanel user-assignments-role-list'>
+	<i>*Mejoras por realizar</i>
+<?php
+$this->widget('zii.widgets.grid.CGridView', array(
+                'id'=>'mejoras',
+				'selectionChanged'=>'mostrarRecursos',
+				'summaryText'=>'',
+			    'enableSorting' => true,
+				'template'=>"{items}\n{summary}\n{pager}",
+				'selectableRows'=>0,
+				'emptyText'=>'No hay mejoras por realizar',
+                'dataProvider'=>$mejoras,
+				'columns'=>array(
+				
+				array(
+					'header'=>'Unidad',
+					'name'=>'idvehiculo',
+					'value'=>'str_pad((int) $data->idvehiculo0->numeroUnidad,2,"0",STR_PAD_LEFT);',
+					//'value'=>'$data->idplan0->idplanGrupo0->CompiledColour->$data-id.\' \'.$data->CompiledColour',
+					'htmlOptions'=>array('style'=>'text-align:center;width:40px'),
+				),
+				
+				array(
+					'header'=>'Mejora',
+					'name'=>'idfalla',
+					'value'=>'$data->idfalla0->falla',
+					'htmlOptions'=>array('style'=>'text-align:center;width:250px'),
+				),
+				array(
+					'header'=>'Detalle',
+					'name'=>'detalle',
+					
+					'htmlOptions'=>array('style'=>'text-align:center;width:200px'),
+				),
+				array(
+					'header'=>'Conductor',
+					'name'=>'idempleado',
+					'value'=>'$data->idempleado0->nombre.\' \'.$data->idempleado0->apellido',
+					'htmlOptions'=>array('style'=>'text-align:center;width:100px'),
+				),
+				array(
+					'headerHtmlOptions'=>array('style'=>'text-align:center;width:30px;background:#B0E3FF'),
+					'header'=>'Fecha de ejecución',
+					'name'=>'fechaRealizada',
+					'type'=>'raw',
+					'value'=>'$data->valores($data->fechaRealizada)?date("d/m/Y",strtotime($data->fechaRealizada)).CHtml::link(
+                     CHtml::image(Yii::app()->request->baseUrl."/imagenes/agregar.png",
+                                          "Agregar",array("title"=>"Editar")),
+                        "",
+                        array(
+                                \'style\'=>\'cursor: pointer;text-decoration: underline;text-align:center;\',
+                                \'onclick\'=>\'{registrarMR("\'.Yii::app()->createUrl("reportefalla/actualizar",array("id"=>$data["id"])).\'"); $("#dialog2").dialog("open");}\'
+                        )
+                ):$data->noasignado().CHtml::link(
+                     CHtml::image(Yii::app()->request->baseUrl."/imagenes/agregar.png",
+                                          "Agregar",array("title"=>"Editar")),
+                        "",
+                        array(
+                                \'style\'=>\'cursor: pointer;text-decoration: underline;text-align:center;\',
+                                \'onclick\'=>\'{registrarMR("\'.Yii::app()->createUrl("reportefalla/actualizar",array("id"=>$data["id"])).\'"); $("#dialog2").dialog("open");}\'
+                        )
+                )',
+					'htmlOptions'=>array('style'=>'width:80px;text-align:center;'),
+				),
+				array(
+					'headerHtmlOptions'=>array('style'=>'text-align:center;width:30px;background:#B0E3FF'),
+					'htmlOptions'=>array('style'=>'text-align:center;'),
+					'header'=>'Registrar gastos',
+					'type'=>'raw',
+					'value'=>'CHtml::link(
+                     CHtml::image(Yii::app()->request->baseUrl."/imagenes/agregar.png",
+                                          "Agregar",array("title"=>"Registrar")),
+                        "",
+                        array(
+                                \'style\'=>\'cursor: pointer;text-decoration: underline;text-align:center;\',
+                                 \'onclick\'=>\'{ mostrarRecursos("\'.$data->id.\'")}\'
+                        )
+                );',),
+				array(
+					'type'=>'raw',
+					'header'=>'Estatus',
+					'name'=>'idestatus',
+					'value'=>'$data->color($data->idestatus,$data->idestatus0->estatus)',
+					'htmlOptions'=>array('style'=>'text-align:center;width:60px'),
+				),
+				
+			)
+        ));
+		?>
+		</div>
+ <?php }?>
+</div>
+<?php $factura=$factura->getData();
+	if(isset($factura[0]["id"]))
+		$idfac=$factura[0]["id"];
+	else
+		$idfac=0;
+?>
+<?php
+/*ventana agregar informacion*/
+$this->beginWidget('zii.widgets.jui.CJuiDialog', array( // the dialog
+    'id'=>'dialog3',
+    'options'=>array(
+        'title'=>'Registrar gastos realizados',
+        'autoOpen'=>false,
+        'modal'=>true,
+        'width'=>'80%',
+        'position'=>array(null,100),
+		'resizable'=>false
+    ),
+));?>
+<div id='recur' style="display:none" class='crugepanel user-assignments-detail'>
 <?php 
-			$this->widget('zii.widgets.grid.CGridView', array(
+
+		$this->widget('zii.widgets.grid.CGridView', array(
 			'id'=>'rec',
 			'selectableRows'=>0,
 			'dataProvider'=>$recurso,
@@ -181,12 +352,15 @@ $this->widget('zii.widgets.grid.CGridView', array(
 					//'footer'=>'',
 				),
 				array(
+					'type'=>'raw',
 					'headerHtmlOptions'=>array('style'=>'text-align:left;'),
 					'header'=>'Total',
 					'name'=>'costoTotal',
 					'value'=>'number_format($data->costoTotal, 2,",",".").\' Bs.\'',
 					'htmlOptions'=>array('style'=>'width:50px;'),
-					//'footer'=>'',
+					//'footer'=>'<strong>Total:</strong><div id="total"></div>'.$model->total($recurso->getData()),
+					//'footerHtmlOptions'=> array('style' => 'text-align:right;'),
+
 				),
 				array(
 						'headerHtmlOptions'=>array('style'=>'text-align:center;width:30px;'),
@@ -202,16 +376,17 @@ $this->widget('zii.widgets.grid.CGridView', array(
                                 \'onclick\'=>\'{editarActividad("\'.Yii::app()->createUrl("Recursofalla/update",array("id"=>$data["id"])).\'"); $("#dialog").dialog("open");}\'
                         )
                 );',),
-				/*array(
+				array(
 					'header'=>'Eliminar',
 					'class'=>'CButtonColumn',
+					'afterDelete' => 'function(id,data){$.fn.yiiGridView.update("factu");}',
 					 'template'=>'{delete}',
 					     'buttons'=>array(
 							'delete' => array(
-								'url'=>'Yii::app()->createUrl("actividadrecursogrupo/delete", array("id"=>$data->id))',
+								'url'=>'Yii::app()->createUrl("Recursofalla/delete", array("id"=>$data->id,"idfac"=>'.$idfac.'))',
 						),
 					),
-				),*/
+				),
 			),
 	));?>
 	<?php echo CHtml::link('Agregar recurso', "",  // the link for open the dialog
@@ -220,6 +395,26 @@ $this->widget('zii.widgets.grid.CGridView', array(
         'onclick'=>"{agregarRecurso(); }"));
 		?>	
 </div>
+ 
+<?php $this->endWidget();?>
+
+<?php
+/*ventana agregar informacion*/
+$this->beginWidget('zii.widgets.jui.CJuiDialog', array( // the dialog
+    'id'=>'dialog2',
+    'options'=>array(
+        'title'=>'Registrar mantenimiento realizado',
+        'autoOpen'=>false,
+        'modal'=>true,
+        'width'=>500,
+        'position'=>array(null,100),
+		'resizable'=>false
+    ),
+));?>
+<div class="divForForm"></div>
+ 
+<?php $this->endWidget();?>
+
 <?php
 /*ventana agregar recurso*/
 $this->beginWidget('zii.widgets.jui.CJuiDialog', array( // the dialog
@@ -269,6 +464,7 @@ $this->beginWidget('zii.widgets.jui.CJuiDialog', array( // the dialog
 <div class="divForForm"></div>
  
 <?php $this->endWidget();?>
+
 <style>
 .crugepanel {
     background-color: #FFF;
@@ -304,8 +500,39 @@ $this->beginWidget('zii.widgets.jui.CJuiDialog', array( // the dialog
 }
 </style>
 <script>
-$('#recur').hide();
 cargar();
+var Uurl;
+var idAct;
+function registrarMR(id){
+
+	 if (typeof(id)=='string')
+                Uurl=id;
+	jQuery.ajax({
+                url: Uurl,
+                'data':$(this).serialize(),
+                'type':'post',
+                'dataType':'json',
+                'success':function(data)
+                        {
+                                if (data.status == 'failure')
+                                {
+                                        $('#dialog2 div.divForForm').html(data.div);
+                                        // Here is the trick: on submit-> once again this function!
+                                        $('#dialog2 div.divForForm form').submit(registrarMR); // updatePaymentComment
+                                }
+                                else
+                                {
+                                        $('#dialog2 div.divForForm').html(data.div);
+                                        setTimeout("$('#dialog2').dialog('close') ",1000);
+                                        $.fn.yiiGridView.update('fallas');
+										$.fn.yiiGridView.update('mejoras');
+										//actualizarCheck(idorden);
+                                }
+                        } ,
+                'cache':false});
+    return false; 
+}
+
 function cargar(){
 var data=<?php echo $total?>;
 if(data==0){
@@ -315,6 +542,7 @@ if(data==0){
 else{
 	$('#factura').hide();
 	$('#detalle').show();
+	$('#recur').show();
 }
 var id=<?php echo $id?>;
 var dir="<?php echo Yii::app()->baseUrl."/mttoPreventivo/agregarFactura"?>";
@@ -336,23 +564,20 @@ jQuery.ajax({
                 'cache':false});
 	return false; 
 }
-function mostrarRecursos(){
-var altura = $(document).height();
+function mostrarRecursos(id){
+idAct=id;
+//var altura = $(document).height();
 //$("html, body").animate({scrollTop:altura+"px"},500);
-$('#recur').show(500);
-	var idAct = $.fn.yiiGridView.getSelection('actividad');
+//$('#recur').show(500);
+	/*var idAct = $.fn.yiiGridView.getSelection('fallas');
 	if(idAct=="")
-		$('#recur').hide();
-	$.fn.yiiGridView.update('rec',{ data : "idAct="+idAct});
+		$('#recur').hide();*/
+	$.fn.yiiGridView.update('rec',{ data : "idAct="+id});
+	$("#dialog3").dialog("open");
 }
 var Uurl;
 function editarActividad(id){
-<?php $factura=$factura->getData();
-	if(isset($factura[0]["id"]))
-		$idfac=$factura[0]["id"];
-	else
-		$idfac=0;
-?>;
+
 var idfac=<?php echo $idfac?>;
 $('#dialog').dialog('open');
 	 if (typeof(id)=='string')
@@ -410,7 +635,8 @@ $('#ModFactura').dialog('open');
 }
 function agregarRecurso(){
 $('#recurso').dialog('open');
-	var idAct = $.fn.yiiGridView.getSelection('actividad');
+	//var idAct = $.fn.yiiGridView.getSelection('actividad');
+
 	var url="<?php echo Yii::app()->baseUrl."/mttoCorrectivo/agregarRecursoAdicional/"?>";
 	jQuery.ajax({
                 url: url+idAct,
@@ -420,7 +646,7 @@ $('#recurso').dialog('open');
                 'success':function(data){
                                 if (data.status == 'failure'){
                                         $('#recurso div.divForForm').html(data.div);
-                                        $('#recurso div.divForForm form').submit(agregarRecurso); // updatePaymentComment
+                                        $('#recurso div.divForForm form').submit(agregarRecurso);
                                 }
                                 else{
                                         $('#recurso div.divForForm').html(data.div);

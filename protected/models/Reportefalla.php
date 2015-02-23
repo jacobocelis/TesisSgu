@@ -27,6 +27,10 @@
  */
 class Reportefalla extends CActiveRecord
 {
+	public function total($info){
+		
+    }
+	
 	public function color($id,$estatus){
 		if($id==4)
 			return '<strong><span style="color:orange">'.$estatus.'</span></strong>';
@@ -35,6 +39,13 @@ class Reportefalla extends CActiveRecord
     }
 	public function noasignado(){
 			return '<span style="color:red">no registrado</span>';
+    }
+	public function tipo($id){
+		$total=Yii::app()->db->createCommand("select tipo from sgu_falla where id in (select id from sgu_reporteFalla where id=".$id.")")->queryRow();
+			if($total["tipo"]==0)
+				return 'Reparar falla';
+			else
+				return 'Realizar mejora';
     }
 	public function valores($id){
 		if($id=='0000-01-01'||$id==-1)

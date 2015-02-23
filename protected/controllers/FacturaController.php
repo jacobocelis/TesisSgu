@@ -112,6 +112,7 @@ class FacturaController extends Controller
 		if(isset($_POST['Factura']))
 		{
 			$model->attributes=$_POST['Factura'];
+			$model->fechaFactura=date("Y-m-d", strtotime(str_replace('/', '-',$model->fechaFactura)));
 			if($model->save())
 				if (Yii::app()->request->isAjaxRequest){
                     echo CJSON::encode(array(

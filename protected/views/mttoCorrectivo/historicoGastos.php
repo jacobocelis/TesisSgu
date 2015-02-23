@@ -7,10 +7,25 @@ $this->breadcrumbs=array(
 	'Histórico de mantenimientos',
 );
 $this->menu=array(
-	array('label'=>'<div id="menu"><strong>Historial</strong></div>'),
+	array('label'=>'<div id="menu"><strong>Opciones de mantenimiento</strong></div>'),
+	array('label'=>'      Registro de fallas', 'url'=>array('registrarFalla')),
+	array('label'=>'      Registro de mejoras', 'url'=>array('registrarMejora')),
+	//array('label'=>'      Registrar matenimientos iniciales <span class="badge badge-'.$color.' pull-right">'.$mi.'</span>', 'url'=>array('mttoPreventivo/iniciales/')),
+	//array('label'=>'      Ajuste de fechas en calendario', 'url'=>array('calendario')),
 	
-	array('label'=>'      Histórico de mantenimientos', 'url'=>array('historicoPreventivo')),
-	array('label'=>'      Histórico de gastos', 'url'=>array('historicoGastos')),
+	
+	array('label'=>'<div id="menu"><strong>Órdenes de mantenimiento</strong></div>'),
+	array('label'=>'      Crear orden de mantenimiento', 'url'=>array('crearOrdenCorrectiva')),
+	array('label'=>'      Ver órdenes abiertas <span class="badge badge-'.$Colorabi.' pull-right">'.$abiertas.'</span>', 'url'=>array('verOrdenes')),
+	array('label'=>'      Órdenes listas para cerrar <span class="badge badge-'.$Colorli.' pull-right">'.$listas.'</span>', 'url'=>array('cerrarOrdenes')),
+	
+	array('label'=>'<div id="menu"><strong>Gestión de coordinadores</strong></div>'),
+	array('label'=>'      Coordinador operativo y de transporte', 'url'=>array('empleados/coordinadores')),
+	
+	
+	array('label'=>'<div id="menu"><strong>Historial</strong></div>'),
+	array('label'=>'      Histórico de mantenimientos', 'url'=>array('historicoCorrectivo')),
+	array('label'=>'      Histórico de gastos', 'url'=>array('mttoCorrectivo/historicoGastos')),
 	array('label'=>'      Histórico de ordenes', 'url'=>array('historicoOrdenes')),
 );
 ?>
@@ -78,7 +93,7 @@ $this->menu=array(
 			),
 	));
 			
-$this->Widget('ext.highcharts.HighchartsWidget', array(
+/*$this->Widget('ext.highcharts.HighchartsWidget', array(
    'options'=>array(
 		'chart'=>array(
 			'type'=>'column'
@@ -104,7 +119,7 @@ $this->Widget('ext.highcharts.HighchartsWidget', array(
             'useHTML'=> true,
         ),
    )
-));
+));*/
 
 	?>
 	</div>

@@ -135,12 +135,8 @@ function obtenerConductor(id){
     	     $('#Reportefalla_idempleado').html(result);
   	});	
 }
-function falla(){
-	$('#registrarFalla').hide();
-	$('#nuevaFalla').show();
-	$('#detalle').hide();
-	$('#boton').hide();
-	
+function falla(){	
+	$("#nuevo").dialog("open");
 	var dir="<?php echo Yii::app()->baseUrl;?>"+"/mttoCorrectivo/nuevaMejora";
 	jQuery.ajax({
                 url: dir,
@@ -151,12 +147,12 @@ function falla(){
 								
                                 if (data.status == 'failure'){
 										
-										$('#nuevaFalla').html(data.div);
-                                        $('#nuevaFalla  form').submit(falla);
+										$('#nuevo div.divForForm').html(data.div);
+                                        $('#nuevo div.divForForm  form').submit(falla);
                                 }
                                 else{
 										
-                                        $('#nuevaFalla form').html(data.div);
+                                        $('#nuevo div.divForForm').html(data.div);
 										$('#nuevaFalla').hide();
 										$('#registrarFalla').show();
                                         //setTimeout("$('#nuevaFalla').hide(); ",0);
@@ -166,7 +162,7 @@ function falla(){
                                 }
                         },
                 'cache':false});
-				//$('#registrar').show();
+				
     return false; 
 }
 function actualizarListaFallas(){

@@ -74,6 +74,8 @@ $this->widget('zii.widgets.grid.CGridView', array(
 		?>
 		</div>
 		<div class='crugepanel user-assignments-role-list'>
+		<strong>Actividades de mantenimiento a realizar por unidad:</strong><br><br> 
+		
 <?php
 for($i=0;$i<$totalVeh;$i++){
 $this->widget('zii.widgets.grid.CGridView', array(
@@ -113,9 +115,17 @@ $this->widget('zii.widgets.grid.CGridView', array(
 						'type'=>'raw',
 						//'headerHtmlOptions'=>array('style'=>'width:10%;text-align:left;'),
 						'header'=>'         Falla',
-						'value'=>'\'<strong>Falla:</strong> \'.$data->idfalla0->falla',
+						'value'=>'\'<strong>\'.$data->tipo($data->id).\':</strong> \'',
+						'htmlOptions'=>array('style'=>'text-align:left;width:100px;'),
+					),
+					array(
+						'type'=>'raw',
+						//'headerHtmlOptions'=>array('style'=>'width:10%;text-align:left;'),
+						'header'=>'         Falla',
+						'value'=>'$data->idfalla0->falla',
 						'htmlOptions'=>array('style'=>'text-align:left'),
 					),
+					
 					array(
 						'type'=>'raw',
 						//'headerHtmlOptions'=>array('style'=>'text-align:right;'),

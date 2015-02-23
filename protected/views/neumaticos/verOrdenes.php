@@ -38,7 +38,6 @@ $this->menu=array(
 $this->widget('zii.widgets.grid.CGridView', array(
                 'id'=>'orden',
 				'summaryText'=>'',
-			    'enableSorting' => true,
 				'template'=>"{items}\n{summary}\n{pager}",
 				'selectableRows'=>1,
 				'emptyText'=>'No hay ordenes abiertas',
@@ -248,9 +247,12 @@ h1 {
 }
 </style>
 <script>
+
 $( document ).ready(function() {
 	//$.fn.yiiGridView.update('orden');
 });
+
+
 
 var Uurl;
 function enviar(id){

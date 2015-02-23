@@ -72,7 +72,7 @@ else{
             </a>
 
             <!-- Be sure to leave the brand out there if you want it shown -->
-            <a class="brand" href="<?php echo Yii::app()->baseUrl; ?>"><img src=" <?php echo Yii::app()->theme->baseUrl; ?>/img/logo-unet-blanco.png "  width="20px" height="20px"> FlotaUNET <small>Sistema para la gestión de flotas</small></a>
+            <a class="brand" href="<?php echo Yii::app()->baseUrl; ?>"><img src=" <?php echo Yii::app()->theme->baseUrl; ?>/img/logo-unet-blanco.png "  width="20px" height="20px"> Sistema para la gestión de flotas<small></small></a>
 
             <div class="nav-collapse">
                 <?php

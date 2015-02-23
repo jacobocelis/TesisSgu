@@ -13,7 +13,7 @@ $this->menu=array(
 	array('label'=>'<div id="menu"><strong>Órdenes de mantenimiento</strong></div>'),
 	array('label'=>'      Crear orden de mantenimiento', 'url'=>array('crearOrdenPreventiva')),
 	array('label'=>'      Ver órdenes abiertas <span class="badge badge-'.$Colorabi.' pull-right">'.$abiertas.'</span>', 'url'=>array('verOrdenes')),
-	array('label'=>'      Órdenes listas para cerrar <span class="badge badge-'.$Colorli.' pull-right">'.$listas.'</span>', 'url'=>array('mttoPreventivo/cerrarOrdenes')),
+	array('label'=>'      Órdenes listas para cerrar <span id="listas" class="badge badge-'.$Colorli.' pull-right">'.$listas.'</span>', 'url'=>array('mttoPreventivo/cerrarOrdenes')),
 	
 	array('label'=>'<div id="menu"><strong>Gestión de coordinadores</strong></div>'),
 	array('label'=>'      Coordinador operativo y de transporte', 'url'=>array('empleados/coordinadores')),
@@ -193,13 +193,20 @@ h1 {
 </style>
 <script>
 $('#formulario').hide();
-function validar(){
-var idAct = $.fn.yiiGridView.getSelection('actividades');
-	if(idAct=="")
-		$('#formulario').hide(500);
-	else
-		$('#formulario').show(500);
-		
+
+function actualizarSpan(){
+	var dir="<?php echo Yii::app()->baseUrl;?>"+"/mttoPreventivo/actualizarSpanListas";
+	$.ajax({
+		url: dir,
+		'data':$(this).serialize(),
+        'dataType':'json',
+         'success':function( result ) {
+    	     $('#listas').removeClass($('#listas').attr('class')).addClass('badge badge-'+result.color+' pull-right');
+			 $('#listas').text(result.total);
+			 
+		},});
+}
+function validar(){		
 jQuery.ajax({
                 url: "crearOrden",
                 'data':$(this).serialize()+ '&idAct=' + idAct,
@@ -230,8 +237,10 @@ function validar(orden){
                 'type':'post',
                 'dataType':'json',
                 'cache':false});			
+		$.fn.yiiGridView.update('ordenes');
+		actualizarSpan();
 	}
-	$.fn.yiiGridView.update('ordenes');
+	
 }
 
 </script>

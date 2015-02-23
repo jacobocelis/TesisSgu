@@ -91,7 +91,7 @@ $this->menu=array(
 			),
 	));
 			
-$this->Widget('ext.highcharts.HighchartsWidget', array(
+/*$this->Widget('ext.highcharts.HighchartsWidget', array(
    'options'=>array(
 		'chart'=>array(
 			'type'=>'column'
@@ -117,7 +117,7 @@ $this->Widget('ext.highcharts.HighchartsWidget', array(
             'useHTML'=> true,
         ),
    )
-));
+));*/
 
 	?>
 	</div>

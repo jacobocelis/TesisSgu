@@ -4,9 +4,26 @@
 	'Órdenes abiertas',
 );
 $this->menu=array(
+	array('label'=>'<div id="menu"><strong>Opciones de mantenimiento</strong></div>'),
+	array('label'=>'      Registro de fallas', 'url'=>array('registrarFalla')),
+	array('label'=>'      Registro de mejoras', 'url'=>array('registrarMejora')),
+	//array('label'=>'      Registrar matenimientos iniciales <span class="badge badge-'.$color.' pull-right">'.$mi.'</span>', 'url'=>array('mttoPreventivo/iniciales/')),
+	//array('label'=>'      Ajuste de fechas en calendario', 'url'=>array('calendario')),
+	
+	
 	array('label'=>'<div id="menu"><strong>Órdenes de mantenimiento</strong></div>'),
 	array('label'=>'      Crear orden de mantenimiento', 'url'=>array('crearOrdenCorrectiva')),
+	array('label'=>'      Ver órdenes abiertas <span class="badge badge-'.$Colorabi.' pull-right">'.$abiertas.'</span>', 'url'=>array('mttoCorrectivo/verOrdenes')),
+	array('label'=>'      Órdenes listas para cerrar <span class="badge badge-'.$Colorli.' pull-right">'.$listas.'</span>', 'url'=>array('cerrarOrdenes')),
 	
+	array('label'=>'<div id="menu"><strong>Gestión de coordinadores</strong></div>'),
+	array('label'=>'      Coordinador operativo y de transporte', 'url'=>array('empleados/coordinadores')),
+	
+	
+	array('label'=>'<div id="menu"><strong>Historial</strong></div>'),
+	array('label'=>'      Histórico de mantenimientos', 'url'=>array('historicoCorrectivo')),
+	array('label'=>'      Histórico de gastos', 'url'=>array('historicoGastos')),
+	array('label'=>'      Histórico de ordenes', 'url'=>array('historicoOrdenes')),
 );
 ?>
 <div class='crugepanel user-assignments-role-list'>
@@ -140,7 +157,7 @@ $this->beginWidget('zii.widgets.jui.CJuiDialog', array( // the dialog
     'options'=>array(
         'title'=>'Enviar orden por correo electrónico',
         'autoOpen'=>false,
-		'position'=>array(600,200),
+		'position'=>array(null,100),
         'modal'=>true,
         'width'=>400,
         //'height'=>255,
@@ -196,12 +213,7 @@ h1 {
 .ui-progressbar .ui-widget-header {
 	background: #FFF;
 }
-.ui-widget-header {
-    border: 1px solid #AAA;
-    background-image: url("<?php echo Yii::app()->request->baseUrl;?>/imagenes/imagen.png");
-    color: #222;
-    font-weight: bold;
-}
+
 .ui-progressbar {
     border: 0px none;
     border-radius: 0px;

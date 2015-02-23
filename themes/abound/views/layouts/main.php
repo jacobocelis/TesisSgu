@@ -3,7 +3,7 @@
 <html lang="es">
     <head>
         <meta charset="utf-8">
-        <title>FlotaUNET</title>
+        <title>Sistema para la gestión de flotas</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta name="description" content="Free yii themes, free web application theme">
         <meta name="author" content="Webapplicationthemes.com">
