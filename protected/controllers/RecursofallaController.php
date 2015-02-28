@@ -159,7 +159,7 @@ class RecursofallaController extends Controller
 						Yii::app()->db->createCommand("update `tsg`.`sgu_factura` set `total`=".$subTotal." where `sgu_factura`.`id` = ".$idfac."")->query();
 						$factura=Factura::model()->findByPk($idfac);
 						Yii::app()->db->createCommand("update `tsg`.`sgu_factura` set `iva`=".(($factura->total)*($iva["valor"]/100)).",`totalFactura`=".(($factura->total)+($factura->total)*($iva["valor"]/100))."   where `sgu_factura`.`id` = ".$idfac."")->query();
-					}
+		}
 		// if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
 		if(!isset($_GET['ajax']))
 			$this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));

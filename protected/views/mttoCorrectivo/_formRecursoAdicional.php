@@ -32,16 +32,22 @@
 		<?php //echo $form->error($tipoInsumo,'idOrigen'); ?>
 		
 		<?php echo $form->labelEx($model,'idinsumo'); ?>
-		<?php echo $form->dropDownList($model,'idinsumo',CHtml::listData(Insumo::model()->findAll(),'id','insumo'),array('style' => 'width:300px;')); ?>
+		<?php echo $form->dropDownList($model,'idinsumo',CHtml::listData(Insumo::model()->findAll(),'id','insumo'),array('style' => 'width:300px;'));
+				echo CHtml::link('(+)', "", array('title'=>'Agregar un nuevo insumo','style'=>'cursor: pointer; text-decoration: underline;','onclick'=>"{nuevoInsumo(); }"));		?>
 		<?php echo $form->error($model,'idinsumo'); ?>
 	</div>
-
+	
+	<div id="nuevoInsumo"></div>
+	
 	<div id="servicio"class="row">
 		<?php echo $form->labelEx($model,'idservicio'); ?>
-		<?php echo $form->dropDownList($model,'idservicio',CHtml::listData(Servicio::model()->findAll(),'id','servicio'),array('style' => 'width:300px;')); ?>
+		<?php echo $form->dropDownList($model,'idservicio',CHtml::listData(Servicio::model()->findAll(),'id','servicio'),array('style' => 'width:300px;'));
+			echo CHtml::link('(+)', "", array('title'=>'Agregar un nuevo servicio','style'=>'cursor: pointer; text-decoration: underline;','onclick'=>"{nuevoServicio(); }"));		?>
 		<?php echo $form->error($model,'idservicio'); ?>
 	</div>
 
+		<div id="nuevoServicio"></div>
+		
 		<div id="repuesto"class="row">
 		
 		<?php echo $form->labelEx($tipoRepuesto,'subTipo'); ?>
@@ -50,10 +56,14 @@
 		<?php //echo $form->error($tipoRepuesto,'idOrigen'); ?>
 		
 		<?php echo $form->labelEx($model,'idrepuesto'); ?>
-		<?php echo $form->dropDownList($model,'idrepuesto',CHtml::listData(Repuesto::model()->findAll(),'id','repuesto'),array('style' => 'width:200px;')); ?>
+		<?php echo $form->dropDownList($model,'idrepuesto',CHtml::listData(Repuesto::model()->findAll(),'id','repuesto'),array('style' => 'width:200px;')); 
+		echo CHtml::link('(+)', "", array('title'=>'Agregar un nuevo repuesto','style'=>'cursor: pointer; text-decoration: underline;','onclick'=>"{nuevoRepuesto(); }"));?>
 		<?php echo $form->error($model,'idrepuesto'); ?>
 	</div>
 	
+	<div id="nuevoRepuesto"></div>
+	
+	<div id="restoFormRecurso">
 	<div class="row">
 		<?php echo $form->labelEx($model,'cantidad'); ?>
 		<?php echo $form->textField($model,'cantidad',array('style' => 'width:50px;')); ?>
@@ -82,7 +92,7 @@
 	<div class="row buttons">
 		<?php echo CHtml::submitButton($model->isNewRecord ? 'Agregar' : 'Guardar'); ?>
 	</div>
-
+	</div>
 <?php $this->endWidget(); ?>
 
 </div><!-- form -->
@@ -126,6 +136,33 @@ $.ajax({
         })
   	.done(function( result ) {    	
     	     $('#Recursofalla_idrepuesto').html(result);
+  	});
+}
+function validarInsumoNuevo(id){
+var dir="<?php echo Yii::app()->baseUrl;?>"+"/mttoPreventivo/ActualizarInsumos/"+id;
+$.ajax({  		
+          url: dir,
+        })
+  	.done(function( result ) {    	
+    	     $('#Recursofalla_idinsumo').html(result);
+  	});
+}
+function validarRepuestoNuevo(id){
+var dir="<?php echo Yii::app()->baseUrl;?>"+"/mttoPreventivo/ActualizarRepuesto/"+id;
+$.ajax({  		
+          url: dir,
+        })
+  	.done(function( result ) {    	
+    	     $('#Recursofalla_idrepuesto').html(result);
+  	});
+}
+function validarServicioNuevo(){
+var dir="<?php echo Yii::app()->baseUrl;?>"+"/mttoPreventivo/ActualizarServicio";
+$.ajax({  		
+          url: dir,
+        })
+  	.done(function( result ) {    	
+    	     $('#Recursofalla_idservicio').html(result);
   	});
 }
 

@@ -33,7 +33,7 @@ class Actividadrecurso extends CActiveRecord
 	{
 		return 'sgu_actividadRecurso';
 	}
-
+	
 	/**
 	 * @return array validation rules for model attributes.
 	 */

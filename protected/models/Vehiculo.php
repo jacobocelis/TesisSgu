@@ -41,7 +41,13 @@ class Vehiculo extends CActiveRecord
 	{
 		return 'sgu_vehiculo';
 	}
-
+public function getTotal($data)
+	{
+		$total=0;
+		foreach($data as $dat)
+			$total=$total+$dat["costoTotal"];
+		return $total;
+	}
 	/**
 	 * @return array validation rules for model attributes.
 	 */

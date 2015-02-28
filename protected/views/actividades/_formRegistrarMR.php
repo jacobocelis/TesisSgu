@@ -26,21 +26,18 @@
 		));
 		$modelo=new Kilometraje();
 	?>
-	<div class="row">
-		
-		<label>Última lectura del odómetro: </label><?php echo $form->textField($modelo,'lectura',array('value'=>number_format($km[0]["lectura"], 0,",","") ,'readonly'=>'readonly','style' => 'width:100px;cursor:pointer;text-align:right')); ?> Km 
-	</div>
+	
 	
 	<div class="row">
-		<?php echo $form->labelEx($model,'kmRealizada'); ?>
-		<?php echo $form->textField($model,'kmRealizada',array('value'=>$id?'':$model->kmRealizada,'style' => 'width:100px;text-align:right;')); ?> Km
-		<?php echo $form->error($model,'kmRealizada'); ?>
+		
+		<?php echo $form->hiddenField($model,'kmRealizada',array('value'=>$id?'':$model->kmRealizada,'style' => 'width:100px;text-align:right;')); ?>
+		
 	</div>
 	
 	
 	<div class="row">
 		<?php echo $form->labelEx($model,'fechaRealizada'); ?>
-		<?php echo $form->textField($model,'fechaRealizada',array('value'=>$id?'':$model->fechaRealizada,'readonly'=>'readonly','style' => 'width:100px;cursor:pointer;')); ?>
+		<?php echo $form->textField($model,'fechaRealizada',array('value'=>$id?'':date("d/m/Y", strtotime($model->fechaRealizada)),'readonly'=>'readonly','style' => 'width:100px;cursor:pointer;')); ?>
 		<?php echo $form->error($model,'fechaRealizada'); ?>
 	</div>
 
@@ -104,6 +101,9 @@
 
 </div><!-- form -->
 <script>
+var diass = "<?php echo $dias2;?>";
+var idvehiculo="<?php echo $model->idvehiculo;?>";
+
 	$(function($){
 	    $.datepicker.regional['es'] = {
 	        closeText: 'Cerrar',
@@ -116,7 +116,7 @@
 	        dayNamesShort: ['Dom','Lun','Mar','Mié','Juv','Vie','Sáb'],
 	        dayNamesMin: ['Do','Lu','Ma','Mi','Ju','Vi','Sá'],
 	        weekHeader: 'Sm',
-	        dateFormat: 'yy-mm-dd',
+	        dateFormat: 'dd/mm/yy',
 	        firstDay: 1,
 	        isRTL: false,
 			changeMonth: true,
@@ -124,13 +124,33 @@
 	        showMonthAfterYear: false,
 	        yearSuffix: '',
 	        maxDate: '0d',
-	        minDate: '-30d',
+	        minDate: '-'+diass+'d',
 	    };
 	    $.datepicker.setDefaults($.datepicker.regional['es']);
 	});      		
-	$("#Actividades_fechaRealizada").datepicker();
+	$("#Actividades_fechaRealizada").datepicker({
+     onSelect: function(selected){
+          getUltimoKm(selected,idvehiculo);
+		}
+	});
 </script>
 <script type="text/javascript">
+var dir="<?php echo Yii::app()->baseUrl."/mttoPreventivo/getUltimoKm/"?>";	
+function getUltimoKm(selected,idvehiculo){
+
+	jQuery.ajax({
+                url: dir+idvehiculo,
+                'data':$(this).serialize()+"fecha="+selected,
+                'type':'post',
+                'dataType':'json',
+                'success':function(data)
+                        {
+                              $("#Actividades_kmRealizada").val(data.valor);
+                        } ,
+                'cache':false});
+    return false; 
+}
+
 $("#Kilometraje_lectura").click(function(){
 	$("#Actividades_kmRealizada").val($("#Kilometraje_lectura").val());
 });

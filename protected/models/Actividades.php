@@ -120,7 +120,7 @@ class Actividades extends CActiveRecord
 		$fecha=new DateTime($datetime2);
 		$interval = $fecha->diff($datetime1);*/
 		
-                $interval =((strtotime($fin)-strtotime(date("Y-m-d")))/86400);
+       $interval =((strtotime($fin)-strtotime(date("Y-m-d")))/86400);
 		if($interval<0)
 			return 100;
 		$diasR=abs($interval);

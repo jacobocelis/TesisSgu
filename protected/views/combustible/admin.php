@@ -8,9 +8,9 @@ $this->breadcrumbs=array(
 );
 
 $this->menu=array(
-	array('label'=>'      Autonomía de combustible', 'url'=>array('autonomia')),
+	//array('label'=>'      Autonomía de combustible', 'url'=>array('autonomia')),
 	array('label'=>'      Histórico de reposición', 'url'=>array('admin')),
-	array('label'=>'      Estadísticas', 'url'=>array('admin')),
+	//array('label'=>'      Estadísticas', 'url'=>array('admin')),
 );
 ?>
 

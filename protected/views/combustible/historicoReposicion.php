@@ -11,21 +11,36 @@ $this->menu=array(
 
 	array('label'=>'<div id="menu"><strong>Combustible</strong></div>'),
 	array('label'=>'      Registrar reposición', 'url'=>array('registrarReposicion')),
-	array('label'=>'      Autonomía de combustible', 'url'=>array('autonomia')),
-	array('label'=>'      Histórico de reposición', 'url'=>array('historicoReposicion')),
 	
-	array('label'=>'      Administración de parámetros', 'url'=>array('admin')),
 	
-	array('label'=>'<div id="menu"><strong>Estadísticas</strong></div>'),
-	array('label'=>'      Consumo real vs estimado ', 'url'=>array('realVsEstimado')),
+	array('label'=>'<div id="menu"><strong>Historial</strong></div>'),
+	array('label'=>'      Histórico de reposiciónes', 'url'=>array('combustible/historicoReposicion')),
+	array('label'=>'      Histórico de gastos', 'url'=>array('historicoGastos')),
+	array('label'=>'<div id="menu"><strong>Parámetros</strong></div>'),
+	array('label'=>'      Administración de parámetros', 'url'=>array('parametros')),
+	
 );
 ?>
 <div class='crugepanel user-assignments-detail'>
 <h1>Histórico de reposiciones</h1>
+<div id="filtro" style="width:20%">
+<i>Por # de unidad: </i>
 
+		<?php $model=new Vehiculo;	
+		echo CHtml::dropDownList('vehiculo',$model,CHtml::listData(Vehiculo::model()->findAll(),'id','numeroUnidad'),
+              array('empty' => 'Todos',
+                   'style'=>"width:80px;")); 
+        ?>
+</div>
+<div id="fechas" style="float:left;">
+<i>Por período: </i>
+		<?php echo CHtml::textField('Fechaini', '',array('style'=>'width:80px;cursor:pointer;','size'=>"10","readonly"=>'readonly','placeholder'=>"Inicio",'id'=>'inicio')); ?>
+		<?php echo CHtml::textField('Fechafin', '',array('style'=>'width:80px;cursor:pointer;',"readonly"=>'readonly','disabled'=>'disabled','id'=>'fin','placeholder'=>"Fin")); 
+		echo CHtml::submitButton('Buscar',array("id"=>"boton","onclick"=>"FiltrarFecha()","style"=>"float:right;margin-top:2px;margin-left:10px;")); ?>
+</div>
 <?php
 $this->widget('zii.widgets.grid.CGridView', array(
-                'id'=>'comb',
+                'id'=>'historico',
 				'summaryText'=>'',
 				'selectableRows'=>1,
 				'template'=>"{items}\n{summary}\n{pager}",
@@ -33,8 +48,6 @@ $this->widget('zii.widgets.grid.CGridView', array(
                 'dataProvider'=>$dataProvider,
 				'htmlOptions'=>array('style'=>'font-size: 1.0em;'),
 				'columns'=>array(
-				
-				
 				array(
 					'header'=>'Unidad',
 					'name'=>'idvehiculo',
@@ -45,12 +58,6 @@ $this->widget('zii.widgets.grid.CGridView', array(
 				array(
 					'header'=>'Litros',
 					'name'=>'litros',
-					//'value'=>'$data->idfalla0->falla',
-					'htmlOptions'=>array('style'=>'text-align:center;width:25px'),
-				),
-				array(
-					'header'=>'Costo Bs.',
-					'name'=>'costoTotal',
 					//'value'=>'$data->idfalla0->falla',
 					'htmlOptions'=>array('style'=>'text-align:center;width:25px'),
 				),
@@ -77,14 +84,28 @@ $this->widget('zii.widgets.grid.CGridView', array(
 					'type'=>'raw',
 					'header'=>'Fecha reposición',
 					'name'=>'fecha',
-					'value'=>'date("d/m/Y",strtotime($data->fecha))',
+					'value'=>'date("d/m/Y h:m A",strtotime($data->fecha))',
 					'htmlOptions'=>array('style'=>'text-align:center;width:50px'),
 				),
 			)
         ));
 ?>
+<?php
+/*ventana agregar actividad*/
+$this->beginWidget('zii.widgets.jui.CJuiDialog', array( // the dialog
+    'id'=>'nuevaPos',
+    'options'=>array(
+ 
+        'autoOpen'=>false,
+        'modal'=>true, 
+    ),
+));?>
+<?php $this->endWidget();?>
 </div>
 <style>
+#menu {
+    font-size: 15px;
+}
 .crugepanel {
     background-color: #FFF;
     border: 1px dotted #AAA;
@@ -125,3 +146,52 @@ background: none repeat scroll 0% 0% #FFD6D6;
     padding: 0.3em;
 }
 </style>
+<script>
+$(function($){
+	    $.datepicker.regional['es'] = {
+	        closeText: 'Cerrar',
+	        prevText: 'Anterior',
+	        nextText: 'Siguiente',
+	        currentText: 'Hoy',
+	        monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+	        monthNamesShort: ['Ene','Feb','Mar','Abr', 'May','Jun','Jul','Ago','Sep', 'Oct','Nov','Dic'],
+	        dayNames: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
+	        dayNamesShort: ['Dom','Lun','Mar','Mié','Juv','Vie','Sáb'],
+	        dayNamesMin: ['Do','Lu','Ma','Mi','Ju','Vi','Sá'],
+	        weekHeader: 'Sm',
+	        dateFormat: 'dd/mm/yy',
+	        firstDay: 1,
+	        isRTL: false,
+			changeMonth: true,
+            changeYear: true,
+	        showMonthAfterYear: false,
+	        yearSuffix: '',
+	        maxDate: '0d',
+	        //minDate: '-30d',
+	    };
+	    $.datepicker.setDefaults($.datepicker.regional['es']);
+		});  
+		
+		$("#inicio").datepicker({
+			onSelect: function(selected) {
+				$("#fin").datepicker("option","minDate", selected+" +1d");
+				if($("#inicio").val().length==0)
+					
+					$('#fin').attr("disabled", true);
+				else
+					$('#fin').attr("disabled", false);
+			}
+		});
+		$("#fin").datepicker({
+			onSelect: function(selected) {
+				
+			}
+		});
+		
+function FiltrarFecha(){
+	var hoy="<?php echo date("d/m/Y")?>";
+	if($("#fin").val().length==0 && $("#inicio").val().length>0)
+		$("#fin").val(hoy);
+	$.fn.yiiGridView.update('historico',{ data : "fechaIni="+$("#inicio").val()+"&fechaFin="+$("#fin").val()+"&vehiculo="+$("#vehiculo").val()});
+}
+</script>

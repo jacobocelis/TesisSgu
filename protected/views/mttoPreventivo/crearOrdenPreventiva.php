@@ -1,4 +1,4 @@
-<div id="scrollingDiv" class="btn" style="display:none">Crear órden de neumáticos</div>
+<div id="scrollingDiv" class="btn" style="display:none">Crear órden de mantenimiento</div>
 <?php 
 	$this->breadcrumbs=array(
 	'Mantenimiento preventivo'=>array('mttoPreventivo/index'),
@@ -27,8 +27,10 @@ $this->menu=array(
 );
 ?>
 <div class='crugepanel user-assignments-role-list'>
-	<h1>Seleccione las actividades a incluir en la orden de mantenimiento</h1>
-	<?php //<p><b>Nota: </b><i>Sólo se mostrarán las actividades con menos de 5 dias restantes o que posean atraso</p></i>?>
+<h1>Crear órden de mantenimiento preventivo</h1>
+<i>Para crear una órden de mantenimiento preventivo seleccione una o varias actividades listadas abajo.</i>
+</div>
+<div class='crugepanel user-assignments-role-list'>
 <?php
 $this->widget('zii.widgets.grid.CGridView', array(
                 'id'=>'actividades',
@@ -61,13 +63,11 @@ $this->widget('zii.widgets.grid.CGridView', array(
 					'value'=>'$data->idactividadMtto0->actividad',
 					'htmlOptions'=>array('style'=>'text-align:center;width:100px'),
 				),
-				
 				/*array(
 					'header'=>'Fecha de próximo mantenimiento',
 					'name'=>'proximoFecha',
 					'htmlOptions'=>array('style'=>'width:100px;text-align:center;'),
 				),*/
-				
 				array(
 					'header'=>'Prioridad',
 					'name'=>'idprioridad',
@@ -88,7 +88,6 @@ $this->widget('zii.widgets.grid.CGridView', array(
 					'value'=>'$data->kmRestantes($data->idvehiculo,$data->proximoKm)<=50?\'<strong><span style="color:red">\'.$data->kmRestantes($data->idvehiculo,$data->proximoKm).\'</span></strong>\':$data->kmRestantes($data->idvehiculo,$data->proximoKm)',
 					'htmlOptions'=>array('style'=>'width:110px;text-align:center;'),
 				),
-				
 				array(
 					'type'=>'raw',
 					'header'=>'Días restantes',
@@ -99,7 +98,6 @@ $this->widget('zii.widgets.grid.CGridView', array(
 								"style"=>"width:80%; height:20px; float:right;background:#".$data->obtColor($data->diasRestantes($data->proximoFecha)))))->run()',
 					'htmlOptions'=>array('style'=>'width:110px;text-align:center;'),
 				),
-				
 			)
         ));
 		?>

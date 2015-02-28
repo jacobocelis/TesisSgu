@@ -60,7 +60,7 @@ $this->beginWidget('zii.widgets.jui.CJuiDialog', array( // the dialog
 		
 <?php $this->endWidget(); ?>
 </div>
-<?php  $i=0; 
+<?php  $i=0; $total=0;
 foreach($montados as $mont){
 	$idvehiculo=$veh[$i]->getData();
 	if(count($idvehiculo)>0)
@@ -231,12 +231,13 @@ $this->widget('zii.widgets.grid.CGridView', array(
 			),
         ));
 		
-	?>
+$total++; ?>
 </div>		
 <?php
 }
-$i++;
-}
+$i++;}
+if($total==0)
+	echo "<i><strong>no hay neumáticos registrados</strong></i>";
 ?>
 </div>
 <script>
@@ -288,10 +289,10 @@ $('#agregar'+ui).show(500);
 	float: left;
 }
 form {
-    margin: 0px 0px 0px;
+    margin: 0px 0px 15px;
 }
 #sep{
-	margin-bottom: 20px;
+	/*margin-bottom: 20px;*/
 	text-align: right;
 	font-size: 120%;
 }

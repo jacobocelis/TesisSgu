@@ -182,7 +182,13 @@ $this->widget('zii.widgets.grid.CGridView', array(
     ));
 	}
 }}
-if(count($factura->getData())>0){
+?>
+</div>
+<?php
+if(count($factura->getData())>0){?>
+<div class='crugepanel user-assignments-role-list'>
+<i>*Información de facturación</i>
+<?php
 $this->widget('zii.widgets.grid.CGridView', array(
                 'id'=>'factura',
 				'summaryText'=>'',
@@ -238,10 +244,10 @@ $this->widget('zii.widgets.grid.CGridView', array(
 				),
 			)
     ));
-}
-?>
-		
-</div>
+
+	?>
+</div><?php }?>
+
 <style>
 strong {
     font-weight: bold;

@@ -16,7 +16,7 @@
 	
 	<div class="row">
 		<?php echo $form->labelEx($model,'fechaFactura'); ?>
-		<?php echo $form->textField($model,'fechaFactura',array('readonly'=>'readonly','id'=>'otro','style' => 'width:100px;cursor:pointer;')); ?>
+		<?php echo $form->textField($model,'fechaFactura',array('value'=>$model->fechaFactura==""?date('d/m/Y'):date('d/m/Y',strtotime($model->fechaFactura)),'readonly'=>'readonly','id'=>'otro','style' => 'width:100px;cursor:pointer;')); ?>
 		<?php echo $form->error($model,'fechaFactura'); ?>
 	</div>
 	
@@ -48,6 +48,8 @@
 </div><!-- form -->
 
 <script>
+var intervalo = "<?php echo $intervalo;?>";
+
 	$(function($){
 	    $.datepicker.regional['es'] = {
 	        closeText: 'Cerrar',
@@ -68,7 +70,7 @@
 	        showMonthAfterYear: false,
 	        yearSuffix: '',
 	        maxDate: '0d',
-	        //minDate: '0d',
+	        minDate: '-'+intervalo+'d',
 	    };
 	    $.datepicker.setDefaults($.datepicker.regional['es']);
 	});      		

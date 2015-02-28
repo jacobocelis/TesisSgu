@@ -45,7 +45,10 @@ class ReportefallaController extends Controller
 		);
 	}
 public function actionActualizar($id){
-	
+		
+		if(isset($_POST['dias']))
+			$dias=$_POST['dias'];
+		
 		$model=$this->loadModel($id);
 		if($model->kmRealizada==-1 or $model->fechaRealizada=='0000-01-01')
 			$var=1;
@@ -71,7 +74,7 @@ public function actionActualizar($id){
         if (Yii::app()->request->isAjaxRequest){
             echo CJSON::encode(array(
                 'status'=>'failure', 
-                'div'=>$this->renderPartial('_formRegistrarMR', array('model'=>$model,'id'=>$var), true)));
+                'div'=>$this->renderPartial('_formRegistrarMR', array('model'=>$model,'id'=>$var,'dias2'=>$dias), true)));
             exit;               
         }
 

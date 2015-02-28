@@ -160,7 +160,7 @@ class Reportefalla extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('fechaFalla, diasParo, idtiempo, idvehiculo, idempleado, idfalla, idestatus,tipo', 'required'),
+			array('fechaFalla, diasParo, idtiempo, idvehiculo, idempleado, idfalla, idestatus,tipo,fechaRealizada', 'required'),
 			array('kmRealizada, diasParo, idtiempo, idvehiculo, idempleado, idfalla, idestatus,tipo', 'numerical', 'integerOnly'=>true),
 			array('detalle', 'length', 'max'=>150),
 			array('fechaRealizada', 'safe'),
@@ -197,7 +197,7 @@ class Reportefalla extends CActiveRecord
 			'id' => 'ID',
 			'detalle' => 'Detalle',
 			'fechaFalla' => 'Fecha',
-			'fechaRealizada' => 'Realizada',
+			'fechaRealizada' => 'Fecha Realizada',
 			'kmRealizada' => 'Km Realizada',
 			'diasParo' => 'Tiempo de paro',
 			'idtiempo' => 'Idtiempo',

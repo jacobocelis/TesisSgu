@@ -59,7 +59,7 @@ class Combust extends CActiveRecord
 	{
 		return array(
 			'id' => 'ID',
-			'tipo' => 'Detalle',
+			'tipo' => 'Tipo',
 			'costoLitro' => 'Costo x litro',
 			'idtipoCombustible' => 'Tipo de combustible',
 		);

@@ -32,7 +32,7 @@ class CombustibleController extends Controller
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create','update','alertaReposicion','autonomia','formAutonomia','registrarReposicion','RegReposicion','AjaxObtenerTipoCombustible','CostoCombustible','HistoricoReposicion','realVsEstimado'),
+				'actions'=>array('create','update','alertaReposicion','autonomia','formAutonomia','registrarReposicion','RegReposicion','AjaxObtenerTipoCombustible','CostoCombustible','HistoricoReposicion','realVsEstimado','historicoGastos','parametros'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -44,7 +44,13 @@ class CombustibleController extends Controller
 			),
 		);
 	}
-
+	public function getTotalGastosCombustible($data)
+	{
+		$total=0;
+		foreach($data as $dat)
+			$total=$total+$dat["costoTotal"];
+		return $total;
+	}
 	/**
 	 * Displays a particular model.
 	 * @param integer $id the ID of the model to be displayed
@@ -62,8 +68,7 @@ class CombustibleController extends Controller
 	 */
 	public function actionRegistrarReposicion(){
 		$dataProvider=new CActiveDataProvider('Historicocombustible',array('criteria'=>array('condition'=>'1','order'=>'id desc')));
-		$dataProvider->setPagination(false);
-		
+		//$dataProvider->setPagination(false);	
 		$this->render('registrarReposicion',array(
 			'dataProvider'=>$dataProvider
 		));
@@ -80,9 +85,9 @@ class CombustibleController extends Controller
 			$model->attributes=$_POST['Historicocombustible'];
 			if($model->validate()){
 				$model->fecha=date("Y-m-d H:i", strtotime(str_replace('/', '-',$model->fecha)));
-				$consulta=Yii::app()->db->createCommand("select id,fecha from sgu_historicoCombustible where idvehiculo=".$model->idvehiculo." order by fecha,id desc limit 1")->queryAll();
+				$consulta=Yii::app()->db->createCommand("select id,fecha from sgu_historicoCombustible where idvehiculo=".$model->idvehiculo." order by fecha desc limit 1")->queryAll();
 				if(count($consulta)>0){
-					if($consulta[0]["fecha"]>$model->fecha)
+					if(strtotime($consulta[0]["fecha"])> strtotime($model->fecha))
 						$model->historico=1;
 					else{
 						Yii::app()->db->createCommand("update `tsg`.`sgu_historicoCombustible` set `historico` = 1 where `sgu_historicoCombustible`.`id` = ".$consulta[0]["id"]."")->query();
@@ -167,8 +172,10 @@ class CombustibleController extends Controller
 		//file_put_contents('prueba.txt',print_r($model=new Historicocombustible,true));
 		//$dataProvider=new CArrayDataProvider($consulta, array('keyField'=>'id'));
 		//,array('criteria'=>array('group'=>'t.idvehiculo','order'=>'fecha desc'))
-        $dataProvider=new CActiveDataProvider('Historicocombustible',array('criteria'=>array('condition'=>'historico=0','order'=>'fecha desc')));
-		$dataProvider->setPagination(false);
+        $dataProvider=new CActiveDataProvider('Historicocombustible',array('criteria'=>array('condition'=>'historico=0'),'sort'=>array(
+                        'defaultOrder'=>'fecha DESC',
+                    )));
+		//$dataProvider->setPagination(false);
 		$this->render('index',array(
 			'dataProvider'=>$dataProvider,
 			'reposicionDias'=>$reposicionDias["valor"],
@@ -243,10 +250,105 @@ class CombustibleController extends Controller
 			'model'=>$model,
 		));
 	}
-	public function actionHistoricoReposicion()
-	{
-		$dataProvider=new CActiveDataProvider('Historicocombustible',array('criteria'=>array('order'=>'fecha desc')));
+	public function actionParametros(){
+		
+		$idtipo=0;
+		$estaciones=new CActiveDataProvider('Estacionservicio');
+		$combustible=new CActiveDataProvider('Tipocombustible');
+		
+		if(isset($_GET["id"])){
+			$idtipo=$_GET["id"];
+		}
+		$costo=new CActiveDataProvider('Combust',array('criteria' => array(
+						'condition' =>'idtipoCombustible="'.$idtipo.'"',
+					)));	
+		$this->render('parametros',array(
+			'dataProvider'=>$estaciones,
+			'combustible'=>$combustible,
+			'costo'=>$costo
+		));
+	}
+	public function actionHistoricoReposicion(){
+		
+		$dataProvider=new CActiveDataProvider('Historicocombustible',array('sort'=>array(
+                        'defaultOrder'=>'fecha DESC')));
+						
+		if(isset($_GET["fechaIni"]) or isset($_GET["fechaFin"]) or isset($_GET["vehiculo"])){
+				if($_GET["fechaIni"]=="" and $_GET["fechaFin"]=="" and $_GET["vehiculo"]==""){
+					$dataProvider=new CActiveDataProvider('Historicocombustible',array('criteria' => array(
+						'condition' =>'1',
+					),'sort'=>array(
+                        'defaultOrder'=>'fecha DESC')));	
+				}
+				if($_GET["fechaIni"]!="" and $_GET["vehiculo"]==""){
+					$fechaini=date("Y-m-d", strtotime(str_replace('/', '-',$_GET["fechaIni"])));
+					$fechafin=date("Y-m-d", strtotime(str_replace('/', '-',$_GET["fechaFin"])));
+					$dataProvider=new CActiveDataProvider('Historicocombustible',array('criteria' => array(
+						'condition' =>'date(fecha)>="'.$fechaini.'" and date(fecha)<="'.$fechafin.'"',
+						//'order'=>'fechaRealizada',
+					)));		
+				}
+				if($_GET["fechaIni"]=="" and $_GET["vehiculo"]!=""){
+					
+					$dataProvider=new CActiveDataProvider('Historicocombustible',array('criteria' => array(
+						'condition' =>'idvehiculo='.$_GET["vehiculo"].'',
+						//'order'=>'id',
+					)));	
+				}
+				if($_GET["fechaIni"]!="" and $_GET["vehiculo"]!=""){
+					$fechaini=date("Y-m-d", strtotime(str_replace('/', '-',$_GET["fechaIni"])));
+					$fechafin=date("Y-m-d", strtotime(str_replace('/', '-',$_GET["fechaFin"])));
+					
+					$dataProvider=new CActiveDataProvider('Historicocombustible',array('criteria' => array(
+						'condition' =>'date(fecha)>="'.$fechaini.'" and date(fecha)<="'.$fechafin.'" and idvehiculo='.$_GET["vehiculo"].'',
+						//'order'=>'fechaRealizada',
+					)));	
+				}
+			}
+		
 		$this->render('historicoReposicion',array(
+			'dataProvider'=>$dataProvider,
+		));
+	}
+	public function actionHistoricoGastos(){
+		
+		$dataProvider=new CActiveDataProvider('Historicocombustible',array('sort'=>array(
+                        'defaultOrder'=>'fecha DESC')));
+						
+			if(isset($_GET["fechaIni"]) or isset($_GET["fechaFin"]) or isset($_GET["vehiculo"])){
+				if($_GET["fechaIni"]=="" and $_GET["fechaFin"]=="" and $_GET["vehiculo"]==""){
+					$dataProvider=new CActiveDataProvider('Historicocombustible',array('criteria' => array(
+						'condition' =>'1',
+					),'sort'=>array(
+                        'defaultOrder'=>'fecha DESC')));	
+				}
+				if($_GET["fechaIni"]!="" and $_GET["vehiculo"]==""){
+					$fechaini=date("Y-m-d", strtotime(str_replace('/', '-',$_GET["fechaIni"])));
+					$fechafin=date("Y-m-d", strtotime(str_replace('/', '-',$_GET["fechaFin"])));
+					$dataProvider=new CActiveDataProvider('Historicocombustible',array('criteria' => array(
+						'condition' =>'date(fecha)>="'.$fechaini.'" and date(fecha)<="'.$fechafin.'"',
+						//'order'=>'fechaRealizada',
+					)));		
+				}
+				if($_GET["fechaIni"]=="" and $_GET["vehiculo"]!=""){
+					
+					$dataProvider=new CActiveDataProvider('Historicocombustible',array('criteria' => array(
+						'condition' =>'idvehiculo='.$_GET["vehiculo"].'',
+						//'order'=>'id',
+					)));	
+				}
+				if($_GET["fechaIni"]!="" and $_GET["vehiculo"]!=""){
+					$fechaini=date("Y-m-d", strtotime(str_replace('/', '-',$_GET["fechaIni"])));
+					$fechafin=date("Y-m-d", strtotime(str_replace('/', '-',$_GET["fechaFin"])));
+					
+					$dataProvider=new CActiveDataProvider('Historicocombustible',array('criteria' => array(
+						'condition' =>'date(fecha)>="'.$fechaini.'" and date(fecha)<="'.$fechafin.'" and idvehiculo='.$_GET["vehiculo"].'',
+						//'order'=>'fechaRealizada',
+					)));	
+				}
+			}
+		$dataProvider->setPagination(false);
+		$this->render('historicoGastos',array(
 			'dataProvider'=>$dataProvider,
 		));
 	}

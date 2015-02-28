@@ -102,13 +102,18 @@ class FacturaController extends Controller
 			'model'=>$model,
 		));
 	}*/
-	public function actionUpdate($id)
+	public function actionUpdate($id,$idorden)
 	{
 		$model=$this->loadModel($id);
 
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
-
+		if(isset($idorden)){
+				$fecha=Ordenmtto::model()->findByPk($idorden);
+				$fecha=date("Y-m-d", strtotime(str_replace('/', '-',$fecha->fecha)));
+				$intervalo=((strtotime(date("Y-m-d"))-strtotime($fecha))/86400);
+			}
+			
 		if(isset($_POST['Factura']))
 		{
 			$model->attributes=$_POST['Factura'];
@@ -122,10 +127,10 @@ class FacturaController extends Controller
                     exit;               
 			}
 		}
-		 if (Yii::app()->request->isAjaxRequest){
+		if (Yii::app()->request->isAjaxRequest){
             echo CJSON::encode(array(
                 'status'=>'failure', 
-                'div'=>$this->renderPartial('_formFactura', array('model'=>$model), true)));
+                'div'=>$this->renderPartial('_formFactura', array('model'=>$model,'intervalo'=>$intervalo), true)));
             exit;               
         }
 	}

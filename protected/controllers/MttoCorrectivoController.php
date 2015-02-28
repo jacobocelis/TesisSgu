@@ -284,8 +284,8 @@ class MttoCorrectivoController extends Controller
 		$model=new Factura;
 		if(isset($_POST['Factura'])){
             $model->attributes=$_POST['Factura'];
+			$model->fechaFactura=date("Y-m-d", strtotime(str_replace('/', '-',$model->fechaFactura )));
             if($model->save()){
-			
                 if (Yii::app()->request->isAjaxRequest){
 				  
                     echo CJSON::encode(array(
@@ -329,6 +329,13 @@ class MttoCorrectivoController extends Controller
 			'pagination'=>array('pageSize'=>9999999)));
 		$tot=Yii::app()->db->createCommand('select * from sgu_factura where idordenMtto="'.$id.'"')->queryAll();
 		$total=count($tot);
+		$orden=new CActiveDataProvider('Ordenmtto',array('criteria' => array(
+			'condition' =>'id='.$id."")
+			,'pagination'=>array('pageSize'=>9999999)));
+		$fechaOrden=$orden->getData();
+		$fechaOrden=date("Y-m-d", strtotime($fechaOrden[0]["fecha"]));		
+		$dias=((strtotime(date("Y-m-d"))-strtotime($fechaOrden))/86400);
+		
 		$this->render('registrarFacturacion',array(
 			'dataProvider'=>$dataProvider,
 			'mejoras'=>$mejoras,
@@ -340,6 +347,7 @@ class MttoCorrectivoController extends Controller
 			'nom'=>$nom,
 			'dir'=>$dir,
 			'model'=> new Reportefalla,
+			'dias'=>$dias,
 		));
 	}
 	public function actionCrearOrden(){

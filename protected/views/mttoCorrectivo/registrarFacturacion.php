@@ -87,7 +87,6 @@ $this->widget('zii.widgets.grid.CGridView', array(
 			)
     ));
 ?>	
-	<p><b>Nota: </b><i>Seleccione una actividad para asignar los gastos individuales por vehiculo</p></i>
 <?php if(count($dataProvider->getData())>0){?>
 <div class='crugepanel user-assignments-role-list'>
 	<i>*Fallas reportadas</i>
@@ -456,7 +455,7 @@ $this->beginWidget('zii.widgets.jui.CJuiDialog', array( // the dialog
         'title'=>'Agregar recurso adicional',
         'autoOpen'=>false,
         'modal'=>true,
-        'width'=>390,
+        'width'=>410,
 		'position'=>array(null,100),
 		'resizable'=>false
     ),
@@ -504,12 +503,12 @@ cargar();
 var Uurl;
 var idAct;
 function registrarMR(id){
-
+var dias="<?php echo $dias;?>";
 	 if (typeof(id)=='string')
                 Uurl=id;
 	jQuery.ajax({
                 url: Uurl,
-                'data':$(this).serialize(),
+                'data':$(this).serialize()+"&dias="+dias,
                 'type':'post',
                 'dataType':'json',
                 'success':function(data)
@@ -542,10 +541,9 @@ if(data==0){
 else{
 	$('#factura').hide();
 	$('#detalle').show();
-	$('#recur').show();
 }
 var id=<?php echo $id?>;
-var dir="<?php echo Yii::app()->baseUrl."/mttoPreventivo/agregarFactura"?>";
+var dir="<?php echo Yii::app()->baseUrl."/mttoCorrectivo/agregarFactura"?>";
 jQuery.ajax({
                 url: dir+"/"+id,
                 'data':$(this).serialize(),
@@ -572,6 +570,7 @@ idAct=id;
 	/*var idAct = $.fn.yiiGridView.getSelection('fallas');
 	if(idAct=="")
 		$('#recur').hide();*/
+	$('#recur').show();
 	$.fn.yiiGridView.update('rec',{ data : "idAct="+id});
 	$("#dialog3").dialog("open");
 }
@@ -655,6 +654,89 @@ $('#recurso').dialog('open');
 										
                                 }
                         },
+                'cache':false});
+    return false; 
+}
+function nuevoInsumo(){
+	$("#lista").attr('disabled', true);
+	$("#nuevoInsumo").show(500);
+	$("#restoFormRecurso").hide(500);
+	
+	jQuery.ajax({
+                url: "<?php echo Yii::app()->baseUrl;?>"+"/Insumo/create",
+                'data':$(this).serialize(),
+                'type':'post',
+                'dataType':'json',
+                'success':function(data){
+                                if (data.status == 'failure'){
+                                        $('#nuevoInsumo ').html(data.div);
+                                        
+										$('#Insumo_tipoInsumo').val($('#Tipoinsumo_tipo').val());
+										$('#nuevoInsumo  form').submit(nuevoInsumo);
+                                }
+                                else{
+                                        $('#nuevoInsumo').html(data.div);
+										$("#nuevoInsumo").hide(500);
+										$("#restoFormRecurso").show(500);
+										$("#lista").attr('disabled', false);
+										
+										validarInsumoNuevo($('#Tipoinsumo_tipo option:selected').val());
+                                }
+                },
+                'cache':false});
+    return false; 
+
+}
+function nuevoRepuesto(){
+	$("#lista").attr('disabled', true);
+	$("#nuevoRepuesto").show(500);
+	$("#restoFormRecurso").hide(500);
+	jQuery.ajax({
+                url: "<?php echo Yii::app()->baseUrl;?>"+"/Repuesto/crear",
+                'data':$(this).serialize(),
+                'type':'post',
+                'dataType':'json',
+                'success':function(data){
+                                if(data.status == 'failure'){
+                                        $('#nuevoRepuesto ').html(data.div);
+                                   
+										$('#Repuesto_idsubTipoRepuesto').val($('#Subtiporepuesto_subTipo option:selected').val());
+										$('#nuevoRepuesto  form').submit(nuevoRepuesto);
+                                }
+                                else{
+                                        $('#nuevoRepuesto').html(data.div);
+										$("#nuevoRepuesto").hide(500);
+										$("#restoFormRecurso").show(500);
+										$("#lista").attr('disabled', false);
+										validarRepuestoNuevo($('#Subtiporepuesto_subTipo option:selected').val());
+                                }
+                },
+                'cache':false});
+    return false; 
+}
+function nuevoServicio(){
+	$("#lista").attr('disabled', true);
+	$("#nuevoServicio").show(500);
+	$("#restoFormRecurso").hide(500);
+	jQuery.ajax({
+                url: "<?php echo Yii::app()->baseUrl;?>"+"/Servicio/crear",
+                'data':$(this).serialize(),
+                'type':'post',
+                'dataType':'json',
+                'success':function(data){
+                                if(data.status == 'failure'){
+                                        $('#nuevoServicio').html(data.div);
+										//$('#Repuesto_idsubTipoRepuesto').val($('#Subtiporepuesto_subTipo option:selected').val());
+										$('#nuevoServicio  form').submit(nuevoServicio);
+                                }
+                                else{
+                                        $('#nuevoServicio').html(data.div);
+										$("#nuevoServicio").hide(500);
+										$("#restoFormRecurso").show(500);
+										$("#lista").attr('disabled', false);
+										validarServicioNuevo();
+                                }
+                },
                 'cache':false});
     return false; 
 }

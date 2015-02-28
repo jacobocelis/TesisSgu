@@ -141,9 +141,27 @@ class ActividadrecursoController extends Controller
 	 * If deletion is successful, the browser will be redirected to the 'admin' page.
 	 * @param integer $id the ID of the model to be deleted
 	 */
-	public function actionDelete($id)
-	{
+	public function actionDelete($id,$idfac)
+	{	
 		$this->loadModel($id)->delete();
+		
+		if(isset($idfac)){
+						$iva=Parametro::model()->findByAttributes(array('nombre'=>'IVA'));
+						$factura=Factura::model()->findByPk($idfac);
+						$actividades=Detalleorden::model()->findAll(array("condition"=>"idordenMtto = '".$factura->idordenMtto."'"));
+						$subTotal=0;
+						for($i=0;$i<count($actividades);$i++){
+							$recursos=Actividadrecurso::model()->findAll(array("condition"=>"idactividades = '".$actividades[$i]["idactividades"]."'"));
+							for($j=0;$j<count($recursos);$j++){
+								$subTotal+=$recursos[$j]["costoTotal"];
+							}
+						}
+						Yii::app()->db->createCommand("update `tsg`.`sgu_factura` set `total`=".$subTotal." where `sgu_factura`.`id` = ".$idfac."")->query();
+						$factura=Factura::model()->findByPk($idfac);
+						Yii::app()->db->createCommand("update `tsg`.`sgu_factura` set `iva`=".(($factura->total)*($iva["valor"]/100)).",`totalFactura`=".(($factura->total)+($factura->total)*($iva["valor"]/100))."   where `sgu_factura`.`id` = ".$idfac."")->query();
+		}
+					
+		
 
 		// if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
 		if(!isset($_GET['ajax']))

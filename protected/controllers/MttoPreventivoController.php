@@ -15,8 +15,8 @@ class MttoPreventivoController extends Controller
 	public function filters()
 	{
 		return array(
-			//'accessControl', // perform access control for CRUD operations
-			//'postOnly + delete', // we only allow deletion via POST request
+			'accessControl', // perform access control for CRUD operations
+			'postOnly + delete', // we only allow deletion via POST request
 			array('CrugeAccessControlFilter')
 		);
 	}
@@ -29,7 +29,7 @@ class MttoPreventivoController extends Controller
 	{
 		return array(
 			array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array('index','view','crearPlan','planes','agregarActividad','obtenerParte','mttopVehiculo','mttopIniciales','calendario','obtenerActividad','agregarRecurso','iniciales','crearordenpreventiva','crearOrden','verOrdenes','cambiarFecha','mttopRealizados','registrarFacturacion','agregarFactura','estatusOrden','cerrarOrdenes','historicoPreventivo','historicoOrdenes','historicoGastos','vistaPrevia','vistaPreviaPDF','generarPdf','correo','actualizarSpan','agregarRecursoAdicional','insumos','repuesto','ActualizarCheck','ActualizarListaActividades','ActualizarInsumos','ActualizarRepuesto','ActualizarServicio','actualizarSpanListas'),
+				'actions'=>array('index','view','crearPlan','planes','agregarActividad','obtenerParte','mttopVehiculo','mttopIniciales','calendario','obtenerActividad','agregarRecurso','iniciales','crearordenpreventiva','crearOrden','verOrdenes','cambiarFecha','mttopRealizados','registrarFacturacion','agregarFactura','estatusOrden','cerrarOrdenes','historicoPreventivo','historicoOrdenes','historicoGastos','vistaPrevia','vistaPreviaPDF','generarPdf','correo','actualizarSpan','agregarRecursoAdicional','insumos','repuesto','ActualizarCheck','ActualizarListaActividades','ActualizarInsumos','ActualizarRepuesto','ActualizarServicio','actualizarSpanListas','GetUltimoKm'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
@@ -313,8 +313,14 @@ class MttoPreventivoController extends Controller
 	}
 	public function actionAgregarFactura($id){
 		$model=new Factura;
+		if(isset($_POST['idord'])){
+				$idord=$_POST['idord'];
+				$fecha=Ordenmtto::model()->findByPk($idord);
+				$fecha=date("Y-m-d", strtotime(str_replace('/', '-',$fecha->fecha)));
+				$intervalo=((strtotime(date("Y-m-d"))-strtotime($fecha))/86400);
+			}
 		if(isset($_POST['Factura'])){
-			
+				
             $model->attributes=$_POST['Factura'];
 			$model->fechaFactura=date("Y-m-d", strtotime(str_replace('/', '-',$model->fechaFactura)));
             if($model->save()){
@@ -332,7 +338,7 @@ class MttoPreventivoController extends Controller
 		 if (Yii::app()->request->isAjaxRequest){	
             echo CJSON::encode(array(
                 'status'=>'failure', 
-                'div'=>$this->renderPartial('_formFactura', array('model'=>$model,'id'=>$id), true)
+                'div'=>$this->renderPartial('_formFactura', array('model'=>$model,'id'=>$id,'intervalo'=>$intervalo), true)
 				));
             exit;               
         }
@@ -461,10 +467,24 @@ class MttoPreventivoController extends Controller
 			'listas'=>$this->getOrdenesListas(),
 		));
 	}
+	public function actionGetUltimoKm($id){
+		if(isset($_POST['fecha']))
+		$fecha=date("Y-m-d", strtotime(str_replace('/', '-',$_POST['fecha'])));
+	
+		$km=Yii::app()->db->createCommand("SELECT lectura from sgu_kilometraje where fecha<='".$fecha."' and idvehiculo=".$id." order by id desc limit 1")->queryRow();
+		
+		  echo CJSON::encode(array(
+                'valor'=>$km["lectura"], 
+                ));
+			exit;
+	}
 	public function actionMttopRealizados($id,$nom,$dir){
 		$orden=new CActiveDataProvider('Ordenmtto',array('criteria' => array(
 			'condition' =>'id='.$id."")
 			,'pagination'=>array('pageSize'=>9999999)));
+		$fechaOrden=$orden->getData();
+		$fechaOrden=date("Y-m-d", strtotime($fechaOrden[0]["fecha"]));		
+		$dias=((strtotime(date("Y-m-d"))-strtotime($fechaOrden))/86400);
 		$dataProvider=new CActiveDataProvider('Actividades',array('criteria' => array(
 			'order'=>'proximoFecha asc',
 			'condition'=>'id in (select idactividades from sgu_detalleOrden where idordenMtto="'.$id.'")')
@@ -475,6 +495,7 @@ class MttoPreventivoController extends Controller
 			'id'=>$id,
 			'nom'=>$nom,
 			'dir'=>$dir,
+			'dias'=>$dias,
 		));
 	}
 	public function actionActualizarCheck($id){
@@ -695,6 +716,40 @@ class MttoPreventivoController extends Controller
 	 */
 	public function actionHistoricoGastos(){	
 		$dataProvider=new CActiveDataProvider('Actividadrecurso',array('criteria'=>array('condition'=>'costoTotal>0')));
+		
+		if(isset($_GET["fechaIni"]) or isset($_GET["fechaFin"]) or isset($_GET["vehiculo"])){
+				if($_GET["fechaIni"]=="" and $_GET["fechaFin"]=="" and $_GET["vehiculo"]==""){
+					$dataProvider=new CActiveDataProvider('Actividadrecurso',array('criteria' => array(
+						'condition' =>'costoTotal>0',
+						'order'=>'id',
+					)));	
+				}
+				if($_GET["fechaIni"]!="" and $_GET["vehiculo"]==""){
+					$fechaini=date("Y-m-d", strtotime(str_replace('/', '-',$_GET["fechaIni"])));
+					$fechafin=date("Y-m-d", strtotime(str_replace('/', '-',$_GET["fechaFin"])));
+					$dataProvider=new CActiveDataProvider('Actividadrecurso',array('criteria' => array(
+						'condition' =>'costoTotal>0 and idactividades in (select id from sgu_actividades where idestatus = 3 and fechaRealizada>="'.$fechaini.'" and fechaRealizada<="'.$fechafin.'")',
+						//'order'=>'fechaRealizada',
+					)));		
+				}
+				if($_GET["fechaIni"]=="" and $_GET["vehiculo"]!=""){
+					
+					$dataProvider=new CActiveDataProvider('Actividadrecurso',array('criteria' => array(
+						'condition' =>'costoTotal>0 and idactividades in (select id from sgu_actividades where idestatus = 3 and idvehiculo='.$_GET["vehiculo"].')',
+						'order'=>'id',
+					)));	
+				}
+				if($_GET["fechaIni"]!="" and $_GET["vehiculo"]!=""){
+					$fechaini=date("Y-m-d", strtotime(str_replace('/', '-',$_GET["fechaIni"])));
+					$fechafin=date("Y-m-d", strtotime(str_replace('/', '-',$_GET["fechaFin"])));
+					
+					$dataProvider=new CActiveDataProvider('Actividadrecurso',array('criteria' => array(
+						'condition' =>'costoTotal>0 and idactividades in (select id from sgu_actividades where idestatus = 3 and fechaRealizada>="'.$fechaini.'" and fechaRealizada<="'.$fechafin.'" and idvehiculo='.$_GET["vehiculo"].') ',
+						//'order'=>'fechaRealizada',
+					)));	
+				}
+			}
+		$dataProvider->setPagination(false);
 		$this->render('historicoGastos',array(
 			'dataProvider'=>$dataProvider,
 			'mi'=>$this->getIniciales(),
@@ -706,16 +761,48 @@ class MttoPreventivoController extends Controller
 		));
 	}
 	public function actionHistoricoPreventivo(){
-	//idplan in (select id from sgu_plan) and ??
+			
 			$dataProvider=new CActiveDataProvider('Actividades',array('criteria' => array(
 				'condition' =>'idestatus=3',
 				'order'=>'ultimoFecha',
-				
 			)));
-			$mi=Yii::app()->db->createCommand("select count(*) as total from sgu_actividades where idestatus=1")->queryRow();
+			if(isset($_GET["fechaIni"]) or isset($_GET["fechaFin"]) or isset($_GET["vehiculo"])){
+				if($_GET["fechaIni"]=="" and $_GET["fechaFin"]=="" and $_GET["vehiculo"]==""){
+					$dataProvider=new CActiveDataProvider('Actividades',array('criteria' => array(
+						'condition' =>'idestatus=3',
+						'order'=>'ultimoFecha',
+					)));	
+				}
+	
+				if($_GET["fechaIni"]!="" and $_GET["vehiculo"]==""){
+					$fechaini=date("Y-m-d", strtotime(str_replace('/', '-',$_GET["fechaIni"])));
+					$fechafin=date("Y-m-d", strtotime(str_replace('/', '-',$_GET["fechaFin"])));
+					$dataProvider=new CActiveDataProvider('Actividades',array('criteria' => array(
+						'condition' =>'idestatus=3 and (fechaRealizada>="'.$fechaini.'" and fechaRealizada<="'.$fechafin.'")',
+						'order'=>'fechaRealizada',
+					)));		
+				}
+				if($_GET["fechaIni"]=="" and $_GET["vehiculo"]!=""){
+					
+					$dataProvider=new CActiveDataProvider('Actividades',array('criteria' => array(
+						'condition' =>'idestatus=3 and idvehiculo='.$_GET["vehiculo"].'',
+						'order'=>'ultimoFecha',
+					)));	
+				}
+				if($_GET["fechaIni"]!="" and $_GET["vehiculo"]!=""){
+					$fechaini=date("Y-m-d", strtotime(str_replace('/', '-',$_GET["fechaIni"])));
+					$fechafin=date("Y-m-d", strtotime(str_replace('/', '-',$_GET["fechaFin"])));
+					$dataProvider=new CActiveDataProvider('Actividades',array('criteria' => array(
+						'condition' =>'idestatus=3 and (fechaRealizada>="'.$fechaini.'" and fechaRealizada<="'.$fechafin.'") and idvehiculo='.$_GET["vehiculo"].'',
+						'order'=>'ultimoFecha',
+					)));	
+				}
+			}
+		$dataProvider->setPagination(false);
+		$mi=Yii::app()->db->createCommand("select count(*) as total from sgu_actividades where idestatus=1")->queryRow();
 		$this->render('historicoPreventivo',array(
-				'dataProvider'=>$dataProvider,
-				'mi'=>$this->getIniciales(),
+			'dataProvider'=>$dataProvider,
+			'mi'=>$this->getIniciales(),
 			'color'=>$this->getColor($this->getIniciales()),
 			'abiertas'=>$this->getOrdenesAbiertas(),
 			'Colorabi'=>$this->getColor($this->getOrdenesAbiertas()),
@@ -724,10 +811,29 @@ class MttoPreventivoController extends Controller
 			));
 	}
 	public function actionHistoricoOrdenes(){
+		
 	$dataProvider=new CActiveDataProvider('Ordenmtto',array('criteria' => array(
-			'condition' =>'id in (select id from sgu_ordenMtto where idestatus=7 and tipo=0)',
+			'condition' =>'idestatus=7 and tipo=0',
 			'order'=>'fecha'
 			)));
+			
+			if(isset($_GET["fechaIni"]) or isset($_GET["fechaFin"])){
+				if($_GET["fechaIni"]=="" and $_GET["fechaFin"]==""){
+					$dataProvider=new CActiveDataProvider('Ordenmtto',array('criteria' => array(
+						'condition' =>'idestatus=7 and tipo=0',
+						'order'=>'fecha',
+					)));	
+				}
+				if($_GET["fechaIni"]!=""){
+					$fechaini=date("Y-m-d", strtotime(str_replace('/', '-',$_GET["fechaIni"])));
+					$fechafin=date("Y-m-d", strtotime(str_replace('/', '-',$_GET["fechaFin"])));
+					$dataProvider=new CActiveDataProvider('Ordenmtto',array('criteria' => array(
+						'condition' =>'idestatus=7 and tipo=0 and (date(fecha)>="'.$fechaini.'" and date(fecha)<="'.$fechafin.'")',
+						'order'=>'fecha',
+					)));		
+				}
+			}
+		$dataProvider->setPagination(false);
 		$this->render('historicoOrdenes',array(
 			'dataProvider'=>$dataProvider,
 			'mi'=>$this->getIniciales(),

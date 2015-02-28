@@ -10,14 +10,15 @@ $this->breadcrumbs=array(
 $this->menu=array(
 
 	array('label'=>'<div id="menu"><strong>Combustible</strong></div>'),
-	array('label'=>'      Registrar reposición', 'url'=>array('registrarReposicion')),
-	array('label'=>'      Autonomía de combustible', 'url'=>array('autonomia')),
-	array('label'=>'      Histórico de reposición', 'url'=>array('historicoReposicion')),
+	array('label'=>'      Registrar reposición', 'url'=>array('combustible/registrarReposicion')),
 	
-	array('label'=>'      Administración de parámetros', 'url'=>array('admin')),
 	
-	array('label'=>'<div id="menu"><strong>Estadísticas</strong></div>'),
-	array('label'=>'      Consumo real vs estimado ', 'url'=>array('realVsEstimado')),
+	array('label'=>'<div id="menu"><strong>Historial</strong></div>'),
+	array('label'=>'      Histórico de reposiciónes', 'url'=>array('historicoReposicion')),
+	array('label'=>'      Histórico de gastos', 'url'=>array('historicoGastos')),
+	array('label'=>'<div id="menu"><strong>Parámetros</strong></div>'),
+	array('label'=>'      Administración de parámetros', 'url'=>array('parametros')),
+	
 );
 ?>
 <div class='crugepanel user-assignments-detail'>
@@ -25,7 +26,7 @@ $this->menu=array(
 <div id="reposicion"></div>
 </div>
 <div class='crugepanel user-assignments-detail'>
-<h1>Últimas reposiciones registradas</h1>
+<h1>Reposiciones registradas</h1>
 <?php
 $this->widget('zii.widgets.grid.CGridView', array(
                 'id'=>'comb',
@@ -127,8 +128,6 @@ $this->beginWidget('zii.widgets.jui.CJuiDialog', array( // the dialog
 	float: left;
     height: 35px;
 }
-</style>
-<style>
 .grid-view table.items th {
 	color: rgba(0, 0, 0, 1);
     text-align: center;

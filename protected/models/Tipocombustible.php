@@ -29,8 +29,8 @@ class Tipocombustible extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('id, combustible', 'required'),
-			array('id', 'numerical', 'integerOnly'=>true),
+			array('combustible', 'required'),
+			
 			array('combustible', 'length', 'max'=>45),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.

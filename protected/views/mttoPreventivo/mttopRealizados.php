@@ -9,6 +9,12 @@ $this->breadcrumbs=array(
 		array('label'=>'      Registrar actividades de mantenimiento', 'url'=>array('planes')),
 		
 	array('label'=>'      Crear orden de mantenimiento', 'url'=>array('crearOrdenPreventiva')),
+	array('label'=>'<div id="menu"><strong>Historial</strong></div>'),
+	array('label'=>'      Histórico de mantenimientos', 'url'=>array('historicoPreventivo')),
+	array('label'=>'      Histórico de gastos', 'url'=>array('historicoGastos')),
+	array('label'=>'      Histórico de ordenes', 'url'=>array('historicoOrdenes')),	
+	
+	array('label'=>'      Regresar', 'url'=>array('mttoPreventivo/verOrdenes')),
 
 );
 ?>
@@ -42,9 +48,10 @@ $this->widget('zii.widgets.grid.CGridView', array(
 					'htmlOptions'=>array('style'=>'text-align:center;width:100px'),
 				),
 				array(
+					'type'=>'raw',
 					'header'=>'Estado',
 					//'name'=>'idestatus',
-					'value'=>'$data->idestatus0->estatus',
+					'value'=>'$data->color($data->idestatus,$data->idestatus0->estatus)',
 					'htmlOptions'=>array('style'=>'text-align:center;width:50px'),
 				),
 				array(
@@ -136,7 +143,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
 					'htmlOptions'=>array('style'=>'width:80px;text-align:center;'),
 				),
 				array(
-					'header'=>'Duración',
+					'header'=>'Tiempo de paro',
 					'name'=>'duracion',
 					'type'=>'raw',
 					'value'=>'$data->duracion.\' \'.$data->idtiempod0->tiempo',
@@ -165,7 +172,6 @@ $this->widget('zii.widgets.grid.CGridView', array(
 				),
 			)
         ));
-		
 ?>
 </div>
 <?php
@@ -248,12 +254,12 @@ var dir="<?php echo Yii::app()->baseUrl."/mttoPreventivo/actualizarCheck"?>";
 
 var Uurl;
 function registrarMR(id){
-
+var dias="<?php echo $dias;?>";
 	 if (typeof(id)=='string')
                 Uurl=id;
 	jQuery.ajax({
                 url: Uurl,
-                'data':$(this).serialize(),
+                'data':$(this).serialize()+"&dias="+dias,
                 'type':'post',
                 'dataType':'json',
                 'success':function(data)

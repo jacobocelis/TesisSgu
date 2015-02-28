@@ -27,14 +27,14 @@
 	
 	<div class="row">
 		
-		<?php echo $form->hiddenField($model,'kmRealizada',array('value'=>$id?$km[0]["lectura"]:$model->kmRealizada,'style' => 'width:100px;text-align:right;')); ?>
+		<?php echo $form->hiddenField($model,'kmRealizada',array('value'=>$id?'':$model->kmRealizada,'style' => 'width:100px;text-align:right;')); ?>
 		<?php echo $form->error($model,'kmRealizada'); ?>
 	</div>
 	
 	
 	<div class="row">
 		<?php echo $form->labelEx($model,'fechaRealizada'); ?>
-		<?php echo $form->textField($model,'fechaRealizada',array('value'=>$id?date('d/m/Y'):$model->fechaRealizada,'readonly'=>'readonly','style' => 'width:100px;cursor:pointer;')); ?>
+		<?php echo $form->textField($model,'fechaRealizada',array('value'=>$id?'':date("d/m/Y", strtotime($model->fechaRealizada)),'readonly'=>'readonly','style' => 'width:100px;cursor:pointer;')); ?>
 		<?php echo $form->error($model,'fechaRealizada'); ?>
 	</div>
 
@@ -58,6 +58,8 @@
 
 </div><!-- form -->
 <script>
+var dias = "<?php echo $dias2;?>";
+var idvehiculo="<?php echo $model->idvehiculo;?>";
 	$(function($){
 	    $.datepicker.regional['es'] = {
 	        closeText: 'Cerrar',
@@ -78,13 +80,32 @@
 	        showMonthAfterYear: false,
 	        yearSuffix: '',
 	        maxDate: '0d',
-	        minDate: '-30d',
+	        minDate: '-'+dias+'d',
 	    };
 	    $.datepicker.setDefaults($.datepicker.regional['es']);
 	});      		
-	$("#Reportefalla_fechaRealizada").datepicker();
+	$("#Reportefalla_fechaRealizada").datepicker({
+		onSelect: function(selected){
+          getUltimoKm(selected,idvehiculo);
+		}
+	});
 </script>
 <script type="text/javascript">
+var dir="<?php echo Yii::app()->baseUrl."/mttoPreventivo/getUltimoKm/"?>";	
+function getUltimoKm(selected,idvehiculo){
+
+	jQuery.ajax({
+                url: dir+idvehiculo,
+                'data':$(this).serialize()+"fecha="+selected,
+                'type':'post',
+                'dataType':'json',
+                'success':function(data)
+                        {
+                              $("#Reportefalla_kmRealizada").val(data.valor);
+                        } ,
+                'cache':false});
+    return false; 
+}
 $("#Kilometraje_lectura").click(function(){
 	$("#Reportefalla_kmRealizada").val($("#Kilometraje_lectura").val());
 });

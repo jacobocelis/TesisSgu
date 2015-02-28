@@ -7,18 +7,26 @@ $this->menu=array(
 
 	array('label'=>'<div id="menu"><strong>Combustible</strong></div>'),
 	array('label'=>'      Registrar reposición', 'url'=>array('registrarReposicion')),
-	array('label'=>'      Autonomía de combustible', 'url'=>array('autonomia')),
-	array('label'=>'      Histórico de reposición', 'url'=>array('historicoReposicion')),
 	
-	array('label'=>'      Administración de parámetros', 'url'=>array('admin')),
 	
-	array('label'=>'<div id="menu"><strong>Estadísticas</strong></div>'),
-	array('label'=>'      Consumo real vs estimado ', 'url'=>array('realVsEstimado')),
+	array('label'=>'<div id="menu"><strong>Historial</strong></div>'),
+	array('label'=>'      Histórico de reposiciónes', 'url'=>array('historicoReposicion')),
+	array('label'=>'      Histórico de gastos', 'url'=>array('historicoGastos')),
+	array('label'=>'<div id="menu"><strong>Parámetros</strong></div>'),
+	array('label'=>'      Administración de parámetros', 'url'=>array('parametros')),
+	
 );
 ?>
 
 <div class='crugepanel user-assignments-detail'>
 <h1>Reposiciones de combustible</h1>
+<i style="float:left">* Muestra la ultima reposición de combustible realizada por vehiculo</i>
+<i style="float:right">Mostrar alerta cuando un vehiculo no tenga reposición a partir de 
+<select id="lista" >
+		<?php for($i=1;$i<11;$i++)
+			echo '<option value="'.$i.'">'.$i.'</option>';
+			?>
+		</select> días.</i>
 <?php $this->widget('zii.widgets.grid.CGridView', array(
                 'id'=>'combustible',
 				'summaryText'=>'',
@@ -70,28 +78,12 @@ $this->menu=array(
         ));
 //'Nombre:text:Nombre',?>
 
-<i>Mostrar alerta cuando un vehiculo no tenga reposición a partir de 
-<select id="lista" >
-		<?php for($i=1;$i<11;$i++)
-			echo '<option value="'.$i.'">'.$i.'</option>';
-			?>
-		</select> días.</i>
+
 </div>
-<script>
-var valor="<?php echo $reposicionDias?>";
-$("#lista").val(valor).change();
-//$("#lista option:selected").val();
-$("#lista").change(function(){
-var dir="<?php echo Yii::app()->baseUrl;?>"+"/combustible/alertaReposicion/"+$(this).val();
-$.ajax({  		
-          url: dir,
-        })
-  	.done(function( result ) {    	
-			$.fn.yiiGridView.update('combustible');
-  	});
-});
-</script>
 <style>
+#menu {
+    font-size: 15px;
+}
 .crugepanel {
     background-color: #FFF;
     border: 1px dotted #AAA;
@@ -132,3 +124,18 @@ background: none repeat scroll 0% 0% #FFD6D6;
     padding: 0.3em;
 }
 </style>
+<script>
+var valor="<?php echo $reposicionDias?>";
+$("#lista").val(valor).change();
+//$("#lista option:selected").val();
+$("#lista").change(function(){
+var dir="<?php echo Yii::app()->baseUrl;?>"+"/combustible/alertaReposicion/"+$(this).val();
+$.ajax({  		
+          url: dir,
+        })
+  	.done(function( result ) {    	
+			$.fn.yiiGridView.update('combustible');
+  	});
+});
+</script>
+
