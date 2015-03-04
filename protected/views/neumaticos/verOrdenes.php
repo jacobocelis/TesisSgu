@@ -11,13 +11,13 @@ $this->menu=array(
 	array('label'=>'<div id="menu"><strong>Averías</strong></div>'),
 	array('label'=>'      Registro de averías', 'url'=>array('averiaNeumatico')),
 	
-	array('label'=>'      Averías por atender <span title="hay '.$totalFalla.' averías en neumaticos por atender" class="badge badge-'.$this->Color($totalFalla).' pull-right">'.$totalFalla.'</span>', 'url'=>array('crearOrdenNeumaticos')),
+	array('label'=>'      Averías por atender <span title="hay '.$totalFalla.' averías en neumaticos por atender" class="badge badge-'.$this->Color($totalFalla).' pull-right">'.$totalFalla.'</span>', 'url'=>array('neumaticos/listaAveriaNeumatico')),
 	
 	
 	array('label'=>'<div id="menu"><strong>Órdenes de neumaticos</strong></div>'),
 	
 	array('label'=>'      Crear órden de neumaticos', 'url'=>array('crearOrdenNeumaticos')),
-	array('label'=>'      Ver órdenes abiertas <span class="badge badge-'.$this->Color($abiertas).' pull-right">'.$abiertas.'</span>', 'url'=>array('verOrdenes')),
+	array('label'=>'      Ver órdenes abiertas <span class="badge badge-'.$this->Color($abiertas).' pull-right">'.$abiertas.'</span>', 'url'=>array('neumaticos/verOrdenes')),
 	array('label'=>'      Órdenes listas para cerrar <span class="badge badge-'.$this->Color($listas).' pull-right">'.$listas.'</span>', 'url'=>array('cerrarOrdenes')),
 	
 	
@@ -58,10 +58,11 @@ $this->widget('zii.widgets.grid.CGridView', array(
 					'value'=>'date("d/m/Y h:i A",strtotime($data->fecha))',
 					'htmlOptions'=>array('style'=>'text-align:center;width:100px'),
 				),
-				array( 
+				array(
+					'type'=>"raw",
 					'header'=>'Estado',
 					'name'=>'idestatus',
-					'value'=>'$data->idestatus0->estatus',
+					'value'=>'$data->color($data->idestatus,$data->idestatus0->estatus)',
 					'htmlOptions'=>array('style'=>'text-align:center;width:50px'),
 				),
 				array(

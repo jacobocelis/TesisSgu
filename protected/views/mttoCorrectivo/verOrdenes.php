@@ -21,7 +21,9 @@ $this->menu=array(
 	
 	
 	array('label'=>'<div id="menu"><strong>Historial</strong></div>'),
-	array('label'=>'      Histórico de mantenimientos', 'url'=>array('historicoCorrectivo')),
+	
+	array('label'=>'      Histórico de fallas', 'url'=>array('mttoCorrectivo/historicoCorrectivo')),
+	array('label'=>'      Histórico de mejoras', 'url'=>array('mttoCorrectivo/historicoMejoras')),
 	array('label'=>'      Histórico de gastos', 'url'=>array('historicoGastos')),
 	array('label'=>'      Histórico de ordenes', 'url'=>array('historicoOrdenes')),
 );
@@ -54,9 +56,10 @@ $this->widget('zii.widgets.grid.CGridView', array(
 					'htmlOptions'=>array('style'=>'text-align:center;width:100px'),
 				),
 				array( 
+					"type"=>"raw",
 					'header'=>'Estado',
 					'name'=>'idestatus',
-					'value'=>'$data->idestatus0->estatus',
+					'value'=>'$data->color($data->idestatus,$data->idestatus0->estatus)',
 					'htmlOptions'=>array('style'=>'text-align:center;width:50px'),
 				),
 				array(

@@ -14,9 +14,9 @@ $this->menu=array(
 	array('label'=>'      Montajes iniciales <span title="hay '.$iniciales.' montajes iniciales por definir" class="badge badge-'.$this->Color($iniciales).' pull-right">'.$iniciales.'</span>', 'url'=>array('montajeInicial')),
 	
 	array('label'=>'<div id="menu"><strong>Averías</strong></div>'),
-	array('label'=>'      Registro de averías', 'url'=>array('averiaNeumatico')),
+	array('label'=>'      Registro de averías', 'url'=>array('ListaAveriaNeumatico')),
 	
-	array('label'=>'      Averías por atender <span title="hay '.$totalFalla.' averías en neumaticos por atender" class="badge badge-'.$this->Color($totalFalla).' pull-right">'.$totalFalla.'</span>', 'url'=>array('crearOrdenNeumaticos')),
+	array('label'=>'      Averías por atender <span title="hay '.$totalFalla.' averías en neumaticos por atender" class="badge badge-'.$this->Color($totalFalla).' pull-right">'.$totalFalla.'</span>', 'url'=>array('neumaticos/listaAveriaNeumatico')),
 	
 	
 	array('label'=>'<div id="menu"><strong>Órdenes de neumaticos</strong></div>'),
@@ -53,7 +53,7 @@ $this->beginWidget('zii.widgets.jui.CJuiDialog', array( // the dialog
 <h1>Neumáticos</h1>
 <i style='float: left'> Mostrar alerta sí un neumatico no se ha reemplazado luego de
 <select id="lista" >
-		<?php for($i=1;$i<6;$i++)
+		<?php for($i=1;$i<4;$i++)
 			echo '<option value="'.$i.'">'.$i.'</option>';
 			?>
 		</select> año(s).</i>
@@ -76,7 +76,7 @@ foreach($montados as $mont){
 	if(count($idvehiculo)>0)
 		$idve=$idvehiculo[0]["idvehiculo"];
 
-if(count($idvehiculo)>0){ ?>
+if(count($idvehiculo)>0 and count($mont->getData())>0){ ?>
 <div class="cuadro">
 <?php
 $this->widget('zii.widgets.CListView', array(
@@ -91,7 +91,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
 				//se deben definir inicialmente los neumaticos que posee cada vehiculo
 			   // 'enableSorting' => false,
 				'template'=>"{items}\n{summary}\n{pager}",
-				'selectableRows'=>1,
+				'selectableRows'=>0,
 			    'rowCssClassExpression'=>'$this->dataProvider->data[$row]->tiempoCambio($data->fecha)>='.$reposicionDias.'?"rojo":"verde"',
 				'emptyText'=>'No hay registros',
                 'dataProvider'=>$mont,
@@ -119,7 +119,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
 					'htmlOptions'=>array('style'=>'text-align:center;width:85px'),
 				),
 				array(
-					'header'=>'Detalle',
+					'header'=>'Medida',
 					'value'=>'$data->idcaucho0->idmedidaCaucho0->medida.\' R\'.$data->idcaucho0->idrin0->rin.\' \'.$data->idcaucho0->idpiso0->piso',
 					'name'=>'idcaucho',
 					'htmlOptions'=>array('style'=>'text-align:center;width:85px'),
@@ -154,7 +154,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
 			   // 'enableSorting' => false,
 				'template'=>"{items}\n{summary}\n{pager}",
 				'selectableRows'=>1,
-				'emptyText'=>'No posee repuesto',
+				'emptyText'=>'No hay registros',
                 'dataProvider'=>$rep[$i],
 				'htmlOptions'=>array('style'=>'margin-top:10px;width:100%'),
 				'columns'=>array(
@@ -200,31 +200,8 @@ $this->widget('zii.widgets.grid.CGridView', array(
 }$i++;}
 if($total==0)
 	echo "<i><strong>no hay neumáticos registrados</strong></i>";
-
 ?>
 </div>
-<script>
-var valor="<?php echo $reposicionDias?>";
-$("#lista").val(valor).change();
-$("#lista").change(function(){
-var dir="<?php echo Yii::app()->baseUrl;?>"+"/neumaticos/alertaCambioCauchos/"+$(this).val();
-$.ajax({  		
-          url: dir,
-        })
-  	.done(function( result ) {    	
-			location.reload();
-  	});
-});
-$('#form').submit(function() {
-        $('#boton').val("Buscando...");
-		$('#boton').attr("disabled", true);
-        return true; // return false to cancel form action
-    });
-$( document ).ready(function() {
-		$('#boton').val("Buscar");
-		$('#boton').attr("disabled", false);
-});
-</script>
 <style>
 .rojo{
 background: none repeat scroll 0% 0% #FFD6D6;
@@ -284,3 +261,25 @@ form {
 	width:50px;
 }
 </style>
+<script>
+var valor="<?php echo $reposicionDias?>";
+$("#lista").val(valor).change();
+$("#lista").change(function(){
+var dir="<?php echo Yii::app()->baseUrl;?>"+"/neumaticos/alertaCambioCauchos/"+$(this).val();
+$.ajax({  		
+          url: dir,
+        })
+  	.done(function( result ) {    	
+			location.reload();
+  	});
+});
+$('#form').submit(function() {
+        $('#boton').val("Buscando...");
+		$('#boton').attr("disabled", true);
+        return true; // return false to cancel form action
+    });
+$( document ).ready(function() {
+		$('#boton').val("Buscar");
+		$('#boton').attr("disabled", false);
+});
+</script>

@@ -817,20 +817,34 @@ class MttoPreventivoController extends Controller
 			'order'=>'fecha'
 			)));
 			
-			if(isset($_GET["fechaIni"]) or isset($_GET["fechaFin"])){
-				if($_GET["fechaIni"]=="" and $_GET["fechaFin"]==""){
+			if(isset($_GET["fechaIni"]) or isset($_GET["fechaFin"]) or isset($_GET["vehiculo"])){
+				if($_GET["fechaIni"]=="" and $_GET["fechaFin"]=="" and $_GET["vehiculo"]==""){
 					$dataProvider=new CActiveDataProvider('Ordenmtto',array('criteria' => array(
 						'condition' =>'idestatus=7 and tipo=0',
-						'order'=>'fecha',
-					)));	
+						'order'=>'fecha')));	
 				}
-				if($_GET["fechaIni"]!=""){
+				if($_GET["fechaIni"]!="" and $_GET["vehiculo"]==""){
 					$fechaini=date("Y-m-d", strtotime(str_replace('/', '-',$_GET["fechaIni"])));
 					$fechafin=date("Y-m-d", strtotime(str_replace('/', '-',$_GET["fechaFin"])));
 					$dataProvider=new CActiveDataProvider('Ordenmtto',array('criteria' => array(
-						'condition' =>'idestatus=7 and tipo=0 and (date(fecha)>="'.$fechaini.'" and date(fecha)<="'.$fechafin.'")',
+						'condition' =>'idestatus=7 and tipo=0 and (fecha>="'.$fechaini.'" and fecha<="'.$fechafin.'")',
 						'order'=>'fecha',
 					)));		
+				}
+				if($_GET["fechaIni"]=="" and $_GET["vehiculo"]!=""){
+					
+					$dataProvider=new CActiveDataProvider('Ordenmtto',array('criteria' => array(
+						'condition' =>'idestatus=7 and tipo=0 and id in (select idordenMtto from sgu_detalleOrdenCo where idreporteFalla in (select id from sgu_reporteFalla where idvehiculo='.$_GET["vehiculo"].'))',
+						'order'=>'fecha',
+					)));	
+				}
+				if($_GET["fechaIni"]!="" and $_GET["vehiculo"]!=""){
+					$fechaini=date("Y-m-d", strtotime(str_replace('/', '-',$_GET["fechaIni"])));
+					$fechafin=date("Y-m-d", strtotime(str_replace('/', '-',$_GET["fechaFin"])));
+					$dataProvider=new CActiveDataProvider('Ordenmtto',array('criteria' => array(
+						'condition' =>'idestatus=7 and tipo=0 and (fecha>="'.$fechaini.'" and fecha<="'.$fechafin.'") and id in (select idordenMtto from sgu_detalleOrdenCo where idreporteFalla in (select id from sgu_reporteFalla where idvehiculo='.$_GET["vehiculo"].'))',
+						'order'=>'fecha',
+					)));	
 				}
 			}
 		$dataProvider->setPagination(false);

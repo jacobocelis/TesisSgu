@@ -125,7 +125,7 @@ $("#Historicoviajes_horaSalida").timepicker({
 <script>
 	$(function($){
 	    $.datepicker.regional['es'] = {
-	        closeText: 'Cerrar',
+	        closeText: 'Aceptar',
 	        prevText: 'Anterior',
 	        nextText: 'Siguiente',
 	        currentText: 'Hoy',
@@ -185,6 +185,7 @@ $('#registrar').show();
                                         setTimeout("$('#registrar').hide(); ",0);
 										$('#salida').show();
 										$('#llegada').show();
+										$('#pasajeros').show();
 										$('#boton').show();
 										//window.setTimeout('location.reload()');
 										actualizarListaViajes();

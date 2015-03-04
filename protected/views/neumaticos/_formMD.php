@@ -17,15 +17,17 @@
 
 	<div class="row">
 		<?php echo $form->labelEx($model,'fecha'); ?>
-		<?php echo $form->textField($model,'fecha',array("value"=>$model->fecha=="0000-01-01"?date("d/m/Y"):date("d/m/Y",strtotime($model->fecha)),'readonly'=>'readonly',"style"=>"width:80px;cursor:pointer;")); ?>
+		<?php echo $form->textField($model,'fecha',array("value"=>$model->fecha=="0000-01-01"?date("d/m/Y"):date("d/m/Y",strtotime($model->fecha)),'readonly'=>'readonly',"style"=>"width:90px;cursor:pointer;")); ?>
 		<?php echo $form->error($model,'fecha'); ?>
-	
+	</div>
+	<div class="row">
 		<?php echo $form->labelEx($model,'serial'); ?>
 		<?php echo $form->textField($model,'serial',array("value"=>$model->serial=="0"?"":$model->serial,'size'=>20,'maxlength'=>20,"style"=>"width:90px;")); ?>
-		
+	</div>
+	<div class="row">
 		<?php echo $form->labelEx($model,'idmarcaCaucho'); ?>
 		<?php echo $form->dropDownList($model,'idmarcaCaucho',CHtml::listData(Marcacaucho::model()->findAll(),'id','nombre'),array('style' => 'width:150px;'));?>
-		
+		</div>
 	<?php $models = Caucho::model()->findAll();
 		$data = array();
 		foreach($models as $mode){
@@ -38,7 +40,7 @@
 		<?php echo $form->labelEx($model,'idcaucho'); ?>
 		<?php echo $form->dropDownList($model,'idcaucho',$data,array('style' => 'width:240px;')); ?>
 		<?php echo $form->error($model,'idcaucho'); ?>
-	</div>
+	
 <div class="row">
 		<?php echo $form->hiddenField($model,'idestatusCaucho'); ?>
 	</div>
@@ -95,7 +97,8 @@
 	$("#Historicocaucho_fecha").datepicker();
 
 function cancelar(){
-	$('#agregar'+"<?php echo $model->idvehiculo;?>").hide();
+	//$('#agregar'+"<?php echo $model->idvehiculo;?>").hide();
+	$('#dialog').dialog('close');
 }
 </script>
 <style>

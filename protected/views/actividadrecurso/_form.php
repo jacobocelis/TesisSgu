@@ -72,13 +72,6 @@
 		<?php echo $form->hiddenField($model,'costoTotal'); ?>
 		
 	</div>
-<div class="row" id="garantia"><br>
-	Opcional puede agregar informacion adicional de garantía <br><br>
-		<?php echo $form->labelEx($model,'garantia'); ?>
-		<?php echo $form->textField($model,'garantia',array('style' => 'width:50px;'));?>
-		<?php echo $form->dropDownList($model,'idtiempoGarantia',CHtml::listData(Tiempo::model()->findAll(array("condition"=>"id <> 5 and id <> 2")),'id','tiempo'),array('id'=>'tiempo','style' => 'width:90px;')); ?>
-		<?php echo $form->error($model,'garantia'); ?>
-	</div>
 	
 	<div class="row buttons">
 		<?php echo CHtml::submitButton($model->isNewRecord ? 'Agregar' : 'Guardar'); ?>
@@ -88,9 +81,9 @@
 
 </div><!-- form -->
 <script>
-$("#garantia").hide();
+/*$("#garantia").hide();
 if($("#Actividadrecurso_idrepuesto").val()!="")
-$("#garantia").show();
+$("#garantia").show();*/
 $("#actividadrecurso-form").submit(function(event){
 	event.preventDefault();
 	validar();

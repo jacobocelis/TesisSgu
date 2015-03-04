@@ -32,7 +32,7 @@ class NeumaticosController extends Controller
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create','EditarMontado','plantilla','ActualizarListaPlantillas','MostrarLinkEje','actualizarListaPosicionesEje','MostrarLinkCaucho','actualizarEstado','MostrarLinkRep','MostrarDivRep','TieneGrupo','montajeInicial','montar','alertaCambioCauchos','ActualizarSpan','averiaNeumatico','RegistrarAveriaNeumatico','AgregarAveriaNueva','ajaxActualizarAverias','CrearOrdenNeumaticos','crearOrden','agregarNeumaticosRenovar','agregarNeumaticosRotar','verOrdenes','vistaPrevia','AgregarRotacionNueva','MttonRealizados','agregarFactura','registrarFacturacion','actualizarCheck','agregarRecursoAveria','estatusOrden','vistaPreviaPDF','nuevoRec','actualizarListaRecursos','montarNuevo','verificarEstadoRenovacion','cerrarOrdenes','HistoricoOrdenes','HistoricoAverias','historicoMontajes','historicoRotaciones'),
+				'actions'=>array('create','EditarMontado','plantilla','ActualizarListaPlantillas','MostrarLinkEje','actualizarListaPosicionesEje','MostrarLinkCaucho','actualizarEstado','MostrarLinkRep','MostrarDivRep','TieneGrupo','montajeInicial','montar','alertaCambioCauchos','ActualizarSpan','averiaNeumatico','RegistrarAveriaNeumatico','AgregarAveriaNueva','ajaxActualizarAverias','CrearOrdenNeumaticos','crearOrden','agregarNeumaticosRenovar','agregarNeumaticosRotar','verOrdenes','vistaPrevia','AgregarRotacionNueva','MttonRealizados','agregarFactura','registrarFacturacion','actualizarCheck','agregarRecursoAveria','estatusOrden','vistaPreviaPDF','nuevoRec','actualizarListaRecursos','montarNuevo','verificarEstadoRenovacion','cerrarOrdenes','HistoricoOrdenes','HistoricoAverias','historicoMontajes','historicoRotaciones','ActualizarSpanListas','ListaAveriaNeumatico','ActualizarSpanAverias'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -49,6 +49,14 @@ class NeumaticosController extends Controller
 	 * Displays a particular model.
 	 * @param integer $id the ID of the model to be displayed
 	 */
+	 public function actionActualizarSpanListas(){
+		$mi=Yii::app()->db->createCommand("select count(*) as total from sgu_ordenMtto where idestatus=6 and tipo=2")->queryRow();
+		
+		echo CJSON::encode(array(
+			'total'=>$mi["total"],
+			'color'=>$this->getColor($mi["total"]),
+		));
+	 }
 	public function actionEstatusOrden($id){
 		if($id==1)
 			Yii::app()->db->createCommand("update `tsg`.`sgu_ordenMtto` set `idestatus` = '6' where `sgu_ordenMtto`.`id` = ".$_POST['id']."")->query();
@@ -156,18 +164,26 @@ class NeumaticosController extends Controller
 		else	
 			return $color='';
 	}
+		public function actionListaAveriaNeumatico(){
+		
+		$model=new Detalleeventoca;
+		
+			$dataProvider=new CActiveDataProvider('Detalleeventoca',array('criteria' => array(
+			'condition' =>'idestatus=8 and idfallaCaucho is not null',
+			'order'=>'id')));
+		
+		$this->render('listaAveriaNeumatico',array(
+			'dataProvider'=>$dataProvider,
+			'iniciales'=>$this->getPorDefinir(),
+			'totalFalla'=>$this->getTotalFallas(),
+			'listas'=>$this->getOrdenesListas(),
+			'abiertas'=>$this->getOrdenesAbiertas(),
+		));
+	}
 	public function actionAveriaNeumatico(){
 		
 		$model=new Detalleeventoca;
-		/*$dataProvider=new CActiveDataProvider('Detalleeventoca',array('criteria' => array(
-			'condition' =>'idestatus=8',
-			//'order'=>'fechaFalla DESC'
-			),
-			'sort'=>array(
-				'defaultOrder'=>'id DESC',),
-				
-			'pagination'=>array(
-			'pageSize'=>5,)));*/
+
 			$dataProvider=new CActiveDataProvider('Detalleeventoca',array('criteria' => array(
 			'condition' =>'idestatus=8 and idfallaCaucho is not null',
 			'order'=>'id'
@@ -773,7 +789,7 @@ class NeumaticosController extends Controller
 	public function actionHistoricoMontajes(){
 	//idplan in (select id from sgu_plan) and ??
 			
-			$des=new CActiveDataProvider('Historicocaucho',array("criteria"=>array("condition"=>"idestatusCaucho=3")));
+			$des=new CActiveDataProvider('Historicocaucho',array("criteria"=>array("condition"=>"idestatusCaucho=3 or idestatusCaucho=1")));
 			//$mi=Yii::app()->db->createCommand("select count(*) as total from sgu_reporteFalla where idestatus=8")->queryRow();
 		$this->render('historicoMontajes',array(
 				'dataProvider'=>$des,
@@ -998,7 +1014,7 @@ class NeumaticosController extends Controller
 	public function actionVerOrdenes(){
 		$dataProvider=new CActiveDataProvider('Ordenmtto',array('criteria' => array(
 			'condition' =>'id in (select id from sgu_ordenMtto where (idestatus=5 or idestatus=6) and tipo=2)',
-			'order'=>'idestatus '
+			'order'=>'idestatus,id desc '
 			)));
 		$this->render('verOrdenes',array(
 			'dataProvider'=>$dataProvider,
@@ -1378,6 +1394,12 @@ class NeumaticosController extends Controller
 		echo CJSON::encode(array(
 			'total'=>$mi["total"],
 			'color'=>$this->Color($mi["total"]),
+		));
+	}
+	public function actionActualizarSpanAverias(){
+		echo CJSON::encode(array(
+			'total'=>$this->getTotalFallas(),
+			'color'=>$this->Color($this->getTotalFallas()),
 		));
 	}
 	public function actionAjaxActualizarAverias(){

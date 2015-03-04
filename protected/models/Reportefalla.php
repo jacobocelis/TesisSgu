@@ -41,7 +41,7 @@ class Reportefalla extends CActiveRecord
 			return '<span style="color:red">no registrado</span>';
     }
 	public function tipo($id){
-		$total=Yii::app()->db->createCommand("select tipo from sgu_falla where id in (select id from sgu_reporteFalla where id=".$id.")")->queryRow();
+		$total=Yii::app()->db->createCommand("select tipo from sgu_reporteFalla where id=".$id."")->queryRow();
 			if($total["tipo"]==0)
 				return 'Reparar falla';
 			else

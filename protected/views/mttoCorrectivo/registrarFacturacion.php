@@ -8,7 +8,9 @@ $this->breadcrumbs=array(
 );
 	$this->menu=array(
 	array('label'=>'<div id="menu"><strong>Historial</strong></div>'),
-	array('label'=>'      Histórico de mantenimientos', 'url'=>array('historicoCorrectivo')),
+	
+	array('label'=>'      Histórico de fallas', 'url'=>array('mttoCorrectivo/historicoCorrectivo')),
+	array('label'=>'      Histórico de mejoras', 'url'=>array('mttoCorrectivo/historicoMejoras')),
 	array('label'=>'      Histórico de gastos', 'url'=>array('historicoGastos')),
 	array('label'=>'      Histórico de ordenes', 'url'=>array('historicoOrdenes')),	
 );
@@ -185,7 +187,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
 					'header'=>'Estatus',
 					'name'=>'idestatus',
 					'value'=>'$data->color($data->idestatus,$data->idestatus0->estatus)',
-					'htmlOptions'=>array('style'=>'text-align:center;width:60px'),
+					'htmlOptions'=>array('style'=>'text-align:center;width:80px'),
 				),
 				
 			)
@@ -277,9 +279,8 @@ $this->widget('zii.widgets.grid.CGridView', array(
 					'header'=>'Estatus',
 					'name'=>'idestatus',
 					'value'=>'$data->color($data->idestatus,$data->idestatus0->estatus)',
-					'htmlOptions'=>array('style'=>'text-align:center;width:60px'),
-				),
-				
+					'htmlOptions'=>array('style'=>'text-align:center;width:80px'),
+				),	
 			)
         ));
 		?>

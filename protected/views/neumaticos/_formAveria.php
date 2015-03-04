@@ -1,3 +1,20 @@
+<style>
+#titulo {
+    float: left;
+    font-size: 120%;
+}
+#sep {
+    text-align: right;
+    font-size: 120%;
+}
+#azul {
+    background: none repeat scroll 0% 0% #F9FDFD;
+    padding: 10px;
+    border: 1px solid #94A8FF;
+    margin-top: 5px;
+    
+}
+</style>
 <?php
 /* @var $this DetalleeventocaController */
 /* @var $model Detalleeventoca */
@@ -33,7 +50,7 @@
 		<?php echo $form->error($model,'idfallaCaucho');?>
 	</div>
 	<div id="titulo">
-		Seleccione el neumatico que se encuentra averiado:
+		<i>*Seleccione el neumatico que se encuentra averiado:</i>
 	</div>
 	<div id="sep">
 	<i>Buscar vehiculo por #:  </i>
@@ -112,7 +129,7 @@
 		<?php echo $form->hiddenField($model,'fechaRealizada',array('value'=>'0000-01-01')); ?>
 	</div>
 	
-	<div id="conductor" class="row">
+	<div id="conductor" class="row" style="display:none">
 		<?php echo $form->labelEx($model,'idempleado'); ?>
 		<?php echo $form->dropDownList($model,'idempleado',array(),array('style' => 'width:170px;')); ?>
 		<?php echo $form->error($model,'idempleado'); ?>
@@ -143,7 +160,7 @@
 </div><!-- form -->
 
 <script>
-$('#conductor').hide();
+
 $("#lista").change(function(){
 	$.fn.yiiGridView.update('vehi',{ data : "idvehiculo="+$(this).val()});
 	obtenerConductor($(this).val());
@@ -199,20 +216,3 @@ function setId(){
 }
 </script>
 
-<style>
-#titulo {
-    float: left;
-    font-size: 120%;
-}
-#sep {
-    text-align: right;
-    font-size: 120%;
-}
-#azul {
-    background: none repeat scroll 0% 0% #F9FDFD;
-    padding: 10px;
-    border: 1px solid #94A8FF;
-    margin-top: 5px;
-    
-}
-</style>

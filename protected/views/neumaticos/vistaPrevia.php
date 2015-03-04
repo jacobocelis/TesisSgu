@@ -41,12 +41,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
 					'value'=>'date("d/m/Y h:i A",strtotime($data->fecha))',
 					'htmlOptions'=>array('style'=>'text-align:center;width:100px'),
 				),
-				array(
-					'header'=>'Estado',
-					//'name'=>'idestatus',
-					'value'=>'$data->idestatus0->estatus',
-					'htmlOptions'=>array('style'=>'text-align:center;width:100px'),
-				),
+				
 				array(
 					'header'=>'C. operativo',
 					'name'=>'cOperativo',
@@ -72,6 +67,27 @@ $this->widget('zii.widgets.grid.CGridView', array(
 					'visible'=>$nom=='Cerrar órdenes'?true:false,
 					'htmlOptions'=>array('style'=>'width: 50px;text-align: center'),
 				),
+				array(
+					'type'=>'raw',
+					'header'=>'Estado',
+					//'name'=>'idestatus',
+					'value'=>'$data->color($data->idestatus,$data->idestatus0->estatus)',
+					'htmlOptions'=>array('style'=>'text-align:center;width:50px'),
+				),
+				array(
+						'headerHtmlOptions'=>array('style'=>'text-align:left;width:20px;text-align:center;'),
+						'htmlOptions'=>array('style'=>'text-align:center;width:30px;'),
+						'header'=>'Actualizar',
+						'type'=>'raw',
+						'value'=>'CHtml::link(
+                        CHtml::image(Yii::app()->request->baseUrl."/imagenes/agregar.png",
+                                          "Agregar",array("title"=>"Editar")),
+										  
+                        Yii::app()->createUrl("neumaticos/mttonRealizados", array("id"=>$data->id,"nom"=>"Órdenes abiertas","dir"=>"neumaticos/verOrdenes")),
+                        array(
+                                \'style\'=>\'cursor: pointer;text-decoration: underline;text-align:center;\',
+                        )
+                );',),
 			)
         ));
 		?>
@@ -135,24 +151,24 @@ $this->widget('zii.widgets.grid.CGridView', array(
 					'value'=>'\'<strong>Serial:</strong><br> \'.$data->idhistoricoCaucho0->serial',
 					'htmlOptions'=>array('style'=>'text-align:center;width:50px'),
 				),
-				array(
+				/*array(
 					'type'=>'raw',
 					'header'=>'Detalle',
 					'value'=>'\'<strong>Medida: </strong><br>\'.$data->idhistoricoCaucho0->idcaucho0->idmedidaCaucho0->medida.\' R\'.$data->idhistoricoCaucho0->idcaucho0->idrin0->rin.\' \'.$data->idhistoricoCaucho0->idcaucho0->idpiso0->piso',
 					'name'=>'idcaucho',
 					'htmlOptions'=>array('style'=>'text-align:center;width:85px'),
-				),
+				),*/
 				array(
 					'type'=>'raw',
-					'header'=>'Eje',
-					'value'=>'\'<strong>Eje: </strong><br>\'.$data->idhistoricoCaucho0->iddetalleRueda0->iddetalleEje0->idposicionEje0->posicionEje',
+					//'header'=>'Eje',
+					'value'=>'$data->idhistoricoCaucho0->iddetalleRueda==null?\'<strong>Eje: </strong><br> - \':\'<strong>Eje: </strong><br>\'.$data->idhistoricoCaucho0->iddetalleRueda0->iddetalleEje0->idposicionEje0->posicionEje',
 					'name'=>'iddetalleRueda',
 					'htmlOptions'=>array('style'=>'text-align:center;width:85px'),
 				),
 				array(
 					'type'=>'raw',
 					'header'=>'Posición',
-					'value'=>'\'<strong>Lado: </strong><br>\'.$data->idhistoricoCaucho0->iddetalleRueda0->idposicionRueda0->posicionRueda',
+					'value'=>'$data->idhistoricoCaucho0->iddetalleRueda==null?\'<strong>Lado: </strong><br> Repuesto \':\'<strong>Posición: </strong><br>\'.$data->idhistoricoCaucho0->iddetalleRueda0->idposicionRueda0->posicionRueda',
 					'name'=>'iddetalleRueda',
 					'htmlOptions'=>array('style'=>'text-align:center;width:85px'),
 				),
@@ -191,49 +207,47 @@ $this->widget('zii.widgets.grid.CGridView', array(
 				'emptyText'=>'Esta actividad no tiene recursos asociados',
                 'dataProvider'=>$recursosAver[$i][$j],
 				'columns'=>array(
-					/*array(
-						'headerHtmlOptions'=>array('style'=>'width:35%;text-align:left;'),
-						'header'=>'<PRE>Recursos',
-						'value'=>'\'\'.(($data->idinsumo == null?\'\':$data->idinsumo0->insumo).\'\'.($data->idrepuesto == null?\'\':$data->idrepuesto0->repuesto).\'\'.($data->idservicio == null?\'\':$data->idservicio0->servicio)).\'\'',
-						'htmlOptions'=>array('style'=>'text-align:left;width:150px'),
-					),
 					array(
 					'headerHtmlOptions'=>array('style'=>'text-align:left;'),
-					'header'=>'<PRE>Tipo',
-					'value'=>'(($data->idinsumo == null?\'\':\'Insumo\').\'\'.($data->idrepuesto == null?\'\':\'Repuesto\').\'\'.($data->idservicio == null?\'\':\'Servicio\')).\' \'',
-					'htmlOptions'=>array('style'=>'width:40px;'),
+					'header'=>'<PRE>Recurso</PRE>',
+					'name'=>'idrecursoCaucho',
+					'value'=>'$data->idrecursoCaucho0->recurso',
+					'htmlOptions'=>array('style'=>'width:100px;'),
 					//'footer'=>'',
 				),
-					array(
+				array(
 					'headerHtmlOptions'=>array('style'=>'text-align:left;'),
-					'header'=>'<PRE>Cantidad',
-					'value'=>'$data->cantidad',
-					'htmlOptions'=>array('style'=>'width:40px;'),
+					'header'=>'<PRE>Cantidad</PRE>',
+					'name'=>'cantidad',
+					'htmlOptions'=>array('style'=>'width:50px;'),
 					
 					//'footer'=>'',
-					),
-					array(
+				),
+				array(
 					'headerHtmlOptions'=>array('style'=>'text-align:left;'),
-					'header'=>'<PRE>Unidad',
-					'value'=>'$data->idunidad0->unidad',
-					'htmlOptions'=>array('style'=>'width:40px;'),
-					//'footer'=>'',
-					),
-					array(
-					'headerHtmlOptions'=>array('style'=>'text-align:left; width:50px;'),
-					'header'=>'<PRE>Costo unitario',
-					'value'=>'number_format($data->costoUnitario, 2,",",".").\' Bs.\'',
+					'header'=>'<PRE>Unidad</PRE>',
+					'name'=>'idunidad',
+					'value'=>'$data->idunidad0->corto',
 					'htmlOptions'=>array('style'=>'width:50px;'),
 					//'footer'=>'',
-					),
+				),
 				array(
-					'headerHtmlOptions'=>array('style'=>'text-align:right;'),
-					'header'=>'<PRE>Total',
-					'value'=>'$data->costoTotal',
-					'value'=>'number_format($data->costoTotal, 2,",",".").\' Bs.\'',
-					'htmlOptions'=>array('style'=>'width:50px;text-align:right;'),
+					'headerHtmlOptions'=>array('style'=>'text-align:left;'),
+					'header'=>'<PRE>Precio unitario</PRE>',
+					'value'=>'number_format($data->costoUnitario, 2,",",".").\' BsF.\'',
+					'name'=>'costoUnitario',
+					
+					'htmlOptions'=>array('style'=>'width:50px;'),
 					//'footer'=>'',
-				),*/
+				),
+				array(
+					'headerHtmlOptions'=>array('style'=>'text-align:left;'),
+					'header'=>'<PRE>Total</PRE>',
+					'name'=>'costoTotal',
+					'value'=>'number_format($data->costoTotal, 2,",",".").\' Bs.\'',
+					'htmlOptions'=>array('style'=>'width:50px;'),
+					//'footer'=>'',
+				),
 			)
 		));
 	}
@@ -344,7 +358,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
 					'htmlOptions'=>array('style'=>'text-align:left;width:100px;background:#F3FDA4'
 				),
 			),*/
-			array(
+				array(
 					'header'=>'Nombre',
 					//'value'=>'$data->posicionDestino==null?\'Repuesto\':$data->posicionDestino0->idposicionRueda0->posicionRueda',
 					'name'=>'nombre',
@@ -356,9 +370,29 @@ $this->widget('zii.widgets.grid.CGridView', array(
 					'name'=>'descripcion',
 					'htmlOptions'=>array('style'=>'text-align:center;width:285px'),
 				),
+				array(
+					'header'=>'Realizada',
+					'name'=>'fechaRealizada',
+					'type'=>'raw',
+					'value'=>'date("d/m/Y",strtotime($data->fechaRealizada))',
+					'htmlOptions'=>array('style'=>'width:80px;text-align:center;'),
+				),
+				array(
+					'header'=>'Costo',
+					'value'=>'number_format($data->costoTotal, 2,",",".").\' Bs.\'',
+					'name'=>'costoTotal',
+					'htmlOptions'=>array('style'=>'text-align:center;width:85px'),
+				),
+				array(
+					'header'=>'Estado',
+					'name'=>'idestatus',
+					'type'=>'raw',
+					'value'=>'$data->color($data->idestatus,$data->idestatus0->estatus)',
+					'htmlOptions'=>array('style'=>'width:80px;text-align:center;'),
+				),
 		)
     ));?>
-	<i><strong>Movimientos a realizar:</strong></i><?php
+	<i><strong>Movimientos:</strong></i><?php
 	$this->widget('zii.widgets.grid.CGridView', array(
                 'id'=>'detallerot',
 				//'selectionChanged'=>'validar',
@@ -434,6 +468,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
 <?php
 if(count($factura->getData())>0){?>
 <div class='crugepanel user-assignments-role-list'>
+<strong><i>*información de factura</i></strong>
 <?php 
 $this->widget('zii.widgets.grid.CGridView', array(
                 'id'=>'factura',

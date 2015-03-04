@@ -14,14 +14,16 @@ $this->menu=array(
 	array('label'=>'<div id="menu"><strong>Órdenes de mantenimiento</strong></div>'),
 	array('label'=>'      Crear orden de mantenimiento', 'url'=>array('crearOrdenCorrectiva')),
 	array('label'=>'      Ver órdenes abiertas <span class="badge badge-'.$Colorabi.' pull-right">'.$abiertas.'</span>', 'url'=>array('verOrdenes')),
-	array('label'=>'      Órdenes listas para cerrar <span class="badge badge-'.$Colorli.' pull-right">'.$listas.'</span>', 'url'=>array('mttoCorrectivo/cerrarOrdenes')),
+	array('label'=>'      Órdenes listas para cerrar <span id="listas" class="badge badge-'.$Colorli.' pull-right">'.$listas.'</span>', 'url'=>array('mttoCorrectivo/cerrarOrdenes')),
 	
 	array('label'=>'<div id="menu"><strong>Gestión de coordinadores</strong></div>'),
 	array('label'=>'      Coordinador operativo y de transporte', 'url'=>array('empleados/coordinadores')),
 	
 	
 	array('label'=>'<div id="menu"><strong>Historial</strong></div>'),
-	array('label'=>'      Histórico de mantenimientos', 'url'=>array('historicoCorrectivo')),
+	
+	array('label'=>'      Histórico de fallas', 'url'=>array('mttoCorrectivo/historicoCorrectivo')),
+	array('label'=>'      Histórico de mejoras', 'url'=>array('mttoCorrectivo/historicoMejoras')),
 	array('label'=>'      Histórico de gastos', 'url'=>array('historicoGastos')),
 	array('label'=>'      Histórico de ordenes', 'url'=>array('historicoOrdenes')),
 );
@@ -56,9 +58,10 @@ $this->widget('zii.widgets.grid.CGridView', array(
 					'htmlOptions'=>array('style'=>'text-align:center;width:100px'),
 				),
 				array( 
+					"type"=>"raw",
 					'header'=>'Estado',
 					'name'=>'idestatus',
-					'value'=>'$data->idestatus0->estatus',
+					'value'=>'$data->color($data->idestatus,$data->idestatus0->estatus)',
 					'htmlOptions'=>array('style'=>'text-align:center;width:50px'),
 				),
 				array(
@@ -159,40 +162,19 @@ h1 {
     padding: 0.3em;
 }
 </style>
-<style>
-.ui-progressbar .ui-widget-header {
-	background: #FFF;
-}
-.ui-widget-header {
-    border: 1px solid #AAA;
-    background-image: url("<?php echo Yii::app()->request->baseUrl;?>/imagenes/imagen.png");
-    color: #222;
-    font-weight: bold;
-}
-.ui-progressbar {
-    border: 0px none;
-    border-radius: 0px;
-    clear: both;
-	margin-bottom: 0px;
-}
-.progress, .ui-progressbar {
-    height: 10px;
-}
-.ui-corner-all, .ui-corner-bottom, .ui-corner-right, .ui-corner-br {
-    border-bottom-right-radius: 0px;
-}
-.ui-corner-all, .ui-corner-bottom, .ui-corner-left, .ui-corner-bl {
-    border-bottom-left-radius: 0px;
-}
-.ui-corner-all, .ui-corner-top, .ui-corner-right, .ui-corner-tr {
-    border-top-right-radius: 0px;
-}
-.ui-corner-all, .ui-corner-top, .ui-corner-left, .ui-corner-tl {
-    border-top-left-radius: 0px;
-}
-</style>
 <script>
-
+function actualizarSpan(){
+	var dir="<?php echo Yii::app()->baseUrl;?>"+"/mttoCorrectivo/actualizarSpanListas";
+	$.ajax({
+		url: dir,
+		'data':$(this).serialize(),
+        'dataType':'json',
+         'success':function( result ) {
+    	     $('#listas').removeClass($('#listas').attr('class')).addClass('badge badge-'+result.color+' pull-right');
+			 $('#listas').text(result.total);
+			 
+		},});
+}
 function validar(orden){
 	if(confirm('¿confirma que desea cerrar la orden?')){
 	var dir="<?php echo Yii::app()->baseUrl."/mttoCorrectivo/estatusOrden"?>";
@@ -205,6 +187,7 @@ function validar(orden){
                 'cache':false});			
 	}
 	$.fn.yiiGridView.update('ordenes');
+	actualizarSpan();
 }
 
 </script>

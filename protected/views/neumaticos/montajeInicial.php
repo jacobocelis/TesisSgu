@@ -1,3 +1,53 @@
+<style>
+.agregar{
+	float: left;
+}
+form {
+    margin: 0px 0px 15px;
+}
+#sep{
+	/*margin-bottom: 20px;*/
+	text-align: right;
+	font-size: 120%;
+}
+.cuadro {
+    background: none repeat scroll 0% 0% #F9FDFD;
+    padding: 5px;
+    border: 1px solid #94A8FF;
+    margin-top: 5px;
+
+}
+.crugepanel {
+    background-color: #FFF;
+    border: 1px dotted #AAA;
+    border-radius: 1px;
+    box-shadow: 3px 3px 5px #EEE;
+    display: block;
+    margin-top: 10px;
+    padding: 10px;
+
+}
+.grid-view table.items th {
+    text-align: center;
+    background: none repeat scroll 0% 0% rgba(0, 138, 255, 0.15);
+	color: #000;
+}
+.grid-view table.items th a {
+    color: #000!important;
+    font-weight: bold;
+    text-decoration: none;
+}
+.grid-view table.items td {
+    font-size: 0.9em;
+    border: 1px solid #5877C3;
+    padding: 0.3em;
+}
+.grid-view table.items th, .grid-view table.items td {
+    font-size: 0.9em;
+    border: 1px solid #A8C5F0;
+    padding: 0.3em;
+}
+</style>
 <?php
 /* @var $this NeumaticosController */
 /* @var $dataProvider CActiveDataProvider */
@@ -10,12 +60,12 @@ $this->breadcrumbs=array(
 $this->menu=array(
 	array('label'=>'<div id="menu"><strong>Neumáticos</strong></div>'),
 	array('label'=>'      Plantillas de montaje', 'url'=>array('plantilla')),
-	array('label'=>'      Montajes iniciales <span title="hay '.$iniciales.' montajes iniciales por definir" class="badge badge-'.$this->Color($iniciales).' pull-right">'.$iniciales.'</span>', 'url'=>array('montajeInicial')),
+	array('label'=>'      Montajes iniciales <span id="mi" title="hay '.$iniciales.' montajes iniciales por definir" class="badge badge-'.$this->Color($iniciales).' pull-right">'.$iniciales.'</span>', 'url'=>array('neumaticos/montajeInicial')),
 	
 	array('label'=>'<div id="menu"><strong>Averías</strong></div>'),
 	array('label'=>'      Registro de averías', 'url'=>array('averiaNeumatico')),
 	
-	array('label'=>'      Averías por atender <span title="hay '.$totalFalla.' averías en neumaticos por atender" class="badge badge-'.$this->Color($totalFalla).' pull-right">'.$totalFalla.'</span>', 'url'=>array('crearOrdenNeumaticos')),
+	array('label'=>'      Averías por atender <span title="hay '.$totalFalla.' averías en neumaticos por atender" class="badge badge-'.$this->Color($totalFalla).' pull-right">'.$totalFalla.'</span>', 'url'=>array('neumaticos/listaAveriaNeumatico')),
 	
 	
 	array('label'=>'<div id="menu"><strong>Órdenes de neumaticos</strong></div>'),
@@ -75,14 +125,15 @@ $this->widget('zii.widgets.CListView', array(
 	'emptyText'=>'No hay registros',
 	'summaryText'=>'',
 	'itemView'=>'vehiculos',
-));
+));?>
+<i>*Neumáticos de uso</i><?php
 $this->widget('zii.widgets.grid.CGridView', array(
 				'id'=>$idve,
 				'summaryText'=>'',
 				//se deben definir inicialmente los neumaticos que posee cada vehiculo
 			   // 'enableSorting' => false,
 				'template'=>"{items}\n{summary}\n{pager}",
-				'selectableRows'=>1,
+				'selectableRows'=>0,
 				'emptyText'=>'No hay registros',
                 'dataProvider'=>$mont,
 				'htmlOptions'=>array('style'=>'margin-top:10px;float: left;width:100%'),
@@ -149,25 +200,26 @@ $this->widget('zii.widgets.grid.CGridView', array(
                                 \'onclick\'=>\'{montarNeumatico("\'.Yii::app()->createUrl("neumaticos/montar",array("id"=>$data["id"])).\'","\'.$data["idvehiculo"].\'");}\'
                         )
 						)):(CHtml::link(
-                        CHtml::image(Yii::app()->request->baseUrl."/imagenes/desmontar.png",
-                                          "Agregar",array("title"=>"Desmontar neumático")),
+                        CHtml::image(Yii::app()->request->baseUrl."/imagenes/desmontarE.png",
+                                          "Agregar",array("title"=>"Editar neumático")),
                         "",
                         array(
                                 \'style\'=>\'cursor: pointer;text-decoration: underline;text-align:center;\',
-                                \'onclick\'=>\'{desmontarNeumatico("\'.Yii::app()->createUrl("neumaticos/desmontar",array("id"=>$data["id"])).\'");}\'
+                                \'onclick\'=>\'{montarNeumatico("\'.Yii::app()->createUrl("neumaticos/montar",array("id"=>$data["id"])).\'","\'.$data["idvehiculo"].\'");}\'
                         )
                 ))',),
 					
 			),
         ));?>
-		<div id="agregar<?php echo $idve;?>" class="agregar"></div>
+		
+		<br><i>*Neumático(s) de repuesto</i>
 <?php
 $this->widget('zii.widgets.grid.CGridView', array(
                 'id'=>'rep'.$idve.'',
 				'summaryText'=>'',
 			   // 'enableSorting' => false,
 				'template'=>"{items}\n{summary}\n{pager}",
-				'selectableRows'=>1,
+				'selectableRows'=>0,
 				'emptyText'=>'No posee repuesto',
                 'dataProvider'=>$rep[$i],
 				'htmlOptions'=>array('style'=>'margin-top:10px;width:100%'),
@@ -220,12 +272,12 @@ $this->widget('zii.widgets.grid.CGridView', array(
                                 \'onclick\'=>\'{montarNeumatico("\'.Yii::app()->createUrl("neumaticos/montar",array("id"=>$data["id"])).\'","\'.$data["idvehiculo"].\'");}\'
                         )
 						)):(CHtml::link(
-                        CHtml::image(Yii::app()->request->baseUrl."/imagenes/desmontar.png",
-                                          "Agregar",array("title"=>"Desmontar neumático")),
+                        CHtml::image(Yii::app()->request->baseUrl."/imagenes/desmontarE.png",
+                                          "Agregar",array("title"=>"Editar neumático")),
                         "",
                         array(
                                 \'style\'=>\'cursor: pointer;text-decoration: underline;text-align:center;\',
-                                \'onclick\'=>\'{desmontarNeumatico("\'.Yii::app()->createUrl("neumaticos/desmontar",array("id"=>$data["id"])).\'");}\'
+                                \'onclick\'=>\'{montarNeumatico("\'.Yii::app()->createUrl("neumaticos/montar",array("id"=>$data["id"])).\'","\'.$data["idvehiculo"].\'");}\'
                         )
                 ))',),
 			),
@@ -239,6 +291,21 @@ $i++;}
 if($total==0)
 	echo "<i><strong>no hay neumáticos registrados</strong></i>";
 ?>
+<?php
+/*ventana agregar informacion*/
+$this->beginWidget('zii.widgets.jui.CJuiDialog', array( // the dialog
+    'id'=>'dialog',
+    'options'=>array(
+        'title'=>'Montaje inicial',
+        'autoOpen'=>false,
+        'modal'=>true,
+        //'width'=>'65%',
+        'position'=>array(null,100),
+		'resizable'=>false
+    ),
+));?>
+<div id="agregar<?php echo $idve;?>" class="agregar"></div>
+<?php $this->endWidget();?>
 </div>
 <script>
 $('#form').submit(function() {
@@ -251,8 +318,9 @@ $( document ).ready(function() {
 		$('#boton').attr("disabled", false);
 });
 function montarNeumatico(id,ui){
+		$('#dialog').dialog('open');
 	var u=ui;
-$('#agregar'+ui).show(500);
+$('#agregar'+ui).show();
 	 if (typeof(id)=='string')
                 Uurl=id;
 	jQuery.ajax({
@@ -273,64 +341,30 @@ $('#agregar'+ui).show(500);
                                         $('#agregar'+u).html(data.div);
 										$('.agregar').css('background','#9EF79C');
 										setTimeout(function() {
-											$("#agregar"+u).hide(500);
+											//$("#agregar"+u).hide(500);
 											$('.agregar').css('background','#F9FDFD');
+											$('#dialog').dialog('close');
 										}, 1000);
 										$.fn.yiiGridView.update(u);
 										$.fn.yiiGridView.update('rep'+u);
+										actualizarSpan();
+											
                                 }
                         } ,
                 'cache':false});
     return false; 
 }
+
+function actualizarSpan(){
+	var dir="<?php echo Yii::app()->baseUrl;?>"+"/neumaticos/actualizarSpan";
+	$.ajax({
+		url: dir,
+		'data':$(this).serialize(),
+        'dataType':'json',
+         'success':function( result ) {
+			
+    	     $('#mi').removeClass($('#mi').attr('class')).addClass('badge badge-'+result.color+' pull-right');
+			 $('#mi').text(result.total);
+		},});
+}
 </script>
-<style>
-.agregar{
-	float: left;
-}
-form {
-    margin: 0px 0px 15px;
-}
-#sep{
-	/*margin-bottom: 20px;*/
-	text-align: right;
-	font-size: 120%;
-}
-.cuadro {
-    background: none repeat scroll 0% 0% #F9FDFD;
-    padding: 5px;
-    border: 1px solid #94A8FF;
-    margin-top: 5px;
-
-}
-.crugepanel {
-    background-color: #FFF;
-    border: 1px dotted #AAA;
-    border-radius: 1px;
-    box-shadow: 3px 3px 5px #EEE;
-    display: block;
-    margin-top: 10px;
-    padding: 10px;
-
-}
-.grid-view table.items th {
-    text-align: center;
-    background: none repeat scroll 0% 0% rgba(0, 138, 255, 0.15);
-	color: #000;
-}
-.grid-view table.items th a {
-    color: #000!important;
-    font-weight: bold;
-    text-decoration: none;
-}
-.grid-view table.items td {
-    font-size: 0.9em;
-    border: 1px solid #5877C3;
-    padding: 0.3em;
-}
-.grid-view table.items th, .grid-view table.items td {
-    font-size: 0.9em;
-    border: 1px solid #A8C5F0;
-    padding: 0.3em;
-}
-</style>

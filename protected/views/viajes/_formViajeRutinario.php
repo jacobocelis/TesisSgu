@@ -115,7 +115,7 @@ function obtenerConductor(id){
 <script>
 $(function($){
 	    $.datepicker.regional['es'] = {
-	        closeText: 'Cerrar',
+	        closeText: 'Aceptar',
 	        prevText: 'Anterior',
 	        nextText: 'Siguiente',
 	        currentText: 'Hoy',

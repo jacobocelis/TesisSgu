@@ -4,7 +4,7 @@
 
 $this->breadcrumbs=array(
 	'Mantenimiento correctivo'=>array('mttoCorrectivo/index'),
-	'Histórico de mantenimientos',
+	'Histórico de fallas',
 );
 $this->menu=array(
 	array('label'=>'<div id="menu"><strong>Opciones de mantenimiento</strong></div>'),
@@ -24,22 +24,36 @@ $this->menu=array(
 	
 	
 	array('label'=>'<div id="menu"><strong>Historial</strong></div>'),
-	array('label'=>'      Histórico de mantenimientos', 'url'=>array('mttoCorrectivo/historicoCorrectivo')),
+	array('label'=>'      Histórico de fallas', 'url'=>array('mttoCorrectivo/historicoCorrectivo')),
+	array('label'=>'      Histórico de mejoras', 'url'=>array('mttoCorrectivo/historicoMejoras')),
 	array('label'=>'      Histórico de gastos', 'url'=>array('historicoGastos')),
 	array('label'=>'      Histórico de ordenes', 'url'=>array('historicoOrdenes')),
 );
 ?>
 <div class='crugepanel user-assignments-role-list'>
-<h1>Histórico de reparaciones realizadas</h1>
+<h1>Histórico de fallas reparadas</h1>
+<div id="filtro" style="width:20%">
+<i>Por # de unidad: </i>
+
+		<?php $model=new Vehiculo;	
+		echo CHtml::dropDownList('vehiculo',$model,CHtml::listData(Vehiculo::model()->findAll(),'id','numeroUnidad'),
+              array('empty' => 'Todos',
+                   'style'=>"width:80px;")); 
+        ?>
+</div>
+<div id="fechas" style="float:left;">
+<i>Por período: </i>
+		<?php echo CHtml::textField('Fechaini', '',array('style'=>'width:80px;cursor:pointer;','size'=>"10","readonly"=>'readonly','placeholder'=>"Inicio",'id'=>'inicio')); ?>
+		<?php echo CHtml::textField('Fechafin', '',array('style'=>'width:80px;cursor:pointer;',"readonly"=>'readonly','disabled'=>'disabled','id'=>'fin','placeholder'=>"Fin")); 
+		echo CHtml::submitButton('Buscar',array("id"=>"boton","onclick"=>"FiltrarFecha()","style"=>"float:right;margin-top:2px;margin-left:10px;")); ?>
+</div>
 <?php
 $this->widget('zii.widgets.grid.CGridView', array(
-                'id'=>'head',
+                'id'=>'historico',
 				'summaryText'=>'',
 			    'enableSorting' => true,
 				'emptyText'=>'No hay mantenimientos realizados',
                 'dataProvider'=>$dataProvider,
-				
-				
 				'columns'=>array(
 				array(
 					'header'=>'Unidad',
@@ -49,7 +63,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
 					'htmlOptions'=>array('style'=>'text-align:center;width:40px'),
 				),
 				array(
-					'header'=>'Fecha reporte',
+					'header'=>'Fecha de falla',
 					'name'=>'fechaFalla',
 					'value'=>'date("d/m/Y",strtotime($data->fechaFalla))',
 					'htmlOptions'=>array('style'=>'text-align:center;width:50px'),
@@ -74,15 +88,27 @@ $this->widget('zii.widgets.grid.CGridView', array(
 					'htmlOptions'=>array('style'=>'text-align:center;width:50px'),
 				),
 				array(
+					"type"=>"raw",
 					'header'=>'Estatus',
 					'name'=>'idestatus',
-					'value'=>'$data->idestatus0->estatus',
+					'value'=>'$data->color($data->idestatus,$data->idestatus0->estatus)',
 					'htmlOptions'=>array('style'=>'text-align:center;width:60px'),
 				),
 			)
         ));
-		?>
+?>
 		
+<?php
+/*ventana agregar actividad*/
+$this->beginWidget('zii.widgets.jui.CJuiDialog', array( // the dialog
+    'id'=>'nuevaPos',
+    'options'=>array(
+ 
+        'autoOpen'=>false,
+        'modal'=>true, 
+    ),
+));?>
+<?php $this->endWidget();?>		
 		
 </div>
 <style>
@@ -99,38 +125,6 @@ $this->widget('zii.widgets.grid.CGridView', array(
     margin-top: 10px;
     padding: 10px;
 }
-
-.ui-progressbar .ui-widget-header {
-	background: #FFF;
-}
-.ui-widget-header {
-    border: 1px solid #AAA;
-    background-image: url("<?php echo Yii::app()->request->baseUrl;?>/imagenes/imagen.png");
-    color: #222;
-    font-weight: bold;
-}
-.ui-progressbar {
-    border: 0px none;
-    border-radius: 0px;
-    clear: both;
-}
-.progress, .ui-progressbar {
-    height: 10px;
-}
-.ui-corner-all, .ui-corner-bottom, .ui-corner-right, .ui-corner-br {
-    border-bottom-right-radius: 0px;
-}
-.ui-corner-all, .ui-corner-bottom, .ui-corner-left, .ui-corner-bl {
-    border-bottom-left-radius: 0px;
-}
-.ui-corner-all, .ui-corner-top, .ui-corner-right, .ui-corner-tr {
-    border-top-right-radius: 0px;
-}
-.ui-corner-all, .ui-corner-top, .ui-corner-left, .ui-corner-tl {
-    border-top-left-radius: 0px;
-}
-</style>
-<style>
 .grid-view table.items th {
     text-align: center;
     background: none repeat scroll 0% 0% rgba(0, 138, 255, 0.15);
@@ -151,3 +145,52 @@ $this->widget('zii.widgets.grid.CGridView', array(
     padding: 0.3em;
 }
 </style>
+<script type="text/javascript">
+$(function($){
+	    $.datepicker.regional['es'] = {
+	        closeText: 'Cerrar',
+	        prevText: 'Anterior',
+	        nextText: 'Siguiente',
+	        currentText: 'Hoy',
+	        monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+	        monthNamesShort: ['Ene','Feb','Mar','Abr', 'May','Jun','Jul','Ago','Sep', 'Oct','Nov','Dic'],
+	        dayNames: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
+	        dayNamesShort: ['Dom','Lun','Mar','Mié','Juv','Vie','Sáb'],
+	        dayNamesMin: ['Do','Lu','Ma','Mi','Ju','Vi','Sá'],
+	        weekHeader: 'Sm',
+	        dateFormat: 'dd/mm/yy',
+	        firstDay: 1,
+	        isRTL: false,
+			changeMonth: true,
+            changeYear: true,
+	        showMonthAfterYear: false,
+	        yearSuffix: '',
+	        maxDate: '0d',
+	        //minDate: '-30d',
+	    };
+	    $.datepicker.setDefaults($.datepicker.regional['es']);
+		});  
+		
+		$("#inicio").datepicker({
+			onSelect: function(selected) {
+				$("#fin").datepicker("option","minDate", selected+" +1d");
+				if($("#inicio").val().length==0)
+					
+					$('#fin').attr("disabled", true);
+				else
+					$('#fin').attr("disabled", false);
+			}
+		});
+		$("#fin").datepicker({
+			onSelect: function(selected) {
+				
+			}
+		});
+		
+function FiltrarFecha(){
+	var hoy="<?php echo date("d/m/Y")?>";
+	if($("#fin").val().length==0 && $("#inicio").val().length>0)
+		$("#fin").val(hoy);
+	$.fn.yiiGridView.update('historico',{ data : "fechaIni="+$("#inicio").val()+"&fechaFin="+$("#fin").val()+"&vehiculo="+$("#vehiculo").val()});
+}
+</script>

@@ -28,7 +28,7 @@ class MttoCorrectivoController extends Controller
 	{
 		return array(
 			array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array('index','view','falla','registrarFalla','ajaxObtenerFallas','ajaxObtenerConductor','nuevaFalla','ajaxActualizarListaFallas','ajaxActualizarListaMejora','crearOrdenCorrectiva','obtenerActividad','agregarRecurso','iniciales','crearordenpreventiva','crearOrden','verOrdenes','cambiarFecha','mttocRealizados','registrarFacturacion','agregarFactura','estatusOrden','cerrarOrdenes','HistoricoCorrectivo','historicoOrdenes','historicoGastos','vistaPrevia','vistaPreviaPDF','generarPdf','correo','actualizarSpan','agregarRecursoAdicional','insumos','repuesto','ActualizarCheck','RegistrarMejora','Mejora','nuevaMejora'),
+				'actions'=>array('index','view','falla','registrarFalla','ajaxObtenerFallas','ajaxObtenerConductor','nuevaFalla','ajaxActualizarListaFallas','ajaxActualizarListaMejora','crearOrdenCorrectiva','obtenerActividad','agregarRecurso','iniciales','crearordenpreventiva','crearOrden','verOrdenes','cambiarFecha','mttocRealizados','registrarFacturacion','agregarFactura','estatusOrden','cerrarOrdenes','HistoricoCorrectivo','historicoOrdenes','historicoGastos','vistaPrevia','vistaPreviaPDF','generarPdf','correo','actualizarSpan','agregarRecursoAdicional','insumos','repuesto','ActualizarCheck','RegistrarMejora','Mejora','nuevaMejora','historicoMejoras','ActualizarSpanListas'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
@@ -51,6 +51,14 @@ class MttoCorrectivoController extends Controller
 	 */
 	 public function actionActualizarSpan(){
 		$mi=Yii::app()->db->createCommand("select count(*) as total from sgu_actividades where idestatus=1")->queryRow();
+		
+		echo CJSON::encode(array(
+			'total'=>$mi["total"],
+			'color'=>$this->getColor($mi["total"]),
+		));
+	 }
+	  public function actionActualizarSpanListas(){
+		$mi=Yii::app()->db->createCommand("select count(*) as total from sgu_ordenMtto where idestatus=6 and tipo=1")->queryRow();
 		
 		echo CJSON::encode(array(
 			'total'=>$mi["total"],
@@ -751,9 +759,40 @@ class MttoCorrectivoController extends Controller
 	 */
 	public function actionHistoricoGastos(){	
 		$dataProvider=new CActiveDataProvider('Recursofalla',array('criteria'=>array('condition'=>'costoTotal>0')));
+		if(isset($_GET["fechaIni"]) or isset($_GET["fechaFin"]) or isset($_GET["vehiculo"])){
+				if($_GET["fechaIni"]=="" and $_GET["fechaFin"]=="" and $_GET["vehiculo"]==""){
+					$dataProvider=new CActiveDataProvider('Recursofalla',array('criteria' => array(
+						'condition' =>'costoTotal>0',
+						'order'=>'id',
+					)));	
+				}
+				if($_GET["fechaIni"]!="" and $_GET["vehiculo"]==""){
+					$fechaini=date("Y-m-d", strtotime(str_replace('/', '-',$_GET["fechaIni"])));
+					$fechafin=date("Y-m-d", strtotime(str_replace('/', '-',$_GET["fechaFin"])));
+					$dataProvider=new CActiveDataProvider('Recursofalla',array('criteria' => array(
+						'condition' =>'costoTotal>0 and idreporteFalla in (select id from sgu_reporteFalla where idestatus = 3 and fechaRealizada>="'.$fechaini.'" and fechaRealizada<="'.$fechafin.'")',
+						//'order'=>'fechaRealizada',
+					)));		
+				}
+				if($_GET["fechaIni"]=="" and $_GET["vehiculo"]!=""){
+					
+					$dataProvider=new CActiveDataProvider('Recursofalla',array('criteria' => array(
+						'condition' =>'costoTotal>0 and idreporteFalla in (select id from sgu_reporteFalla where idestatus = 3 and idvehiculo='.$_GET["vehiculo"].')',
+						'order'=>'id',
+					)));	
+				}
+				if($_GET["fechaIni"]!="" and $_GET["vehiculo"]!=""){
+					$fechaini=date("Y-m-d", strtotime(str_replace('/', '-',$_GET["fechaIni"])));
+					$fechafin=date("Y-m-d", strtotime(str_replace('/', '-',$_GET["fechaFin"])));
+					
+					$dataProvider=new CActiveDataProvider('Recursofalla',array('criteria' => array(
+						'condition' =>'costoTotal>0 and idreporteFalla in (select id from sgu_reporteFalla where idestatus = 3 and fechaRealizada>="'.$fechaini.'" and fechaRealizada<="'.$fechafin.'" and idvehiculo='.$_GET["vehiculo"].') ',
+						//'order'=>'fechaRealizada',
+					)));	
+				}
+			}
 		$this->render('historicoGastos',array(
 			'dataProvider'=>$dataProvider,
-			
 			'mi'=>$this->getFallas(),
 			'color'=>$this->getColor($this->getFallas()),
 			'abiertas'=>$this->getOrdenesAbiertas(),
@@ -762,13 +801,90 @@ class MttoCorrectivoController extends Controller
 			'listas'=>$this->getOrdenesListas(),
 		));
 	}
+		public function actionHistoricoMejoras(){
+	//idplan in (select id from sgu_plan) and ??
+			$dataProvider=new CActiveDataProvider('Reportefalla',array('criteria' => array(
+				'condition' =>'idestatus=3 and tipo=1',
+				'order'=>'fechaRealizada'
+			)));
+			if(isset($_GET["fechaIni"]) or isset($_GET["fechaFin"]) or isset($_GET["vehiculo"])){
+				if($_GET["fechaIni"]=="" and $_GET["fechaFin"]=="" and $_GET["vehiculo"]==""){
+					$dataProvider=new CActiveDataProvider('Reportefalla',array('criteria' => array(
+						'condition' =>'idestatus=3 and tipo=1',
+						'order'=>'fechaRealizada',
+					)));	
+				}
+				if($_GET["fechaIni"]!="" and $_GET["vehiculo"]==""){
+					$fechaini=date("Y-m-d", strtotime(str_replace('/', '-',$_GET["fechaIni"])));
+					$fechafin=date("Y-m-d", strtotime(str_replace('/', '-',$_GET["fechaFin"])));
+					$dataProvider=new CActiveDataProvider('Reportefalla',array('criteria' => array(
+						'condition' =>'idestatus=3 and tipo=1 and (fechaRealizada>="'.$fechaini.'" and fechaRealizada<="'.$fechafin.'")',
+						'order'=>'fechaRealizada',
+					)));		
+				}
+				if($_GET["fechaIni"]=="" and $_GET["vehiculo"]!=""){
+					
+					$dataProvider=new CActiveDataProvider('Reportefalla',array('criteria' => array(
+						'condition' =>'idestatus=3 and tipo=1 and idvehiculo='.$_GET["vehiculo"].'',
+						'order'=>'fechaRealizada',
+					)));	
+				}
+				if($_GET["fechaIni"]!="" and $_GET["vehiculo"]!=""){
+					$fechaini=date("Y-m-d", strtotime(str_replace('/', '-',$_GET["fechaIni"])));
+					$fechafin=date("Y-m-d", strtotime(str_replace('/', '-',$_GET["fechaFin"])));
+					$dataProvider=new CActiveDataProvider('Reportefalla',array('criteria' => array(
+						'condition' =>'idestatus=3 and tipo=1 and (fechaRealizada>="'.$fechaini.'" and fechaRealizada<="'.$fechafin.'") and idvehiculo='.$_GET["vehiculo"].'',
+						'order'=>'fechaRealizada',
+					)));	
+				}
+			}
+		$this->render('historicoMejoras',array(
+				'dataProvider'=>$dataProvider,
+				'mi'=>$this->getFallas(),
+			'color'=>$this->getColor($this->getFallas()),
+			'abiertas'=>$this->getOrdenesAbiertas(),
+			'Colorabi'=>$this->getColor($this->getOrdenesAbiertas()),
+			'Colorli'=>$this->getColor($this->getOrdenesListas()),
+			'listas'=>$this->getOrdenesListas(),
+			));
+	}
 	public function actionHistoricoCorrectivo(){
 	//idplan in (select id from sgu_plan) and ??
 			$dataProvider=new CActiveDataProvider('Reportefalla',array('criteria' => array(
-				'condition' =>'idestatus=3',
+				'condition' =>'idestatus=3  and tipo=0',
 				'order'=>'fechaRealizada'
 			)));
-			//$mi=Yii::app()->db->createCommand("select count(*) as total from sgu_reporteFalla where idestatus=8")->queryRow();
+			if(isset($_GET["fechaIni"]) or isset($_GET["fechaFin"]) or isset($_GET["vehiculo"])){
+				if($_GET["fechaIni"]=="" and $_GET["fechaFin"]=="" and $_GET["vehiculo"]==""){
+					$dataProvider=new CActiveDataProvider('Reportefalla',array('criteria' => array(
+						'condition' =>'idestatus=3 and tipo=0',
+						'order'=>'fechaRealizada',
+					)));	
+				}
+				if($_GET["fechaIni"]!="" and $_GET["vehiculo"]==""){
+					$fechaini=date("Y-m-d", strtotime(str_replace('/', '-',$_GET["fechaIni"])));
+					$fechafin=date("Y-m-d", strtotime(str_replace('/', '-',$_GET["fechaFin"])));
+					$dataProvider=new CActiveDataProvider('Reportefalla',array('criteria' => array(
+						'condition' =>'idestatus=3 and tipo=0 and (fechaRealizada>="'.$fechaini.'" and fechaRealizada<="'.$fechafin.'")',
+						'order'=>'fechaRealizada',
+					)));		
+				}
+				if($_GET["fechaIni"]=="" and $_GET["vehiculo"]!=""){
+					
+					$dataProvider=new CActiveDataProvider('Reportefalla',array('criteria' => array(
+						'condition' =>'idestatus=3 and tipo=0 and idvehiculo='.$_GET["vehiculo"].'',
+						'order'=>'fechaRealizada',
+					)));	
+				}
+				if($_GET["fechaIni"]!="" and $_GET["vehiculo"]!=""){
+					$fechaini=date("Y-m-d", strtotime(str_replace('/', '-',$_GET["fechaIni"])));
+					$fechafin=date("Y-m-d", strtotime(str_replace('/', '-',$_GET["fechaFin"])));
+					$dataProvider=new CActiveDataProvider('Reportefalla',array('criteria' => array(
+						'condition' =>'idestatus=3 and tipo=0 and (fechaRealizada>="'.$fechaini.'" and fechaRealizada<="'.$fechafin.'") and idvehiculo='.$_GET["vehiculo"].'',
+						'order'=>'fechaRealizada',
+					)));	
+				}
+			}
 		$this->render('historicoCorrectivo',array(
 				'dataProvider'=>$dataProvider,
 				'mi'=>$this->getFallas(),
@@ -785,9 +901,39 @@ class MttoCorrectivoController extends Controller
 	}
 	public function actionHistoricoOrdenes(){
 	$dataProvider=new CActiveDataProvider('Ordenmtto',array('criteria' => array(
-			'condition' =>'id in (select id from sgu_ordenMtto where idestatus=7)',
-			'order'=>'fecha'
-			)));
+			'condition' =>'idestatus=7 and tipo=1',
+			'order'=>'fecha')));
+			
+			if(isset($_GET["fechaIni"]) or isset($_GET["fechaFin"]) or isset($_GET["vehiculo"])){
+				if($_GET["fechaIni"]=="" and $_GET["fechaFin"]=="" and $_GET["vehiculo"]==""){
+					$dataProvider=new CActiveDataProvider('Ordenmtto',array('criteria' => array(
+						'condition' =>'idestatus=7 and tipo=1',
+						'order'=>'fecha')));	
+				}
+				if($_GET["fechaIni"]!="" and $_GET["vehiculo"]==""){
+					$fechaini=date("Y-m-d", strtotime(str_replace('/', '-',$_GET["fechaIni"])));
+					$fechafin=date("Y-m-d", strtotime(str_replace('/', '-',$_GET["fechaFin"])));
+					$dataProvider=new CActiveDataProvider('Ordenmtto',array('criteria' => array(
+						'condition' =>'idestatus=7 and tipo=1 and (fecha>="'.$fechaini.'" and fecha<="'.$fechafin.'")',
+						'order'=>'fecha',
+					)));		
+				}
+				if($_GET["fechaIni"]=="" and $_GET["vehiculo"]!=""){
+					
+					$dataProvider=new CActiveDataProvider('Ordenmtto',array('criteria' => array(
+						'condition' =>'idestatus=7 and tipo=1 and id in (select idordenMtto from sgu_detalleOrdenCo where idreporteFalla in (select id from sgu_reporteFalla where idvehiculo='.$_GET["vehiculo"].'))',
+						'order'=>'fecha',
+					)));	
+				}
+				if($_GET["fechaIni"]!="" and $_GET["vehiculo"]!=""){
+					$fechaini=date("Y-m-d", strtotime(str_replace('/', '-',$_GET["fechaIni"])));
+					$fechafin=date("Y-m-d", strtotime(str_replace('/', '-',$_GET["fechaFin"])));
+					$dataProvider=new CActiveDataProvider('Ordenmtto',array('criteria' => array(
+						'condition' =>'idestatus=7 and tipo=1 and (fecha>="'.$fechaini.'" and fecha<="'.$fechafin.'") and id in (select idordenMtto from sgu_detalleOrdenCo where idreporteFalla in (select id from sgu_reporteFalla where idvehiculo='.$_GET["vehiculo"].'))',
+						'order'=>'fecha',
+					)));	
+				}
+			}
 		$this->render('historicoOrdenes',array(
 			'dataProvider'=>$dataProvider,'mi'=>$this->getFallas(),
 			'color'=>$this->getColor($this->getFallas()),

@@ -1,3 +1,20 @@
+<style>
+#titulo {
+    float: left;
+    font-size: 120%;
+}
+#sep {
+    text-align: right;
+    font-size: 120%;
+}
+#azul {
+    background: none repeat scroll 0% 0% #F9FDFD;
+    padding: 10px;
+    border: 1px solid #94A8FF;
+    margin-top: 5px;
+    
+}
+</style>
 <?php
 /* @var $this DetalleeventocaController */
 /* @var $model Detalleeventoca */
@@ -33,7 +50,7 @@
 	</div>
 	<?php echo $form->error($model,'idhistoricoCaucho'); ?>
 	<?php $this->widget('zii.widgets.grid.CGridView', array(
-				'id'=>'vehic',
+				'id'=>'vehic2',
 				'summaryText'=>'',
 				//se deben definir inicialmente los neumaticos que posee cada vehiculo
 			   // 'enableSorting' => false,
@@ -126,14 +143,15 @@
 		<?php echo CHtml::ajaxSubmitButton('Agregar', $this->createAbsoluteUrl('neumaticos/agregarNeumaticosRenovar'), 
         array(	 'dataType' => 'json',
                  'type' => 'post',
-				 'data'=>"js:{ids:$.fn.yiiGridView.getSelection('vehic')}",
+				 'data'=>"js:{ids:$.fn.yiiGridView.getSelection('vehic2')}",
 				 'success'=>'js:function(data){
-					 alert(data.status);
-					 $.fn.yiiGridView.update("vehic");
+					 //alert(data.status);
+					 $.fn.yiiGridView.update("vehic2");
 					 $.fn.yiiGridView.update("renovaciones");
 					 $("#arenovar").hide();
 					 $("#agregarRenovacion").show();
 					 $("#botonRenov").attr("disabled", true);
+					 $("#ventanaRenovar").dialog("close");
 	
 				 }',
                 ), array('id' => 'botonRenov')) 
@@ -152,13 +170,13 @@ $('#botonRenov').attr("disabled", true);
 
 $('#conductor').hide();
 $("#lista").change(function(){
-	$.fn.yiiGridView.update('vehic',{ data : "idvehiculo="+$(this).val()});
+	$.fn.yiiGridView.update('vehic2',{ data : "idvehiculo="+$(this).val()});
 	obtenerConductor($(this).val());
 });
 function cancelar(){
-	$('#arenovar').hide();
-	$('#agregarRenovacion').show();
-	
+	//$('#arenovar').hide();
+	//$('#agregarRenovacion').show();
+	$("#ventanaRenovar").dialog("close");
 }
 function obtenerConductor(id){
 	$('#conductor').show();
@@ -175,7 +193,7 @@ function obtenerConductor(id){
   	});	
 }
 function setId(){
-	var id=$.fn.yiiGridView.getSelection('vehic');
+	var id=$.fn.yiiGridView.getSelection('vehic2');
 	if(id=="")
 		$('#botonRenov').attr("disabled", true);
 	else
@@ -184,20 +202,3 @@ function setId(){
 	$("#Detalleeventoca_idhistoricoCaucho").val(id);
 }
 </script>
-<style>
-#titulo {
-    float: left;
-    font-size: 120%;
-}
-#sep {
-    text-align: right;
-    font-size: 120%;
-}
-#azul {
-    background: none repeat scroll 0% 0% #F9FDFD;
-    padding: 10px;
-    border: 1px solid #94A8FF;
-    margin-top: 5px;
-    
-}
-</style>

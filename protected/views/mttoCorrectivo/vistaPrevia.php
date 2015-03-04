@@ -6,7 +6,9 @@
 );
 $this->menu=array(
 	array('label'=>'<div id="menu"><strong>Órdenes de mantenimiento</strong></div>'),
-	array('label'=>'      Crear orden de mantenimiento', 'url'=>array('crearOrdenPreventiva')),
+	
+	array('label'=>'      Histórico de fallas', 'url'=>array('mttoCorrectivo/historicoCorrectivo')),
+	array('label'=>'      Histórico de mejoras', 'url'=>array('mttoCorrectivo/historicoMejoras')),
 	array('label'=>'      Histórico de ordenes', 'url'=>array('historicoOrdenes')),
 	array('label'=>'      Cerrar órdenes de mantenimiento', 'url'=>array('cerrarOrdenes')),
 );
@@ -147,20 +149,20 @@ $this->widget('zii.widgets.grid.CGridView', array(
 				'columns'=>array(
 					array(
 						'headerHtmlOptions'=>array('style'=>'width:35%;text-align:left;'),
-						'header'=>'<PRE>Recursos',
+						'header'=>'<PRE>Recursos</PRE>',
 						'value'=>'\'\'.(($data->idinsumo == null?\'\':$data->idinsumo0->insumo).\'\'.($data->idrepuesto == null?\'\':$data->idrepuesto0->repuesto).\'\'.($data->idservicio == null?\'\':$data->idservicio0->servicio)).\'\'',
 						'htmlOptions'=>array('style'=>'text-align:left;width:150px'),
 					),
 					array(
 					'headerHtmlOptions'=>array('style'=>'text-align:left;'),
-					'header'=>'<PRE>Tipo',
+					'header'=>'<PRE>Tipo</PRE>',
 					'value'=>'(($data->idinsumo == null?\'\':\'Insumo\').\'\'.($data->idrepuesto == null?\'\':\'Repuesto\').\'\'.($data->idservicio == null?\'\':\'Servicio\')).\' \'',
 					'htmlOptions'=>array('style'=>'width:40px;'),
 					//'footer'=>'',
 				),
 					array(
 					'headerHtmlOptions'=>array('style'=>'text-align:left;'),
-					'header'=>'<PRE>Cantidad',
+					'header'=>'<PRE>Cantidad</PRE>',
 					'value'=>'$data->cantidad',
 					'htmlOptions'=>array('style'=>'width:40px;'),
 					
@@ -168,21 +170,21 @@ $this->widget('zii.widgets.grid.CGridView', array(
 					),
 					array(
 					'headerHtmlOptions'=>array('style'=>'text-align:left;'),
-					'header'=>'<PRE>Unidad',
+					'header'=>'<PRE>Unidad</PRE>',
 					'value'=>'$data->idunidad0->unidad',
 					'htmlOptions'=>array('style'=>'width:40px;'),
 					//'footer'=>'',
 					),
 					array(
 					'headerHtmlOptions'=>array('style'=>'text-align:left; width:50px;'),
-					'header'=>'<PRE>Costo unitario',
+					'header'=>'<PRE>Costo unitario</PRE>',
 					'value'=>'number_format($data->costoUnitario, 2,",",".").\' Bs.\'',
 					'htmlOptions'=>array('style'=>'width:50px;'),
 					//'footer'=>'',
 					),
 				array(
 					'headerHtmlOptions'=>array('style'=>'text-align:right;'),
-					'header'=>'<PRE>Total',
+					'header'=>'<PRE>Total</PRE>',
 					'value'=>'$data->costoTotal',
 					'value'=>'number_format($data->costoTotal, 2,",",".").\' Bs.\'',
 					'htmlOptions'=>array('style'=>'width:50px;text-align:right;'),
@@ -192,7 +194,13 @@ $this->widget('zii.widgets.grid.CGridView', array(
     ));
 	}
 }}
-if(count($factura->getData())>0){
+?>
+</div>
+<?php 
+if(count($factura->getData())>0){?>
+<div class='crugepanel user-assignments-role-list'>
+<i>*Información de facturación</i>
+<?php
 $this->widget('zii.widgets.grid.CGridView', array(
                 'id'=>'factura',
 				'summaryText'=>'',
@@ -248,10 +256,8 @@ $this->widget('zii.widgets.grid.CGridView', array(
 				),
 			)
     ));
-}
-?>
-		
-</div>
+?>		
+</div><?php }?>
 <style>
 strong {
     font-weight: bold;
@@ -315,17 +321,6 @@ h1 {
     font-size: 0.9em;
     border: 1px solid #A8C5F0;
     padding: 0.3em;
-}
-</style>
-<style>
-.ui-progressbar .ui-widget-header {
-	background: #FFF;
-}
-.ui-widget-header {
-    border: 1px solid #AAA;
-    background-image: url("<?php echo Yii::app()->request->baseUrl;?>/imagenes/imagen.png");
-    color: #222;
-    font-weight: bold;
 }
 .ui-progressbar {
     border: 0px none;

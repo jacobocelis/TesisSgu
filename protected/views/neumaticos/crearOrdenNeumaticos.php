@@ -1,4 +1,76 @@
+<style>
+.hidden {
+    display: none;
+}
+.grid-view table.items tr.selected {
+    background: none repeat scroll 0% 0% rgba(0, 249, 3, 0.3);
+}
+.crugepanel {
+    background-color: #FFF;
+    border: 1px dotted #AAA;
+    border-radius: 1px;
+    box-shadow: 3px 3px 5px #EEE;
+    display: block;
+    margin-top: 10px;
+    padding: 10px;
+	overflow:auto;
+}
+.grid-view {
+    padding: 15px 0px 0px;
+}
+form {
+    margin: 0px 0px 0px;
+}
+h1 {
+    font-size: 270%;
+    line-height: 40px;
+}
+h2{
+	font-size: 200%;
+    line-height: 40px;
+}
+#scrollingDiv{
+	position: fixed;
+}
+.btn {
+	-moz-box-shadow:inset 0px 1px 0px 0px #54a3f7;
+	-webkit-box-shadow:inset 0px 1px 0px 0px #54a3f7;
+	box-shadow:inset 0px 1px 0px 0px #54a3f7;
+	background:-webkit-gradient(linear, left top, left bottom, color-stop(0.05, #007dc1), color-stop(1, #0061a7));
+	background:-moz-linear-gradient(top, #007dc1 5%, #0061a7 100%);
+	background:-webkit-linear-gradient(top, #007dc1 5%, #0061a7 100%);
+	background:-o-linear-gradient(top, #007dc1 5%, #0061a7 100%);
+	background:-ms-linear-gradient(top, #007dc1 5%, #0061a7 100%);
+	background:linear-gradient(to bottom, #007dc1 5%, #0061a7 100%);
+	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#007dc1', endColorstr='#0061a7',GradientType=0);
+	background-color:#007dc1;
+	-moz-border-radius:3px;
+	-webkit-border-radius:3px;
+	border-radius:3px;
+	border:1px solid #124d77;
+	display:inline-block;
+	cursor:pointer;
+	color:#ffffff;
+	font-family:Verdana;
+	font-size:13px;
+	font-weight:bold;
+	padding:6px 4px;
+	text-decoration:none;
+	text-shadow:0px 1px 0px #154682;
+}
+.btn:hover {
+	background:-webkit-gradient(linear, left top, left bottom, color-stop(0.05, #0061a7), color-stop(1, #007dc1));
+	background:-moz-linear-gradient(top, #0061a7 5%, #007dc1 100%);
+	background:-webkit-linear-gradient(top, #0061a7 5%, #007dc1 100%);
+	background:-o-linear-gradient(top, #0061a7 5%, #007dc1 100%);
+	background:-ms-linear-gradient(top, #0061a7 5%, #007dc1 100%);
+	background:linear-gradient(to bottom, #0061a7 5%, #007dc1 100%);
+	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#0061a7', endColorstr='#007dc1',GradientType=0);
+	background-color:#0061a7;
+	color: #fff;
+}
 
+</style>
 <div id="scrollingDiv" class="btn" style="display:none">Crear órden de neumáticos</div>
 <?php 
 	$this->breadcrumbs=array(
@@ -13,12 +85,12 @@ $this->menu=array(
 	array('label'=>'<div id="menu"><strong>Averías</strong></div>'),
 	array('label'=>'      Registro de averías', 'url'=>array('averiaNeumatico')),
 	
-	array('label'=>'      Averías por atender <span title="hay '.$totalFalla.' averías en neumaticos por atender" class="badge badge-'.$this->Color($totalFalla).' pull-right">'.$totalFalla.'</span>', 'url'=>array('crearOrdenNeumaticos')),
+	array('label'=>'      Averías por atender <span title="hay '.$totalFalla.' averías en neumaticos por atender" class="badge badge-'.$this->Color($totalFalla).' pull-right">'.$totalFalla.'</span>', 'url'=>array('neumaticos/listaAveriaNeumatico')),
 	
 	
 	array('label'=>'<div id="menu"><strong>Órdenes de neumaticos</strong></div>'),
 	
-	array('label'=>'      Crear órden de neumaticos', 'url'=>array('crearOrdenNeumaticos')),
+	array('label'=>'      Crear órden de neumaticos', 'url'=>array('neumaticos/crearOrdenNeumaticos')),
 	array('label'=>'      Ver órdenes abiertas <span class="badge badge-'.$this->Color($abiertas).' pull-right">'.$abiertas.'</span>', 'url'=>array('verOrdenes')),
 	array('label'=>'      Órdenes listas para cerrar <span class="badge badge-'.$this->Color($listas).' pull-right">'.$listas.'</span>', 'url'=>array('cerrarOrdenes')),
 	
@@ -179,7 +251,25 @@ $this->widget('zii.widgets.grid.CGridView', array(
         'style'=>'cursor: pointer; text-decoration: underline;',
         'onclick'=>"{agregarRenovacion(); }"));
 		?>	
-		<div id="arenovar" style="display:none"><?php $this->renderPartial('_formMontaje', array('model'=>new detalleEventoCa,'montados'=>$montados)); ?></div>
+<?php
+/*ventana agregar recurso*/
+$this->beginWidget('zii.widgets.jui.CJuiDialog', array( // the dialog
+    'id'=>'ventanaRenovar',
+    'options'=>array(
+        'title'=>'Crear orden de neumáticos',
+        'autoOpen'=>false,
+        'modal'=>true,
+        'width'=>'80%',
+        //'height'=>360,
+		'position'=>array(null,100),
+		'resizable'=>false
+    ),
+));?>
+<div id="arenovar" style="display:none"><?php $this->renderPartial('_formMontaje', array('model'=>new detalleEventoCa,'montados'=>$montados)); ?></div>
+ 
+<?php $this->endWidget();?>
+
+		
 </div>
 
 <div class='crugepanel user-assignments-role-list'>
@@ -396,79 +486,7 @@ $this->beginWidget('zii.widgets.jui.CJuiDialog', array( // the dialog
 <div class="divForForm">
 </div>
 <?php $this->endWidget();?>
-<style>
-.hidden {
-    display: none;
-}
-.grid-view table.items tr.selected {
-    background: none repeat scroll 0% 0% rgba(0, 249, 3, 0.3);
-}
-.crugepanel {
-    background-color: #FFF;
-    border: 1px dotted #AAA;
-    border-radius: 1px;
-    box-shadow: 3px 3px 5px #EEE;
-    display: block;
-    margin-top: 10px;
-    padding: 10px;
-	overflow:auto;
-}
-.grid-view {
-    padding: 15px 0px 0px;
-}
-form {
-    margin: 0px 0px 0px;
-}
-h1 {
-    font-size: 270%;
-    line-height: 40px;
-}
-h2{
-	font-size: 200%;
-    line-height: 40px;
-}
-#scrollingDiv{
-	position: fixed;
-}
-.btn {
-	-moz-box-shadow:inset 0px 1px 0px 0px #54a3f7;
-	-webkit-box-shadow:inset 0px 1px 0px 0px #54a3f7;
-	box-shadow:inset 0px 1px 0px 0px #54a3f7;
-	background:-webkit-gradient(linear, left top, left bottom, color-stop(0.05, #007dc1), color-stop(1, #0061a7));
-	background:-moz-linear-gradient(top, #007dc1 5%, #0061a7 100%);
-	background:-webkit-linear-gradient(top, #007dc1 5%, #0061a7 100%);
-	background:-o-linear-gradient(top, #007dc1 5%, #0061a7 100%);
-	background:-ms-linear-gradient(top, #007dc1 5%, #0061a7 100%);
-	background:linear-gradient(to bottom, #007dc1 5%, #0061a7 100%);
-	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#007dc1', endColorstr='#0061a7',GradientType=0);
-	background-color:#007dc1;
-	-moz-border-radius:3px;
-	-webkit-border-radius:3px;
-	border-radius:3px;
-	border:1px solid #124d77;
-	display:inline-block;
-	cursor:pointer;
-	color:#ffffff;
-	font-family:Verdana;
-	font-size:13px;
-	font-weight:bold;
-	padding:6px 4px;
-	text-decoration:none;
-	text-shadow:0px 1px 0px #154682;
-}
-.btn:hover {
-	background:-webkit-gradient(linear, left top, left bottom, color-stop(0.05, #0061a7), color-stop(1, #007dc1));
-	background:-moz-linear-gradient(top, #0061a7 5%, #007dc1 100%);
-	background:-webkit-linear-gradient(top, #0061a7 5%, #007dc1 100%);
-	background:-o-linear-gradient(top, #0061a7 5%, #007dc1 100%);
-	background:-ms-linear-gradient(top, #0061a7 5%, #007dc1 100%);
-	background:linear-gradient(to bottom, #0061a7 5%, #007dc1 100%);
-	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#0061a7', endColorstr='#007dc1',GradientType=0);
-	background-color:#0061a7;
-	color: #fff;
-}
 
-</style>
 <script>
 var ancho=$(window).width()-($(window).width()*0.20);
 $('#scrollingDiv').css({
@@ -491,11 +509,12 @@ $( "#scrollingDiv" ).click(function() {
 	$('#scrollingDiv').hide(300);
 	$("#formulario").dialog('open');
 });
-
+var idfalla;
+var idrot;
+var idren;
 function validar(){
-var idren = $.fn.yiiGridView.getSelection('renovaciones');
-var idfalla = $.fn.yiiGridView.getSelection('fallas');
-var idrot = $.fn.yiiGridView.getSelection('rotaciones');
+idren = $.fn.yiiGridView.getSelection('renovaciones');
+idfalla = $.fn.yiiGridView.getSelection('fallas');
 
 	if(idfalla=="" && idrot=="" && idren=="")
 		/*$('#formulario').hide(); */
@@ -504,10 +523,12 @@ var idrot = $.fn.yiiGridView.getSelection('rotaciones');
 		$('#scrollingDiv').show(300);
 		/*$('#formulario').show();*/
 	
-	var idrot = $.fn.yiiGridView.getSelection('rotaciones');
+	idrot = $.fn.yiiGridView.getSelection('rotaciones');
 	if(idrot=="")
 		$('#amovimiento').hide();
-		
+	crear();
+}
+function crear(){
 jQuery.ajax({
                 url: "crearOrden",
                 'data':$(this).serialize()+'&idfalla=' + idfalla + '&idren=' + idren + '&idrot=' + idrot,
@@ -517,7 +538,7 @@ jQuery.ajax({
                                 if (data.status == 'failure'){
                                         $('#formulario div.divForForm').html(data.div);
                                         // Here is the trick: on submit-> once again this function!
-                                        $('#formulario div.divForForm form').submit(validar); // 
+                                        $('#formulario div.divForForm form').submit(crear); // 
                                 }
                                 else{
                                         $('#formulario div.divForForm').html(data.div);
@@ -531,8 +552,10 @@ jQuery.ajax({
 		return false; 
 }
 function agregarRenovacion(){
-	$('#arenovar').show(800);
-	$('#agregarRenovacion').hide();
+	$('#arenovar').show();
+	$.fn.yiiGridView.update('vehic2');
+	$('#ventanaRenovar').dialog('open');
+	//$('#agregarRenovacion').hide();
 }
 
 function agregarMovimiento(){

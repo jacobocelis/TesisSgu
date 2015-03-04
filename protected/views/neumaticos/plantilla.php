@@ -8,13 +8,13 @@ $this->breadcrumbs=array(
 );
 $this->menu=array(
 	array('label'=>'<div id="menu"><strong>Neumáticos</strong></div>'),
-	array('label'=>'      Plantillas de montaje', 'url'=>array('plantilla')),
-	array('label'=>'      Montajes iniciales <span title="hay '.$iniciales.' montajes iniciales por definir" class="badge badge-'.$this->Color($iniciales).' pull-right">'.$iniciales.'</span>', 'url'=>array('montajeInicial')),
+	array('label'=>'      Plantillas de montaje', 'url'=>array('neumaticos/plantilla')),
+	array('label'=>'      Montajes iniciales <span id="mi" title="hay '.$iniciales.' montajes iniciales por definir" class="badge badge-'.$this->Color($iniciales).' pull-right">'.$iniciales.'</span>', 'url'=>array('montajeInicial')),
 	
 	array('label'=>'<div id="menu"><strong>Averías</strong></div>'),
 	array('label'=>'      Registro de averías', 'url'=>array('averiaNeumatico')),
 	
-	array('label'=>'      Averías por atender <span title="hay '.$totalFalla.' averías en neumaticos por atender" class="badge badge-'.$this->Color($totalFalla).' pull-right">'.$totalFalla.'</span>', 'url'=>array('crearOrdenNeumaticos')),
+	array('label'=>'      Averías por atender <span title="hay '.$totalFalla.' averías en neumaticos por atender" class="badge badge-'.$this->Color($totalFalla).' pull-right">'.$totalFalla.'</span>', 'url'=>array('neumaticos/listaAveriaNeumatico')),
 	
 	
 	array('label'=>'<div id="menu"><strong>Órdenes de neumaticos</strong></div>'),
@@ -107,7 +107,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
 		</div>
 </div>
 <br>
-<div id="llantas">
+<div id="llantas" style="display:none">
 <div id='activi'><negro>
 			Plantilla seleccionada:
 			</negro>
@@ -168,7 +168,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
 			),
         ));
 		?>
-		<div id="eje">
+		<div id="eje" style="display:none">
 		<?php echo CHtml::link('Agregar eje', "",array('title'=>'',
         'style'=>'cursor: pointer;font-size:13px;margin-left:0px;background:#A6FFB6',
         'onclick'=>"{
@@ -226,7 +226,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
 			),
         ));
 		?>
-		<div id="caucho">
+		<div id="caucho" style="display:none">
 		<?php echo CHtml::link('Agregar neumático', "",array('title'=>'',
         'style'=>'cursor: pointer;font-size:13px;margin-left:0px;background:#A6FFB6;',
         'onclick'=>"{
@@ -235,7 +235,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
 		<div id="nuevoCaucho"></div>
 </div>
 </div>
-<div id="llantaRep">
+<div id="llantaRep" style="display:none">
 <strong>Neumático de repuesto</strong>
 	<?php $this->widget('zii.widgets.grid.CGridView', array(
                 'id'=>'rep',
@@ -276,7 +276,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
 			),
         ));
 		?>
-		<div id="cauchoRep">
+		<div id="cauchoRep" style="display:none">
 		<?php echo CHtml::link('Agregar', "",array('title'=>'',
         'style'=>'cursor: pointer;font-size:13px;margin-left:0px;background:#A6FFB6;',
         'onclick'=>"{
@@ -285,7 +285,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
 		<div id="nuevoCauchoRep"></div>
 </div>
 <div id="agregarAgrupo"></div>
-<div id="divGrupo">
+<div id="divGrupo" style="display:none">
 <strong>Plantilla asociada al grupo:</strong>
 <?php $this->widget('zii.widgets.grid.CGridView', array(
                 'id'=>'grup',
@@ -440,12 +440,13 @@ padding: 4px;
     margin-right: 10px;
 }
 #uno{
-	width: 49%;
+	width: 48%;
 	float: left;
 	margin-right: 10px;
 }
 #dos{
 	width: 50%;
+	float: right;
 }
 negro{
 	color: rgba(0, 0, 0, 1);
@@ -528,12 +529,12 @@ estado{
 }
 </style>
 <script>
-$("#eje").hide();
+/*$("#eje").hide();
 $("#caucho").hide();
 $("#cauchoRep").hide();
 $("#llantaRep").hide();
 $("#llantas").hide();
-$("#divGrupo").hide();
+$("#divGrupo").hide();*/
 function mostrarLinkRep(id){
 	if(id=="")
 		id=0;

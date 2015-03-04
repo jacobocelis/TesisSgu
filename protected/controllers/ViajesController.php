@@ -31,7 +31,7 @@ class ViajesController extends Controller
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create','update','agregarViajeRutinario','agregarViajeEspecial','rutinarios','ultimosViajes','especiales','formAgregarEspecial','agregarRutaNueva','actualizarSpan','validarRuta','puestos','insumos','repuesto','validarRutaNormal','actualizarListaConductor'),
+				'actions'=>array('create','update','agregarViajeRutinario','agregarViajeEspecial','rutinarios','ultimosViajes','especiales','formAgregarEspecial','agregarRutaNueva','actualizarSpan','validarRuta','puestos','insumos','repuesto','validarRutaNormal','actualizarListaConductor','historicoRutinarios','historicoEspeciales'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -341,7 +341,91 @@ public function actionActualizarSpan(){
 			'total'=>$tot['total'],
 		));
 	}
-
+	public function actionHistoricoRutinarios(){
+	
+		$dataProvider=new CActiveDataProvider('Historicoviajes',array('criteria' => array(
+			'condition'=>' id in (select hv.id as id from sgu_historicoViajes hv, sgu_viaje v where hv.idviaje=v.id and v.idtipo=1)',
+		)));
+		
+		if(isset($_GET["fechaIni"]) or isset($_GET["fechaFin"]) or isset($_GET["vehiculo"])){
+				if($_GET["fechaIni"]=="" and $_GET["fechaFin"]=="" and $_GET["vehiculo"]==""){
+					$dataProvider=new CActiveDataProvider('Historicoviajes',array('criteria' => array(
+						'condition' =>'id in (select hv.id as id from sgu_historicoViajes hv, sgu_viaje v where hv.idviaje=v.id and v.idtipo=1)',
+						'order'=>'fecha')));	
+				}
+				if($_GET["fechaIni"]!="" and $_GET["vehiculo"]==""){
+					$fechaini=date("Y-m-d", strtotime(str_replace('/', '-',$_GET["fechaIni"])));
+					$fechafin=date("Y-m-d", strtotime(str_replace('/', '-',$_GET["fechaFin"])));
+					$dataProvider=new CActiveDataProvider('Historicoviajes',array('criteria' => array(
+						'condition' =>'id in (select hv.id as id from sgu_historicoViajes hv, sgu_viaje v where hv.idviaje=v.id and v.idtipo=1) and (fecha>="'.$fechaini.'" and fecha<="'.$fechafin.'")',
+						'order'=>'fecha',
+					)));		
+				}
+				if($_GET["fechaIni"]=="" and $_GET["vehiculo"]!=""){
+					
+					$dataProvider=new CActiveDataProvider('Historicoviajes',array('criteria' => array(
+						'condition' =>'id in (select hv.id as id from sgu_historicoViajes hv, sgu_viaje v where hv.idviaje=v.id and v.idtipo=1) and idvehiculo='.$_GET["vehiculo"].'',
+						'order'=>'fecha',
+					)));	
+				}
+				if($_GET["fechaIni"]!="" and $_GET["vehiculo"]!=""){
+					$fechaini=date("Y-m-d", strtotime(str_replace('/', '-',$_GET["fechaIni"])));
+					$fechafin=date("Y-m-d", strtotime(str_replace('/', '-',$_GET["fechaFin"])));
+					$dataProvider=new CActiveDataProvider('Historicoviajes',array('criteria' => array(
+						'condition' =>'id in (select hv.id as id from sgu_historicoViajes hv, sgu_viaje v where hv.idviaje=v.id and v.idtipo=1) and (fecha>="'.$fechaini.'" and fecha<="'.$fechafin.'") and idvehiculo='.$_GET["vehiculo"].'',
+						'order'=>'fecha',
+					)));	
+				}
+			}
+		$dataProvider->setPagination(false);
+		$this->render('historicoRutinarios',array(
+			'dataProvider'=>$dataProvider,
+		));
+	}
+	 public function actionHistoricoEspeciales(){
+		
+		
+		$dataProvider=new CActiveDataProvider('Historicoviajes',
+		array('criteria'=>array('condition'=>'id in (select hv.id as id from sgu_historicoViajes hv, sgu_viaje v where hv.idviaje=v.id and (v.idtipo=2 or v.idtipo=3))'
+		)));
+		
+		if(isset($_GET["fechaIni"]) or isset($_GET["fechaFin"]) or isset($_GET["vehiculo"])){
+				if($_GET["fechaIni"]=="" and $_GET["fechaFin"]=="" and $_GET["vehiculo"]==""){
+					$dataProvider=new CActiveDataProvider('Historicoviajes',array('criteria' => array(
+						'condition' =>'id in (select hv.id as id from sgu_historicoViajes hv, sgu_viaje v where hv.idviaje=v.id and (v.idtipo=2 or v.idtipo=3))',
+						'order'=>'fecha')));	
+				}
+				if($_GET["fechaIni"]!="" and $_GET["vehiculo"]==""){
+					$fechaini=date("Y-m-d", strtotime(str_replace('/', '-',$_GET["fechaIni"])));
+					$fechafin=date("Y-m-d", strtotime(str_replace('/', '-',$_GET["fechaFin"])));
+					$dataProvider=new CActiveDataProvider('Historicoviajes',array('criteria' => array(
+						'condition' =>'id in (select hv.id as id from sgu_historicoViajes hv, sgu_viaje v where hv.idviaje=v.id and (v.idtipo=2 or v.idtipo=3)) and (fecha>="'.$fechaini.'" and fecha<="'.$fechafin.'")',
+						'order'=>'fecha',
+					)));		
+				}
+				if($_GET["fechaIni"]=="" and $_GET["vehiculo"]!=""){
+					
+					$dataProvider=new CActiveDataProvider('Historicoviajes',array('criteria' => array(
+						'condition' =>'id in (select hv.id as id from sgu_historicoViajes hv, sgu_viaje v where hv.idviaje=v.id and (v.idtipo=2 or v.idtipo=3)) and idvehiculo='.$_GET["vehiculo"].'',
+						'order'=>'fecha',
+					)));	
+				}
+				if($_GET["fechaIni"]!="" and $_GET["vehiculo"]!=""){
+					$fechaini=date("Y-m-d", strtotime(str_replace('/', '-',$_GET["fechaIni"])));
+					$fechafin=date("Y-m-d", strtotime(str_replace('/', '-',$_GET["fechaFin"])));
+					$dataProvider=new CActiveDataProvider('Historicoviajes',array('criteria' => array(
+						'condition' =>'id in (select hv.id as id from sgu_historicoViajes hv, sgu_viaje v where hv.idviaje=v.id and (v.idtipo=2 or v.idtipo=3)) and (fecha>="'.$fechaini.'" and fecha<="'.$fechafin.'") and idvehiculo='.$_GET["vehiculo"].'',
+						'order'=>'fecha',
+					)));	
+				}
+			}
+			
+		$dataProvider->setPagination(false);
+		$this->render('historicoEspeciales',array(
+			'dataProvider'=>$dataProvider,
+			
+		));
+	}
 	/**
 	 * Manages all models.
 	 */
