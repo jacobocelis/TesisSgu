@@ -475,7 +475,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
 	<?php
 	$this->widget('zii.widgets.grid.CGridView', array(
                 'id'=>'rotaciones',
-				'selectableRows'=>1,
+				'selectableRows'=>0,
 				//'selectionChanged'=>'validar',
 				'summaryText'=>'',
 			    //'enableSorting' => true,
@@ -544,8 +544,26 @@ $this->widget('zii.widgets.grid.CGridView', array(
 				
 			)
         ));
-		?>
-	<div id="amovimiento" style="display:none">
+		
+
+ }?>
+
+</div>
+<?php
+/*ventana agregar recurso*/
+$this->beginWidget('zii.widgets.jui.CJuiDialog', array( // the dialog
+    'id'=>'rota',
+    'options'=>array(
+        'title'=>'Movimientos',
+        'autoOpen'=>false,
+        'modal'=>true,
+        'width'=>"80%",
+        //'height'=>360,
+		'position'=>array(null,100),
+		'resizable'=>false
+    ),
+));?>
+<div id="amovimiento" style="display:none">
 <i>La rotación seleccionada incluye los siguientes movimientos:</i>
 <?php $this->widget('zii.widgets.grid.CGridView', array(
                 'id'=>'movimientos',
@@ -628,20 +646,22 @@ $this->widget('zii.widgets.grid.CGridView', array(
 				),*/
 			)
         ));
-	/*	 echo CHtml::link('agregar movimiento(+)', "",  // the link for open the dialog
+		 /*echo CHtml::link('agregar movimiento(+)', "",  // the link for open the dialog
     array(
 		'id'=>'agregarMovimiento',
         'style'=>'cursor: pointer; text-decoration: underline;',
         'onclick'=>"{agregarMovimiento(); }"));
 		
-		echo CHtml::link('Cancelar', "",array('title'=>'Cancelar',
+		echo CHtml::link('Cerrar', "",array('title'=>'Cancelar',
         'style'=>'cursor: pointer;font-size:10px;float:right;',
-        'onclick'=>"{cancelarB()}"));*/
-?>
-</div>
-<?php }?>
+        'onclick'=>"{cancelarB()}"));
+		*/
+		?>				
 
+		
 </div>
+ 
+<?php $this->endWidget();?>
 <?php
 /*ventana agregar recurso*/
 $this->beginWidget('zii.widgets.jui.CJuiDialog', array( // the dialog
@@ -827,18 +847,20 @@ function facturarRot(id){
     return false; 
 }
 function mostrarMovimientos(id){
-	idRotacion=id;
-$('#agregarRotacion').hide();
-var altura = $(document).height();
+	//idRotacion=id;
+//$('#agregarRotacion').hide();
+//var altura = $(document).height();
 //$("html, body").animate({scrollTop:altura+"px"},500);
 //$('#recur').show(500);
+	$('#amovimiento').show();
+	$("#rota").dialog('open');
 	
-	$('#amovimiento').show(500);
-	var idr = $.fn.yiiGridView.getSelection('rotaciones');
-	if(idr=="")
-		$('#amovimiento').hide();
+	//$('#amovimiento').show(500);
+	//var idr = $.fn.yiiGridView.getSelection('rotaciones');
+	//if(idr=="")
+		//$('#amovimiento').hide();
 	$.fn.yiiGridView.update('movimientos',{ data : "idRot="+id});
-	$("html, body").animate({scrollTop:altura+"px"},1000);
+	//$("html, body").animate({scrollTop:altura+"px"},1000);
 }
 
 function mostrarNuevoCaucho(){

@@ -197,7 +197,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
                         "",
                         array(
                                 \'style\'=>\'cursor: pointer;text-decoration: underline;text-align:center;\',
-                                \'onclick\'=>\'{montarNeumatico("\'.Yii::app()->createUrl("neumaticos/montar",array("id"=>$data["id"])).\'","\'.$data["idvehiculo"].\'");}\'
+                                \'onclick\'=>\'{montarNeumatico("\'.Yii::app()->createUrl("neumaticos/montar",array("id"=>$data["id"])).\'","\'.$data["idvehiculo"].\'"); $("#dialog").dialog("open");}\'
                         )
 						)):(CHtml::link(
                         CHtml::image(Yii::app()->request->baseUrl."/imagenes/desmontarE.png",
@@ -205,7 +205,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
                         "",
                         array(
                                 \'style\'=>\'cursor: pointer;text-decoration: underline;text-align:center;\',
-                                \'onclick\'=>\'{montarNeumatico("\'.Yii::app()->createUrl("neumaticos/montar",array("id"=>$data["id"])).\'","\'.$data["idvehiculo"].\'");}\'
+                                \'onclick\'=>\'{montarNeumatico("\'.Yii::app()->createUrl("neumaticos/montar",array("id"=>$data["id"])).\'","\'.$data["idvehiculo"].\'"); $("#dialog").dialog("open");}\'
                         )
                 ))',),
 					
@@ -234,7 +234,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
 				array(
 					'type'=>"raw",
 					'header'=>'Serial',
-					'value'=>'$data->serial==0?$data->porDefinir($data->serial):strtoupper($data->serial);',
+					'value'=>'$data->serial=="0"?$data->porDefinir($data->serial):strtoupper($data->serial);',
 					'name'=>'serial',
 					'htmlOptions'=>array('style'=>'text-align:center;width:65px'),
 				),
@@ -258,7 +258,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
 					'name'=>'idestatusCaucho',
 					'htmlOptions'=>array('style'=>'text-align:center;width:85px;font-weight: bold;'),
 				),
-					array(
+				array(
 						'headerHtmlOptions'=>array('style'=>'text-align:center;width:30px;'),
 						'htmlOptions'=>array('style'=>'text-align:center;'),
 						'header'=>'Acción',
@@ -269,7 +269,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
                         "",
                         array(
                                 \'style\'=>\'cursor: pointer;text-decoration: underline;text-align:center;\',
-                                \'onclick\'=>\'{montarNeumatico("\'.Yii::app()->createUrl("neumaticos/montar",array("id"=>$data["id"])).\'","\'.$data["idvehiculo"].\'");}\'
+                                \'onclick\'=>\'{montarNeumatico("\'.Yii::app()->createUrl("neumaticos/montar",array("id"=>$data["id"])).\'","\'.$data["idvehiculo"].\'"); $("#dialog").dialog("open");}\'
                         )
 						)):(CHtml::link(
                         CHtml::image(Yii::app()->request->baseUrl."/imagenes/desmontarE.png",
@@ -277,13 +277,12 @@ $this->widget('zii.widgets.grid.CGridView', array(
                         "",
                         array(
                                 \'style\'=>\'cursor: pointer;text-decoration: underline;text-align:center;\',
-                                \'onclick\'=>\'{montarNeumatico("\'.Yii::app()->createUrl("neumaticos/montar",array("id"=>$data["id"])).\'","\'.$data["idvehiculo"].\'");}\'
-                        )
-                ))',),
+                                \'onclick\'=>\'{montarNeumatico("\'.Yii::app()->createUrl("neumaticos/montar",array("id"=>$data["id"])).\'","\'.$data["idvehiculo"].\'"); $("#dialog").dialog("open"); }\'
+                        )))',
+				),
 			),
         ));
-		
-$total++; ?>
+$total++;?>
 </div>		
 <?php
 }
@@ -304,7 +303,7 @@ $this->beginWidget('zii.widgets.jui.CJuiDialog', array( // the dialog
 		'resizable'=>false
     ),
 ));?>
-<div id="agregar<?php echo $idve;?>" class="agregar"></div>
+<div class="agregar"></div>
 <?php $this->endWidget();?>
 </div>
 <script>
@@ -318,9 +317,8 @@ $( document ).ready(function() {
 		$('#boton').attr("disabled", false);
 });
 function montarNeumatico(id,ui){
-		$('#dialog').dialog('open');
 	var u=ui;
-$('#agregar'+ui).show();
+//$('#agregar'+ui).show();
 	 if (typeof(id)=='string')
                 Uurl=id;
 	jQuery.ajax({
@@ -332,14 +330,14 @@ $('#agregar'+ui).show();
                         {		u=data.ui;
                                 if (data.status == 'failure')
                                 {
-                                        $('#agregar'+u).html(data.div);
+                                        $('#dialog').html(data.div);
                                         // Here is the trick: on submit-> once again this function!
-                                        $('#agregar'+u+' form').submit(montarNeumatico); 
+                                        $('#dialog form').submit(montarNeumatico); 
                                 }
                                 else
                                 {		
-                                        $('#agregar'+u).html(data.div);
-										$('.agregar').css('background','#9EF79C');
+                                        $('#dialog ').html(data.div);
+										//$('.agregar').css('background','#9EF79C');
 										setTimeout(function() {
 											//$("#agregar"+u).hide(500);
 											$('.agregar').css('background','#F9FDFD');

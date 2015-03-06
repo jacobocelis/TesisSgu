@@ -121,13 +121,13 @@ $this->widget('zii.widgets.grid.CGridView', array(
 					array(
 						'headerHtmlOptions'=>array('style'=>'width:35%;text-align:left;'),
 						'header'=>'<PRE>Recursos</PRE>',
-						'value'=>'\'\'.(($data->idinsumo == null?\'\':$data->idinsumo0->insumo).\'\'.($data->idrepuesto == null?\'\':$data->idrepuesto0->repuesto).\'\'.($data->idservicio == null?\'\':$data->idservicio0->servicio)).\'\'.$data->detalle',
+						'value'=>'\'\'.(($data->idinsumo == null?\' \':$data->idinsumo0->insumo).\' \'.($data->idrepuesto == null?\' \':$data->idrepuesto0->repuesto).\' \'.($data->idservicio == null?\' \':$data->idservicio0->servicio)).\' \'.$data->detalle',
 						'htmlOptions'=>array('style'=>'text-align:left;width:150px'),
 					),
 					array(
 					'headerHtmlOptions'=>array('style'=>'text-align:left;'),
 					'header'=>'<PRE>Tipo</PRE>',
-					'value'=>'(($data->idinsumo == null?\'\':\'Insumo\').\'\'.($data->idrepuesto == null?\'\':\'Repuesto\').\'\'.($data->idservicio == null?\'\':\'Servicio\')).\' \'.$data->detalle',
+					'value'=>'(($data->idinsumo == null?\'\':\'Insumo\').\'\'.($data->idrepuesto == null?\'\':\'Repuesto\').\'\'.($data->idservicio == null?\'\':\'Servicio\'))',
 					'htmlOptions'=>array('style'=>'width:40px;'),
 					//'footer'=>'',
 				),

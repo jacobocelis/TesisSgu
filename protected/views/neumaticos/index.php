@@ -168,7 +168,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
 				array(
 					'type'=>"raw",
 					'header'=>'Serial',
-					'value'=>'$data->serial==0?$data->porDefinir($data->serial):strtoupper($data->serial);',
+					'value'=>'$data->serial=="0"?$data->porDefinir($data->serial):strtoupper($data->serial);',
 					'name'=>'serial',
 					'htmlOptions'=>array('style'=>'text-align:center;width:65px'),
 				),

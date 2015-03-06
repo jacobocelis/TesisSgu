@@ -53,7 +53,7 @@ class AsigchasisController extends Controller
 					$vehiculos=Vehiculo::model()->findAll("idgrupo=".$model->idgrupo."");
 					$historico=new Historicocaucho;
 					$ruedas=Yii::app()->db->createCommand("select dr.idcaucho, dr.id from sgu_detalleRueda dr, sgu_detalleEje de, sgu_chasis c where 		dr.iddetalleEje=de.id and de.idchasis=c.id and de.idchasis=".$model->idchasis."")->queryAll();
-					$repuesto=Yii::app()->db->createCommand("select * from sgu_chasis c, sgu_cauchoRep cr where c.id=cr.idchasis and cr.idchasis=".$model->idchasis."")->queryAll();
+					$repuesto=Yii::app()->db->createCommand("select * from sgu_chasis c, sgu_cauchoRep cr where c.id=cr.idchasis and cr.idchasis=".$model->idchasis."")->queryRow();
 					
 				  foreach($vehiculos as $veh){
 					foreach($ruedas as $rue){
@@ -68,11 +68,11 @@ class AsigchasisController extends Controller
 					}
 				  }
 				  foreach($vehiculos as $veh){
-					foreach($repuesto as $re){
+					for($i=0;$i<$repuesto["cantidadRepuesto"];$i++){
 						$historico=new Historicocaucho;
 						$historico->idasigChasis=$model->id;
 						$historico->idvehiculo=$veh["id"];
-						$historico->idcaucho=$re["idcaucho"];
+						$historico->idcaucho=$repuesto["idcaucho"];
 						$historico->idestatusCaucho=6;
 						$historico->save();	
 					}

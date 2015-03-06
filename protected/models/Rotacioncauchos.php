@@ -36,7 +36,7 @@ class Rotacioncauchos extends CActiveRecord
     }
 	public function tableName()
 	{
-		return 'sgu_rotacioncauchos';
+		return 'sgu_rotacionCauchos';
 	}
 
 	/**

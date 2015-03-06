@@ -789,7 +789,7 @@ class NeumaticosController extends Controller
 	public function actionHistoricoMontajes(){
 	//idplan in (select id from sgu_plan) and ??
 			
-			$des=new CActiveDataProvider('Historicocaucho',array("criteria"=>array("condition"=>"idestatusCaucho=3 or idestatusCaucho=1")));
+			$des=new CActiveDataProvider('Historicocaucho',array("criteria"=>array("condition"=>"idestatusCaucho=3 or idestatusCaucho=1",'order'=>"idestatusCaucho asc")));
 			//$mi=Yii::app()->db->createCommand("select count(*) as total from sgu_reporteFalla where idestatus=8")->queryRow();
 		$this->render('historicoMontajes',array(
 				'dataProvider'=>$des,

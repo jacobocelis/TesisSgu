@@ -210,30 +210,7 @@ h1 {
     font-size: 0.9em;
     border: 1px solid #A8C5F0;
     padding: 0.3em;
-}
-</style>
-<style>
 
-.ui-progressbar {
-    border: 0px none;
-    border-radius: 0px;
-    clear: both;
-	margin-bottom: 0px;
-}
-.progress, .ui-progressbar {
-    height: 10px;
-}
-.ui-corner-all, .ui-corner-bottom, .ui-corner-right, .ui-corner-br {
-    border-bottom-right-radius: 0px;
-}
-.ui-corner-all, .ui-corner-bottom, .ui-corner-left, .ui-corner-bl {
-    border-bottom-left-radius: 0px;
-}
-.ui-corner-all, .ui-corner-top, .ui-corner-right, .ui-corner-tr {
-    border-top-right-radius: 0px;
-}
-.ui-corner-all, .ui-corner-top, .ui-corner-left, .ui-corner-tl {
-    border-top-left-radius: 0px;
 }
 </style>
 <script>

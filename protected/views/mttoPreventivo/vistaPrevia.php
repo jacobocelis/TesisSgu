@@ -39,6 +39,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
 					'htmlOptions'=>array('style'=>'text-align:center;width:100px'),
 				),
 				array(
+					'type'=>'raw',
 					'header'=>'Estado',
 					//'name'=>'idestatus',
 					'value'=>'$data->color($data->idestatus,$data->idestatus0->estatus)',
@@ -137,20 +138,20 @@ $this->widget('zii.widgets.grid.CGridView', array(
 				'columns'=>array(
 					array(
 						'headerHtmlOptions'=>array('style'=>'width:35%;text-align:left;'),
-						'header'=>'<PRE>Recursos',
-						'value'=>'\'\'.(($data->idinsumo == null?\'\':$data->idinsumo0->insumo).\'\'.($data->idrepuesto == null?\'\':$data->idrepuesto0->repuesto).\'\'.($data->idservicio == null?\'\':$data->idservicio0->servicio)).\'\'.$data->detalle',
+						'header'=>'<PRE>Recursos</PRE>',
+						'value'=>'\'\'.(($data->idinsumo == null?\' \':$data->idinsumo0->insumo).\' \'.($data->idrepuesto == null?\' \':$data->idrepuesto0->repuesto).\' \'.($data->idservicio == null?\' \':$data->idservicio0->servicio)).\' \'.$data->detalle',
 						'htmlOptions'=>array('style'=>'text-align:left;width:150px'),
 					),
 					array(
 					'headerHtmlOptions'=>array('style'=>'text-align:left;'),
-					'header'=>'<PRE>Tipo',
-					'value'=>'(($data->idinsumo == null?\'\':\'Insumo\').\'\'.($data->idrepuesto == null?\'\':\'Repuesto\').\'\'.($data->idservicio == null?\'\':\'Servicio\')).\' \'.$data->detalle',
+					'header'=>'<PRE>Tipo</PRE>',
+					'value'=>'(($data->idinsumo == null?\'\':\'Insumo\').\'\'.($data->idrepuesto == null?\'\':\'Repuesto\').\'\'.($data->idservicio == null?\'\':\'Servicio\'))',
 					'htmlOptions'=>array('style'=>'width:40px;'),
 					//'footer'=>'',
 				),
 					array(
 					'headerHtmlOptions'=>array('style'=>'text-align:left;'),
-					'header'=>'<PRE>Cantidad',
+					'header'=>'<PRE>Cantidad</PRE>',
 					'value'=>'$data->cantidad',
 					'htmlOptions'=>array('style'=>'width:40px;'),
 					
@@ -158,21 +159,21 @@ $this->widget('zii.widgets.grid.CGridView', array(
 					),
 					array(
 					'headerHtmlOptions'=>array('style'=>'text-align:left;'),
-					'header'=>'<PRE>Unidad',
+					'header'=>'<PRE>Unidad</PRE>',
 					'value'=>'$data->idunidad0->unidad',
 					'htmlOptions'=>array('style'=>'width:40px;'),
 					//'footer'=>'',
 					),
 					array(
 					'headerHtmlOptions'=>array('style'=>'text-align:left; width:50px;'),
-					'header'=>'<PRE>Costo unitario',
+					'header'=>'<PRE>Costo unitario</PRE>',
 					'value'=>'number_format($data->costoUnitario, 2,",",".").\' Bs.\'',
 					'htmlOptions'=>array('style'=>'width:50px;'),
 					//'footer'=>'',
 					),
 				array(
 					'headerHtmlOptions'=>array('style'=>'text-align:right;'),
-					'header'=>'<PRE>Total',
+					'header'=>'<PRE>Total</PRE>',
 					'value'=>'$data->costoTotal',
 					'value'=>'number_format($data->costoTotal, 2,",",".").\' Bs.\'',
 					'htmlOptions'=>array('style'=>'width:50px;text-align:right;'),

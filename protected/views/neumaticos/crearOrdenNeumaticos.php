@@ -5,6 +5,26 @@
 .grid-view table.items tr.selected {
     background: none repeat scroll 0% 0% rgba(0, 249, 3, 0.3);
 }
+.grid-view table.items th {
+    text-align: center;
+    background: none repeat scroll 0% 0% rgba(0, 138, 255, 0.15);
+	color: #000;
+}
+.grid-view table.items th a {
+    color: #000!important;
+    font-weight: bold;
+    text-decoration: none;
+}
+.grid-view table.items td {
+    font-size: 0.9em;
+    border: 1px solid #5877C3;
+    padding: 0.3em;
+}
+.grid-view table.items th, .grid-view table.items td {
+    font-size: 0.9em;
+    border: 1px solid #A8C5F0;
+    padding: 0.3em;
+}
 .crugepanel {
     background-color: #FFF;
     border: 1px dotted #AAA;
@@ -353,7 +373,22 @@ $this->widget('zii.widgets.grid.CGridView', array(
         'style'=>'cursor: pointer; text-decoration: underline;',
         'onclick'=>"{agregarRotacion(); }"));
 		?>	
-		
+	
+</div>
+<?php
+/*ventana agregar recurso*/
+$this->beginWidget('zii.widgets.jui.CJuiDialog', array( // the dialog
+    'id'=>'rota',
+    'options'=>array(
+        'title'=>'Movimientos',
+        'autoOpen'=>false,
+        'modal'=>true,
+        'width'=>"80%",
+        //'height'=>360,
+		'position'=>array(null,100),
+		'resizable'=>false
+    ),
+));?>
 <div id="amovimiento" style="display:none">
 <i>La rotación seleccionada incluye los siguientes movimientos:</i>
 <?php $this->widget('zii.widgets.grid.CGridView', array(
@@ -448,9 +483,12 @@ $this->widget('zii.widgets.grid.CGridView', array(
         'onclick'=>"{cancelarB()}"));
 		
 		?>				
-</div>
+
 		<div id="agregarmovimiento" style="display:none"><?php $this->renderPartial('_formRotacion', array('model'=>new detalleEventoCa,'montadosR'=>$montadosR)); ?></div>
 </div>
+ 
+<?php $this->endWidget();?>
+
 <?php
 /*ventana agregar recurso*/
 $this->beginWidget('zii.widgets.jui.CJuiDialog', array( // the dialog
@@ -515,7 +553,7 @@ var idren;
 function validar(){
 idren = $.fn.yiiGridView.getSelection('renovaciones');
 idfalla = $.fn.yiiGridView.getSelection('fallas');
-
+idrot = $.fn.yiiGridView.getSelection('rotaciones');
 	if(idfalla=="" && idrot=="" && idren=="")
 		/*$('#formulario').hide(); */
 		$('#scrollingDiv').hide(300);
@@ -523,9 +561,9 @@ idfalla = $.fn.yiiGridView.getSelection('fallas');
 		$('#scrollingDiv').show(300);
 		/*$('#formulario').show();*/
 	
-	idrot = $.fn.yiiGridView.getSelection('rotaciones');
-	if(idrot=="")
-		$('#amovimiento').hide();
+	
+	/*if(idrot=="")
+		$('#amovimiento').hide();*/
 	crear();
 }
 function crear(){
@@ -594,21 +632,24 @@ function agregarRotacion(){
 	$('#agregarRotacion').hide();
 }
 function mostrarMovimientos(id){
-	idRotacion=id;
-$('#agregarRotacion').hide();
+	//idRotacion=id;
+	$('#amovimiento').show();
+	$("#rota").dialog('open');
+//$('#agregarRotacion').hide();
 var altura = $(document).height();
 //$("html, body").animate({scrollTop:altura+"px"},500);
 //$('#recur').show(500);
 	//var idAct = $.fn.yiiGridView.getSelection('act');
-	$('#amovimiento').show(500);
+	
 	//if(idAct=="")
 	//	$('#recur').hide();
 	$.fn.yiiGridView.update('movimientos',{ data : "idRot="+id});
-	$("html, body").animate({scrollTop:altura+"px"},1000);
+	//$("html, body").animate({scrollTop:altura+"px"},1000);
 }
 function cancelarB(){
 	$("#agregarRotacion").show();
-	$('#amovimiento').hide(500);
-	$('#agregarmovimiento').hide();
+	//$('#amovimiento').hide(500);
+	$("#rota").dialog('close');
+	//$('#agregarmovimiento').hide();
 }
 </script>
