@@ -7,25 +7,34 @@
 			true o false.  si es true indica que esta operandose bajo el action de adminstracion de usuarios, si es false indica que se esta operando bajo 'editar tu perfil'
 	*/
 ?>
-<h1><?php echo ucwords(CrugeTranslator::t(	
-	$boolIsUserManagement ? "editando usuario" : "editando tu perfil"
-));?></h1>
+
 <div class="form">
+
 <?php $form = $this->beginWidget('CActiveForm', array(
     'id'=>'crugestoreduser-form',
     'enableAjaxValidation'=>false,
     'enableClientValidation'=>false,
 )); ?>
 <div class="row form-group">
-
+<h1><?php echo ucwords(CrugeTranslator::t(	
+	$boolIsUserManagement ? "editando usuario" : "editando tu perfil"
+));?></h1>
 	<div class='field-group'>
 
 		<h6><?php echo ucfirst(CrugeTranslator::t("datos de la cuenta"));?></h6>
+		<?php if($boolIsUserManagement){?>
 		<div class='col'>
 			<?php echo $form->labelEx($model,'username'); ?>
 			<?php echo $form->textField($model,'username'); ?>
 			<?php echo $form->error($model,'username'); ?>
 		</div>
+		<?php }else{?>
+		<div class='col' style="display:none">
+			<?php echo $form->labelEx($model,'username'); ?>
+			<?php echo $form->textField($model,'username'); ?>
+			<?php echo $form->error($model,'username'); ?>
+		</div>
+		<?php }?>
 		<div class='col'>
 			<?php echo $form->labelEx($model,'email'); ?>
 			<?php echo $form->textField($model,'email'); ?>
@@ -43,7 +52,9 @@
 					alert("error: "+e.responseText);
 				}
 			</script>
-			<?php echo CHtml::ajaxbutton(
+			<?php 
+			if($boolIsUserManagement)
+			echo CHtml::ajaxbutton(
 				CrugeTranslator::t("Generar una nueva clave")
 				,Yii::app()->user->ui->ajaxGenerateNewPasswordUrl
 				,array('success'=>new CJavaScriptExpression('fnSuccess'),
@@ -86,7 +97,7 @@
 </div>
 
 <!-- inicio de campos extra definidos por el administrador del sistema -->
-<?php 
+<?php if($boolIsUserManagement)
 	if(count($model->getFields()) > 0){
 		echo "<div class='row form-group'>";
 		echo "<h6>".ucfirst(CrugeTranslator::t("perfil"))."</h6>";
@@ -126,6 +137,6 @@
 	<?php Yii::app()->user->ui->tbutton("Guardar Cambios"); ?>
 	
 </div>
-<?php echo $form->errorSummary($model); ?>
+
 <?php $this->endWidget(); ?>
 </div>

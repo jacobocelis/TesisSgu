@@ -48,7 +48,7 @@ $this->menu=array(
 		<?php echo CHtml::textField('Fechafin', '',array('style'=>'width:80px;cursor:pointer;',"readonly"=>'readonly','disabled'=>'disabled','id'=>'fin','placeholder'=>"Fin")); 
 		echo CHtml::submitButton('Buscar',array("id"=>"boton","onclick"=>"FiltrarFecha()","style"=>"float:right;margin-top:2px;margin-left:10px;")); ?>
 </div>
-<?php 
+<?php 		$v=new Vehiculo;
 			$this->widget('zii.widgets.grid.CGridView', array(
 			'id'=>'historico',
 			'selectableRows'=>1,
@@ -103,7 +103,7 @@ $this->menu=array(
 					'header'=>'Total',
 					'name'=>'costoTotal',
 					'value'=>'number_format($data->costoTotal, 2,",",".").\' Bs.\'',
-					'footer'=>'<strong>Total: </strong>'.number_format((new Vehiculo)->getTotal($dataProvider->getData()), 2,",",".").' Bs.',
+					'footer'=>'<strong>Total: </strong>'.number_format($v->getTotal($dataProvider->getData()), 2,",",".").' Bs.',
 					'footerHtmlOptions'=>array("style"=>"background: none repeat scroll 0% 0% rgba(5, 255, 0, 0.35)"),
 					'htmlOptions'=>array('style'=>'width:80px;'),
 					//'footer'=>'',

@@ -163,7 +163,7 @@ class UiController extends Controller
         $this->render('login', array('model' => $model));
     }
 
-    public function actionPwdRec()
+    /*public function actionPwdRec()
     {
 
         $this->layout = CrugeUtil::config()->resetPasswordLayout;
@@ -188,8 +188,39 @@ class UiController extends Controller
             }
         }
         $this->render('pwdrec', array('model' => $model));
-    }
+    }*/
+	public function actionPwdRec(){
+		
+        $this->layout = CrugeUtil::config()->resetPasswordLayout;
 
+        $model = Yii::app()->user->um->getNewCrugeLogon('pwdrec');
+
+        Yii::app()->user->setFlash('pwdrecflash', null);
+
+        if (isset($_POST[CrugeUtil::config()->postNameMappings['CrugeLogon']])) {
+            $model->attributes = $_POST[CrugeUtil::config()->postNameMappings['CrugeLogon']];
+            if ($model->validate()) {
+                if(Yii::app()->crugemailer->sendPasswordTo($model->getModel())){
+					 Yii::app()->user->setFlash(
+                    'pwdrecflash'
+                    ,
+						CrugeTranslator::t('Su contraseña ha sido enviada a su correo')
+					);
+				}
+				else{
+					 Yii::app()->user->setFlash(
+                    'pwdrecflash'
+                    ,
+						CrugeTranslator::t('Su contraseña no pudo ser enviada por un problema en el servidor..  intente más tarde')
+					);
+				}
+					
+               
+            }
+        }
+        $this->render('pwdrec', array('model' => $model));
+    }
+	
     public function actionLogout()
     {
 		// retorna false si ocurrio un error O si el filtro de sesion
@@ -218,7 +249,7 @@ class UiController extends Controller
     public function actionEditProfile()
     {
 
-        $this->layout = CrugeUtil::config()->editProfileLayout;
+        //$this->layout = CrugeUtil::config()->editProfileLayout;
 
         if (!Yii::app()->user->isGuest) {
             $this->_editUserProfile(Yii::app()->user->user, false);
@@ -299,7 +330,10 @@ class UiController extends Controller
 
                     $this->onNewUser($model, $newPwd);
 
-                    $this->redirect(array('usermanagementadmin'));
+                    //$this->redirect(array('usermanagementadmin'));
+					//$this->redirect('usermanagementupdate?r=tucontroller/update&id='.$model->id.'');
+					$this->redirect(array('usermanagementupdate', 'id'=>$model->iduser));
+					//$this->render("usermanagementupdate",array('model' => $model,'boolIsUserManagement' => true));
                 }
             }
         }

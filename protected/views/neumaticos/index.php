@@ -260,6 +260,9 @@ form {
 #lista{
 	width:50px;
 }
+#menu{
+	font-size:15px;
+}
 </style>
 <script>
 var valor="<?php echo $reposicionDias?>";

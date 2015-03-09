@@ -23,7 +23,7 @@ CREATE TABLE `cruge_system` (
   `idsystem` INT NOT NULL AUTO_INCREMENT ,
   `name` VARCHAR(45) NULL ,
   `largename` VARCHAR(45) NULL ,
-  `sessionmaxdurationmins` INT(11) NULL DEFAULT 30 ,
+  `sessionmaxdurationmins` INT(11) NULL DEFAULT 999 ,
   `sessionmaxsameipconnections` INT(11) NULL DEFAULT 10 ,
   `sessionreusesessions` INT(11) NULL DEFAULT 1 COMMENT '1yes 0no' ,
   `sessionmaxsessionsperday` INT(11) NULL DEFAULT -1 ,
@@ -74,7 +74,7 @@ ENGINE = InnoDB;
 delete from `cruge_user`;
 ALTER TABLE `cruge_user` AUTO_INCREMENT = 1;
 insert into `cruge_user`(username, email, password, state) values
- ('admin', 'admin@tucorreo.com','admin',1)
+ ('admin', 'admin@tucorreo.com','123456',1)
  ,('invitado', 'invitado','nopassword',1)
 ;
 ALTER TABLE `cruge_user` AUTO_INCREMENT = 10;

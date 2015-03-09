@@ -36,21 +36,21 @@
 		</div>
 		
 		<?php if($model->state == CRUGEUSERSTATE_NOTACTIVATED){?>
-		<div>
-			<script>
-				function fnSuccess(data){
-					$('#resendStatus').html(data);
-					setTimeout(function(){ $('#resendStatus').html(""); },3000);
-				}
-			</script>
-			<?php echo CHtml::ajaxbutton(
-				ucfirst(CrugeTranslator::t("reenviar correo de activacion"))
-				,Yii::app()->user->ui->getAjaxResendRegistrationEmailUrl($model->getPrimaryKey())
-				,array('success'=>'js:fnSuccess')
-			); ?>
-			<p class='hint' id='resendStatus'><?php echo ucfirst(	
-				CrugeTranslator::t("esta accion creara una nueva clave."));?></p>
-		</div>
+		 <div>
+			 <script>
+				// function fnSuccess(data){
+					// $('#resendStatus').html(data);
+					// setTimeout(function(){ $('#resendStatus').html(""); },3000);
+				// }
+			// </script>
+			 <?php //echo CHtml::ajaxbutton(
+				// ucfirst(CrugeTranslator::t("reenviar correo de activacion"))
+				// ,Yii::app()->user->ui->getAjaxResendRegistrationEmailUrl($model->getPrimaryKey())
+				// ,array('success'=>'js:fnSuccess')
+			// ); ?>
+			 <p class='hint' id='resendStatus'><?php// echo ucfirst(	
+				// CrugeTranslator::t("esta accion creara una nueva clave."));?></p>
+		 </div>
 		<?php }else{ ?>
 			<input type='button' 
 				value='<?php echo ucfirst(CrugeTranslator::t("reenviar correo de activacion"))?>'
@@ -115,8 +115,8 @@
 						}
 				}	
 				echo "<li class='{$checked}' alt='".$rol->name."'>"
-					.$rol->name.$grant.$edit.$loader."</li>";
-					
+					//.$rol->name.$grant.$edit.$loader."</li>";
+					.$rol->name.$grant.$loader."</li>";
 				// para efectos de UI solamente, el boton edit debe estar invisible pero existente
 				// si el role no esta asignado.
 				
@@ -124,7 +124,7 @@
 			}
 		?>
 		</ul>
-		<p class='hint'><?php echo CrugeTranslator::t("notese que a los usuarios se le asignan solo roles, esto es por cuestiones de facilitar la asignacion sobre todo en escenarios de alto volumen de usuarios.");?></p>
+		<p class='hint'><?php// echo CrugeTranslator::t("notese que a los usuarios se le asignan solo roles, esto es por cuestiones de facilitar la asignacion sobre todo en escenarios de alto volumen de usuarios.");?></p>
 	</div>	
 </div>
 

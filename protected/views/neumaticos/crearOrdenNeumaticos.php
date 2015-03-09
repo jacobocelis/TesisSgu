@@ -25,6 +25,9 @@
     border: 1px solid #A8C5F0;
     padding: 0.3em;
 }
+#menu{
+	font-size:15px;
+}
 .crugepanel {
     background-color: #FFF;
     border: 1px dotted #AAA;

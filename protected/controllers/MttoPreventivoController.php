@@ -15,11 +15,14 @@ class MttoPreventivoController extends Controller
 	public function filters()
 	{
 		return array(
-			'accessControl', // perform access control for CRUD operations
+			//'accessControl', // perform access control for CRUD operations
 			'postOnly + delete', // we only allow deletion via POST request
-			array('CrugeAccessControlFilter')
+			array('CrugeAccessControlFilter'),
 		);
 	}
+	/*public function filters(){
+		return array(array('CrugeAccessControlFilter'));
+	}*/
 	/**
 	 * Specifies the access control rules.
 	 * This method is used by the 'accessControl' filter.
@@ -29,7 +32,7 @@ class MttoPreventivoController extends Controller
 	{
 		return array(
 			array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array('index','view','crearPlan','planes','agregarActividad','obtenerParte','mttopVehiculo','mttopIniciales','calendario','obtenerActividad','agregarRecurso','iniciales','crearordenpreventiva','crearOrden','verOrdenes','cambiarFecha','mttopRealizados','registrarFacturacion','agregarFactura','estatusOrden','cerrarOrdenes','historicoPreventivo','historicoOrdenes','historicoGastos','vistaPrevia','vistaPreviaPDF','generarPdf','correo','actualizarSpan','agregarRecursoAdicional','insumos','repuesto','ActualizarCheck','ActualizarListaActividades','ActualizarInsumos','ActualizarRepuesto','ActualizarServicio','actualizarSpanListas','GetUltimoKm'),
+				'actions'=>array('index','view','crearPlan','planes','agregarActividad','obtenerParte','mttopVehiculo','mttopIniciales','calendario','obtenerActividad','agregarRecurso','iniciales','crearordenpreventiva','crearOrden','verOrdenes','cambiarFecha','mttopRealizados','registrarFacturacion','agregarFactura','estatusOrden','cerrarOrdenes','historicoPreventivo','historicoOrdenes','historicoGastos','vistaPrevia','vistaPreviaPDF','correo','actualizarSpan','agregarRecursoAdicional','insumos','repuesto','ActualizarCheck','ActualizarListaActividades','ActualizarInsumos','ActualizarRepuesto','ActualizarServicio','actualizarSpanListas','GetUltimoKm'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
@@ -66,30 +69,77 @@ class MttoPreventivoController extends Controller
 			'color'=>$this->getColor($mi["total"]),
 		));
 	 }
-	 public function actionGenerarPdf($id){
-	 
-  //Consulta para buscar todos los registros
-		 $mPDF1 = Yii::app()->ePdf->mpdf('utf-8','A4','','',15,15,35,25,9,9,'P'); //Esto lo pueden configurar como quieren, para eso deben de entrar en la web de MPDF para ver todo lo que permite.
-		 $mPDF1->useOnlyCoreFonts = true;
-		 $mPDF1->SetTitle("JuzgadoSys - Reporte");
-		 $mPDF1->SetAuthor("S.G.U.");
-		 $mPDF1->SetWatermarkText("U.N.E.T.");
-		 $mPDF1->showWatermarkText = true;
+	public function GenerarPDF($id){
+		$orden=new CActiveDataProvider('Ordenmtto',array('criteria' => array(
+			'condition' =>'id='.$id."")
+			,'pagination'=>array('pageSize'=>9999999)));
+			
+		$idvehiculo=Yii::app()->db->createCommand("select distinct( a.idvehiculo), count(*) as totAct from sgu_actividades a, sgu_detalleOrden d where d.idactividades=a.id and d.idordenMtto=".$id." group by a.idvehiculo")->queryAll();
+		$totalVeh=count($idvehiculo);
+		
+		//$actividades=Yii::app()->db->createCommand("select idactividades from sgu_detalleorden where idordenMtto=".$id."")->queryAll();
+		
+		for($i=0;$i<$totalVeh;$i++){
+			$vehiculos[]=new CActiveDataProvider('Vehiculo',array('criteria' => array(
+			'condition' =>'id="'.$idvehiculo[$i]["idvehiculo"].'"',
+			)));
+			
+		$totAct=Yii::app()->db->createCommand('select idactividades as id from sgu_detalleOrden where idordenMtto="'.$id.'" and idactividades in(select a.id from sgu_actividades a where a.idvehiculo="'.$idvehiculo[$i]["idvehiculo"].'")')->queryAll();
+		for($j=0;$j<$idvehiculo[$i]["totAct"];$j++){		
+				$actividades[$i][$j]=new CActiveDataProvider('Actividades',array('criteria' => array(
+				'condition' =>'id="'.$totAct[$j]["id"].'"',
+				)));
+				$recursos[$i][$j]=new CActiveDataProvider('Actividadrecurso',array('criteria' => array(
+				'condition' =>'idactividades="'.$totAct[$j]["id"].'"',
+				)));
+			}
+		}
+		 $mPDF1 = Yii::app()->ePdf->mpdf('utf-8', 'Letter'); //Esto lo pueden configurar como quieren, para eso deben de entrar en la web de MPDF para ver todo lo que permite.
+		 //$mPDF1->useOnlyCoreFonts = true;
+		 $mPDF1->SetTitle("Solicitud de servicio");
+		 $mPDF1->SetAuthor("J&M");
+		 //$mPDF1->SetWatermarkText("U.N.E.T.");
+		 $mPDF1->showWatermarkText = false;
 		 $mPDF1->watermark_font = 'DejaVuSansCondensed';
 		 $mPDF1->watermarkTextAlpha = 0.1;
 		 $mPDF1->SetDisplayMode('fullpage');
-		 $mPDF1->WriteHTML("Pruebaaa");
-		 $mPDF1->Output('Orden'.date('YmdHis'),'I');
-		 exit;
-	}
+		 $mPDF1->WriteHTML($this->renderPartial('vistaPreviaPDF',array(
+			'vehiculos'=>$vehiculos,
+			'totalVeh'=>$totalVeh,
+			'actividades'=>$actividades,
+			'idvehiculo'=>$idvehiculo,
+			'recursos'=>$recursos,
+			'orden'=>$orden,
+		),true));
+		 $mPDF1->Output('ordenes/Orden-'.$id.'.pdf','F');
+		 //exit;
+	}	 
 	
 	public function actionCorreo($id){
 		//se envia desde la vista mail
 			$model = new Mail;
 		if(isset($_POST['Mail'])){
 				$model->attributes=$_POST['Mail'];
-				if($model->validate()){	
-					$correo = PublicoController::enviarMail($model->to,$model->from,$model->subject,$model->body);
+				if($model->validate()){
+					$this->GenerarPDF($id);
+					$adjunto="ordenes/Orden-".$id.".pdf";
+					$correo = PublicoController::enviarMail($model->to,$model->from,$model->subject,$model->body,$adjunto);
+					if($correo){
+						echo CJSON::encode(array(
+							'status'=>'success', 
+							'div'=>"La órden fue enviada con éxito"
+							));
+						unlink(Yii::app()->basePath.'/../ordenes/Orden-'.$id.'.pdf');
+						exit;
+						
+					}
+					else{
+						echo CJSON::encode(array(
+							'status'=>'failure', 
+							'div'=>"No se pudo enviar la órden. Contacte al administrador"
+							));
+						exit;
+					}
 				}
 		}
 			if (Yii::app()->request->isAjaxRequest){	

@@ -7,22 +7,10 @@ $this->breadcrumbs=array(
 	'Vehiculos'=>array('index'),
 	"Unidad ".$model->id,
 );
-
 $this->menu=array(
-	array('label'=>'Gastos y consumos', 'url'=>array('index')),
-	array('label'=>'Mantenimiento preventivo', 'url'=>array('mttoPreventivo/mttopVehiculo','id'=>$model->id)),
-	array('label'=>'Mantenimiento correctivo', 'url'=>array('index')),
-	array('label'=>'Piezas y repuestos', 'url'=>array('DetallePieza', 'id'=>$model->id)),
-	array('label'=>'Siniestros y averías', 'url'=>array('')),
-	array('label'=>'Combustible', 'url'=>array('index')),
-	array('label'=>'Ruedas', 'url'=>array('index')),
-	array('label'=>'Viajes', 'url'=>array('')),
-	array('label'=>'Conductores', 'url'=>array('')),
-	array('label'=>'Estadísticas', 'url'=>array('')),
-	array('label'=>'Fotos', 'url'=>array('/foto/index','id'=>$model->id)),
-	/*array('label'=>'Eliminar Vehiculo', 'url'=>'#', 'linkOptions'=>array('submit'=>array('delete','id'=>$model->id),'confirm'=>'Are you sure you want to delete this item?')),*/
-	array('label'=>'Actualizar datos', 'url'=>array('update', 'id'=>$model->id)),
-	array('label'=>'Regresar', 'url'=>array('index')),
+	array('label'=>'Registrar vehiculo', 'url'=>array('create')),
+	array('label'=>'Grupos de vehiculos', 'url'=>array('/grupo/index')),
+	array('label'=>'Administrar vehiculos', 'url'=>array('admin')),
 );
 ?>
 

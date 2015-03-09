@@ -37,6 +37,7 @@ foreach(Yii::app()->user->um->getSortFieldNamesForICrugeStoredUser() as $key=>$f
 	if($fieldName == 'logondate'){
 		$type='datetime';
 	}
+	if(($fieldName<>'iduser'))
 	$cols[] = array('name'=>$fieldName,'value'=>$value,'filter'=>$filter,'type'=>$type);
 }
 	

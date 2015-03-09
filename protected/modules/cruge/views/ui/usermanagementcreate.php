@@ -1,4 +1,4 @@
-<h1><?php echo ucwords(CrugeTranslator::t("crear nuevo usuario"));?></h1>
+
 <div class="form">
 <?php
 	/*
@@ -11,21 +11,24 @@
     'enableClientValidation'=>false,
 )); ?>
 <div class="row form-group">
-	<div class="col">
+<h1><?php echo ucwords(CrugeTranslator::t("crear nuevo usuario"));?></h1>
+	<div class="row">
 		<?php echo $form->labelEx($model,'username'); ?>
 		<?php echo $form->textField($model,'username'); ?>
 		<?php echo $form->error($model,'username'); ?>
 	</div>
-	<div class="col">
+	<div class="row">
 		<?php echo $form->labelEx($model,'email'); ?>
 		<?php echo $form->textField($model,'email'); ?>
 		<?php echo $form->error($model,'email'); ?>
 	</div>
-	<div class="col">
+	
+	<div class="row">
 		<?php echo $form->labelEx($model,'newPassword'); ?>
 		<?php echo $form->textField($model,'newPassword'); ?>
 		<?php echo $form->error($model,'newPassword'); ?>
-		
+	
+
 		<script>
 			function fnSuccess(data){
 				$('#CrugeStoredUser_newPassword').val(data);
@@ -35,16 +38,17 @@
 			}
 		</script>
 		<?php echo CHtml::ajaxbutton(
-			CrugeTranslator::t("Generar una nueva clave")
+			CrugeTranslator::t("Generar contraseña")
 			,Yii::app()->user->ui->ajaxGenerateNewPasswordUrl
 			,array('success'=>'js:fnSuccess','error'=>'js:fnError')
 		); ?>
 		
 	</div>
-</div>
-<div class="row buttons">
+	
 	<?php Yii::app()->user->ui->tbutton("Crear Usuario"); ?>
 </div>
-<?php echo $form->errorSummary($model); ?>
+<div class="row buttons">
+	
+</div>
 <?php $this->endWidget(); ?>
 </div>

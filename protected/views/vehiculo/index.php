@@ -33,14 +33,17 @@ $this->menu=array(
 		array(
 			'header'=>'Marca',
 			'name'=>'idmodelo',
-			'value'=>'$data->idmodelo0->modelo',
-			'type'=>'text'
-		),
-		array(
-			'name'=>'idmodelo',
 			'value'=>'$data->idmodelo0->idmarca0->marca',
 			'type'=>'text'
 		),
+		
+		array(
+			'header'=>'Modelo',
+			'name'=>'idmodelo',
+			'value'=>'$data->idmodelo0->modelo',
+			'type'=>'text'
+		),
+		
 		'placa',
 		'anno',
 		array(
@@ -51,7 +54,7 @@ $this->menu=array(
 		'capCarga',
 		//'comentario',
 		'cantidadRuedas',
-		'capTanque',
+		//'capTanque',
 		
 		array(
 			'name'=>'idcombustible',

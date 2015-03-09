@@ -20,6 +20,7 @@
  */
 class CrugeStoredUser extends CActiveRecord implements ICrugeStoredUser
 {
+	//public $password_repeat;
     public $_fields = array();
     public $deleteConfirmation; // required on 'delete'
     public $newPassword; // declararlo 'safe'
@@ -313,7 +314,9 @@ class CrugeStoredUser extends CActiveRecord implements ICrugeStoredUser
                 'message' => CrugeTranslator::t('logon', 'Security code is invalid'),
             ),
             array('iduser, username, email, state, logondate', 'safe', 'on' => 'search'),
-
+			//array('password_repeat', 'required', 'on'=>'create'),
+			//array('password_repeat','safe'),
+			//array('newPassword','compare','compareAttribute'=>'password_repeat'),
         );
     }
 
@@ -380,12 +383,13 @@ class CrugeStoredUser extends CActiveRecord implements ICrugeStoredUser
     {
         return array(
             'idusuario' => ucfirst(CrugeTranslator::t('usuario#')),
-            'username' => ucfirst(CrugeTranslator::t('username')),
+            'username' => ucfirst(CrugeTranslator::t('Nombre de usuario')),
             'email' => ucfirst(CrugeTranslator::t('correo')),
-            'password' => ucfirst(CrugeTranslator::t('clave')),
+            'password' => ucfirst(CrugeTranslator::t('contraseña')),
+			'password_repeat' => 'Confirmar contraseña',
             'authkey' => ucfirst(CrugeTranslator::t('llave de autenticacion')),
             'state' => ucfirst(CrugeTranslator::t('estado de la cuenta')),
-            'newPassword' => ucfirst(CrugeTranslator::t('clave')),
+            'newPassword' => ucfirst(CrugeTranslator::t('contraseña')),
             'deleteConfirmation' => ucfirst(CrugeTranslator::t('confirmar eliminacion')),
             'regdate' => ucfirst(CrugeTranslator::t('registrado')),
             'actdate' => ucfirst(CrugeTranslator::t('activado')),

@@ -1,144 +1,3 @@
-<?php 
-	$this->breadcrumbs=array(
-	'Partes y piezas'=>array('repuesto/index'),
-	'Asignación',
-);
-
-
-	$selectedUserGetter = 'repuesto';
-	$seleccionCantidad = 'cantidad';
-	
-	$this->menu=array(
-	array('label'=>'Registrar pieza', 'url'=>array('repuesto/create')),
-	array('label'=>'Crear nuevo grupo', 'url'=>array('grupo/create')),
-	array('label'=>'Ver piezas asignadas', 'url'=>array('detallePiezaGrupo/detallepieza')),
-	array('label'=>'Atrás', 'url'=>array('repuesto/index')),
-);
-?>
-<div class='form'>
-<div class='crugepanel user-assignments-role-list'>
-	<h1>Seleccione un grupo para asignar las piezas que posee</h1>
-	<strong><p>Grupos registrados:</p></strong>
-	<ul class='auth-item'>
-	<?php 
-		$loader = "<span class='loader'></span>";		
-		foreach($grupo as $datos){
-			echo "<strong><li alt='".$datos->grupo."'>".$datos->grupo.$loader."</li></strong>";
-		}
-	?>
-	</ul>
-</div>
-<div class='crugepanel user-assignments-detail'>
-	<h6><div id='mostrarSeleccion'>Seleccione un grupo</div></h6>
-	
-	<div id='lista1' class='lista'>
-	
-		
-	<div id='revocarSeleccion' class='boton'>
-		<?php echo CrugeTranslator::t("Quitar piezas") ?>
-		
-	</div>
-
-	<?php 
-		
-	//print_r($uno);
-	//echo 'separoo';
-	//print_r($dos);
-		$this->widget('ext.selgridview.SelGridView', array(
-			'id'=>'_lista1',
-			'selectableRows'=>2,
-			'dataProvider'=>$piezasGrupo,
-			'enablePagination' => false,
-			'afterAjaxUpdate' => "actualizar",
-			'template'=>"{items}\n{summary}\n{pager}",
-			'ajaxUpdate' => true,
-			'columns'=>array(
-				
-				array(
-					'class'=>'CCheckBoxColumn'
-				),
-				
-				array(
-					'header'=>'Pieza agregadas',
-					'name'=>'repuesto',
-				),
-				array(
-					'header'=>'Categoría',
-					'name'=>'subTipo',
-					
-					//'footer'=>'',
-				),
-				array(
-					'header'=>'Cantidad',
-					'name'=>'cantidad',
-					'htmlOptions'=>array('style'=>'text-align:center;width:20px'),
-				),
-				array(
-					'header'=>'Unidad',
-					'name'=>'unidad',
-					
-					//'footer'=>'',
-				),
-			),
-		));
-	?>	
-	</div>
-		
-	<div id='lista2' class='lista'>
-	<div id='asignarSeleccion' class='boton'>
-		<?php 
-		echo CrugeTranslator::t("Agregar piezas");?></div>
-
-	<?php 
-	//zii.widgets.grid.CGridView
-		$this->widget('ext.selgridview.SelGridView', array(
-			'id'=>'_lista2',
-			'filter'=>$model,
-			'selectableRows'=>2,
-			'ajaxUpdate' => true,
-			'afterAjaxUpdate' => "actualizar",
-			'dataProvider'=>$DataProvider,
-			'enablePagination' => false,
-			'template'=>"{items}{summary}{pager}",
-			'columns'=>array(	
-			
-			array(
-					'class'=>'CCheckBoxColumn'
-				),
-				array(
-					'header'=>'Pieza',
-					'name'=>'repuesto',
-					'filter'=>CHtml::activeTextField($model, 'repuesto',array("placeholder"=>"Búsqueda..")),
-					'htmlOptions'=>array('style'=>'width: 140px;'),
-					//'footer'=>'',
-				),
-				array(
-					'header'=>'Categoría',
-					'name'=>'idsubTipoRepuesto',
-					'value'=>'$data->idsubTipoRepuesto0->subTipo',
-					'filter' => false,
-					//'footer'=>'',
-				),
-			
-				array(
-					'header'=>'Cantidad',
-					'value'=>'CHTML::textField("campo",1,array(\'id\'=>"campo$data->id",\'width\'=>4,\'maxlength\'=>2,\'onblur\'=>"return validar($data->id)",\'onkeypress\'=>"return justNumbers(event,$data->id)",\'onmousedown\'=>"return seleccion($data->id)",\'style\'=>\'width: 40px;height:16px;margin: 0 auto;text-align: center;\' ))',
-					'type'=>'raw',
-					'htmlOptions'=>array('style'=>'width: 50px;'),
-				),
-				array(
-					'header'=>'Unidad',
-					'value'=>'$data->idunidad0->unidad',
-					'type'=>'raw',
-					'htmlOptions'=>array('style'=>'width: 50px;'),
-				),
-				
-			),
-		));
-	?>	
-	</div>
-</div>
-</div>
 <style type="text/css">
 .grid-view table.items td {
     font-size: 0.9em;
@@ -421,6 +280,148 @@ ul, ol {
     margin: 0px 0px 10px 0px;
 }
 </style>
+<?php 
+	$this->breadcrumbs=array(
+	'Partes y piezas'=>array('repuesto/index'),
+	'Asignación',
+);
+
+
+	$selectedUserGetter = 'repuesto';
+	$seleccionCantidad = 'cantidad';
+	
+	$this->menu=array(
+	array('label'=>'Registrar pieza', 'url'=>array('repuesto/create')),
+	array('label'=>'Crear nuevo grupo', 'url'=>array('grupo/create')),
+	array('label'=>'Ver piezas asignadas', 'url'=>array('detallePiezaGrupo/detallepieza')),
+	array('label'=>'Atrás', 'url'=>array('repuesto/index')),
+);
+?>
+<div class='form'>
+<div class='crugepanel user-assignments-role-list'>
+	<h1>Seleccione un grupo para asignar las piezas que posee</h1>
+	<strong><p>Grupos registrados:</p></strong>
+	<ul class='auth-item'>
+	<?php 
+		$loader = "<span class='loader'></span>";		
+		foreach($grupo as $datos){
+			echo "<strong><li alt='".$datos->grupo."'>".$datos->grupo.$loader."</li></strong>";
+		}
+	?>
+	</ul>
+</div>
+<div class='crugepanel user-assignments-detail'>
+	<h6><div id='mostrarSeleccion'>Seleccione un grupo</div></h6>
+	
+	<div id='lista1' class='lista'>
+	
+		
+	<div id='revocarSeleccion' class='boton'>
+		<?php echo CrugeTranslator::t("Quitar piezas") ?>
+		
+	</div>
+
+	<?php 
+		
+	//print_r($uno);
+	//echo 'separoo';
+	//print_r($dos);
+		$this->widget('ext.selgridview.SelGridView', array(
+			'id'=>'_lista1',
+			'selectableRows'=>2,
+			'dataProvider'=>$piezasGrupo,
+			'enablePagination' => false,
+			'afterAjaxUpdate' => "actualizar",
+			'template'=>"{items}\n{summary}\n{pager}",
+			'ajaxUpdate' => true,
+			'columns'=>array(
+				
+				array(
+					'class'=>'CCheckBoxColumn'
+				),
+				
+				array(
+					'header'=>'Pieza agregadas',
+					'name'=>'repuesto',
+				),
+				array(
+					'header'=>'Categoría',
+					'name'=>'subTipo',
+					
+					//'footer'=>'',
+				),
+				array(
+					'header'=>'Cantidad',
+					'name'=>'cantidad',
+					'htmlOptions'=>array('style'=>'text-align:center;width:20px'),
+				),
+				array(
+					'header'=>'Unidad',
+					'name'=>'unidad',
+					
+					//'footer'=>'',
+				),
+			),
+		));
+	?>	
+	</div>
+		
+	<div id='lista2' class='lista'>
+	<div id='asignarSeleccion' class='boton'>
+		<?php 
+		echo CrugeTranslator::t("Agregar piezas");?></div>
+
+	<?php 
+	//zii.widgets.grid.CGridView
+		$this->widget('ext.selgridview.SelGridView', array(
+			'id'=>'_lista2',
+			'filter'=>$model,
+			'selectableRows'=>2,
+			'ajaxUpdate' => true,
+			'afterAjaxUpdate' => "actualizar",
+			'dataProvider'=>$DataProvider,
+			'enablePagination' => false,
+			'template'=>"{items}{summary}{pager}",
+			'columns'=>array(	
+			
+			array(
+					'class'=>'CCheckBoxColumn'
+				),
+				array(
+					'header'=>'Pieza',
+					'name'=>'repuesto',
+					'filter'=>CHtml::activeTextField($model, 'repuesto',array("placeholder"=>"Búsqueda..")),
+					'htmlOptions'=>array('style'=>'width: 140px;'),
+					//'footer'=>'',
+				),
+				array(
+					'header'=>'Categoría',
+					'name'=>'idsubTipoRepuesto',
+					'value'=>'$data->idsubTipoRepuesto0->subTipo',
+					'filter' => false,
+					//'footer'=>'',
+				),
+			
+				array(
+					'header'=>'Cantidad',
+					'value'=>'CHTML::textField("campo",1,array(\'id\'=>"campo$data->id",\'width\'=>4,\'maxlength\'=>2,\'onblur\'=>"return validar($data->id)",\'onkeypress\'=>"return justNumbers(event,$data->id)",\'onmousedown\'=>"return seleccion($data->id)",\'style\'=>\'width: 40px;height:16px;margin: 0 auto;text-align: center;\' ))',
+					'type'=>'raw',
+					'htmlOptions'=>array('style'=>'width: 50px;'),
+				),
+				array(
+					'header'=>'Unidad',
+					'value'=>'$data->idunidad0->unidad',
+					'type'=>'raw',
+					'htmlOptions'=>array('style'=>'width: 50px;'),
+				),
+				
+			),
+		));
+	?>	
+	</div>
+</div>
+</div>
+
 <script>
 	var i=0;
 	var itemName=""	;

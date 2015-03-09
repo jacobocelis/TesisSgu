@@ -1,4 +1,4 @@
-<h1><?php echo CrugeTranslator::t("Recuperar la clave"); ?></h1>
+<h1><?php echo CrugeTranslator::t("Recuperar la contraseña"); ?></h1>
 
 <?php if(Yii::app()->user->hasFlash('pwdrecflash')): ?>
 <div class="flash-success">
@@ -6,6 +6,7 @@
 </div>
 <?php else: ?>
 <div class="form">
+<i>La contraseña será enviada a su correo electrónico</i>
 <?php $form=$this->beginWidget('CActiveForm', array(
 	'id'=>'pwdrcv-form',
 	'enableClientValidation'=>false,
@@ -13,7 +14,7 @@
 		'validateOnSubmit'=>true,
 	),
 )); ?>
-
+<br>
 	<div class="row">
 		<?php echo $form->labelEx($model,'username'); ?>
 		<?php echo $form->textField($model,'username'); ?>
@@ -33,7 +34,7 @@
 	<?php endif; ?>
 	
 	<div class="row buttons">
-		<?php Yii::app()->user->ui->tbutton("Recuperar la Clave"); ?>
+		<?php Yii::app()->user->ui->tbutton("Recuperar"); ?>
 	</div>
 	
 <?php $this->endWidget(); ?>

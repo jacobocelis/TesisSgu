@@ -4,8 +4,8 @@
 $this->widget(Yii::app()->user->ui->CGridViewClass, array(
     'dataProvider'=>$dataProvider,
     'columns'=>array(
-		'idsession',
-		array('name'=>'iduser','htmlOptions'=>array('width'=>'50px')),
+		//'idsession',
+		//array('name'=>'iduser','htmlOptions'=>array('width'=>'50px')),
 		array('name'=>'sessionname','filter'=>''),
 		array('name'=>'status','filter'=>array(1=>'Activa',0=>'Cerrada')
 			,'value'=>'$data->status==1 ? \'activa\' : \'cerrada\' '),

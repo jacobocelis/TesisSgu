@@ -8,7 +8,7 @@
 	
 	<div class="row">
 		<?php echo $form->labelEx($model,'from'); ?>
-		<?php echo $form->textField($model,'from',array('size'=>45,'maxlength'=>45)); ?>
+		<?php echo $form->textField($model,'from',array('size'=>45,'maxlength'=>45,'readonly'=>'readonly','value'=>Yii::app()->params['correoPrincipal'])); ?>
 		<?php echo $form->error($model,'from'); ?>
 	</div>
 	

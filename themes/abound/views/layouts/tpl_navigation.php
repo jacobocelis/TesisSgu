@@ -9,20 +9,21 @@ $command = $connection->createCommand($sql);
 $value = $command->queryScalar();
 $fecha = date('d/m/Y h:i a', $value);
 
-//(Yii::app()->getSession()->get('rolActual') == 'Estudiante') ? true : false
 if (!Yii::app()->user->isGuest) {
     $id = Yii::app()->user->id;
     $consulta = Yii::app()->db->createCommand('SELECT itemname FROM `cruge_authassignment` WHERE `userid`=' . $id);
-    $roles = $consulta->queryAll();
+    $roles = $consulta->queryRow();
     $arrayInt = array();
     $nroRoles = 0;
     if (Yii::app()->getSession()->get('Iniciado') != "1" && !Yii::app()->user->isSuperAdmin) {
-        Yii::app()->getSession()->add('rolActual', $roles[0]['itemname']);
+        if(isset($roles[0]['itemname']))
+		Yii::app()->getSession()->add('rolActual', $roles[0]['itemname']);
         Yii::app()->getSession()->add('Iniciado', '1');
     } else {
         if (Yii::app()->user->isSuperAdmin)
             Yii::app()->getSession()->add('rolActual', 'Admin');
     }
+	if(isset($roles[0]['itemname']))
     foreach ($roles as $r) {
         array_push($arrayInt, array('label' => $r['itemname'], 'url' => $baseUrl . '?nrol=' . $r['itemname']));
         $nroRoles++;
@@ -105,9 +106,19 @@ else{
                             'visible' => !Yii::app()->user->isGuest),
 							array('label' => 'Viajes', 'url' => array('/viajes'), 
                             'visible' => !Yii::app()->user->isGuest),
-                        
+							
+							
+							array('label' => 'Mi cuenta<span class="caret"></span>', 'url' => '#', 
+                            'visible' => !Yii::app()->user->isSuperAdmin and !Yii::app()->user->isGuest,
+                            'itemOptions' => array('class' => 'dropdown', 'tabindex' => "-1"), 
+                            'linkOptions' => array('class' => 'dropdown-toggle', 'data-toggle' => "dropdown"),
+                            'items' => array(
+								array('label' => 'Perfil', 'url' => array('/cruge/ui/editprofile')),                            
+								array('label' => 'Cerrar Sesión ', 'url' => Yii::app()->user->ui->logoutUrl, 'visible' => !Yii::app()->user->isGuest),
+                            )),
+							
                         //Menu de Super Admin
-                        array('label' => 'Administrar<span class="caret"></span>', 'url' => '#', 
+                        array('label' => 'Sistema<span class="caret"></span>', 'url' => '#', 
                             'visible' => Yii::app()->user->isSuperAdmin,
                             'itemOptions' => array('class' => 'dropdown', 'tabindex' => "-1"), 
                             'linkOptions' => array('class' => 'dropdown-toggle', 'data-toggle' => "dropdown"),
@@ -121,11 +132,10 @@ else{
                                 array('label' => 'Crear Operaciones', 'url' => array('/cruge/ui/rbaclistops')),
                                 array('label' => 'Asignar Roles', 'url' => array('/cruge/ui/rbacusersassignments')),
                                 array('label' => 'Sesiones', 'url' => array('/cruge/ui/sessionadmin')),
+								array('label' => 'Perfil', 'url' => array('/cruge/ui/editprofile')),
                                 array('label' => 'Opciones', 'url' => array('/cruge/ui/systemupdate')),
+								
                             )),
-                        
-                     
-                        
 
                         //Diferentes Menu Compartidos
                         /*array('label' => 'Mi Cuenta <span class="caret"></span>', 'url' => '#', 
@@ -140,8 +150,7 @@ else{
                         array('label' => 'Iniciar', 'url' => array('/cruge/ui/login'), 
                             'visible' => Yii::app()->user->isGuest),
                         //(' . Yii::app()->user->name . ')
-                        array('label' => 'Cerrar Sesión ', 
-                            'url' => Yii::app()->user->ui->logoutUrl, 'visible' => !Yii::app()->user->isGuest),
+                        array('label' => 'Cerrar Sesión ', 'url' => Yii::app()->user->ui->logoutUrl, 'visible' => !Yii::app()->user->isGuest and Yii::app()->user->isSuperAdmin),
                       ),
                 ));
                 ?>

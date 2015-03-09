@@ -67,8 +67,31 @@ class CrugeMailer extends CrugeMailerBase implements ICrugeMailer
     {
         return CrugeTranslator::t($text);
     }
-
-    public function sendPasswordTo(ICrugeStoredUser $userInst, $notEncryptedPassword)
+	public function sendPasswordTo(ICrugeStoredUser $userInst)
+    {
+		$message = new YiiMailMessage;
+		
+		$userInst->password;
+		$body="<b>Su datos para ingresar al sistema son los siguientes: </b></br></br>";
+		$body.="<b>Usuario: </b>";
+		$body.=$userInst->username;
+		$body.="</br><b>Contraseña: </b>";
+		$body.=$userInst->password;
+		$body.="</br></br><b>Enlace para entrar al sistema: </b>";
+		$body.='http://curly.unet.edu.ve/tsg/';
+        
+		$message->setBody($body, 'text/html');
+		$message->subject ="Sistema para la gestión de flotas UNET";
+		$message->addTo($userInst->email);
+		
+		$message->from = Yii::app()->params['correoPrincipal'];
+	
+		if(Yii::app()->mail->send($message))
+			return 1;
+		else
+			return 0;
+    }
+    /*public function sendPasswordTo(ICrugeStoredUser $userInst, $notEncryptedPassword)
     {
         $this->sendEmail(
             $userInst->email,
@@ -80,11 +103,12 @@ class CrugeMailer extends CrugeMailerBase implements ICrugeMailer
                 array('model' => $userInst, 'password' => $notEncryptedPassword)
             )
         );
-    }
+    }*/
 
 
     public function sendRegistrationEmail(ICrugeStoredUser $userInst, $notEncryptedPassword)
     {
+		$this->sendPasswordTo($userInst);
         $this->sendEmail(
             $userInst->email,
             self::t("activacion de su cuenta")

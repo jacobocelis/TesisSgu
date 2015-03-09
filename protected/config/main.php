@@ -52,7 +52,7 @@ return array(
             // NO OLVIDES PONER EN FALSE TRAS INSTALAR
             'debug' => false,
             'rbacSetupEnabled' => true,
-            'allowUserAlways' => true,
+            'allowUserAlways' => false,
             // MIENTRAS INSTALAS..PONLO EN: false
             // lee mas abajo respecto a 'Encriptando las claves'
             //
@@ -71,7 +71,7 @@ return array(
             //
 				'afterLoginUrl' => null,
             'afterLogoutUrl' => null,
-            'afterSessionExpiredUrl' => null,
+            'afterSessionExpiredUrl' => array('/cruge/ui/login'),
             // manejo del layout con cruge.
             //
 	   'loginLayout' => '//layouts/column2',
@@ -143,7 +143,7 @@ return array(
         ),
         'crugemailer' => array(
             'class' => 'application.modules.cruge.components.CrugeMailer',
-            'mailfrom' => 'email-desde-donde-quieres-enviar-los-mensajes@xxxx.com',
+            'mailfrom' => 'jacobo.celis@gmail.com',
             'subjectprefix' => 'Tu Encabezado del asunto - ',
             'debug' => true,
         ),
@@ -196,7 +196,7 @@ return array(
     // using Yii::app()->params['paramName']
     'params' => array(
         // this is used in contact page
-        'adminEmail' => 'correo@unet.edu.ve',
+        'correoPrincipal' => 'jacobo.celis@gmail.com',
         'var'=>0,
     ),
     

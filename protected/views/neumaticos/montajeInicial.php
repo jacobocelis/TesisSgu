@@ -17,6 +17,9 @@ form {
     margin-top: 5px;
 
 }
+#menu{
+	font-size:15px;
+}
 .crugepanel {
     background-color: #FFF;
     border: 1px dotted #AAA;
