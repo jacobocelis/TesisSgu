@@ -48,7 +48,7 @@ return array(
 				'availableAuthMethods' => array('default'),
             'availableAuthModes' => array('username', 'email'),
             // url base para los links de activacion de cuenta de usuario
-            'baseUrl' => 'http://coco.com/',
+            'baseUrl' => 'http://curly.unet.edu.ve/',
             // NO OLVIDES PONER EN FALSE TRAS INSTALAR
             'debug' => false,
             'rbacSetupEnabled' => true,
@@ -70,7 +70,7 @@ return array(
             //		'afterLogoutUrl'=>array('/site/page','view'=>'about'),
             //
 				'afterLoginUrl' => null,
-            'afterLogoutUrl' => null,
+            'afterLogoutUrl' => array('/cruge/ui/login'),
             'afterSessionExpiredUrl' => array('/cruge/ui/login'),
             // manejo del layout con cruge.
             //

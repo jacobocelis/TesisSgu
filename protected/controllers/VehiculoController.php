@@ -28,8 +28,8 @@ class VehiculoController extends Controller
 	{
 		return array(
 			array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array('index','view','detallePieza','fotos','Selectdos','Getdatos'),
-				'users'=>array('*'),
+				'actions'=>array('index','view','detallePieza','fotos','Selectdos','Getdatos','buscarRepuesto'),
+				'users'=>array('@'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
 				'actions'=>array('create','update'),
@@ -89,6 +89,8 @@ class VehiculoController extends Controller
 			'idveh'=>$idv->getData(),
             ));
 	}*/
+
+
 	public function actiondetallePieza($id){ 
 	if (isset($_GET['idetalle'])){ 
 			$idetalle=$_GET['idetalle'];
@@ -250,6 +252,7 @@ class VehiculoController extends Controller
 	public function actionIndex()
 	{
 		$dataProvider=new CActiveDataProvider('Vehiculo');
+		
 		$this->render('index',array(
 			'dataProvider'=>$dataProvider,
 		));

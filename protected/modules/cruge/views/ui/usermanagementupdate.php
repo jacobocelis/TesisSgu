@@ -41,6 +41,8 @@
 			<?php echo $form->error($model,'email'); ?>
 		</div>
 		<div class='col'>
+			
+			
 			<?php echo $form->labelEx($model,'newPassword'); ?>
 			<?php echo $form->textField($model,'newPassword',array('size'=>10)); ?>
 			<?php echo $form->error($model,'newPassword'); ?>

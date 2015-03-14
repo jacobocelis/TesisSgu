@@ -12,6 +12,8 @@ $this->menu=array(
 	array('label'=>'Administrar vehiculos', 'url'=>array('admin')),
 );
 ?>
+
+							
 <div class='crugepanel user-assignments-detail'>
 <h1>Vehiculos registrados</h1>
 <?php /*$this->widget('zii.widgets.CListView', array(
@@ -27,21 +29,30 @@ $this->menu=array(
 	//'dataProvider'=>$model->search(),
 	//'filter'=>$model,
 	'columns'=>array(
-		'numeroUnidad',
+		array(
+			'header'=>'# unidad',
+			'name'=>'numeroUnidad',
+			'value'=>'\' <b>\'.$data->numeroUnidad.\' </b>\'',
+			'type'=>'raw',
+			'htmlOptions'=>array('style'=>'text-align:center'),	
+		),
+		
+		//'numeroUnidad',
 		//'serialCarroceria',
 		//'serialMotor',
 		array(
 			'header'=>'Marca',
 			'name'=>'idmodelo',
 			'value'=>'$data->idmodelo0->idmarca0->marca',
-			'type'=>'text'
+			'type'=>'text',
+			'htmlOptions'=>array('style'=>'text-align:center'),	
 		),
 		
 		array(
 			'header'=>'Modelo',
 			'name'=>'idmodelo',
 			'value'=>'$data->idmodelo0->modelo',
-			'type'=>'text'
+			'htmlOptions'=>array('style'=>'text-align:center'),	
 		),
 		
 		'placa',
@@ -49,33 +60,40 @@ $this->menu=array(
 		array(
 			'header'=>'Puestos',
 			'name'=>'nroPuestos',
+			'htmlOptions'=>array('style'=>'text-align:center'),	
 		),
-		'nroEjes',
-		'capCarga',
+		//'nroEjes',
+		//'capCarga',
 		//'comentario',
-		'cantidadRuedas',
+		//'cantidadRuedas',
 		//'capTanque',
 		
 		array(
 			'name'=>'idcombustible',
 			'value'=>'$data->idcombustible0->combustible',
-			'type'=>'text'
+			'htmlOptions'=>array('style'=>'text-align:center'),	
 		),
 		array(
 			'name'=>'idcolor',
 			'value'=>'$data->idcolor0->color',
-			'type'=>'text'
+			'htmlOptions'=>array('style'=>'text-align:center'),	
 		),
 		array(
 			'name'=>'idpropiedad',
 			'value'=>'$data->idpropiedad0->propiedad',
-			'type'=>'text'
+			'htmlOptions'=>array('style'=>'text-align:center'),	
+		),
+		array(
+			'header'=>'estado',
+			'value'=>'$data->getEstado($data->id)',
+			'htmlOptions'=>array('style'=>'text-align:center'),	
+			'type'=>'raw'
 		),
 		
 		//'fechaRegistro',
 		
 		array(
-			'header'=>'Opciones',
+			'header'=>'Detalle',
 			'class'=>'CButtonColumn',
 			 'template'=>'{view}',
 		),

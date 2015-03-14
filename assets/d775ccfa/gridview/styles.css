@@ -70,7 +70,7 @@
 	background: #E5F1F4;
 }
 
-.grid-view table.items tr.selected
+/*.grid-view table.items tr.selected
 {
 	background: #BCE774;
 }
@@ -78,8 +78,14 @@
 .grid-view table.items tr:hover.selected
 {
 	background: #CCFF66;
-}
+}*/
 
+.grid-view table.items tr.selected:hover {
+    background: none repeat scroll 0 0 #b6fcbb;
+}
+.grid-view table.items tr.selected {
+    background: none repeat scroll 0 0 #b6fcbb;
+}
 .grid-view table.items tbody tr:hover
 {
 	background: #ECFBD4;

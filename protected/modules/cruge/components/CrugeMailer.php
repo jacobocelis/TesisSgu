@@ -67,7 +67,7 @@ class CrugeMailer extends CrugeMailerBase implements ICrugeMailer
     {
         return CrugeTranslator::t($text);
     }
-	public function sendPasswordTo(ICrugeStoredUser $userInst)
+	/*public function sendPasswordTo(ICrugeStoredUser $userInst)
     {
 		$message = new YiiMailMessage;
 		
@@ -90,12 +90,12 @@ class CrugeMailer extends CrugeMailerBase implements ICrugeMailer
 			return 1;
 		else
 			return 0;
-    }
-    /*public function sendPasswordTo(ICrugeStoredUser $userInst, $notEncryptedPassword)
+    }*/
+    public function sendPasswordTo(ICrugeStoredUser $userInst, $notEncryptedPassword)
     {
         $this->sendEmail(
             $userInst->email,
-            self::t("su clave clave de acceso")
+            self::t("Sus credenciales de acceso")
             ,
             $this->render(
                 'sendpasswordto'
@@ -103,12 +103,10 @@ class CrugeMailer extends CrugeMailerBase implements ICrugeMailer
                 array('model' => $userInst, 'password' => $notEncryptedPassword)
             )
         );
-    }*/
-
-
+    }
     public function sendRegistrationEmail(ICrugeStoredUser $userInst, $notEncryptedPassword)
     {
-		$this->sendPasswordTo($userInst);
+		//$this->sendPasswordTo($userInst);
         $this->sendEmail(
             $userInst->email,
             self::t("activacion de su cuenta")

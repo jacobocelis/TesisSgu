@@ -1,3 +1,4 @@
+
 <h1><?php echo CrugeTranslator::t("Recuperar la contraseña"); ?></h1>
 
 <?php if(Yii::app()->user->hasFlash('pwdrecflash')): ?>

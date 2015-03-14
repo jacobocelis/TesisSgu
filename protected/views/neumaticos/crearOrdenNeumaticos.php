@@ -419,6 +419,13 @@ $this->beginWidget('zii.widgets.jui.CJuiDialog', array( // the dialog
 					'htmlOptions'=>array('style'=>'text-align:center;width:40px'),
 				),
 				array(
+					'type'=>"raw",
+					'header'=>'Serial',
+					'value'=>'$data->idhistoricoCaucho0->serial=="0"?$data->porDefinir($data->idhistoricoCaucho0->serial):strtoupper($data->idhistoricoCaucho0->serial);',
+					//'name'=>'serial',
+					'htmlOptions'=>array('style'=>'text-align:center;width:65px'),
+				),
+				array(
 					'header'=>'Eje',
 					'value'=>'$data->posicionOrigen==null?\'-\':$data->posicionOrigen0->iddetalleEje0->idposicionEje0->posicionEje',
 					'name'=>'iddetalleRueda',
@@ -451,6 +458,7 @@ $this->beginWidget('zii.widgets.jui.CJuiDialog', array( // the dialog
 					//'value'=>'$data->idplan0->idplanGrupo0->CompiledColour->$data-id.\' \'.$data->CompiledColour',
 					'htmlOptions'=>array('style'=>'text-align:center;width:40px'),
 				),
+				
 				array(
 					'header'=>'Eje',
 					'value'=>'$data->posicionDestino==null?\'-\':$data->posicionDestino0->iddetalleEje0->idposicionEje0->posicionEje',

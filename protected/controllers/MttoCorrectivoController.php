@@ -640,7 +640,10 @@ class MttoCorrectivoController extends Controller
 				   
 					echo CJSON::encode(array(
                         'status'=>'success', 
-                        'div'=>"se agregó la falla correctamente"
+                        'div'=>'<div class="alert alert-success">
+							<button type="button" class="close" data-dismiss="alert">×</button>
+                            <h4>Realizado</h4>
+                        	La falla se registró correctamente</div>'
                         ));
                     exit;
                 }

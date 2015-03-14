@@ -66,7 +66,7 @@ class CantidadController extends Controller
         }
 	 if (Yii::app()->request->isAjaxRequest){
 				
-			$model=$this->loadModel($id);
+			//$model=$this->loadModel($id);
             echo CJSON::encode(array(
                 'status'=>'failure', 
                 'div'=>$this->renderPartial('_formCantidad', array('model'=>$model,'rep'=>$rep), true)));

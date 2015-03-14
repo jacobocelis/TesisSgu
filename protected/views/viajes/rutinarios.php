@@ -121,8 +121,8 @@ $this->beginWidget('zii.widgets.jui.CJuiDialog', array( // the dialog
         'title'=>'modificar datos del viaje',
         'autoOpen'=>false,
         'modal'=>true,
-        'width'=>390,
-		'position'=>array(500,100),
+        'width'=>630,
+		'position'=>array(null,100),
 		'resizable'=>false
     ),
 ));?>

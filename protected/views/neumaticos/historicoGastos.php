@@ -143,6 +143,18 @@ $this->Widget('ext.highcharts.HighchartsWidget', array(
 ));
 
 	?>
+	<?php
+/*ventana agregar actividad*/
+$this->beginWidget('zii.widgets.jui.CJuiDialog', array( // the dialog
+    'id'=>'nuevaPos',
+    'options'=>array(
+ 
+        'autoOpen'=>false,
+        'modal'=>true, 
+    ),
+));?>
+<?php $this->endWidget();?>
+
 	</div>
 <style>
 .grid-view table.items th {

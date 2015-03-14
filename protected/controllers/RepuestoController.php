@@ -29,10 +29,10 @@ class RepuestoController extends Controller
 		return array(
 			array('allow',  // allow all users to perform 'index' and 'view' actions
 				'actions'=>array('index','view'),
-				'users'=>array('*'),
+				'users'=>array('@'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create','update','crear','Selectdos'),
+				'actions'=>array('create','update','crear','Selectdos','buscarRepuesto','DetalleRepuestoVehiculo'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -145,14 +145,48 @@ class RepuestoController extends Controller
 	/**
 	 * Lists all models.
 	 */
-	public function actionIndex()
-	{
-		$dataProvider=new CActiveDataProvider('Repuesto');
+	
+	public function actionIndex(){
+		
+		$dataProvider=new CActiveDataProvider('CaracteristicaVeh');
+		if(isset($_GET["repuesto"]) and isset($_GET["vehiculo"])){
+				if($_GET["repuesto"]==null and $_GET["vehiculo"]==null)
+					$dataProvider=new CActiveDataProvider('CaracteristicaVeh');	
+				if($_GET["repuesto"]<>null and $_GET["vehiculo"]<>null)
+					$dataProvider=new CActiveDataProvider('CaracteristicaVeh',array('criteria' => array(
+						'condition' =>"idrepuesto in (select id from sgu_repuesto where repuesto like '%".$_GET['repuesto']."%') and idvehiculo=".$_GET['vehiculo']."",
+						'order'=>'idrepuesto')));	
+				if($_GET["repuesto"]<>null and $_GET["vehiculo"]==null)
+					$dataProvider=new CActiveDataProvider('CaracteristicaVeh',array('criteria' => array(
+						'condition' =>"idrepuesto in (select id from sgu_repuesto where repuesto like '%".$_GET['repuesto']."%')",
+						'order'=>'idrepuesto')));	
+				if($_GET["repuesto"]==null and $_GET["vehiculo"]<>null)
+					$dataProvider=new CActiveDataProvider('CaracteristicaVeh',array('criteria' => array(
+						'condition' =>"idvehiculo=".$_GET['vehiculo']."",
+						'order'=>'idrepuesto')));			
+		}
+		$det=new CActiveDataProvider('Cantidad');
+		if(isset($_GET["id"]))
+			$det=new CActiveDataProvider('Cantidad',array('criteria' => array(
+						'condition' =>"idCaracteristicaVeh = '".$_GET['id']."'",
+						'order'=>'id')));
 		$this->render('index',array(
 			'dataProvider'=>$dataProvider,
+			'det'=>$det,
 		));
 	}
-
+	public function actionBuscarRepuesto(){
+			$request=trim($_GET['term']);
+			if($request!=''){
+				$model=Repuesto::model()->findAll(array("condition"=>"repuesto like '%$request%'"));
+				$data=array();
+				foreach($model as $get){
+					$data[]=$get->repuesto;
+				}
+				//$this->layout='empty';
+				echo json_encode($data);
+			}
+		}
 	/**
 	 * Manages all models.
 	 */

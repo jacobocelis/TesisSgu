@@ -61,7 +61,13 @@
 					'name'=>'fecha',
 					'htmlOptions'=>array('style'=>'text-align:center;width:5px'),
 				),
-				
+				array(
+					'type'=>"raw",
+					'header'=>'Serial',
+					'value'=>'$data->serial=="0"?$data->porDefinir($data->serial):strtoupper($data->serial);',
+					//'name'=>'serial',
+					'htmlOptions'=>array('style'=>'text-align:center;width:65px'),
+				),
 				array(
 					'header'=>'Eje',
 					'value'=>'$data->iddetalleRueda==null?\' - \':$data->iddetalleRueda0->iddetalleEje0->idposicionEje0->posicionEje',
@@ -110,7 +116,13 @@
 					'name'=>'fecha',
 					'htmlOptions'=>array('style'=>'text-align:center;width:5px'),
 				),
-			
+				array(
+					'type'=>"raw",
+					'header'=>'Serial',
+					'value'=>'$data->serial=="0"?$data->porDefinir($data->serial):strtoupper($data->serial);',
+					//'name'=>'serial',
+					'htmlOptions'=>array('style'=>'text-align:center;width:65px'),
+				),
 				array(
 					'header'=>'Eje',
 					'value'=>'$data->iddetalleRueda==null?\' - \':$data->iddetalleRueda0->iddetalleEje0->idposicionEje0->posicionEje',

@@ -93,7 +93,8 @@ class CrugeAccessControlFilter extends CFilter
     private function reportError($itemName)
     {
         if (CrugeUtil::config()->allowUserAlways == false) {
-            throw new CrugeException($itemName, 401);
+            //throw new CrugeException($itemName, 401);
+			throw new CrugeException('Ud no tiene permisos para ver ésta página', 403);
         }
     }
 

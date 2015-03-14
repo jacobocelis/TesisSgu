@@ -41,6 +41,18 @@ class Vehiculo extends CActiveRecord
 	{
 		return 'sgu_vehiculo';
 	}
+	public function getEstado($id){
+		
+		$estado=Yii::app()->db->createCommand("select he.idestado, e.estado from sgu_historicoEdos he, sgu_estado e where e.id=he.idestado and he.idvehiculo=".$id." order by he.id desc limit 1")->queryRow();
+		if($estado["idestado"]=='1')
+			return '<div style="color:green"><b>'.$estado["estado"].'</b></div>';
+		if($estado["idestado"]=='2')
+			return '<div style="color:red"><b>'.$estado["estado"].'</b></div>';
+		if($estado["idestado"]=='3')
+			return '<div style="color:orange"><b>'.$estado["estado"].'</b></div>';
+		if($estado["idestado"]=='4')
+			return '<div style="color:grey"><b>'.$estado["estado"].'</b></div>';
+	}
 public function getTotal($data)
 	{
 		$total=0;

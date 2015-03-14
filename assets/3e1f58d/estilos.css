@@ -66,10 +66,18 @@ img.iconhelp{
 	margin: 10px;
 	margin-left: 0px;
 }
-
+.crugepanel {
+    background-color: #FFF;
+    border: 1px dotted #AAA;
+    border-radius: 1px;
+    box-shadow: 3px 3px 5px #EEE;
+    display: block;
+    margin-top: 10px;
+    padding: 10px;
+}
 div.form .form-group {
 	border: 1px dotted #aaa;
-	border-radius: 5px;
+	border-radius: 1px;
 	overflow: auto;
 	padding: 10px;
 	margin-bottom: 10px;
@@ -84,7 +92,7 @@ div.form  h6 {
 	background-color: #efefef;
 	padding: 5px;
 	padding-left: 10px;
-	border-radius: 3px;
+	border-radius: 1px;
 	
 }
 div.form .textfield-readonly input{
@@ -109,7 +117,7 @@ div.form  .hint {
 
 div.form .field-group{
 	border: 1px dotted #eee;
-	border-radius: 5px;
+	border-radius: 1px;
 	overflow: auto;
 	clear: both;
 	padding: 5px;

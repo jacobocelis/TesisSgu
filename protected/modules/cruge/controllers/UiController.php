@@ -1204,6 +1204,13 @@ class UiController extends Controller
 
         $model = Yii::app()->user->um->loadUserByKey($key);
         if ($model != null) {
+			if($model->state == CRUGEUSERSTATE_ACTIVATED){
+				$resp = CrugeTranslator::t(
+                        "su cuenta ya fue activada con éxito"
+                    );
+					$this->renderText($resp);
+			}
+			
             if ($model->state == CRUGEUSERSTATE_NOTACTIVATED) {
 
                 $resp = CrugeTranslator::t("disculpe, no se pudo activar su cuenta");
@@ -1218,6 +1225,7 @@ class UiController extends Controller
 
                 $this->renderText($resp);
             }
+			
         }
     }
 
