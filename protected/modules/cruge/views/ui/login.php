@@ -1,5 +1,7 @@
 
-<?php if(Yii::app()->user->hasFlash('loginflash')): ?>
+<?php 
+
+if(Yii::app()->user->hasFlash('loginflash')): ?>
 <div class="flash-error">
 	<?php echo Yii::app()->user->getFlash('loginflash'); ?>
 </div>
@@ -17,6 +19,7 @@
 	'clientOptions'=>array(
 		'validateOnSubmit'=>true,
 	),
+	
 )); ?>
 
 	<div class="row">

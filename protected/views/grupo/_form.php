@@ -34,6 +34,10 @@
 		<div class="row">
 		<?php echo $form->labelEx($model,'idtipo'); ?>
 		<?php echo $form->dropDownList($model,'idtipo',CHtml::listData(Tipo::model()->findAll(),'id','tipo'),array('id'=>'tipo')); ?>
+		<?php echo CHtml::link('<img src='.Yii::app()->baseUrl.'/imagenes/agregar.png alt="algo"/>',"",array('title'=>'Registrar un tipo grupo de vehiculos',
+        'style'=>'cursor: pointer;',
+        'onclick'=>"{
+		tipo('Crear un nuevo grupo de vehiculos','/grupo/nuevoGrupo','/grupo/actualizarListaGrupo','#Vehiculo_idgrupo');}"));?>
 		<?php echo $form->error($model,'idtipo'); ?>
 	</div>
 
@@ -43,9 +47,15 @@
 		<?php echo CHtml::submitButton($model->isNewRecord ? 'Crear' : 'Guardar cambios'); ?>
 	</div>
 
+
+
 <?php $this->endWidget(); ?>
 
 
 
 
 </div><!-- form -->
+<script>
+
+</script>
+

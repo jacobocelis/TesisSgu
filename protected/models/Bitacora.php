@@ -8,10 +8,10 @@
  * @property string $fecha
  * @property string $evento
  * @property integer $tabla
- * @property integer $iduser
+ * @property integer $idusuario
  *
  * The followings are the available model relations:
- * @property CrugeUser $iduser0
+ * @property CrugeUser $idusuario0
  */
 class Bitacora extends CActiveRecord
 {
@@ -22,7 +22,14 @@ class Bitacora extends CActiveRecord
 	{
 		return 'sgu_bitacora';
 	}
-
+	public function registrarEvento($usuario,$accion,$tabla){
+		$model = new Bitacora;
+		$model->fecha=date('Y-m-d H:i:s');
+		$model->evento=$accion;
+		$model->tabla=$tabla;
+		$model->idusuario=$usuario;
+		$model->save();
+	}
 	/**
 	 * @return array validation rules for model attributes.
 	 */
@@ -31,12 +38,12 @@ class Bitacora extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('fecha, evento, tabla, iduser', 'required'),
-			array('tabla, iduser', 'numerical', 'integerOnly'=>true),
-			array('evento', 'length', 'max'=>45),
+			array('fecha, evento, tabla, idusuario', 'required'),
+			array('idusuario', 'numerical', 'integerOnly'=>true),
+			array('evento,tabla', 'length', 'max'=>45),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, fecha, evento, tabla, iduser', 'safe', 'on'=>'search'),
+			array('id, fecha, evento, tabla, idusuario', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -48,7 +55,7 @@ class Bitacora extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-			'iduser0' => array(self::BELONGS_TO, 'CrugeUser', 'iduser'),
+			'idusuario0' => array(self::BELONGS_TO, 'CrugeStoredUser', 'idusuario'),
 		);
 	}
 
@@ -62,7 +69,7 @@ class Bitacora extends CActiveRecord
 			'fecha' => 'Fecha',
 			'evento' => 'Evento',
 			'tabla' => 'Tabla',
-			'iduser' => 'Iduser',
+			'idusuario' => 'idusuario',
 		);
 	}
 
@@ -88,7 +95,7 @@ class Bitacora extends CActiveRecord
 		$criteria->compare('fecha',$this->fecha,true);
 		$criteria->compare('evento',$this->evento,true);
 		$criteria->compare('tabla',$this->tabla);
-		$criteria->compare('iduser',$this->iduser);
+		$criteria->compare('idusuario',$this->idusuario);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,

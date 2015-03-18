@@ -7,9 +7,9 @@ $this->breadcrumbs=array(
 );
 
 $this->menu=array(
-	array('label'=>'Registrar repuesto', 'url'=>array('create')),
-	array('label'=>'Asignación de repuestos a grupos', 'url'=>array('asignarPiezaGrupo/AsignarPieza')),
-	array('label'=>'Ver repuestos asignados', 'url'=>array('detallePiezaGrupo/detallePieza')),
+	array('label'=>'Registrar repuesto', 'url'=>array('repuesto/create')),
+	array('label'=>'Asignación de repuestos a grupos', 'url'=>array('repuesto/AsignarPiezaGrupo')),
+	array('label'=>'Ver repuestos asignados', 'url'=>array('repuesto/detallePiezaGrupo')),
 	array('label'=>'Administrar repuestos', 'url'=>array('admin')),
 );
 ?>
@@ -104,6 +104,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
 		?>
 </div>
 <?php
+
 $this->beginWidget('zii.widgets.jui.CJuiDialog', array( // the dialog
     'id'=>'dialog',
     'options'=>array(

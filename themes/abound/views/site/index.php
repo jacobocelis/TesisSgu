@@ -70,3 +70,9 @@
 		</div>
 	</div>
 
+<style>
+.span3 {
+    width: 166px;
+}
+
+</style>

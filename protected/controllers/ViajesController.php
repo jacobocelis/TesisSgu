@@ -132,7 +132,7 @@ public function actionActualizarSpan(){
 			if($_POST['Historicoviajes']['horaSalida']<>'')
 				$model->horaSalida=date("H:i", strtotime($_POST['Historicoviajes']['horaSalida']));
 			if(isset($_POST['Historicoviajes']['horaLlegada'])<>'')
-			$model->horaLlegada=date("H:i", strtotime($_POST['Historicoviajes']['horaLlegada']));
+				$model->horaLlegada=date("H:i", strtotime($_POST['Historicoviajes']['horaLlegada']));
 			}
             if($model->save()){
 				$ultimaLectura=Yii::app()->db->createCommand('select lectura from sgu_kilometraje where idvehiculo='.$model->idvehiculo.' order by id desc limit 1')->queryRow();

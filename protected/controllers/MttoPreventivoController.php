@@ -111,7 +111,7 @@ class MttoPreventivoController extends Controller
 			'recursos'=>$recursos,
 			'orden'=>$orden,
 		),true));
-		 $mPDF1->Output('ordenes/Orden-'.$id.'.pdf','F');
+		 $mPDF1->Output('Orden-'.$id.'.pdf','F');
 		 //exit;
 	}	 
 	
@@ -122,14 +122,15 @@ class MttoPreventivoController extends Controller
 				$model->attributes=$_POST['Mail'];
 				if($model->validate()){
 					$this->GenerarPDF($id);
-					$adjunto="ordenes/Orden-".$id.".pdf";
+					$adjunto="Orden-".$id.".pdf";
 					$correo = PublicoController::enviarMail($model->to,$model->from,$model->subject,$model->body,$adjunto);
 					if($correo){
 						echo CJSON::encode(array(
 							'status'=>'success', 
 							'div'=>"La órden fue enviada con éxito"
 							));
-						unlink(Yii::app()->basePath.'/../ordenes/Orden-'.$id.'.pdf');
+						//unlink(Yii::app()->basePath.'/../ordenes/Orden-'.$id.'.pdf');
+						unlink('Orden-'.$id.'.pdf');
 						exit;
 						
 					}

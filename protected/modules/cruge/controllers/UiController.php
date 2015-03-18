@@ -119,7 +119,46 @@ class UiController extends Controller
             ),
         );
     }
-
+	public function actionBitacora()
+	{
+		$dataProvider=new CActiveDataProvider('Bitacora',array('criteria' => array(
+			'condition' =>'1',
+			'order'=>'id')));
+			
+			if(isset($_GET["fechaIni"]) or isset($_GET["fechaFin"]) or isset($_GET["usuarios"])){
+				if($_GET["fechaIni"]=="" and $_GET["fechaFin"]=="" and $_GET["usuarios"]==""){
+					$dataProvider=new CActiveDataProvider('Bitacora',array('criteria' => array(
+						'condition' =>'1',
+						'order'=>'id')));	
+				}
+				if($_GET["fechaIni"]!="" and $_GET["usuarios"]==""){
+					$fechaini=date("Y-m-d", strtotime(str_replace('/', '-',$_GET["fechaIni"])));
+					$fechafin=date("Y-m-d", strtotime(str_replace('/', '-',$_GET["fechaFin"])));
+					$dataProvider=new CActiveDataProvider('Bitacora',array('criteria' => array(
+						'condition' =>'(date(fecha)>="'.$fechaini.'" and date(fecha)<="'.$fechafin.'")',
+						'order'=>'id',
+					)));		
+				}
+				if($_GET["fechaIni"]=="" and $_GET["usuarios"]!=""){
+					$dataProvider=new CActiveDataProvider('Bitacora',array('criteria' => array(
+						'condition' =>'idusuario='.$_GET["usuarios"].'',
+						'order'=>'id',
+					)));	
+				}
+				if($_GET["fechaIni"]!="" and $_GET["usuarios"]!=""){
+					$fechaini=date("Y-m-d", strtotime(str_replace('/', '-',$_GET["fechaIni"])));
+					$fechafin=date("Y-m-d", strtotime(str_replace('/', '-',$_GET["fechaFin"])));
+					$dataProvider=new CActiveDataProvider('Bitacora',array('criteria' => array(
+						'condition' =>'(date(fecha)>="'.$fechaini.'" and date(fecha)<="'.$fechafin.'" and idusuario='.$_GET["usuarios"].')',
+						'order'=>'id',
+					)));	
+				}
+			}
+		$this->render('bitacora',array(
+			'dataProvider'=>$dataProvider,
+			));
+	}
+	
     public function actionLogin()
     {
         if(!Yii::app()->user->isGuest)
@@ -287,7 +326,10 @@ class UiController extends Controller
                 }
 
                 if (Yii::app()->user->um->save($model, 'update')) {
-                    if ($boolIsUserManagement == true) {
+					/*Registro en la bitácora*/
+					Bitacora::registrarEvento(Yii::app()->user->id,'UPDATE','cruge_user');
+                    
+					if ($boolIsUserManagement == true) {
                         $this->redirect(array('usermanagementadmin'));
                     } else {
                         $this->redirect(array('usersaved', 'layout' => $this->layout));
@@ -327,11 +369,10 @@ class UiController extends Controller
                 Yii::app()->user->um->generateAuthenticationKey($model);
 
                 if (Yii::app()->user->um->save($model, 'insert')) {
-
+				/*Registro en la bitácora*/
+				Bitacora::registrarEvento(Yii::app()->user->id,'INSERT','cruge_user');
                     $this->onNewUser($model, $newPwd);
 
-                    //$this->redirect(array('usermanagementadmin'));
-					//$this->redirect('usermanagementupdate?r=tucontroller/update&id='.$model->id.'');
 					$this->redirect(array('usermanagementupdate', 'id'=>$model->iduser));
 					//$this->render("usermanagementupdate",array('model' => $model,'boolIsUserManagement' => true));
                 }
@@ -481,6 +522,8 @@ class UiController extends Controller
             if ($model->validate()) {
                 if ($model->deleteConfirmation == 1) {
                     if ($model->delete()) {
+						/*Registro en la bitácora*/
+						Bitacora::registrarEvento(Yii::app()->user->id,'DELETE','cruge_user');
                         $this->redirect(array('usermanagementadmin'));
                     }
                 }

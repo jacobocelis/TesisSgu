@@ -68,14 +68,14 @@ public function getTotal($data)
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('numeroUnidad, serialCarroceria,serialMotor, placa, anno, cantidadRuedas, capTanque, idmodelo, idgrupo, idcombustible, idcolor,idpropiedad,KmInicial,rendimiento', 'required'),
-			array('numeroUnidad, anno, nroPuestos, nroEjes, capCarga, cantidadRuedas, capTanque, idmodelo, idgrupo, idcombustible,idcolor,idpropiedad,KmInicial,rendimiento', 'numerical', 'integerOnly'=>true),
+			array('numeroUnidad, serialCarroceria,serialMotor, placa, anno , idmodelo, idgrupo, idcombustible, idcolor,idpropiedad,KmInicial', 'required'),
+			array('numeroUnidad, anno, nroPuestos, idmodelo, idgrupo, idcombustible,idcolor,idpropiedad,KmInicial', 'numerical', 'integerOnly'=>true),
 			array('serialCarroceria', 'length', 'max'=>45),
 			array('placa', 'length', 'max'=>7),
 			array('comentario', 'length', 'max'=>200),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, numeroUnidad, serialCarroceria, serialChasis, placa, anno, nroPuestos, nroEjes, capCarga, comentario, cantidadRuedas, capTanque, idmodelo, idgrupo, idcombustible,idcolor,idpropiedad, idtipo, fechaRegistro,KmInicial,rendimiento', 'safe', 'on'=>'search'),
+			array('id, numeroUnidad, serialCarroceria, serialChasis, placa, anno, nroPuestos, comentario , idmodelo, idgrupo, idcombustible,idcolor,idpropiedad, idtipo, fechaRegistro,KmInicial', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -133,7 +133,7 @@ public function getTotal($data)
 			'idcolor' => 'Color',
 			'idpropiedad' => 'Propiedad',
 			'KmInicial' => 'Kilometraje inicial',
-			'rendimiento' => 'Rendimiento de combustible (Km/l)',
+			
 		);
 	}
 

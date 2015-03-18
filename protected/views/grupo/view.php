@@ -123,40 +123,7 @@ $this->beginWidget('zii.widgets.jui.CJuiDialog', array( // the dialog
 <div class="divForForm"></div>
  
 <?php $this->endWidget();?>
-<style>
-div.user-assignments-role-list {
-}
-.crugepanel {
-    background-color: white;
-    border: 1px dotted #aaa;
-    border-radius: 5px;
-    box-shadow: 3px 3px 5px #eee;
-    display: block;
-    margin-top: 10px;
-    
-    padding: 10px;
-}
-.grid-view table.items th {
-    background: #f8f8f8;
-    color: black;
-    text-align: center;
-}
-.grid-view table.items th a {
-    color: #000;
-    font-weight: bold;
-    text-decoration: none;
-}
-.grid-view table.items th a:hover {
-    color: #000;
-    font-weight: bold;
-    text-decoration: none;
-}
-.grid-view table.items th {
-    background: #f8f8f8;
-	color:black;
-    text-align: center;
-}
-</style>
+
 <script>
 /*window.onload=function(){
 var pos=window.name || 0;
@@ -190,6 +157,5 @@ function addClassroom()
             } ",
             ))?>;
     return false; 
- 
 }
 </script>

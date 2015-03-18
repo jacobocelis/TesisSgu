@@ -1,16 +1,4 @@
-<?php $this->menu=array(
-	array('label' => 'Crear Usuario', 'url' => array('/cruge/ui/usermanagementcreate')),
-                                array('label' => 'Administrar Usuarios', 'url' => array('/cruge/ui/usermanagementadmin')),
-                                array('label' => 'Listar Campos Perfil', 'url' => array('/cruge/ui/fieldsadminlist')),
-                                array('label' => 'Crear Campo de Perfil', 'url' => array('/cruge/ui/fieldsadmincreate')),
-                                array('label' => 'Crear Roles', 'url' => array('/cruge/ui/rbaclistroles')),
-                                array('label' => 'Crear Tareas', 'url' => array('/cruge/ui/rbaclisttasks')),
-                                array('label' => 'Crear Operaciones', 'url' => array('/cruge/ui/rbaclistops')),
-                                array('label' => 'Asignar Roles', 'url' => array('/cruge/ui/rbacusersassignments')),
-                                array('label' => 'Sesiones', 'url' => array('/cruge/ui/sessionadmin')),
-                                array('label' => 'Opciones', 'url' => array('/cruge/ui/systemupdate')),
-);?>
-
+<div class='crugepanel '>
 <div class="form">
 <h1><?php echo ucwords(CrugeTranslator::t('admin', 'Administrar usuarios'));?></h1>
 <?php 
@@ -66,4 +54,5 @@ $this->widget(Yii::app()->user->ui->CGridViewClass,
 	'filter'=>$model,
 ));
 ?>
+</div>
 </div>

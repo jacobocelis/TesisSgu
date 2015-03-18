@@ -43,7 +43,10 @@ h1 {
     padding: 0.3em;
 }
 #scrollingDiv{
+	
 	position: fixed;
+    bottom: 70px;
+    left: 40px;
 }
 .btn {
 	-moz-box-shadow:inset 0px 1px 0px 0px #54a3f7;
@@ -235,12 +238,12 @@ $this->beginWidget('zii.widgets.jui.CJuiDialog', array( // the dialog
 <?php $this->endWidget();?>
 
 <script>
-var ancho=$(window).width()-($(window).width()*0.20);
+/*var ancho=$(window).width()-($(window).width()*0.20);
 $('#scrollingDiv').css({
   'right':ancho,
   'bottom': '50px'
  });
- 
+ */
  $( "#scrollingDiv" ).click(function() {
 	$('#scrollingDiv').hide(300);
 	$("#formulario").dialog('open');

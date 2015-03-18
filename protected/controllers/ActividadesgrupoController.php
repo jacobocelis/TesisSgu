@@ -103,6 +103,8 @@ class ActividadesgrupoController extends Controller
 		if(isset($_POST['Actividadesgrupo'])){
             $model->attributes=$_POST['Actividadesgrupo'];
             if($model->save()){
+				/*Registro en la bitácora*/
+				Bitacora::registrarEvento(Yii::app()->user->id,'INSERT','sgu_actividadesGrupo');
                 if (Yii::app()->request->isAjaxRequest){
 				/*actualizacion por debajo a tabla actividades*/
 				//$modelo=Plangrupo::model()->findByPk($id);
@@ -111,7 +113,8 @@ class ActividadesgrupoController extends Controller
 				
 				//for($i=0;$i<$total;$i++){
 					Yii::app()->db->createCommand('UPDATE `tsg`.`sgu_actividades` SET `idactividadMtto` = "'.$model->idactividadMtto.'", `frecuenciaKm` = "'.$model->frecuenciaKm.'", `frecuenciaMes` = "'.$model->frecuenciaMes.'", `duracion` = "'.$model->duracion.'", `idprioridad` = "'.$model->idprioridad.'", `idtiempod` = "'.$model->idtiempod.'", `idtiempof` = "'.$model->idtiempof.'", `procedimiento` = "'.$model->procedimiento.'"  WHERE `sgu_actividades`.`idactividadesGrupo` = '.$id)->query();
-					
+					/*Registro en la bitácora*/
+					Bitacora::registrarEvento(Yii::app()->user->id,'UPDATE','sgu_actividades');
 				//}
 					/*-----------------------------------------------------------------------------------------------*/
                     echo CJSON::encode(array(
@@ -140,7 +143,11 @@ class ActividadesgrupoController extends Controller
 	public function actionDelete($id){
 		/*aqui elimino por debajo*/
 		Yii::app()->db->createCommand("DELETE FROM `tsg`.`sgu_actividades` WHERE `sgu_actividades`.`idactividadesGrupo` = '".$id."'")->query();
+		/*Registro en la bitácora*/
+		Bitacora::registrarEvento(Yii::app()->user->id,'DELETE','sgu_actividades');
 		$this->loadModel($id)->delete();
+		/*Registro en la bitácora*/
+		Bitacora::registrarEvento(Yii::app()->user->id,'DELETE','sgu_actividadesGrupo');
 		// if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
 		if(!isset($_GET['ajax']))
 			$this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));

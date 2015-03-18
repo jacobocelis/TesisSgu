@@ -32,7 +32,7 @@ class MarcaController extends Controller
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create','update'),
+				'actions'=>array('create','update','ActualizarListaMarca','NuevaMarca'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -78,7 +78,37 @@ class MarcaController extends Controller
 			'model'=>$model,
 		));
 	}
-
+	public function actionNuevaMarca(){
+					$model=new Marca;
+		  
+		if(isset($_POST['Marca'])){
+				$model->attributes=$_POST['Marca'];
+				if($model->save()){
+					if (Yii::app()->request->isAjaxRequest){
+						echo CJSON::encode(array(
+							'status'=>'success', 
+							'div'=>"se agregó la marca"
+							));
+						exit;               
+					}
+				}
+			}
+			if (Yii::app()->request->isAjaxRequest){
+				echo CJSON::encode(array(
+					'status'=>'failure', 
+					'div'=>$this->renderPartial('_form', array('model'=>$model), true)));
+				exit;               
+			}
+		 
+	}
+	public function actionActualizarListaMarca(){
+	
+			$lista=Marca::model()->findAll('1 order by id desc');
+			foreach($lista as $li){
+				echo CHtml::tag('option',array('type'=>'text','value'=>(($li->id))),Chtml::encode(($li->marca)),true);
+			
+		}
+	}
 	/**
 	 * Updates a particular model.
 	 * If update is successful, the browser will be redirected to the 'view' page.

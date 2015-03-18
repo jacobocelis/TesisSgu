@@ -14,8 +14,17 @@ body {
   font-weight:200;
   padding:10px 20px;
   margin-left:-15px;
+  
 }
-
+.crugepanel {
+    background-color: #FFF;
+    border: 1px dotted #AAA;
+    border-radius: 1px;
+    box-shadow: 3px 3px 5px #EEE;
+    display: block;
+    margin-top: 10px;
+    padding: 10px;
+}
 .navbar .nav > li > a {
   float:none;
   padding:10px 15px;
@@ -27,6 +36,7 @@ body {
 }
 
 /* Desktops and laptops ----------- */
+
 @media only screen 
 and (min-width : 1224px) {
 	.container-fluid{padding-top: 100px;}
@@ -34,7 +44,6 @@ and (min-width : 1224px) {
 	.style-switcher{margin-left:-70px;}
 }
 
-/* Large screens ----------- */
 @media only screen 
 and (min-width : 1824px) {
 	.container-fluid{padding-top: 100px;}

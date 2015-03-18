@@ -159,13 +159,19 @@ class ActividadesController extends Controller
 			if($model->idestatus==4){
 				Yii::app()->db->createCommand("INSERT INTO `tsg`.`sgu_actividades` (`ultimoKm`,`ultimoFecha`,`frecuenciaKm`,`frecuenciaMes`,`proximoKm`,`proximoFecha`,`duracion`,`idprioridad`,`idvehiculo`,`idestatus`,`procedimiento`,`idtiempod`,`idtiempof`,`idactividadesGrupo`,`idactividadMtto`)
 				VALUES (".$model->kmRealizada.",'".$model->fechaRealizada."',".$model->frecuenciaKm.",".$model->frecuenciaMes.",".$proximoKm.",'".$proximoFecha."',".$model->duracion.",".$model->idprioridad.",".$model->idvehiculo.",2,'".$model->procedimiento."',".$model->idtiempod.",".$model->idtiempof.",".$model->idactividadesGrupo.",".$model->idactividadMtto.")")->query();
+				/*Registro en la bitácora*/
+				Bitacora::registrarEvento(Yii::app()->user->id,'INSERT','sgu_actividades');
 			}
 			if($model->idestatus==3){
 				$ult=Yii::app()->db->createCommand("select id from sgu_actividades where idactividadesGrupo=".$model->idactividadesGrupo." and idvehiculo= ".$model->idvehiculo." and idactividadMtto=".$model->idactividadMtto." order by id desc limit 1")->queryRow();
 				
 				Yii::app()->db->createCommand("update `tsg`.`sgu_actividades` set ultimoKm=".$model->kmRealizada.",ultimoFecha='".$model->fechaRealizada."', frecuenciaKm=".$model->frecuenciaKm.",frecuenciaMes=".$model->frecuenciaMes.",proximoKm=".$proximoKm.",proximoFecha='".$proximoFecha."',duracion=".$model->duracion.",idprioridad=".$model->idprioridad.",idvehiculo=".$model->idvehiculo.",idestatus=2, procedimiento='".$model->procedimiento."',idtiempod=".$model->idtiempod.",idtiempof=".$model->idtiempof.",idactividadesGrupo=".$model->idactividadesGrupo.",idactividadMtto=".$model->idactividadMtto." where id = '".$ult["id"]."'")->query();	
+				/*Registro en la bitácora*/
+				Bitacora::registrarEvento(Yii::app()->user->id,'UPDATE','sgu_actividades');
 			}
 			Yii::app()->db->createCommand("update `tsg`.`sgu_actividades` set idestatus='3' where id = '".$id."'")->query();
+			/*Registro en la bitácora*/
+				Bitacora::registrarEvento(Yii::app()->user->id,'UPDATE','sgu_actividades');
 			//inserto el recurso de la actividad
 			if($model->idestatus==4){
 				$totalRec=Yii::app()->db->createCommand('select * from sgu_actividadRecurso where idactividades="'.$id.'"')->queryAll();
@@ -175,6 +181,8 @@ class ActividadesController extends Controller
 				for($i=0;$i<$total;$i++){
 					Yii::app()->db->createCommand("INSERT INTO `tsg`.`sgu_actividadRecurso` (`cantidad`,`idactividades`,`idinsumo`,`idrepuesto`,`idservicio`,`idunidad`,`detalle`,`idactividadRecursoGrupo`)
 						VALUES (".$totalRec[$i]["cantidad"].",".$ultimaAct["id"].",".($totalRec[$i]["idinsumo"]==null?$null:$totalRec[$i]["idinsumo"]).",".($totalRec[$i]["idrepuesto"]==null?$null:$totalRec[$i]["idrepuesto"]).",".($totalRec[$i]["idservicio"]==null?$null:$totalRec[$i]["idservicio"]).",".$totalRec[$i]["idunidad"].",'".$totalRec[$i]["detalle"]."',".($totalRec[$i]["idactividadRecursoGrupo"]==null?$null:$totalRec[$i]["idactividadRecursoGrupo"]).")")->query();
+						/*Registro en la bitácora*/
+						Bitacora::registrarEvento(Yii::app()->user->id,'INSERT','sgu_actividadRecurso');
 				}
 			}
                 

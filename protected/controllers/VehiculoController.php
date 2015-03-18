@@ -333,9 +333,9 @@ class VehiculoController extends Controller
 	}
 	public function actionGetdatos($id){
 			//file_put_contents('dataa.txt', print_r($id,true));
-			$data=Vehiculo::model()->findByAttributes(array('idgrupo'=>$id)
-);
-			  echo CJSON::encode($data);
+			$data=Vehiculo::model()->findByAttributes(array('idgrupo'=>$id));
+			$idmarca=Modelo::model()->findByPk($data["idmodelo"]);
+			  echo CJSON::encode(array('data'=>$data,'idmarca'=>$idmarca["idmarca"]));
 		
 	}
 }

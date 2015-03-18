@@ -70,6 +70,8 @@ class ActividadmttoController extends Controller
 		if(isset($_POST['Actividadmtto'])){
 			$model->attributes=$_POST['Actividadmtto'];
 			if($model->save()){
+				/*Registro en la bitácora*/
+				Bitacora::registrarEvento(Yii::app()->user->id,'INSERT','sgu_actividadMtto');
 				if (Yii::app()->request->isAjaxRequest){
                     echo CJSON::encode(array(
                         'status'=>'success', 
@@ -119,7 +121,8 @@ class ActividadmttoController extends Controller
 	public function actionDelete($id)
 	{
 		$this->loadModel($id)->delete();
-
+		/*Registro en la bitácora*/
+		Bitacora::registrarEvento(Yii::app()->user->id,'DELETE','sgu_actividadMtto');
 		// if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
 		if(!isset($_GET['ajax']))
 			$this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));

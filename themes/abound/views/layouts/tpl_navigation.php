@@ -133,6 +133,7 @@ else{
                                 array('label' => 'Asignar Roles', 'url' => array('/cruge/ui/rbacusersassignments')),
                                 array('label' => 'Sesiones', 'url' => array('/cruge/ui/sessionadmin')),
 								array('label' => 'Perfil', 'url' => array('/cruge/ui/editprofile')),
+								array('label' => 'Bitácora', 'url' => array('/cruge/ui/bitacora')),
                                 array('label' => 'Opciones', 'url' => array('/cruge/ui/systemupdate')),
 								
                             )),
