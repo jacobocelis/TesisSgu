@@ -32,7 +32,7 @@ class TipocombustibleController extends Controller
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create','update','agregarCombustible','actualizar'),
+				'actions'=>array('create','update','agregarCombustible','actualizar','ActualizarListaComb'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -127,6 +127,13 @@ class TipocombustibleController extends Controller
 		));
 	}
 
+	public function actionActualizarListaComb(){
+	
+			$lista=Tipocombustible::model()->findAll('1 order by id desc');
+			foreach($lista as $li){
+				echo CHtml::tag('option',array('type'=>'text','value'=>(($li->id))),Chtml::encode(($li->combustible)),true);
+		}
+	}
 	/**
 	 * Updates a particular model.
 	 * If update is successful, the browser will be redirected to the 'view' page.

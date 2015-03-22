@@ -32,7 +32,7 @@ class Historicoedos extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('idestado, idvehiculo, fecha', 'required'),
+			array('idestado, idvehiculo, motivo, fecha', 'required'),
 			array('idestado, idvehiculo', 'numerical', 'integerOnly'=>true),
 			array('motivo', 'length', 'max'=>200),
 			// The following rule is used by search().

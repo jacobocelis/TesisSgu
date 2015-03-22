@@ -94,7 +94,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
 <?php
 $this->widget('zii.widgets.grid.CGridView', array(
                 'id'=>'fallas',
-				'selectionChanged'=>'validar',
+				//'selectionChanged'=>'validar',
 				'summaryText'=>'',
 			    'enableSorting' => true,
 				'template'=>"{items}\n{summary}\n{pager}",

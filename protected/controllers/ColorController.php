@@ -32,7 +32,7 @@ class ColorController extends Controller
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create','update'),
+				'actions'=>array('create','update','ActualizarListaColor','agregarColor'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -78,7 +78,37 @@ class ColorController extends Controller
 			'model'=>$model,
 		));
 	}
-
+	public function actionAgregarColor(){
+					$model=new Color;
+	 
+		if(isset($_POST['Color'])){
+				$model->attributes=$_POST['Color'];
+				if($model->save()){
+					if (Yii::app()->request->isAjaxRequest){
+						echo CJSON::encode(array(
+							'status'=>'success', 
+							'div'=>""
+							));
+						exit;
+					}
+				}
+			}
+			if (Yii::app()->request->isAjaxRequest){
+				echo CJSON::encode(array(
+					'status'=>'failure', 
+					'div'=>$this->renderPartial('_form', array('model'=>$model), true)));
+				exit;               
+			}
+			/*else
+				$this->render('create',array('model'=>$model,));*/
+		}
+		public function actionActualizarListaColor(){
+	
+			$lista=Color::model()->findAll('1 order by id desc');
+			foreach($lista as $li){
+				echo CHtml::tag('option',array('type'=>'text','value'=>(($li->id))),Chtml::encode(($li->color)),true);
+		}
+	}
 	/**
 	 * Updates a particular model.
 	 * If update is successful, the browser will be redirected to the 'view' page.

@@ -8,12 +8,17 @@ $this->breadcrumbs=array(
 	"Unidad ".$model->id,
 );
 $this->menu=array(
-	array('label'=>'Registrar vehiculo', 'url'=>array('create')),
-	array('label'=>'Grupos de vehiculos', 'url'=>array('/grupo/index')),
-	array('label'=>'Administrar vehiculos', 'url'=>array('admin')),
+	array('label'=>'<div id="menu"><strong>Opciones de vehiculo</strong></div>' , 'visible'=>'1'),
+	array('label'=>'Ficha técnica', 'url'=>array('vehiculo/view', 'id'=>$model->id)),
+	array('label'=>'Editar vehiculo', 'url'=>array('vehiculo/update', 'id'=>$model->id)),
+	array('label'=>'Agregar fotografía', 'url'=>array('foto/index', 'id'=>$model->id)),
+	array('label'=>'<div id="menu"><strong>Zona peligrosa</strong></div>' , 'visible'=>'1'),
+	array('label'=>'Desincorporar vehiculo', 'url'=>array('vehiculo/desincorporar', 'id'=>$model->id) ,'linkOptions'=>array('style'=>'cursor:pointer;')),
+	
+	array('label'=>'Eliminar vehiculo', 'url'=>'' ,'linkOptions'=>array('confirm'=>'¿Confirma que desea eliminar el vehiculo?','onclick'=>'eliminar('.$model->id.')','style'=>'cursor:pointer;background:#FFE0E1;')),
 );
 ?>
-
+<div class='crugepanel user-assignments-role-list' style="max-width:800px">
 <h1>Ficha técnica del vehiculo </h1>
 
 <?php $this->widget('zii.widgets.CDetailView', array(
@@ -60,10 +65,7 @@ $this->menu=array(
 		),
 		
 		'nroPuestos',
-		'nroEjes',
-		'capCarga',
-		'cantidadRuedas',
-		'capTanque',
+		
 		'serialCarroceria',
 		'serialMotor',
 		array(
@@ -131,8 +133,10 @@ $this->beginWidget('zii.widgets.jui.CJuiDialog', array( // the dialog
 <?php $this->endWidget();?>
 
 <br>
+
 <h1>Fotografías de la unidad </h1>
-<br>
+
+
 <div id="container-1">
 	<div class="myGallery">
 	    <ul id="myGallery">
@@ -146,6 +150,9 @@ $this->beginWidget('zii.widgets.jui.CJuiDialog', array( // the dialog
 	<div id="descriptions">
 	</div>
 </div>
+</div>
+
+
 
 <script type="text/javascript">
   	$(function(){
@@ -183,11 +190,22 @@ function addDetalle(_url){
         return false;
 
 }
+function eliminar(id){
+var dir="<?php echo Yii::app()->baseUrl;?>"+"/vehiculo/delete/";
+	$.ajax({  		
+			 type: 'POST',
+          url: dir+id+'?ajax=ajax',
+        })
+  	.done(function(result) {    	
+			if(result!="")
+    	     alert(result);
+			if(result=="")
+				window.location.replace("<?php echo Yii::app()->baseUrl."/vehiculo/index"?>");
+  	});
+}
 </script>
 <style>
-.row-fluid .span9 {
-    width: 53.6%;
-}
+
 .grid-view table.items th {
     background: #f8f8f8;
 	color:black;

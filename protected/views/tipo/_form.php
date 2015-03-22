@@ -4,7 +4,7 @@
 /* @var $form CActiveForm */
 ?>
 
-<div class="form">
+<div class="nuevo">
 
 <?php $form=$this->beginWidget('CActiveForm', array(
 	'id'=>'tipo-form',
@@ -15,26 +15,36 @@
 	'enableAjaxValidation'=>false,
 )); ?>
 
-	<p class="note">Fields with <span class="required">*</span> are required.</p>
-
-	<?php echo $form->errorSummary($model); ?>
-
 	<div class="row">
-		<?php echo $form->labelEx($model,'id'); ?>
-		<?php echo $form->textField($model,'id'); ?>
-		<?php echo $form->error($model,'id'); ?>
-	</div>
-
-	<div class="row">
-		<?php echo $form->labelEx($model,'tipo'); ?>
+		<?php echo $form->labelEx($model,'Nuevo tipo* '); ?>
 		<?php echo $form->textField($model,'tipo',array('size'=>60,'maxlength'=>80)); ?>
 		<?php echo $form->error($model,'tipo'); ?>
 	</div>
-
+	<?php
+		echo CHtml::link('Cancelar', "",array('title'=>'Cancelar',
+        'style'=>'cursor: pointer;font-size:10px;float:right;',
+        'onclick'=>"{cancelar()}"));?>
 	<div class="row buttons">
-		<?php echo CHtml::submitButton($model->isNewRecord ? 'Create' : 'Save'); ?>
+		<?php echo CHtml::submitButton($model->isNewRecord ? 'Registrar' : 'Guardar'); ?>
 	</div>
 
 <?php $this->endWidget(); ?>
 
 </div><!-- form -->
+
+<style>
+
+.nuevo {
+    margin: 0px 0px 5px;
+	border: 1px solid #eee;
+	padding:10px;
+	width:90%;
+}
+</style>
+<script>
+function cancelar(){
+		$("#nuevoTipo").hide(500);
+		
+		$("#resto").show(500);
+}
+</script>

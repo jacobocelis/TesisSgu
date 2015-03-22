@@ -40,7 +40,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
 				),
 				array(
 					'header'=>'Ubicación',
-					'name'=>'Direccion',
+					'name'=>'direccion',
 					//'value'=>'$data->idfalla0->falla',
 					'htmlOptions'=>array('style'=>'text-align:center;width:40%'),
 				),

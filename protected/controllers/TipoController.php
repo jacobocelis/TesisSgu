@@ -32,7 +32,7 @@ class TipoController extends Controller
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create','update'),
+				'actions'=>array('create','update','nuevoTipo','actualizarListaTipo'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -49,6 +49,37 @@ class TipoController extends Controller
 	 * Displays a particular model.
 	 * @param integer $id the ID of the model to be displayed
 	 */
+	 public function actionNuevoTipo(){
+					$model=new Tipo;
+		  
+		if(isset($_POST['Tipo'])){
+				$model->attributes=$_POST['Tipo'];
+				if($model->save()){
+					if (Yii::app()->request->isAjaxRequest){
+						echo CJSON::encode(array(
+							'status'=>'success', 
+							'div'=>""
+							));
+						exit;               
+					}
+				}
+			}
+			if (Yii::app()->request->isAjaxRequest){
+				echo CJSON::encode(array(
+					'status'=>'failure', 
+					'div'=>$this->renderPartial('_form', array('model'=>$model), true)));
+				exit;               
+			}
+		 
+	}
+	public function actionActualizarListaTipo(){
+	
+			$lista=Tipo::model()->findAll('1 order by id desc');
+			foreach($lista as $li){
+				echo CHtml::tag('option',array('type'=>'text','value'=>(($li->id))),Chtml::encode(($li->tipo)),true);
+			
+		}
+	}
 	public function actionView($id)
 	{
 		$this->render('view',array(

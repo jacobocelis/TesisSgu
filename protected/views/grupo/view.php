@@ -2,17 +2,18 @@
 /* @var $this GrupoController */
 /* @var $model Grupo */
 
+
 $this->breadcrumbs=array(
-	'Grupo'=>array('index'),
+	'Vehiculos'=>array('vehiculo/index'),
+	'Grupos registrados'=>array('index'),
 	$model->grupo,
 );
-
 $this->menu=array(
-	array('label'=>'Listar grupos', 'url'=>array('index')),
-	array('label'=>'Crear grupo', 'url'=>array('create')),
-	array('label'=>'Actualizar grupo', 'url'=>array('update', 'id'=>$model->id)),
-	array('label'=>'Eliminar grupo', 'url'=>'#', 'linkOptions'=>array('submit'=>array('delete','id'=>$model->id),'confirm'=>'¿Está seguro que desea eliminar éste grupo?')),
-	array('label'=>'Administrar grupo', 'url'=>array('admin')),
+	array('label'=>'<div id="menu"><strong>Opciones de grupo</strong></div>' , 'visible'=>'1'),
+	array('label'=>'Ver detalle', 'url'=>array('grupo/view', 'id'=>$model->id)),
+	array('label'=>'Editar grupo', 'url'=>array('update', 'id'=>$model->id)),
+	array('label'=>'Eliminar grupo', 'url'=>'' ,'linkOptions'=>array('confirm'=>'¿Confirma que desea eliminar el grupo?','onclick'=>'eliminar('.$model->id.')','style'=>'cursor:pointer;background:#FFE0E1;')),
+	//array('label'=>'Administrar grupo', 'url'=>array('admin')),
 );
 ?>
 <div class='crugepanel user-assignments-role-list'>
@@ -20,6 +21,7 @@ $this->menu=array(
 <br>
 <?php $this->widget('zii.widgets.CDetailView', array(
 	'data'=>$model,
+	//'htmlOptions'=>array('style'=>'border: 1px solid #A8C5F0;'),
 	'attributes'=>array(
 		'grupo',
 		'descripcion',
@@ -36,7 +38,7 @@ $this->menu=array(
 
 <p class="note">
 			<?php 
-			$this->widget('zii.widgets.grid.CGridView', array(
+			/*$this->widget('zii.widgets.grid.CGridView', array(
 				'dataProvider' => $atributos,
 				'summaryText' => '',
 					'selectableRows'=>0,
@@ -48,12 +50,9 @@ $this->menu=array(
 	       
 	        ),
 	    ),
-	));
+	));*/
 ?> 
-		Puede agregar campos adicionales que se le solicitarán rellenar en la ficha técnica de cada vehiculo del grupo.
-		
-			<HR>
-			<strong><p class="note"> Campos adicionales: </p></strong>
+		<i>Puede agregar campos perzonalizados con información adicional</i>
 			<?php 
 			$this->widget('zii.widgets.grid.CGridView', array(
 			'id'=>'campos',
@@ -63,7 +62,7 @@ $this->menu=array(
 			'dataProvider'=>$info,
 			'enablePagination' => false,
 			'template'=>"{items}{summary}{pager}",
-			'emptyText' => 'no hay campos agregados a este grupo',
+			'emptyText' => '<i>no hay campos agregados a este grupo</i>',
 			//'summaryText' => 'Mostrando {start}-{end} de {count} registro(s).',
 			'summaryText' => '',
 			'columns'=>array(	
@@ -76,11 +75,10 @@ $this->menu=array(
 					'class'=>'CButtonColumn',
 					 'template'=>'{delete}',
 					     'buttons'=>array(
-							'update' => array(
-								//'label'=>'Send an e-mail to this user',
-								//'imageUrl'=>Yii::app()->request->baseUrl.'/images/email.png',
+							/*'update' => array(
 								'url'=>'Yii::app()->createUrl("infgrupo/update", array("id"=>$data->id))',
-							),
+							),*/
+							'header'=>'Actividad',
 							'delete' => array(
 								'url'=>'Yii::app()->createUrl("infgrupo/delete", array("id"=>$data->id))',
 						),
@@ -93,7 +91,7 @@ $this->menu=array(
         'style'=>'cursor: pointer; text-decoration: underline;',
         'onclick'=>"{addClassroom(); $('#dialog').dialog('open');}"));?>
 		</p>	
-		<HR>
+		
 </div>
 <br>
 <div class='crugepanel user-assignments-role-list'>
@@ -104,8 +102,14 @@ $this->menu=array(
 	'template'=>"{items}{summary}{pager}",
 	'emptyText' => 'no hay vehiculos registrados en éste grupo',
 	'itemView'=>'vehiculo',
-)); ?>
-<HR>
+)); /*
+echo CHtml::link('Registrar vehiculo', Yii::app()->baseUrl."/vehiculo/create?grupo=".$model->id,  // the link for open the dialog
+    array(
+		
+        'style'=>'cursor: pointer; text-decoration: underline;',
+        ));*/
+?>
+
 </div>
 <?php
 /*ventana agregar informacion*/
@@ -116,14 +120,28 @@ $this->beginWidget('zii.widgets.jui.CJuiDialog', array( // the dialog
         'autoOpen'=>false,
         'modal'=>true,
         'width'=>370,
-        'height'=>240,
+        'position'=>array(null,150),
 		'resizable'=>false
     ),
 ));?>
 <div class="divForForm"></div>
  
 <?php $this->endWidget();?>
-
+<script>
+function eliminar(id){
+var dir="<?php echo Yii::app()->baseUrl;?>"+"/grupo/delete/";
+	$.ajax({  		
+			 type: 'POST',
+          url: dir+id+'?ajax=ajax',
+        })
+  	.done(function(result) {    	
+			if(result!="")
+    	     alert(result);
+			if(result=="")
+				window.location.replace("<?php echo Yii::app()->baseUrl."/grupo/index"?>");
+  	});
+}
+</script>
 <script>
 /*window.onload=function(){
 var pos=window.name || 0;
@@ -159,3 +177,13 @@ function addClassroom()
     return false; 
 }
 </script>
+<style>
+table.detail-view th, 
+table.detail-view td {
+    font-size: 0.9em;
+    border: 1px solid #FFF;
+    padding: 0.3em 0.6em;
+    vertical-align: top;
+    border: 1px solid #A8C5F0;
+}
+</style>

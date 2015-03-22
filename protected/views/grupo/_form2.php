@@ -4,7 +4,7 @@
 /* @var $form CActiveForm */
 ?>
 
-<div class="form" id="jobDialogForm">
+<div class="form" id="Form">
 
 <?php $form=$this->beginWidget('CActiveForm', array(
 	'id'=>'job-form',
@@ -16,7 +16,7 @@
 	'enableAjaxValidation'=>true,
 )); ?>
 
-	<?php echo $form->errorSummary($model); ?>
+	
 
 	<div class="row">
 		<?php echo $form->labelEx($model,'Nombre del campo:'); ?>

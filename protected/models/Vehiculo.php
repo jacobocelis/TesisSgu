@@ -37,6 +37,9 @@ class Vehiculo extends CActiveRecord
 	/**
 	 * @return string the associated database table name
 	 */
+	public $estatus;
+	public $tipo;
+	
 	public function tableName()
 	{
 		return 'sgu_vehiculo';
@@ -73,9 +76,10 @@ public function getTotal($data)
 			array('serialCarroceria', 'length', 'max'=>45),
 			array('placa', 'length', 'max'=>7),
 			array('comentario', 'length', 'max'=>200),
+			array('estatus,tipo', 'safe', 'on'=>'search'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, numeroUnidad, serialCarroceria, serialChasis, placa, anno, nroPuestos, comentario , idmodelo, idgrupo, idcombustible,idcolor,idpropiedad, idtipo, fechaRegistro,KmInicial', 'safe', 'on'=>'search'),
+			array('id, numeroUnidad, serialCarroceria, serialChasis, placa, anno, nroPuestos, idmodelo, idgrupo, idcombustible,idcolor,idpropiedad, idtipo,', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -111,6 +115,9 @@ public function getTotal($data)
 	/**
 	 * @return array customized attribute labels (name=>label)
 	 */
+	public function getVehiculosPorEstatus($idestatus){
+		return '(select idvehiculo as id from (select * from (select h.idestado as idestado,v.id as idvehiculo from sgu_vehiculo v, sgu_historicoedos h where v.id=h.idvehiculo  order by h.id desc) as uno group by uno.idvehiculo) as dos where dos.idestado='.$idestatus.')';
+	}
 	public function attributeLabels()
 	{
 		return array(
@@ -120,12 +127,12 @@ public function getTotal($data)
 			'serialMotor' => 'Serial de motor',
 			'placa' => 'Placa',
 			'anno' => 'Año',
-			'nroPuestos' => 'Número de puestos',
-			'nroEjes' => 'Número de ejes',
-			'capCarga' => 'Capacidad de carga',
+			//'nroPuestos' => 'Número de puestos',
+			//'nroEjes' => 'Número de ejes',
+			//'capCarga' => 'Capacidad de carga',
 			'comentario' => 'Comentarios',
-			'cantidadRuedas' => 'Cantidad de ruedas',
-			'capTanque' => 'Capacidad de tanque',	
+			//'cantidadRuedas' => 'Cantidad de ruedas',
+			//'capTanque' => 'Capacidad de tanque',	
 			'idmodelo' => 'Modelo',
 			'idgrupo' => 'Grupo',
 			'idcombustible' => 'Combustible',
@@ -150,31 +157,37 @@ public function getTotal($data)
 	 * based on the search/filter conditions.
 	 */
 	public function search()
-	{
+	{	//$criteria->compare('fechaRegistro',$this->fechaRegistro,true);
+		//$criteria->compare('KmInicial',$this->KmInicial);
+		//$criteria->compare('nroPuestos',$this->nroPuestos);
+		//$criteria->compare('nroEjes',$this->nroEjes);
+		//$criteria->compare('capCarga',$this->capCarga);
+		//$criteria->compare('comentario',$this->comentario,true);
+		//$criteria->compare('cantidadRuedas',$this->cantidadRuedas);
+		//$criteria->compare('capTanque',$this->capTanque);
 		// @todo Please modify the following code to remove attributes that should not be searched.
 
 		$criteria=new CDbCriteria;
-
-		$criteria->compare('id',$this->id);
+	
 		$criteria->compare('numeroUnidad',$this->numeroUnidad);
 		$criteria->compare('serialCarroceria',$this->serialCarroceria,true);
 		$criteria->compare('serialMotor',$this->serialMotor,true);
 		$criteria->compare('placa',$this->placa,true);
 		$criteria->compare('anno',$this->anno);
 		$criteria->compare('nroPuestos',$this->nroPuestos);
-		$criteria->compare('nroEjes',$this->nroEjes);
-		$criteria->compare('capCarga',$this->capCarga);
-		$criteria->compare('comentario',$this->comentario,true);
-		$criteria->compare('cantidadRuedas',$this->cantidadRuedas);
-		$criteria->compare('capTanque',$this->capTanque);
+		//$criteria->compare('comentario',$this->comentario,true);
 		$criteria->compare('idmodelo',$this->idmodelo);
-		$criteria->compare('idgrupo',$this->idgrupo);
 		$criteria->compare('idcombustible',$this->idcombustible);
-		$criteria->compare('fechaRegistro',$this->fechaRegistro,true);
+		$criteria->compare('idgrupo',$this->idgrupo);
 		$criteria->compare('idcolor',$this->idcolor);
 		$criteria->compare('idpropiedad',$this->idpropiedad);
-		$criteria->compare('fechaRegistro',$this->fechaRegistro,true);
-		$criteria->compare('KmInicial',$this->KmInicial);
+		//para filtrar tipo
+		if($this->tipo<>"")
+			$criteria->addCondition('idgrupo in(select id from sgu_grupo where idtipo="'.$this->tipo.'") ');
+		
+		if($this->estatus<>"")
+			$criteria->addCondition('id in '.$this->getVehiculosPorEstatus($this->estatus).'');
+		
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
 		));
@@ -186,8 +199,7 @@ public function getTotal($data)
 	 * @param string $className active record class name.
 	 * @return Vehiculo the static model class
 	 */
-	public static function model($className=__CLASS__)
-	{
+	public static function model($className=__CLASS__){
 		return parent::model($className);
 	}
 }

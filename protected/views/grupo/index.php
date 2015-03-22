@@ -2,13 +2,21 @@
 /* @var $this GrupoController */
 /* @var $dataProvider CActiveDataProvider */
 
+
 $this->breadcrumbs=array(
-	'Grupos',
+	'Vehiculos'=>array('vehiculo/index'),
+	'Grupos registrados',
 );
 
 $this->menu=array(
-	array('label'=>'Crear grupo', 'url'=>array('create')),
-	array('label'=>'Administrar grupo', 'url'=>array('admin')),
+	array('label'=>'<div id="menu"><strong>Vehiculos</strong></div>' , 'visible'=>'1'),
+	array('label'=>'Vehiculos registrados', 'url'=>array('vehiculo/index')),
+	array('label'=>'Registrar vehiculo', 'url'=>array('vehiculo/create')),
+	array('label'=>'Histórico de vehiculos', 'url'=>array('vehiculo/historico')),
+	//array('label'=>'Administrar vehiculos', 'url'=>array('admin')),
+	array('label'=>'<div id="menu"><strong>Grupos</strong></div>' , 'visible'=>'1'),
+	array('label'=>'Ver grupos', 'url'=>array('grupo/index')),
+	array('label'=>'Crear grupo', 'url'=>array('grupo/create')),
 );
 ?>
 

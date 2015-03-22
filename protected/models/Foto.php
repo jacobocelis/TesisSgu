@@ -34,6 +34,10 @@ class Foto extends CActiveRecord
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
 			array('id, imagen, idvehiculo', 'safe', 'on'=>'search'),
+			array('imagen', 'unique'),
+			//array('imagen','file','types'=>'jpg, gif, png'),
+			array('imagen', 'file', 'types'=>'jpg,png','maxSize'=>1024*1024*2,'tooLarge'=>'El tamaño maximo permitido de la imagen es 2Mb','allowEmpty'=>true),
+
 		);
 	}
 

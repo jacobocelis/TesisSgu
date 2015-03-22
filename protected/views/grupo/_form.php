@@ -17,7 +17,7 @@
 
 	<p class="note">Los campos con <span class="required">*</span> son obligatorios.</p>	
 
-	<?php echo $form->errorSummary($model); ?>
+
 
 	<div class="row">
 		<?php echo $form->labelEx($model,'grupo'); ?>
@@ -31,31 +31,58 @@
 		<?php echo $form->error($model,'descripcion'); ?>
 	</div>
 
-		<div class="row">
+	<div class="row">
 		<?php echo $form->labelEx($model,'idtipo'); ?>
-		<?php echo $form->dropDownList($model,'idtipo',CHtml::listData(Tipo::model()->findAll(),'id','tipo'),array('id'=>'tipo')); ?>
-		<?php echo CHtml::link('<img src='.Yii::app()->baseUrl.'/imagenes/agregar.png alt="algo"/>',"",array('title'=>'Registrar un tipo grupo de vehiculos',
+		<?php echo $form->dropDownList($model,'idtipo',CHtml::listData(Tipo::model()->findAll(),'id','tipo')); ?>
+		<?php echo CHtml::link('<img src='.Yii::app()->baseUrl.'/imagenes/agregar.png alt="algo"/>',"",array('title'=>'Registrar un tipo de vehiculo',
         'style'=>'cursor: pointer;',
         'onclick'=>"{
-		tipo('Crear un nuevo grupo de vehiculos','/grupo/nuevoGrupo','/grupo/actualizarListaGrupo','#Vehiculo_idgrupo');}"));?>
+		tipo()}"));?>
 		<?php echo $form->error($model,'idtipo'); ?>
+		
 	</div>
+	
+	<div id="nuevoTipo" style="max-width:300px"></div>
 
-
-	<div class="row buttons">
+	<div id="resto" class="row buttons">
 	<br>
 		<?php echo CHtml::submitButton($model->isNewRecord ? 'Crear' : 'Guardar cambios'); ?>
 	</div>
 
-
-
 <?php $this->endWidget(); ?>
-
-
-
 
 </div><!-- form -->
 <script>
+function tipo(){
+	$('#tipin').dialog('open');
+	$("#lista").attr('disabled', true);
+	$("#nuevoTipo").show(500);
+	$("#resto").hide(500);
+	jQuery.ajax({
+                url: "<?php echo Yii::app()->baseUrl;?>"+"/Tipo/nuevoTipo",
+                'data':$(this).serialize(),
+                'type':'post',
+                'dataType':'json',
+                'success':function(data){
+                                if(data.status == 'failure'){
+                                        $('#nuevoTipo ').html(data.div);
+                                   
+										//$('#Repuesto_idsubTipoRepuesto').val($('#Subtiporepuesto_subTipo option:selected').val());
+										$('#nuevoTipo  form').submit(tipo);
+                                }
+                                else{
+                                        $('#nuevoTipo').html(data.div);
+										actualizarLista("<?php echo Yii::app()->baseUrl;?>/tipo/ActualizarListaTipo",'#Grupo_idtipo');
+										$("#nuevoTipo").hide(500);
+										
+										$("#resto").show(500);
+										//$("#lista").attr('disabled', false);
+										//validarRepuestoNuevo($('#Subtiporepuesto_subTipo option:selected').val());
+                                }
+                },
+                'cache':false});
+    return false; 
+}
 
 </script>
 

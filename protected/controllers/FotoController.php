@@ -32,7 +32,7 @@ class FotoController extends Controller
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create','update'),
+				'actions'=>array('agregar','update','create'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -60,29 +60,45 @@ class FotoController extends Controller
 	 * Creates a new model.
 	 * If creation is successful, the browser will be redirected to the 'view' page.
 	 */
-public function actionCreate($id = null)
-	{
-		if($id == null)
-			$this->redirect(array('/site/index'));
-		$vehiculo = Vehiculo::model()->findByPk($id);
-		if(empty($vehiculo))
-			$this->redirect(array('/site/index'));
-
+	 
+public function actionCreate()
+{	
 		$model=new Foto;
+		
 		if(isset($_POST['Foto']))
 		{
 			$model->attributes=$_POST['Foto'];
 			$model->imagen=base64_encode(file_get_contents(CUploadedFile::getInstance($model,'imagen')->tempName));	
+			
 			if($model->save())
-				$this->redirect(array('index','id'=>$vehiculo->id));
+				$this->redirect(array('/foto/index','id'=>$_POST['Foto']['idvehiculo']));
 		}
 
 		$this->render('create',array(
 			'model'=>$model,
-			'vehiculo'=>$vehiculo
+			
 		));
 	}
+/*public function actionCreate()
+	{
+		
+		$model=new Foto;
 
+		// Uncomment the following line if AJAX validation is needed
+		// $this->performAjaxValidation($model);
+
+		if(isset($_POST['Foto']))
+		{
+			$model->attributes=$_POST['Foto'];
+			if($model->save())
+				$this->redirect(array('view','id'=>$model->id));
+		}
+
+		$this->render('create',array(
+			'model'=>$model,
+			//'vehiculo'=>$vehiculo
+		));
+	}*/
 	/**
 	 * Updates a particular model.
 	 * If update is successful, the browser will be redirected to the 'view' page.
@@ -114,31 +130,43 @@ public function actionCreate($id = null)
 	 */
 	public function actionDelete($id)
 	{
+		$model=$this->loadModel($id);
 		$this->loadModel($id)->delete();
-
+		$this->redirect(array('index','id'=>$model->idvehiculo));
 		// if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
-		if(!isset($_GET['ajax']))
-			$this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));
+		//if(!isset($_GET['ajax']))
+			//$this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('index'));
 	}
 
 	/**
 	 * Lists all models.
 	 */
-		public function actionIndex($id = null)
-	{
+	public function actionIndex($id = null){
+		$model=new Foto;
+			
 		if($id == null)
 			$this->redirect(array('/site/index'));
 		$vehiculo = Vehiculo::model()->findByPk($id);
 		if(empty($vehiculo))
 			$this->redirect(array('/site/index'));
+		
 		$dataProvider=new CActiveDataProvider('Foto',array(
 			'criteria'=>array(
 				'condition'=>'idvehiculo='.$id
 			)
 		));
+		if(isset($_POST['Foto']))
+		{
+			
+			$model->attributes=$_POST['Foto'];
+			$model->imagen=base64_encode(file_get_contents(CUploadedFile::getInstance($model,'imagen')->tempName));	
+			if($model->save())
+				$this->redirect(array('/foto/index','id'=>$_POST['Foto']['idvehiculo']));
+		}
 		$this->render('index',array(
 			'dataProvider'=>$dataProvider,
-			'vehiculo'=>$vehiculo
+			'vehiculo'=>$vehiculo,
+			'model'=>$model,
 		));
 	}
 

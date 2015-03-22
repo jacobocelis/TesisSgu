@@ -234,7 +234,10 @@ h1 {
     border-top-left-radius: 0px;
 }
 #scrollingDiv{
+	
 	position: fixed;
+    bottom: 70px;
+    left: 40px;
 }
 .btn {
 	-moz-box-shadow:inset 0px 1px 0px 0px #54a3f7;

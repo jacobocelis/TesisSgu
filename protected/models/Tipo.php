@@ -28,12 +28,12 @@ class Tipo extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('id, tipo', 'required'),
-			array('id', 'numerical', 'integerOnly'=>true),
+			array('tipo', 'required'),
+			
 			array('tipo', 'length', 'max'=>80),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, tipo', 'safe', 'on'=>'search'),
+			array('tipo', 'safe', 'on'=>'search'),
 		);
 	}
 

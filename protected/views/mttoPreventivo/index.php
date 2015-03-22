@@ -147,7 +147,6 @@ select {
 }
 #menu{
 	font-size:15px;
-
 }
 .crugepanel {
     background-color: #FFF;

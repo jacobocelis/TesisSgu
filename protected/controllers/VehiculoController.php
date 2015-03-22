@@ -32,7 +32,7 @@ class VehiculoController extends Controller
 				'users'=>array('@'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create','update'),
+				'actions'=>array('create','update','Desincorporar','historico','detalleHistorico'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -134,6 +134,41 @@ class VehiculoController extends Controller
 	 * Displays a particular model.
 	 * @param integer $id the ID of the model to be displayed
 	 */
+	public function actionDesincorporar($id)
+	{
+		$model=new Historicoedos;
+		$vehiculo=Vehiculo::model()->findByPk($id);
+		// Uncomment the following line if AJAX validation is needed
+		// $this->performAjaxValidation($model);
+
+		if(isset($_POST['Historicoedos']))
+		{
+			$model->attributes=$_POST['Historicoedos'];
+			if($model->save())
+				$this->redirect(array('historico'));
+		}
+
+		$this->render('desincorporar',array(
+			'model'=>$model,
+			'vehiculo'=>$vehiculo,
+		));
+	}
+	public function actionDetalleHistorico($id)
+	{	
+		$dataProvider=new CActiveDataProvider('Informacion',array(
+                    'criteria'=>array(
+                      'condition'=>'t.idvehiculo='.$id),
+				  'pagination'=>array(
+					'pageSize'=>9999,
+					),
+                    ));
+					
+		$this->render('detalleHistorico',array(
+			'model'=>$this->loadModel($id),
+			'dataProvider'=>$dataProvider,
+			
+		));
+	}
 	public function actionView($id)
 	{	
 		$dataProvider=new CActiveDataProvider('Informacion',array(
@@ -147,6 +182,7 @@ class VehiculoController extends Controller
 		$this->render('view',array(
 			'model'=>$this->loadModel($id),
 			'dataProvider'=>$dataProvider,
+			
 		));
 	}
 	/**
@@ -202,6 +238,13 @@ class VehiculoController extends Controller
 				$this->redirect(array('view','id'=>$model->id));
 			}
 		}
+		if(isset($_GET["grupo"]))
+		$this->render('create',array(
+			'model'=>$model,
+			'marca'=>$marca,
+			'grupo'=>$_GET["grupo"]
+		));
+		else		
 		$this->render('create',array(
 			'model'=>$model,
 			'marca'=>$marca,
@@ -239,11 +282,17 @@ class VehiculoController extends Controller
 	 */
 	public function actionDelete($id)
 	{
-		$this->loadModel($id)->delete();
-
-		// if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
-		if(!isset($_GET['ajax']))
-			$this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));
+	
+		try{
+			
+			$this->loadModel($id)->delete();
+				if(!isset($_GET['ajax']))
+			$this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('index'));
+		}catch(CDbException $e){
+                   
+			echo CHtml::decode(" No se pudo eliminar el vehiculo porque tiene iniformación asociada");
+			
+		}
 	}
 
 	/**
@@ -251,13 +300,35 @@ class VehiculoController extends Controller
 	 */
 	public function actionIndex()
 	{
-		$dataProvider=new CActiveDataProvider('Vehiculo');
+		$model=new Vehiculo('search');
+		$model->unsetAttributes();  // clear any default values
+		if(isset($_GET['Vehiculo']))
+			$model->attributes=$_GET['Vehiculo'];
+		
+		$dataProvider=new CActiveDataProvider('Vehiculo',array(
+			'criteria'=>array(
+				'condition'=>'id not in '.$model->getVehiculosPorEstatus(4).''
+			)
+		));
 		
 		$this->render('index',array(
 			'dataProvider'=>$dataProvider,
+			'model'=>$model
 		));
 	}
-
+	public function actionHistorico()
+	{
+		
+		$dataProvider=new CActiveDataProvider('Vehiculo',array(
+			'criteria'=>array(
+				'condition'=>'id in (select idvehiculo as id from (select * from (select h.idestado as idestado,v.id as idvehiculo from sgu_vehiculo v, sgu_historicoedos h where v.id=h.idvehiculo  order by h.id desc) as uno group by uno.idvehiculo) as dos where dos.idestado=4)'
+			)
+		));
+		
+		$this->render('historico',array(
+			'dataProvider'=>$dataProvider,
+		));
+	}
 	/**
 	 * Manages all models.
 	 */
@@ -329,6 +400,8 @@ class VehiculoController extends Controller
 				echo CHtml::tag('option',array('type'=>'text','value'=>(($li->id))),Chtml::encode(($li->modelo)),true);
 				//CHTML::textField("campo",1,array(\'width\'=>4,\'maxlength\'=>4,\'onkeypress\'=>"return justNumbers(event)"))
 			}
+			if($lista2==null)
+				echo CHtml::tag('option',array('type'=>'text','value'=>((''))),Chtml::encode(('Seleccione una marca')),true);
 		}
 	}
 	public function actionGetdatos($id){

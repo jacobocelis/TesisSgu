@@ -46,30 +46,15 @@
 		<?php echo $form->textField($model,'nroPuestos'); ?>
 	</div>
 
-	<div class="row">
-		<?php echo $form->label($model,'nroEjes'); ?>
-		<?php echo $form->textField($model,'nroEjes'); ?>
-	</div>
+	
 
-	<div class="row">
-		<?php echo $form->label($model,'capCarga'); ?>
-		<?php echo $form->textField($model,'capCarga'); ?>
-	</div>
 
 	<div class="row">
 		<?php echo $form->label($model,'comentario'); ?>
 		<?php echo $form->textField($model,'comentario',array('size'=>60,'maxlength'=>200)); ?>
 	</div>
 
-	<div class="row">
-		<?php echo $form->label($model,'cantidadRuedas'); ?>
-		<?php echo $form->textField($model,'cantidadRuedas'); ?>
-	</div>
-
-	<div class="row">
-		<?php echo $form->label($model,'capTanque'); ?>
-		<?php echo $form->textField($model,'capTanque'); ?>
-	</div>
+	
 
 	<div class="row">
 		<?php echo $form->label($model,'idmodelo'); ?>

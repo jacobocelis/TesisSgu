@@ -453,7 +453,7 @@ $this->beginWidget('zii.widgets.jui.CJuiDialog', array( // the dialog
 $this->beginWidget('zii.widgets.jui.CJuiDialog', array( // the dialog
     'id'=>'recurso',
     'options'=>array(
-        'title'=>'Agregar recurso adicional',
+        'title'=>'Agregar recurso a facturar',
         'autoOpen'=>false,
         'modal'=>true,
         'width'=>410,

@@ -104,10 +104,10 @@
 	<div class="row">
 		<?php echo $form->labelEx($model,'idmodelo'); ?>
 		<?php echo $form->dropDownList($model,'idmodelo',array(),array('prompt'=>'Seleccione marca ')); ?>
-		<?php echo CHtml::link('<img src='.Yii::app()->baseUrl.'/imagenes/agregar.png alt="algo"/>',"",array('title'=>'Registrar un nuevo grupo de vehiculos',
-        'style'=>'cursor: pointer;',
+		<?php echo CHtml::link('<img src='.Yii::app()->baseUrl.'/imagenes/agregar.png alt="algo"/>',"",array('title'=>'Registrar un nuevo modelo',
+        'style'=>'cursor: pointer;','id'=>'mod',
         'onclick'=>"{
-		nuevo('Crear un nuevo grupo de vehiculos','/grupo/nuevoGrupo','/grupo/actualizarListaGrupo','#Vehiculo_idgrupo');}"));?>
+		nuevo('Agrega un nuevo modelo','/modelo/nuevoModelo/'+$('#Marca_id').val(),'/modelo/actualizarListaModelo/'+$('#Marca_id').val(),'#Vehiculo_idmodelo');}"));?>
 		
 		<?php echo $form->error($model,'idmodelo'); ?>
 	</div>
@@ -116,10 +116,10 @@
 	<div class="row">
 		<?php echo $form->labelEx($model,'idcombustible'); ?>
 		<?php echo $form->dropDownList($model,'idcombustible',CHtml::listData(Tipocombustible::model()->findAll(),'id','combustible'),array('id'=>'combustible')); ?>
-		<?php echo CHtml::link('<img src='.Yii::app()->baseUrl.'/imagenes/agregar.png alt="algo"/>',"",array('title'=>'Registrar un nuevo combustible',
+		<?php echo CHtml::link('<img src='.Yii::app()->baseUrl.'/imagenes/agregar.png alt="algo"/>',"",array('title'=>'Registrar combustible',
         'style'=>'cursor: pointer;',
         'onclick'=>"{
-		nuevoModelo();}"));?>
+		nuevo('Registrar combustible','/tipocombustible/AgregarCombustible','/tipocombustible/actualizarListaComb','#combustible');}"));?>
 		
 		<?php echo $form->error($model,'idcombustible'); ?>
 	</div>
@@ -127,10 +127,10 @@
 		<?php echo $form->labelEx($model,'idcolor'); ?>
 		<?php echo $form->dropDownList($model,'idcolor',CHtml::listData(Color::model()->findAll(),'id','color'),array('id'=>'color')); ?>
 		
-		<?php echo CHtml::link('<img src='.Yii::app()->baseUrl.'/imagenes/agregar.png alt="algo"/>',"",array('title'=>'Registrar un nuevo grupo de vehiculos',
+		<?php echo CHtml::link('<img src='.Yii::app()->baseUrl.'/imagenes/agregar.png alt="algo"/>',"",array('title'=>'Registrar color',
         'style'=>'cursor: pointer;',
         'onclick'=>"{
-		nuevo();}"));?>
+		nuevo('Registrar color','/color/AgregarColor','/color/actualizarListaColor','#color');}"));?>
 		
 		<?php echo $form->error($model,'idcolor'); ?>
 	</div>
@@ -139,10 +139,10 @@
 		<?php echo $form->labelEx($model,'idpropiedad'); ?>
 		<?php echo $form->dropDownList($model,'idpropiedad',CHtml::listData(Propiedad::model()->findAll(),'id','propiedad'),array('id'=>'propiedad')); ?>
 		
-		<?php echo CHtml::link('<img src='.Yii::app()->baseUrl.'/imagenes/agregar.png alt="algo"/>',"",array('title'=>'Registrar un nuevo grupo de vehiculos',
+		<?php echo CHtml::link('<img src='.Yii::app()->baseUrl.'/imagenes/agregar.png alt="algo"/>',"",array('title'=>'Registrar propiedad',
         'style'=>'cursor: pointer;',
         'onclick'=>"{
-		nuevo();}"));?>
+		nuevo('Registrar propiedad','/propiedad/nuevaPropiedad','/propiedad/actualizarListaPropiedad','#propiedad');}"));?>
 		
 		<?php echo $form->error($model,'idpropiedad'); ?>
 	</div>
@@ -151,20 +151,19 @@
 		<?php echo $form->hiddenField($model,'fechaRegistro'); ?>
 		
 	</div>
-	
 
-	
 	<div class="row">
 		<?php echo $form->labelEx($model,'comentario'); ?>
 		<?php echo $form->textArea($model,'comentario',array('size'=>60,'maxlength'=>200)); ?>
 		<?php echo $form->error($model,'comentario'); ?>
 	</div>
+	
 	<div class="row buttons">
 		<?php echo CHtml::submitButton($model->isNewRecord ? 'Registrar' : 'Actualizar'); ?>
 	</div>
 	
 <?php
-/*ventana agregar actividad*/
+/*ventana agregar actividad array('class'=>'btn btn-primary')*/
 $this->beginWidget('zii.widgets.jui.CJuiDialog', array( // the dialog
     'id'=>'nuevo',
     'options'=>array(
@@ -182,62 +181,26 @@ $this->beginWidget('zii.widgets.jui.CJuiDialog', array( // the dialog
  
 <?php $this->endWidget();?>
 
-<?php
-/*ventana agregar actividad*/
-$this->beginWidget('zii.widgets.jui.CJuiDialog', array( // the dialog
-    'id'=>'tipo',
-    'options'=>array(
-        //'title'=>$titulo,
-        'autoOpen'=>false,
-        'modal'=>true,
-        'width'=>360,
-		
-        //'height'=>480,
-		'resizable'=>false,	
-		'position'=>array(null,130),
-    ),
-));?>
-<div class="tipoVeh"></div>
- 
-<?php $this->endWidget();?>
-
-
 
 </div><!-- form -->
 <script>
-var titulo,dir1,dir2,id;
-
-function tipo(tit,dirA,dirB,id1){
-	if(!dirA==""){
-		titulo=tit;
-		dir1=dirA;
-		dir2=dirB;
-		id=id1;
-	}
-$("#tipo").dialog("option","title", titulo);
-$('#tipo').dialog('open');
-	jQuery.ajax({
-                url: "<?php echo Yii::app()->baseUrl;?>"+dir1,
-                'data':$(this).serialize(),
-                'type':'post',
-                'dataType':'json',
-                'success':function(data){
-                                if (data.status == 'failure'){
-                                        $('#tipo div.divForForm').html(data.div);
-                                        // Here is the trick: on submit-> once again this function!
-                                        $('#tipo div.divForForm form').submit(tipo);
-                                }
-                                else{
-                                        $('#tipo div.divForForm').html(data.div);
-                                        setTimeout("$('#tipo').dialog('close') ",1000);
-										actualizarLista("<?php echo Yii::app()->baseUrl;?>"+dir2,id);
-                                }
-                },
-                'cache':false});
-    return false; 
+$( document ).ready(function() {
+var idgrupo="<?php if(isset($grupo)) echo $grupo;?>";
+if(idgrupo>0){
+	$('#Vehiculo_idgrupo').val(idgrupo).change();	
 }
+});
 
-
+	
+$( "#Marca_id" ).change(function() {
+	if($('#Marca_id').val()=="")
+		$('#mod').hide(500);
+	else
+		$('#mod').show(500);
+});
+if($('#Marca_id').val()=="")
+	$('#mod').hide();
+var titulo,dir1,dir2,id;
 function nuevo(tit,dirA,dirB,id1){
 	if(!dirA==""){
 		titulo=tit;
@@ -268,6 +231,7 @@ $('#nuevo').dialog('open');
     return false; 
 }
 function actualizarLista(dir,id){
+	 
 	$.ajax({  		
           url: dir,
         })
