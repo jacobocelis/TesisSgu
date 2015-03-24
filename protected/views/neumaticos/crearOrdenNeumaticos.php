@@ -121,10 +121,11 @@ $this->menu=array(
 	array('label'=>'      Órdenes listas para cerrar <span class="badge badge-'.$this->Color($listas).' pull-right">'.$listas.'</span>', 'url'=>array('cerrarOrdenes')),
 	
 	
+		
 	array('label'=>'<div id="menu"><strong>Historial</strong></div>'),
 	array('label'=>'      Histórico de averías', 'url'=>array('historicoAverias')),
 	array('label'=>'      Histórico de montajes', 'url'=>array('historicoMontajes')),
-	array('label'=>'      Histórico de rotaciones', 'url'=>array('historicoRotaciones')),
+	//array('label'=>'      Histórico de rotaciones', 'url'=>array('historicoRotaciones')),
 	array('label'=>'      Histórico de gastos', 'url'=>array('historicoGastos')),
 	array('label'=>'      Histórico de ordenes', 'url'=>array('historicoOrdenes')),
 	
@@ -134,7 +135,7 @@ $this->menu=array(
 ?>
 <div class='crugepanel user-assignments-role-list'>
 <h1>Crear órden de neumáticos</h1>
-<i>Puede crear una orden de neumáticos para reparar una <strong>avería</strong> previamente registrada, realizar una <strong>rotación</strong> entre neumáticos de la misma unidad ó entre varias unidades ó para solicitar una <strong>renovación</strong> de los neumáticos actuales en una unidad.</i>
+<i>Puede crear una orden de neumáticos para reparar una <strong>avería</strong> previamente registrada ó para solicitar una <strong>renovación</strong> de los neumáticos actuales en una unidad.</i>
 </div>
 <div class='crugepanel user-assignments-role-list'>
 
@@ -149,6 +150,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
 				'template'=>"{items}\n{summary}\n{pager}",
 				'selectableRows'=>2,
 				'emptyText'=>'No hay averías por atender',
+				'htmlOptions'=>array('style'=>'cursor:pointer'),
                 'dataProvider'=>$dataProvider,
 				'columns'=>array(
 				array(
@@ -175,19 +177,38 @@ $this->widget('zii.widgets.grid.CGridView', array(
 					'header'=>'Falla reportada',
 					'name'=>'idfallaCaucho',
 					'value'=>'$data->idfallaCaucho0->falla',
-					'htmlOptions'=>array('style'=>'text-align:center;width:250px'),
+					'htmlOptions'=>array('style'=>'text-align:center;'),
+				),
+				array(
+					'type'=>"raw",
+					'header'=>'Serial',
+					'value'=>'$data->idhistoricoCaucho0->serial=="0"?$data->porDefinir($data->idhistoricoCaucho0->serial):strtoupper($data->idhistoricoCaucho0->serial);',
+					'name'=>'serial',
+					'htmlOptions'=>array('style'=>'text-align:center'),
+				),
+				array(
+					'header'=>'Eje',
+					'value'=>'$data->idhistoricoCaucho0->iddetalleRueda0->iddetalleEje0->idposicionEje0->posicionEje',
+					'name'=>'iddetalleRueda',
+					'htmlOptions'=>array('style'=>'text-align:center;'),
+				),
+				array(
+					'header'=>'Posición',
+					'value'=>'$data->idhistoricoCaucho0->iddetalleRueda0->idposicionRueda0->posicionRueda',
+					'name'=>'iddetalleRueda',
+					'htmlOptions'=>array('style'=>'text-align:center;'),
 				),
 				array(
 					'header'=>'Reportó',
 					'name'=>'idempleado',
 					'value'=>'$data->idempleado0->nombre.\' \'.$data->idempleado0->apellido',
-					'htmlOptions'=>array('style'=>'text-align:center;width:100px'),
+					'htmlOptions'=>array('style'=>'text-align:center;'),
 				),
 				array(
 					'header'=>'Estatus',
 					'name'=>'idestatus',
 					'value'=>'$data->idestatus0->estatus',
-					'htmlOptions'=>array('style'=>'text-align:center;width:60px'),
+					'htmlOptions'=>array('style'=>'text-align:center;'),
 				),	
 			)
         ));
@@ -298,7 +319,7 @@ $this->beginWidget('zii.widgets.jui.CJuiDialog', array( // the dialog
 		
 </div>
 
-<div class='crugepanel user-assignments-role-list'>
+<div style="display:none" class='crugepanel user-assignments-role-list'>
 	<h2>Rotaciones</h2>
 <?php
 $this->widget('zii.widgets.grid.CGridView', array(
@@ -540,12 +561,12 @@ $this->beginWidget('zii.widgets.jui.CJuiDialog', array( // the dialog
 <?php $this->endWidget();?>
 
 <script>
-var ancho=$(window).width()-($(window).width()*0.20);
+/*var ancho=$(window).width()-($(window).width()*0.20);
 $('#scrollingDiv').css({
   'right':ancho,
   'bottom': '50px'
  });
-	/*$().ready(function() {
+	$().ready(function() {
 		var $scrollingDiv = $("#scrollingDiv");
  
 		$(window).scroll(function(){			

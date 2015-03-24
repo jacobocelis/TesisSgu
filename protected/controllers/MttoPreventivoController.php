@@ -593,6 +593,22 @@ class MttoPreventivoController extends Controller
     if(isset($_POST['Actividadrecurso'])){
             $model->attributes=$_POST['Actividadrecurso'];
             if($model->save()){
+    			if(isset($_POST['idfac'])){
+    				
+				$iva=Parametro::model()->findByAttributes(array('nombre'=>'IVA'));
+				$factura=Factura::model()->findByPk($_POST['idfac']);
+				$actividades=Detalleorden::model()->findAll(array("condition"=>"idordenMtto = '".$factura->idordenMtto."'"));
+				$subTotal=0;
+				for($i=0;$i<count($actividades);$i++){
+					$recursos=Actividadrecurso::model()->findAll(array("condition"=>"idactividades = '".$actividades[$i]["idactividades"]."'"));
+					for($j=0;$j<count($recursos);$j++){
+						$subTotal+=$recursos[$j]["costoTotal"];
+					}
+				}
+				Yii::app()->db->createCommand("update `tsg`.`sgu_factura` set `total`=".$subTotal." where `sgu_factura`.`id` = ".$_POST['idfac']."")->query();
+				$factura=Factura::model()->findByPk($_POST['idfac']);
+				Yii::app()->db->createCommand("update `tsg`.`sgu_factura` set `iva`=".(($factura->total)*($iva["valor"]/100)).",`totalFactura`=".(($factura->total)+($factura->total)*($iva["valor"]/100))."   where `sgu_factura`.`id` = ".$_POST['idfac']."")->query();
+			}
                 if (Yii::app()->request->isAjaxRequest){
 					echo CJSON::encode(array(
                         'status'=>'success', 

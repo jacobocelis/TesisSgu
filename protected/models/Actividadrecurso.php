@@ -46,12 +46,23 @@ class Actividadrecurso extends CActiveRecord
 			array('cantidad, idactividades, idinsumo, idrepuesto, idservicio, idunidad, idactividadRecursoGrupo, garantia, idtiempoGarantia', 'numerical', 'integerOnly'=>true),
 			array('costoUnitario, costoTotal', 'numerical'),
 			array('detalle', 'length', 'max'=>100),
+			array('costoUnitario', 'validarCosto'),
+			array('costoUnitario', 'validarCantidad'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
 			array('id, cantidad, idactividades, idinsumo, idrepuesto, idservicio, idunidad, detalle, idactividadRecursoGrupo, costoUnitario, costoTotal, garantia, idtiempoGarantia', 'safe', 'on'=>'search'),
 		);
 	}
-
+	     public function validarCosto(){
+                if($this->costoUnitario<=0){
+                    $this->addError('costoUnitario', 'Costo unitario debe ser mayor a cero');
+                }
+			}
+		public function validarCantidad(){
+                if($this->cantidad<=0){
+                    $this->addError('cantidad', 'Cantidad debe ser mayor a cero');
+                }
+	}
 	/**
 	 * @return array relational rules.
 	 */

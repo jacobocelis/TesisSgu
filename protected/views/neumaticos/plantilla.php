@@ -24,10 +24,11 @@ $this->menu=array(
 	array('label'=>'      Órdenes listas para cerrar <span class="badge badge-'.$this->Color($listas).' pull-right">'.$listas.'</span>', 'url'=>array('cerrarOrdenes')),
 	
 	
+		
 	array('label'=>'<div id="menu"><strong>Historial</strong></div>'),
 	array('label'=>'      Histórico de averías', 'url'=>array('historicoAverias')),
 	array('label'=>'      Histórico de montajes', 'url'=>array('historicoMontajes')),
-	array('label'=>'      Histórico de rotaciones', 'url'=>array('historicoRotaciones')),
+	//array('label'=>'      Histórico de rotaciones', 'url'=>array('historicoRotaciones')),
 	array('label'=>'      Histórico de gastos', 'url'=>array('historicoGastos')),
 	array('label'=>'      Histórico de ordenes', 'url'=>array('historicoOrdenes')),
 	
@@ -117,6 +118,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
 			</estado>
 			</div>
 <div id="uno">
+
 <?php $this->widget('zii.widgets.grid.CGridView', array(
                 'id'=>'ejes',
 				'summaryText'=>'',
@@ -156,7 +158,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
 					 'template'=>'{delete}',
 					 'afterDelete'=>'function(link,success,data){
 	                               $("#plantilla").change();
-								    alert(data);
+								    
 	                        }',
 							
 					     'buttons'=>array(
@@ -177,6 +179,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
 		<div id="nuevoEje"></div>
 </div>
 <div id="dos">
+
 	<?php $this->widget('zii.widgets.grid.CGridView', array(
                 'id'=>'cauchos',
 				'summaryText'=>'',

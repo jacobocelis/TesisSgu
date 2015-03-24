@@ -66,10 +66,11 @@ $this->menu=array(
 	array('label'=>'      Órdenes listas para cerrar <span class="badge badge-'.$this->Color($listas).' pull-right">'.$listas.'</span>', 'url'=>array('cerrarOrdenes')),
 	
 	
+		
 	array('label'=>'<div id="menu"><strong>Historial</strong></div>'),
 	array('label'=>'      Histórico de averías', 'url'=>array('historicoAverias')),
 	array('label'=>'      Histórico de montajes', 'url'=>array('historicoMontajes')),
-	array('label'=>'      Histórico de rotaciones', 'url'=>array('historicoRotaciones')),
+	//array('label'=>'      Histórico de rotaciones', 'url'=>array('historicoRotaciones')),
 	array('label'=>'      Histórico de gastos', 'url'=>array('historicoGastos')),
 	array('label'=>'      Histórico de ordenes', 'url'=>array('historicoOrdenes')),
 	
@@ -102,14 +103,21 @@ $this->widget('zii.widgets.grid.CGridView', array(
 					'header'=>'Fecha',
 					'name'=>'fechaFalla',
 					'value'=>'date("d/m/Y",strtotime($data->fechaFalla))',
-					'htmlOptions'=>array('style'=>'text-align:center;width:50px'),
+					'htmlOptions'=>array('style'=>'text-align:center'),
 				),
 			
 				array(
 					'header'=>'Avería reportada',
 					'name'=>'idfallacaucho',
 					'value'=>'$data->idfallaCaucho==null?\' \':$data->idfallaCaucho0->falla',
-					'htmlOptions'=>array('style'=>'text-align:center;width:250px'),
+					'htmlOptions'=>array('style'=>'text-align:center'),
+				),
+				array(
+					'type'=>"raw",
+					'header'=>'Serial',
+					'value'=>'$data->idhistoricoCaucho0->serial=="0"?$data->porDefinir($data->idhistoricoCaucho0->serial):strtoupper($data->idhistoricoCaucho0->serial);',
+					'name'=>'serial',
+					'htmlOptions'=>array('style'=>'text-align:center'),
 				),
 				/*array(
 					'header'=>'Detalle',
@@ -117,18 +125,18 @@ $this->widget('zii.widgets.grid.CGridView', array(
 					'name'=>'idcaucho',
 					'htmlOptions'=>array('style'=>'text-align:center;width:85px'),
 				),*/
-				/*array(
+				array(
 					'header'=>'Eje',
 					'value'=>'$data->idhistoricoCaucho0->iddetalleRueda0->iddetalleEje0->idposicionEje0->posicionEje',
 					'name'=>'iddetalleRueda',
-					'htmlOptions'=>array('style'=>'text-align:center;width:85px'),
+					'htmlOptions'=>array('style'=>'text-align:center;'),
 				),
 				array(
 					'header'=>'Posición',
 					'value'=>'$data->idhistoricoCaucho0->iddetalleRueda0->idposicionRueda0->posicionRueda',
 					'name'=>'iddetalleRueda',
-					'htmlOptions'=>array('style'=>'text-align:center;width:85px'),
-				),*/
+					'htmlOptions'=>array('style'=>'text-align:center;'),
+				),
 				/*array(
 					'type'=>'raw',
 					'header'=>'Neumático',
@@ -136,27 +144,27 @@ $this->widget('zii.widgets.grid.CGridView', array(
 					'value'=>'\'<strong>Serial: </strong>\'.$data->idhistoricoCaucho0->serial.\'<br><strong>Eje:</strong> \'.$data->idhistoricoCaucho0->iddetalleRueda0->iddetalleEje0->idposicionEje0->posicionEje.\'<br><strong>Posición:</strong> \'.$data->idhistoricoCaucho0->iddetalleRueda0->idposicionRueda0->posicionRueda',
 					'htmlOptions'=>array('style'=>'text-align:center;width:140px'),
 				),*/
-				array(
+				/*array(
 					'type'=>'raw',
 					'header'=>'Neumático',
 					//'name'=>'idempleado',
 					'value'=>'\'<strong>Serial: </strong>\'.$data->idhistoricoCaucho0->serial.\'<br><strong>Eje:</strong> \'.$data->idhistoricoCaucho0->iddetalleRueda0->iddetalleEje0->idposicionEje0->posicionEje.\'<strong> Lado:</strong> \'.$data->idhistoricoCaucho0->iddetalleRueda0->idposicionRueda0->posicionRueda',
 					'htmlOptions'=>array('style'=>'text-align:center;width:180px'),
-				),
+				),*/
 				array(
 					'header'=>'Reportó',
 					'name'=>'idempleado',
 					'value'=>'$data->idempleado==""?\' \':$data->idempleado0->nombre.\' \'.$data->idempleado0->apellido',
-					'htmlOptions'=>array('style'=>'text-align:center;width:100px'),
+					'htmlOptions'=>array('style'=>'text-align:center;'),
 				),
 				
-				array(
+				/*array(
 					'header'=>'Comentario',
 					'name'=>'comentario',
 					'value'=>'$data->comentario',
 					'htmlOptions'=>array('style'=>'text-align:center;width:250px'),
 				),
-				/*array(
+				array(
 					'header'=>'Estado',
 					'name'=>'idestatus',
 					'value'=>'$data->idestatus0->estatus',

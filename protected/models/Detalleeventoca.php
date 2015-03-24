@@ -88,7 +88,13 @@ class Detalleeventoca extends CActiveRecord
 		
         if($this->idhistoricoCaucho==null){
             $this->addErrors(array(
-            	'idhistoricoCaucho'=>'Error: Debe seleccionar un neumático',
+            	'idhistoricoCaucho'=>'Debe seleccionar un neumático',
+            ));
+        }
+		if($this->idaccionCaucho==3){
+			if($this->idfallaCaucho==null)
+            $this->addErrors(array(
+            	'idfallaCaucho'=>'Debe agregar una avería',
             ));
         }
         return parent::beforeValidate();

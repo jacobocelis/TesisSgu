@@ -21,7 +21,7 @@ class Historicoedos extends CActiveRecord
 	 */
 	public function tableName()
 	{
-		return 'sgu_historicoedos';
+		return 'sgu_historicoEdos';
 	}
 
 	/**

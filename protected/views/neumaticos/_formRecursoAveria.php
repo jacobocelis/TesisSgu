@@ -34,7 +34,9 @@
 	</div>
 	
 	<div class="row">
-		<?php echo $form->hiddenField($model,'costoUnitario')?> 
+		<?php echo $form->labelEx($model,'costoUnitario'); ?>
+		<?php echo $form->textField($model,'costoUnitario',array('style' => 'width:100px;','value'=>$model->costoUnitario<=0?'':$model->costoUnitario)); ?> Bs. 
+		<?php echo $form->error($model,'costoUnitario'); ?>
 	</div>
 	<div class="row">
 		
@@ -66,6 +68,19 @@
 	margin: 10px 0px;
 }
 </style>
+<script>
+$("#detreccaucho-form").submit(function(event){
+	event.preventDefault();
+	total();
+});
+function total(){
+	var cantidad=$("#Detreccaucho_cantidad").val();
+	var costo=$("#Detreccaucho_costoUnitario").val();
+	var total=(parseFloat(cantidad) * parseFloat(costo));
+	$("#Detreccaucho_costoTotal").val(total);
+
+}
+</script>
 <script>
 //nuevoRecurso();
 function nuevoRecurso(){

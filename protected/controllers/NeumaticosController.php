@@ -726,6 +726,15 @@ class NeumaticosController extends Controller
     if(isset($_POST['Detreccaucho'])){
             $model->attributes=$_POST['Detreccaucho'];
             if($model->save()){
+            	if(isset($_POST['idfac'])){
+						
+						$iva=Parametro::model()->findByAttributes(array('nombre'=>'IVA'));
+                        $total = Factura::model()->totalFacturaOrdenNeumaticos($_POST['idfac']);
+						$factura=Factura::model()->findByPk($_POST['idfac']);
+						
+						Yii::app()->db->createCommand("update `tsg`.`sgu_factura` set `total`=".$total.",`iva`=".(($total)*($iva["valor"]/100)).",`totalFactura`=".(($total)+($total)*($iva["valor"]/100))."   where `sgu_factura`.`id` = ".$_POST['idfac']."")->query();
+						
+				}
                 if (Yii::app()->request->isAjaxRequest){
 					echo CJSON::encode(array(
                         'status'=>'success', 

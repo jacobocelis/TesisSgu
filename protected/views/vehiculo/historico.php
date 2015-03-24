@@ -79,6 +79,11 @@ $this->menu=array(
 			'htmlOptions'=>array('style'=>'text-align:center'),	
 		),
 		array(
+			'name'=>'fechaRegistro',
+			//'value'=>'$data->idcombustible0->combustible',
+			'htmlOptions'=>array('style'=>'text-align:center'),	
+		),
+		array(
 			'name'=>'idcolor',
 			'value'=>'$data->idcolor0->color',
 			'htmlOptions'=>array('style'=>'text-align:center'),	

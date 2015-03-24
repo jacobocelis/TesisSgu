@@ -124,7 +124,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
 					'value'=>'$data->idprioridad0->prioridad',
 					'htmlOptions'=>array('style'=>'width:50px;text-align:center;'),
 				),
-				array(
+				/*array(
 					'header'=>'Fecha de realizada',
 					'name'=>'fechaRealizada',
 					'type'=>'raw',
@@ -134,13 +134,10 @@ $this->widget('zii.widgets.grid.CGridView', array(
 				array(
 					'header'=>'Kilometraje al realizarla',
 					'name'=>'kmRealizada',
-					'type'=>'raw',
-					/*'value'=>function($data){
-						return '<div class="label label-info">'.$data->ultimoKm.'</div>';
-					},*/
+					'type'=>'raw',					
 					'value'=>'number_format($data->valores($data->kmRealizada))?number_format($data->kmRealizada).\' Km \':$data->noasignado()',
 					'htmlOptions'=>array('style'=>'width:80px;text-align:center;'),
-				),
+				),*/
 				array(
 					'headerHtmlOptions'=>array('style'=>'text-align:center;width:30px;background:#B0E3FF'),
 					'htmlOptions'=>array('style'=>'text-align:center;'),
@@ -399,9 +396,10 @@ idAct=id;
 	$("#dialog3").dialog("open");
 }
 var Uurl;
+var idfac=<?php echo $idfac?>;
 function editarActividad(id){
 
-var idfac=<?php echo $idfac?>;
+
 $('#dialog').dialog('open');
 	 if (typeof(id)=='string')
                 Uurl=id;
@@ -461,7 +459,7 @@ $('#recurso').dialog('open');
 	var url="<?php echo Yii::app()->baseUrl."/mttoPreventivo/agregarRecursoAdicional/"?>";
 	jQuery.ajax({
                 url: url+idAct,
-                'data':$(this).serialize(),
+                'data':$(this).serialize()+'&idfac='+idfac,
                 'type':'post',
                 'dataType':'json',
                 'success':function(data){
@@ -473,6 +471,7 @@ $('#recurso').dialog('open');
                                         $('#recurso div.divForForm').html(data.div);
                                         setTimeout("$('#recurso').dialog('close') ",1000);
                                         $.fn.yiiGridView.update('rec');
+                                        $.fn.yiiGridView.update('factu');
 										
                                 }
                         },

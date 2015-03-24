@@ -43,7 +43,11 @@
 		<?php echo $form->textField($model,'diasParo',array('style' => 'width:30px;'));  echo $form->dropDownList($model,'idtiempo',CHtml::listData(Tiempo::model()->findAll(array("condition"=>"id <> 5 order by id=1 DESC")),'id','tiempo'),array('id'=>'tiempo','style' => 'width:90px;')); ?>
 		<?php echo $form->error($model,'diasParo'); ?>
 	</div>
-	
+	<div class="row">
+		<?php echo $form->labelEx($model,'detalle'); ?>
+		<?php echo $form->textArea($model,'detalle',array('style' => 'width:80%;')); ?>
+		<?php echo $form->error($model,'detalle'); ?>
+	</div>
 	
 	<?php echo $form->hiddenField($model,'idvehiculo'); ?>
 	<?php echo $form->hiddenField($model,'idempleado'); ?>

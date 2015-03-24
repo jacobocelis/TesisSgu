@@ -70,18 +70,18 @@
 		<?php echo $form->dropDownList($model,'idunidad',CHtml::listData(Unidad::model()->findAll(),'id','corto'),array('style' => 'width:100px;')); ?>
 		<?php echo $form->error($model,'cantidad'); ?>
 	</div>
-
+	<div class="row">
+		<?php echo $form->labelEx($model,'costoUnitario'); ?>
+		<?php echo $form->textField($model,'costoUnitario',array('style' => 'width:100px;','value'=>$model->costoUnitario<=0?'':$model->costoUnitario)); ?> Bs. 
+		<?php echo $form->error($model,'costoUnitario'); ?>
+	</div>
 	<div class="row">
 		
 		<?php echo $form->hiddenField($model,'idreporteFalla',array('value'=>$id)); ?>
 		
 	</div>
 
-	<div class="row">
 	
-		<?php echo $form->hiddenField($model,'costoUnitario',array('style' => 'width:100px;')); ?> 
-		
-	</div>
 
 	<div class="row">
 		
@@ -96,6 +96,19 @@
 <?php $this->endWidget(); ?>
 
 </div><!-- form -->
+<script>
+$("#recursofalla-form").submit(function(event){
+	event.preventDefault();
+	total();
+});
+function total(){
+	var cantidad=$("#Recursofalla_cantidad").val();
+	var costo=$("#Recursofalla_costoUnitario").val();
+	var total=(parseFloat(cantidad) * parseFloat(costo));
+	$("#Recursofalla_costoTotal").val(total);
+
+}
+</script>
 <script>
 var iden=$('#Recursofalla_idinsumo option:selected').val();
 validarInsumo(iden);

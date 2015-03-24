@@ -27,9 +27,9 @@ $this->menu=array(
 	array('label'=>'<div id="menu"><strong>Historial</strong></div>'),
 	array('label'=>'      Histórico de averías', 'url'=>array('historicoAverias')),
 	array('label'=>'      Histórico de montajes', 'url'=>array('historicoMontajes')),
-	array('label'=>'      Histórico de rotaciones', 'url'=>array('historicoRotaciones')),
+	//array('label'=>'      Histórico de rotaciones', 'url'=>array('historicoRotaciones')),
 	array('label'=>'      Histórico de gastos', 'url'=>array('historicoGastos')),
-	array('label'=>'      Histórico de ordenes', 'url'=>array('neumaticos/historicoOrdenes')),
+	array('label'=>'      Histórico de ordenes', 'url'=>array('historicoOrdenes')),
 	
 	array('label'=>'<div id="menu"><strong>Parámetros</strong></div>'),
 	array('label'=>'      Admin. de parámetros', 'url'=>array('')),

@@ -29,8 +29,8 @@ $this->menu=array(
 	array('label'=>'<div id="menu"><strong>Historial</strong></div>'),
 	array('label'=>'      Histórico de averías', 'url'=>array('historicoAverias')),
 	array('label'=>'      Histórico de montajes', 'url'=>array('historicoMontajes')),
-	array('label'=>'      Histórico de rotaciones', 'url'=>array('historicoRotaciones')),
-	//array('label'=>'      Histórico de gastos', 'url'=>array('historicoGastos')),
+	//array('label'=>'      Histórico de rotaciones', 'url'=>array('historicoRotaciones')),
+	array('label'=>'      Histórico de gastos', 'url'=>array('historicoGastos')),
 	array('label'=>'      Histórico de ordenes', 'url'=>array('historicoOrdenes')),
 	
 	array('label'=>'<div id="menu"><strong>Parámetros</strong></div>'),
@@ -84,7 +84,7 @@ $this->widget('zii.widgets.CListView', array(
 	'emptyText'=>'No hay registros',
 	'summaryText'=>'',
 	'itemView'=>'vehiculos',
-));
+));?><i>*Neumáticos de uso</i><?php
 $this->widget('zii.widgets.grid.CGridView', array(
 				'id'=>$idve,
 				'summaryText'=>'',
@@ -147,6 +147,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
 			),
         ));?>
 <div id="agregar<?php echo $idve;?>" class="agregar"></div>
+<br><i>*Neumático(s) de repuesto</i>
 <?php
 $this->widget('zii.widgets.grid.CGridView', array(
                 'id'=>'rep'.$idve.'',

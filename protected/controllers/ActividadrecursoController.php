@@ -106,6 +106,7 @@ class ActividadrecursoController extends Controller
             if($model->save()){
                 if (Yii::app()->request->isAjaxRequest){
 					if(isset($_POST['idfac'])){
+						
 						$iva=Parametro::model()->findByAttributes(array('nombre'=>'IVA'));
 						$factura=Factura::model()->findByPk($_POST['idfac']);
 						$actividades=Detalleorden::model()->findAll(array("condition"=>"idordenMtto = '".$factura->idordenMtto."'"));

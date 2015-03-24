@@ -73,9 +73,9 @@
 	
 	<div id="detalle" class="row">
 	<br>
-		<?php echo $form->labelEx($model,'detalle'); ?>
-		<?php echo $form->textArea($model,'detalle',array('size'=>160,'maxlength'=>150,'style' => 'width:300px;')); ?>
-		<?php echo $form->error($model,'detalle'); ?>
+		
+		<?php echo $form->hiddenField($model,'detalle',array('size'=>160,'maxlength'=>150,'style' => 'width:300px;')); ?>
+		
 	</div>
 
 	<div class="row">

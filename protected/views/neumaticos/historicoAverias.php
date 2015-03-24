@@ -25,9 +25,9 @@ $this->menu=array(
 	
 	
 	array('label'=>'<div id="menu"><strong>Historial</strong></div>'),
-	array('label'=>'      Histórico de averías', 'url'=>array('neumaticos/historicoAverias')),
+	array('label'=>'      Histórico de averías', 'url'=>array('historicoAverias')),
 	array('label'=>'      Histórico de montajes', 'url'=>array('historicoMontajes')),
-	array('label'=>'      Histórico de rotaciones', 'url'=>array('historicoRotaciones')),
+	//array('label'=>'      Histórico de rotaciones', 'url'=>array('historicoRotaciones')),
 	array('label'=>'      Histórico de gastos', 'url'=>array('historicoGastos')),
 	array('label'=>'      Histórico de ordenes', 'url'=>array('historicoOrdenes')),
 	
@@ -72,39 +72,63 @@ $this->widget('zii.widgets.grid.CGridView', array(
 					'header'=>'Fecha reporte',
 					'name'=>'fechaFalla',
 					'value'=>'date("d/m/Y",strtotime($data->fechaFalla))',
-					'htmlOptions'=>array('style'=>'text-align:center;width:50px'),
+					'htmlOptions'=>array('style'=>'text-align:center;'),
 				),
 			
 				array(
 					'header'=>'Falla reportada',
 					'name'=>'idfalla',
 					'value'=>'$data->idfallaCaucho0->falla',
-					'htmlOptions'=>array('style'=>'text-align:center;width:200px'),
+					'htmlOptions'=>array('style'=>'text-align:center;'),
 				),
 				array(
+					'type'=>"raw",
+					'header'=>'Serial',
+					'value'=>'$data->idhistoricoCaucho0->serial=="0"?$data->porDefinir($data->idhistoricoCaucho0->serial):strtoupper($data->idhistoricoCaucho0->serial);',
+					'name'=>'serial',
+					'htmlOptions'=>array('style'=>'text-align:center'),
+				),
+				array(
+					'header'=>'Medida',
+					'value'=>'$data->idhistoricoCaucho0->idcaucho0->idmedidaCaucho0->medida.\' R\'.$data->idhistoricoCaucho0->idcaucho0->idrin0->rin.\' \'.$data->idhistoricoCaucho0->idcaucho0->idpiso0->piso',
+					'name'=>'idcaucho',
+					'htmlOptions'=>array('style'=>'text-align:center'),
+				),
+				array(
+					'header'=>'Eje',
+					'value'=>'$data->idhistoricoCaucho0->iddetalleRueda0->iddetalleEje0->idposicionEje0->posicionEje',
+					'name'=>'iddetalleRueda',
+					'htmlOptions'=>array('style'=>'text-align:center'),
+				),
+				array(
+					'header'=>'Posición',
+					'value'=>'$data->idhistoricoCaucho0->iddetalleRueda0->idposicionRueda0->posicionRueda',
+					'name'=>'iddetalleRueda',
+					'htmlOptions'=>array('style'=>'text-align:center'),
+				),
+				/*array(
 					'type'=>'raw',
 					'header'=>'Neumático',
-					//'name'=>'idempleado',
 					'value'=>'\'<strong>Serial: </strong>\'.$data->idhistoricoCaucho0->serial.\'<br><strong>Eje:</strong> \'.$data->idhistoricoCaucho0->iddetalleRueda0->iddetalleEje0->idposicionEje0->posicionEje.\'<strong> Lado:</strong> \'.$data->idhistoricoCaucho0->iddetalleRueda0->idposicionRueda0->posicionRueda',
 					'htmlOptions'=>array('style'=>'text-align:center;width:180px'),
-				),
+				),*/
 				array(
 					'header'=>'Reportó',
 					'name'=>'idempleado',
 					'value'=>'$data->idempleado0->nombre.\' \'.$data->idempleado0->apellido',
-					'htmlOptions'=>array('style'=>'text-align:center;width:100px'),
+					'htmlOptions'=>array('style'=>'text-align:center;'),
 				),
-				array(
+				/*array(
 					'header'=>'Comentario',
 					'name'=>'comentario',
 					'value'=>'$data->comentario',
 					'htmlOptions'=>array('style'=>'text-align:center;width:100px'),
-				),
+				),*/
 				array(
 					'header'=>'Fecha reparada',
 					'name'=>'fechaRealizada',
 					'value'=>'date("d/m/Y",strtotime($data->fechaRealizada))',
-					'htmlOptions'=>array('style'=>'text-align:center;width:50px'),
+					'htmlOptions'=>array('style'=>'text-align:center;'),
 				),
 				/*array(
 					'header'=>'Estatus',

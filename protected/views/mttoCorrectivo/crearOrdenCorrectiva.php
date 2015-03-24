@@ -278,13 +278,13 @@ h1 {
 }
 </style>
 <script>
-$('#formulario').hide();
+/*$('#formulario').hide();
 var ancho=$(window).width()-($(window).width()*0.20);
 $('#scrollingDiv').css({
   'right':ancho,
   'bottom': '50px'
  });
-
+*/
  $( "#scrollingDiv" ).click(function() {
 	$('#scrollingDiv').hide(300);
 	$("#formulario").dialog('open');

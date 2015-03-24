@@ -100,9 +100,9 @@ $this->widget('zii.widgets.grid.CGridView', array(
 	<?php
 	$this->widget('zii.widgets.grid.CGridView', array(
                 'id'=>'averias',
-				'selectableRows'=>1,
+				'selectableRows'=>0,
 				'summaryText'=>'',
-				'selectionChanged'=>'mostrarRecursos',
+				//'selectionChanged'=>'mostrarRecursos',
 			    //'enableSorting' => true,
 				'emptyText'=>'no existen averias registradas en ésta orden',
                 'dataProvider'=>$averias,
@@ -183,7 +183,20 @@ $this->widget('zii.widgets.grid.CGridView', array(
                 )',
 					'htmlOptions'=>array('style'=>'width:80px;text-align:center;'),
 				),
-				
+					array(
+					'headerHtmlOptions'=>array('style'=>'text-align:center;width:30px;background:#B0E3FF'),
+					'htmlOptions'=>array('style'=>'text-align:center;'),
+					'header'=>'Registrar gastos',
+					'type'=>'raw',
+					'value'=>'CHtml::link(
+                     CHtml::image(Yii::app()->request->baseUrl."/imagenes/agregar.png",
+                                          "Agregar",array("title"=>"Registrar")),
+                        "",
+                        array(
+                                \'style\'=>\'cursor: pointer;text-decoration: underline;text-align:center;\',
+                                \'onclick\'=>\'{ mostrarRecursos("\'.$data->id.\'")}\'
+                        )
+                );',),
 				array(
 					'header'=>'Estado',
 					'name'=>'idestatus',
@@ -196,10 +209,23 @@ $this->widget('zii.widgets.grid.CGridView', array(
         ));
 		
 ?>	
-
-<div id='recur' style="display:none">
+<?php
+/*ventana agregar informacion*/
+$this->beginWidget('zii.widgets.jui.CJuiDialog', array( // the dialog
+    'id'=>'dialog3',
+    'options'=>array(
+        'title'=>'Registrar gastos realizados',
+        'autoOpen'=>false,
+        'modal'=>true,
+        'width'=>'80%',
+        'position'=>array(null,100),
+		'resizable'=>false
+    ),
+));?>
+<div id='recur' style="display:none" class='crugepanel user-assignments-detail'>
 <?php 
-			$this->widget('zii.widgets.grid.CGridView', array(
+
+		$this->widget('zii.widgets.grid.CGridView', array(
 			'id'=>'rec',
 			'selectableRows'=>0,
 			'dataProvider'=>$recurso,
@@ -282,7 +308,11 @@ $this->widget('zii.widgets.grid.CGridView', array(
     array(
         'style'=>'cursor: pointer; text-decoration: underline;',
         'onclick'=>"{agregarRecurso(); }"));
-?>	
+		?>
+</div>
+ 
+<?php $this->endWidget();?>
+
 </div>
 </div>
 <?php }?>
@@ -784,7 +814,7 @@ $this->beginWidget('zii.widgets.jui.CJuiDialog', array( // the dialog
 <script>
 
 var idfac=<?php echo $idfac?>;
-
+var idAct;
 var Uurl;
 function editarMontado(id){
 	
@@ -954,14 +984,13 @@ jQuery.ajax({
                 'cache':false});
 	return false; 
 }
-function mostrarRecursos(){
-var altura = $(document).height();
+function mostrarRecursos(id){
+idAct=id;
+//var altura = $(document).height();
 //$("html, body").animate({scrollTop:altura+"px"},500);
-$('#recur').show(500);
-	var idAct = $.fn.yiiGridView.getSelection('averias');
-	if(idAct=="")
-		$('#recur').hide();
-	$.fn.yiiGridView.update('rec',{ data : "idAct="+idAct});
+$('#recur').show();
+	$.fn.yiiGridView.update('rec',{ data : "idAct="+id});
+	$("#dialog3").dialog("open");
 }
 
 function editarActividad(id){
@@ -1022,11 +1051,11 @@ $('#ModFactura').dialog('open');
 }
 function agregarRecurso(){
 $('#recurso').dialog('open');
-	var idAct = $.fn.yiiGridView.getSelection('averias');
+	
 	var url="<?php echo Yii::app()->baseUrl."/neumaticos/agregarRecursoAveria/"?>";
 	jQuery.ajax({
                 url: url+idAct,
-                'data':$(this).serialize(),
+                'data':$(this).serialize()+'&idfac='+idfac,
                 'type':'post',
                 'dataType':'json',
                 'success':function(data){
@@ -1038,7 +1067,7 @@ $('#recurso').dialog('open');
                                         $('#recurso div.divForForm').html(data.div);
                                         setTimeout("$('#recurso').dialog('close') ",1000);
                                         $.fn.yiiGridView.update('rec');
-										
+										$.fn.yiiGridView.update('factu');
                                 }
                         },
                 'cache':false});

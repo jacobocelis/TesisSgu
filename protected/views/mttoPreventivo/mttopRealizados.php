@@ -132,16 +132,14 @@ $this->widget('zii.widgets.grid.CGridView', array(
 					'value'=>'$data->valores($data->fechaRealizada)?date("d/m/Y",strtotime($data->fechaRealizada)):$data->noasignado()',
 					'htmlOptions'=>array('style'=>'width:80px;text-align:center;'),
 				),
-				array(
+				/*array(
 					'header'=>'Kilometraje al realizarla',
 					'name'=>'kmRealizada',
 					'type'=>'raw',
-					/*'value'=>function($data){
-						return '<div class="label label-info">'.$data->ultimoKm.'</div>';
-					},*/
+				
 					'value'=>'number_format($data->valores($data->kmRealizada))?number_format($data->kmRealizada).\' Km \':$data->noasignado()',
 					'htmlOptions'=>array('style'=>'width:80px;text-align:center;'),
-				),
+				),*/
 				array(
 					'header'=>'Tiempo de paro',
 					'name'=>'duracion',

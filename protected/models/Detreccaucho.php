@@ -38,12 +38,23 @@ class Detreccaucho extends CActiveRecord
 			array('cantidad, costoUnitario, costoTotal, idrecursoCaucho, iddetalleEventoCa, idunidad', 'required'),
 			array('cantidad, idrecursoCaucho, iddetalleEventoCa, idunidad', 'numerical', 'integerOnly'=>true),
 			array('costoUnitario, costoTotal', 'numerical'),
+			array('costoUnitario', 'validarCosto'),
+			array('cantidad', 'validarCantidad'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
 			array('id, cantidad, costoUnitario, costoTotal, idrecursoCaucho, iddetalleEventoCa, idunidad', 'safe', 'on'=>'search'),
 		);
 	}
-
+	public function validarCosto(){
+                if($this->costoUnitario<=0){
+                    $this->addError('costoUnitario', 'Costo unitario debe ser mayor a cero');
+                }
+	}
+	public function validarCantidad(){
+                if($this->cantidad<=0){
+                    $this->addError('cantidad', 'Cantidad debe ser mayor a cero');
+                }
+	}
 	/**
 	 * @return array relational rules.
 	 */

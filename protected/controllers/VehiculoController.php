@@ -307,7 +307,7 @@ class VehiculoController extends Controller
 		
 		$dataProvider=new CActiveDataProvider('Vehiculo',array(
 			'criteria'=>array(
-				'condition'=>'id not in '.$model->getVehiculosPorEstatus(4).''
+				'condition'=>'id not in ('.$model->getVehiculosPorEstatus(4).')'
 			)
 		));
 		
@@ -321,7 +321,7 @@ class VehiculoController extends Controller
 		
 		$dataProvider=new CActiveDataProvider('Vehiculo',array(
 			'criteria'=>array(
-				'condition'=>'id in (select idvehiculo as id from (select * from (select h.idestado as idestado,v.id as idvehiculo from sgu_vehiculo v, sgu_historicoedos h where v.id=h.idvehiculo  order by h.id desc) as uno group by uno.idvehiculo) as dos where dos.idestado=4)'
+				'condition'=>'id in ('.Vehiculo::model()->getVehiculosPorEstatus(4).')'
 			)
 		));
 		

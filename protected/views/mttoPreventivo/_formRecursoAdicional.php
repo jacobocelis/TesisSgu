@@ -72,6 +72,11 @@
 	</div>
 
 	<div class="row">
+		<?php echo $form->labelEx($model,'costoUnitario'); ?>
+		<?php echo $form->textField($model,'costoUnitario',array('style' => 'width:100px;','value'=>$model->costoUnitario<=0?'':$model->costoUnitario)); ?> Bs. 
+		<?php echo $form->error($model,'costoUnitario'); ?>
+	</div>
+	<div class="row">
 		<?php echo $form->labelEx($model,'detalle'); ?>
 		<?php echo $form->textArea($model,'detalle',array('size'=>60,'maxlength'=>100, 'style' =>'width: 298px; height: 55px;')); ?>
 		<?php echo $form->error($model,'detalle'); ?>
@@ -89,11 +94,6 @@
 		
 	</div>
 
-	<div class="row">
-	
-		<?php echo $form->hiddenField($model,'costoUnitario',array('style' => 'width:100px;')); ?> 
-		
-	</div>
 
 	<div class="row">
 		
@@ -108,6 +108,23 @@
 <?php $this->endWidget(); ?>
 
 </div><!-- form -->
+<script>
+/*$("#garantia").hide();
+if($("#Actividadrecurso_idrepuesto").val()!="")
+$("#garantia").show();*/
+$("#actividadrecurso-form").submit(function(event){
+	event.preventDefault();
+	total();
+});
+function total(){
+	var cantidad=$("#Actividadrecurso_cantidad").val();
+	var costo=$("#Actividadrecurso_costoUnitario").val();
+	var total=(parseFloat(cantidad) * parseFloat(costo));
+	$("#Actividadrecurso_costoTotal").val(total);
+
+}
+</script>
+
 <script>
 var iden=$('#Actividadrecurso_idinsumo option:selected').val();
 validarInsumo(iden);

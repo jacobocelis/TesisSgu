@@ -44,13 +44,14 @@
 	<div class="row">
 		<?php echo $form->labelEx($model,'idfallaCaucho'); ?>
 		<?php echo $form->dropDownList($model,'idfallaCaucho',CHtml::listData(Fallacaucho::model()->findAll(),'id','falla')); echo CHtml::link('(+)', "",array('title'=>'Registrar avería',
+		 //'class'=>'botonAgregar',
         'style'=>'cursor: pointer;font-size:15px',
         'onclick'=>"{
 		AgregarAveriaNueva();}"));?>
 		<?php echo $form->error($model,'idfallaCaucho');?>
 	</div>
 	<div id="titulo">
-		<i>*Seleccione el neumatico que se encuentra averiado:</i>
+		<i>*Seleccione el neumático que se encuentra averiado:</i>
 	</div>
 	<div id="sep">
 	<i>Buscar vehiculo por #:  </i>
@@ -136,9 +137,9 @@
 	</div>
 	<br>
 	<div class="row">
-		<?php echo $form->labelEx($model,'comentario'); ?>
-		<?php echo $form->textArea($model,'comentario',array('size'=>60,'maxlength'=>100,'style'=>'width:98%;')); ?>
-		<?php echo $form->error($model,'comentario'); ?>
+		<?php //echo $form->labelEx($model,'comentario'); ?>
+		<?php //echo $form->textArea($model,'comentario',array('size'=>60,'maxlength'=>100,'style'=>'width:98%;')); ?>
+		
 	</div>
 
 	<div class="row">
@@ -152,7 +153,7 @@
 		<?php echo $form->hiddenField($model,'idestatus',array("value"=>8)); ?>
 
 	<div class="row buttons">
-		<?php echo CHtml::submitButton('Registrar'); ?>
+		<?php echo CHtml::submitButton('Registrar avería'); ?>
 	</div>
 
 <?php $this->endWidget(); ?>

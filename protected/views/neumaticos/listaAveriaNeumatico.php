@@ -63,10 +63,11 @@ $this->menu=array(
 	array('label'=>'      Órdenes listas para cerrar <span class="badge badge-'.$this->Color($listas).' pull-right">'.$listas.'</span>', 'url'=>array('cerrarOrdenes')),
 	
 	
+		
 	array('label'=>'<div id="menu"><strong>Historial</strong></div>'),
 	array('label'=>'      Histórico de averías', 'url'=>array('historicoAverias')),
 	array('label'=>'      Histórico de montajes', 'url'=>array('historicoMontajes')),
-	array('label'=>'      Histórico de rotaciones', 'url'=>array('historicoRotaciones')),
+	//array('label'=>'      Histórico de rotaciones', 'url'=>array('historicoRotaciones')),
 	array('label'=>'      Histórico de gastos', 'url'=>array('historicoGastos')),
 	array('label'=>'      Histórico de ordenes', 'url'=>array('historicoOrdenes')),
 	
@@ -76,7 +77,6 @@ $this->menu=array(
 
 <div id="averia"class='crugepanel user-assignments-role-list'>
 <h1>Averías por atender</h1>
-
 <?php
 $this->widget('zii.widgets.grid.CGridView', array(
                 'id'=>'averias',
@@ -90,51 +90,58 @@ $this->widget('zii.widgets.grid.CGridView', array(
 					'name'=>'idhistoricocaucho',
 					'value'=>'str_pad((int) $data->idhistoricoCaucho0->idvehiculo0->numeroUnidad,2,"0",STR_PAD_LEFT);',
 					//'value'=>'$data->idplan0->idplanGrupo0->CompiledColour->$data-id.\' \'.$data->CompiledColour',
-					'htmlOptions'=>array('style'=>'text-align:center;width:40px'),
+					'htmlOptions'=>array('style'=>'text-align:center'),
 				),
 				array(
 					'header'=>'Fecha',
 					'name'=>'fechaFalla',
 					'value'=>'date("d/m/Y",strtotime($data->fechaFalla))',
-					'htmlOptions'=>array('style'=>'text-align:center;width:50px'),
+					'htmlOptions'=>array('style'=>'text-align:center;'),
 				),
 			
 				array(
 					'header'=>'Avería reportada',
 					'name'=>'idfallacaucho',
 					'value'=>'$data->idfallaCaucho==null?\' \':$data->idfallaCaucho0->falla',
-					'htmlOptions'=>array('style'=>'text-align:center;width:250px'),
+					'htmlOptions'=>array('style'=>'text-align:center'),
+				),
+				array(
+					'type'=>"raw",
+					'header'=>'Serial',
+					'value'=>'$data->idhistoricoCaucho0->serial=="0"?$data->porDefinir($data->idhistoricoCaucho0->serial):strtoupper($data->idhistoricoCaucho0->serial);',
+					'name'=>'serial',
+					'htmlOptions'=>array('style'=>'text-align:center'),
 				),
 				array(
 					'header'=>'Medida',
 					'value'=>'$data->idhistoricoCaucho0->idcaucho0->idmedidaCaucho0->medida.\' R\'.$data->idhistoricoCaucho0->idcaucho0->idrin0->rin.\' \'.$data->idhistoricoCaucho0->idcaucho0->idpiso0->piso',
 					'name'=>'idcaucho',
-					'htmlOptions'=>array('style'=>'text-align:center;width:85px'),
+					'htmlOptions'=>array('style'=>'text-align:center'),
 				),
-				/*array(
+				array(
 					'header'=>'Eje',
 					'value'=>'$data->idhistoricoCaucho0->iddetalleRueda0->iddetalleEje0->idposicionEje0->posicionEje',
 					'name'=>'iddetalleRueda',
-					'htmlOptions'=>array('style'=>'text-align:center;width:85px'),
+					'htmlOptions'=>array('style'=>'text-align:center'),
 				),
 				array(
 					'header'=>'Posición',
 					'value'=>'$data->idhistoricoCaucho0->iddetalleRueda0->idposicionRueda0->posicionRueda',
 					'name'=>'iddetalleRueda',
-					'htmlOptions'=>array('style'=>'text-align:center;width:85px'),
-				),*/
-				array(
+					'htmlOptions'=>array('style'=>'text-align:center'),
+				),
+				/*array(
 					'type'=>'raw',
 					'header'=>'Neumático',
 					//'name'=>'idempleado',
 					'value'=>'\'<strong>Serial: </strong>\'.$data->idhistoricoCaucho0->serial.\'<br><strong>Eje:</strong> \'.$data->idhistoricoCaucho0->iddetalleRueda0->iddetalleEje0->idposicionEje0->posicionEje.\'<strong> Lado:</strong> \'.$data->idhistoricoCaucho0->iddetalleRueda0->idposicionRueda0->posicionRueda',
 					'htmlOptions'=>array('style'=>'text-align:center;width:180px'),
-				),
+				),*/
 				array(
 					'header'=>'Reportó',
 					'name'=>'idempleado',
 					'value'=>'$data->idempleado==""?\' \':$data->idempleado0->nombre.\' \'.$data->idempleado0->apellido',
-					'htmlOptions'=>array('style'=>'text-align:center;width:100px'),
+					'htmlOptions'=>array('style'=>'text-align:center;'),
 				),
 				/*array(
 					'header'=>'Estado',
@@ -142,12 +149,12 @@ $this->widget('zii.widgets.grid.CGridView', array(
 					'value'=>'$data->idestatus0->estatus',
 					'htmlOptions'=>array('style'=>'text-align:center;width:60px'),
 				),*/
-				array(
+				/*array(
 					'header'=>'Comentario',
 					'name'=>'comentario',
 					'value'=>'$data->comentario',
 					'htmlOptions'=>array('style'=>'text-align:center;width:250px'),
-				),
+				),*/
 			)
         ));
 		?>

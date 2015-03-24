@@ -116,7 +116,7 @@ public function getTotal($data)
 	 * @return array customized attribute labels (name=>label)
 	 */
 	public function getVehiculosPorEstatus($idestatus){
-		return '(select idvehiculo as id from (select * from (select h.idestado as idestado,v.id as idvehiculo from sgu_vehiculo v, sgu_historicoedos h where v.id=h.idvehiculo  order by h.id desc) as uno group by uno.idvehiculo) as dos where dos.idestado='.$idestatus.')';
+		return '(select idvehiculo as id from (select * from (select h.idestado as idestado,v.id as idvehiculo from sgu_vehiculo v, sgu_historicoEdos h where v.id=h.idvehiculo  order by h.id desc) as uno group by uno.idvehiculo) as dos where dos.idestado='.$idestatus.')';
 	}
 	public function attributeLabels()
 	{
@@ -181,6 +181,7 @@ public function getTotal($data)
 		$criteria->compare('idgrupo',$this->idgrupo);
 		$criteria->compare('idcolor',$this->idcolor);
 		$criteria->compare('idpropiedad',$this->idpropiedad);
+		$criteria->addCondition('id not in '.$this->getVehiculosPorEstatus(4).'');
 		//para filtrar tipo
 		if($this->tipo<>"")
 			$criteria->addCondition('idgrupo in(select id from sgu_grupo where idtipo="'.$this->tipo.'") ');

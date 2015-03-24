@@ -8,6 +8,29 @@ body {
 	font-size:15px;
 
 }
+.botonAgregar {
+	background-color:#1D2E7B;
+	-moz-border-radius:5px;
+	-webkit-border-radius:5px;
+	border-radius:5px;
+	display:inline-block;
+	cursor:pointer;
+	color:#ffffff;
+	font-family:Arial;
+	font-size:14px;
+	font-weight:bold;
+	padding:1px 6px;
+	text-decoration:none;
+	text-shadow:0px 1px 0px #1570cd;
+}
+.botonAgregar:hover {
+	background-color:#3381ed;
+}
+.botonAgregar:active {
+	position:relative;
+	top:1px;
+}
+
 .container-fluid{padding-top: 20px;}
 
 /*Nav bar*/
@@ -31,7 +54,7 @@ body {
 }
 .navbar .nav > li > a {
   float:none;
-  padding:10px 15px;
+  padding:10px 10px;
   text-decoration:none;
 }
 

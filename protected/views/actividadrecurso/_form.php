@@ -63,7 +63,7 @@
 
 	<div class="row">
 		<?php echo $form->labelEx($model,'costoUnitario'); ?>
-		<?php echo $form->textField($model,'costoUnitario',array('style' => 'width:100px;')); ?>  Bs.
+		<?php echo $form->textField($model,'costoUnitario',array('style' => 'width:100px;', 'value'=>$model->costoUnitario<=0?'':$model->costoUnitario)); ?>  Bs.
 		<?php echo $form->error($model,'costoUnitario'); ?>
 	</div>
 
