@@ -26,6 +26,7 @@ $this->menu=array(
 <div id="reposicion"></div>
 </div>
 <div class='crugepanel user-assignments-detail'>
+<div id="resultado"></div>
 <h1>Reposiciones registradas</h1>
 <?php
 $this->widget('zii.widgets.grid.CGridView', array(
@@ -171,10 +172,12 @@ function registrarReposicion(){
 										//$('#reposicion').css('background','#E7FAFA');
                                 }
                                 else{
+                                        $('#resultado').html(data.mensaje);
+                                        $('body').scrollTo('#resultado',{duration:'slow', offsetTop : '0'});
                                         $('#reposicion').html(data.div);
-										$('#reposicion').css('background','#9EF79C');
+										//$('#reposicion').css('background','#9EF79C');
                                         //setTimeout("$('#viaje').dialog('close') ",1000);
-                                        window.setTimeout('registrarReposicion()', 2000);
+                                        //window.setTimeout('registrarReposicion()', 2000);
 										$.fn.yiiGridView.update('comb');
                                 }
                         },

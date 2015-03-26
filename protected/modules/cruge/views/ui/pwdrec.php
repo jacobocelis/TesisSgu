@@ -1,4 +1,4 @@
-
+<div class='crugepanel user-assignments-role-list'  style="width: 400px; margin: 40px auto 0 auto;">
 <h1><?php echo CrugeTranslator::t("Recuperar la contraseña"); ?></h1>
 
 <?php if(Yii::app()->user->hasFlash('pwdrecflash')): ?>
@@ -18,18 +18,22 @@
 <br>
 	<div class="row">
 		<?php echo $form->labelEx($model,'username'); ?>
+		
+	</div>
+	<div class="row">
 		<?php echo $form->textField($model,'username'); ?>
 		<?php echo $form->error($model,'username'); ?>
 	</div>
-	
 	<?php if(CCaptcha::checkRequirements()): ?>
 	<div class="row">
+		
 		<?php echo $form->labelEx($model,'verifyCode'); ?>
 		<div>
 		<?php $this->widget('CCaptcha'); ?>
+		<div class="hint"><?php echo CrugeTranslator::t("por favor ingrese el código de la imagen");?></div>
 		<?php echo $form->textField($model,'verifyCode'); ?>
 		</div>
-		<div class="hint"><?php echo CrugeTranslator::t("por favor ingrese los caracteres o digitos que vea en la imagen");?></div>
+		
 		<?php echo $form->error($model,'verifyCode'); ?>
 	</div>
 	<?php endif; ?>
@@ -39,5 +43,6 @@
 	</div>
 	
 <?php $this->endWidget(); ?>
+</div>
 </div>
 <?php endif; ?>

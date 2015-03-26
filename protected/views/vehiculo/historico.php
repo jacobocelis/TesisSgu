@@ -99,7 +99,11 @@ $this->menu=array(
 			'htmlOptions'=>array('style'=>'text-align:center'),	
 			'type'=>'raw'
 		),
-		
+		/*array(
+			'name'=>'motivo',
+			'value'=>'$data->Historicoedoses->motivo',
+			'htmlOptions'=>array('style'=>'text-align:center'),	
+		),*/
 		//'fechaRegistro',
 		
 			array(

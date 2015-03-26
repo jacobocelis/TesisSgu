@@ -9,6 +9,7 @@ $this->breadcrumbs=array(
 );
 $this->menu=array(
 	array('label'=>'<div id="menu"><strong>Opciones de vehiculo</strong></div>' , 'visible'=>'1'),
+	array('label'=>'Ficha técnica', 'url'=>array('vehiculo/view', 'id'=>$model->id)),
 	array('label'=>'Editar vehiculo', 'url'=>array('vehiculo/update', 'id'=>$vehiculo->id)),
 	array('label'=>'Agregar fotografía', 'url'=>array('foto/index', 'id'=>$vehiculo->id)),
 	

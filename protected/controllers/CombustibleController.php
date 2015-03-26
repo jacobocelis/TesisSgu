@@ -101,8 +101,13 @@ class CombustibleController extends Controller
 				   /*inserts por debajo del plan de mantenimiento a cada vehiculo del grupo*/
 				   
 					echo CJSON::encode(array(
-                        'status'=>'success', 
-                        'div'=>"se realizó el registro correctamente",
+                        'status'=>'success',
+                        //'div'=>$this->renderPartial('_formReposicion', array('model'=>$model), true), 
+                        'mensaje'=>'<div class="alert alert-success">
+							<button type="button" class="close" data-dismiss="alert">×</button>
+                            <b>La reposición se registró correctamente</b>
+                        	</div>',
+
                         ));
                     exit;
                 }

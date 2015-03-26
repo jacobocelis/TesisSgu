@@ -8,7 +8,7 @@ $this->breadcrumbs=array(
 );
 $this->menu=array(
 	array('label'=>'<div id="menu"><strong>Opciones de mantenimiento</strong></div>'),
-	array('label'=>'      Registro de fallas', 'url'=>array('registrarFalla')),
+	array('label'=>'      Registro de incidentes', 'url'=>array('registrarFalla')),
 	array('label'=>'      Registro de mejoras', 'url'=>array('registrarMejora')),
 	//array('label'=>'      Registrar matenimientos iniciales <span class="badge badge-'.$color.' pull-right">'.$mi.'</span>', 'url'=>array('mttoPreventivo/iniciales/')),
 	//array('label'=>'      Ajuste de fechas en calendario', 'url'=>array('calendario')),
@@ -25,7 +25,7 @@ $this->menu=array(
 	
 	array('label'=>'<div id="menu"><strong>Historial</strong></div>'),
 	
-	array('label'=>'      Histórico de fallas', 'url'=>array('mttoCorrectivo/historicoCorrectivo')),
+	array('label'=>'      Histórico de incidentes', 'url'=>array('mttoCorrectivo/historicoCorrectivo')),
 	array('label'=>'      Histórico de mejoras', 'url'=>array('mttoCorrectivo/historicoMejoras')),
 	array('label'=>'      Histórico de gastos', 'url'=>array('historicoGastos')),
 	array('label'=>'      Histórico de ordenes', 'url'=>array('mttoCorrectivo/historicoOrdenes')),

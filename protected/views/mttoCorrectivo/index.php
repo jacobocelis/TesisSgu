@@ -7,7 +7,7 @@ $this->breadcrumbs=array(
 );
 $this->menu=array(
 	array('label'=>'<div id="menu"><strong>Opciones de mantenimiento</strong></div>'),
-	array('label'=>'      Registro de fallas', 'url'=>array('registrarFalla')),
+	array('label'=>'      Registro de incidentes', 'url'=>array('registrarFalla')),
 	array('label'=>'      Registro de mejoras', 'url'=>array('registrarMejora')),
 	//array('label'=>'      Registrar matenimientos iniciales <span class="badge badge-'.$color.' pull-right">'.$mi.'</span>', 'url'=>array('mttoPreventivo/iniciales/')),
 	//array('label'=>'      Ajuste de fechas en calendario', 'url'=>array('calendario')),
@@ -32,7 +32,7 @@ $this->menu=array(
 
 ?>
 <div class='crugepanel user-assignments-role-list'>
-<h1>Listado de fallas reportadas en vehiculos</h1>
+<h1>Listado de incidentes reportados en vehiculos</h1>
 <div id="filtro">
 <select id="lista" >
 			<option value="1">Por atender</option>

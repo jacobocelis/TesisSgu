@@ -14,7 +14,7 @@
 	// See class documentation of CActiveForm for details on this.
 	'enableAjaxValidation'=>false,
 )); ?>
-<h1>Registro de fallas</h1>
+<h1>Registro de incidentes</h1>
 	<p class="note">Campos con <span class="required">*</span> obligatorios.</p>
 	
 <div class="row">
@@ -63,7 +63,7 @@
 	</div>
 			
 	<div id="registrarFalla">			
-		<?php echo CHtml::link('Nueva falla', "",  // the link for open the dialog
+		<?php echo CHtml::link('Nuevo incidente', "",  // the link for open the dialog
 		array(
 			'style'=>'cursor: pointer; text-decoration: underline;font-size:13px;margin-left:290px;',
 			'onclick'=>"{falla(); }"));
@@ -182,4 +182,5 @@ var dir="<?php echo Yii::app()->baseUrl;?>"+"/mttoCorrectivo/ajaxActualizarLista
     margin-top: 5px;
 	width:50%;
 }
+
 </style>

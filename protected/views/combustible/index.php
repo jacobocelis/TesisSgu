@@ -2,7 +2,9 @@
 /* @var $this CombustibleController */
 /* @var $dataProvider CActiveDataProvider */
 
-
+$this->breadcrumbs=array(
+	'Combustible',
+);
 $this->menu=array(
 
 	array('label'=>'<div id="menu"><strong>Combustible</strong></div>'),

@@ -98,14 +98,14 @@ $this->widget('zii.widgets.grid.CGridView', array(
 					array(
 						'type'=>'raw',
 						//'headerHtmlOptions'=>array('style'=>'width:10%;text-align:left;'),
-						'header'=>'         Falla',
+						'header'=>'         Incidente',
 						'value'=>'\'<strong>\'.$data->tipo($data->id).\':</strong> \'',
 						'htmlOptions'=>array('style'=>'text-align:left;width:20%;'),
 					),
 					array(
 						'type'=>'raw',
 						//'headerHtmlOptions'=>array('style'=>'width:10%;text-align:left;'),
-						'header'=>'         Falla',
+						'header'=>'         Incidente',
 						'value'=>'$data->idfalla0->falla',
 						'htmlOptions'=>array('style'=>'text-align:left'),
 					),

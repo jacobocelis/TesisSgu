@@ -17,7 +17,7 @@ class Tipoempleado extends CActiveRecord
 	 */
 	public function tableName()
 	{
-		return 'sgu_tipoempleado';
+		return 'sgu_tipoEmpleado';
 	}
 
 	/**

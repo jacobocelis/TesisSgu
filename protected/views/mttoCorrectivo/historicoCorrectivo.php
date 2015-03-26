@@ -4,11 +4,11 @@
 
 $this->breadcrumbs=array(
 	'Mantenimiento correctivo'=>array('mttoCorrectivo/index'),
-	'Histórico de fallas',
+	'Histórico de incidentes',
 );
 $this->menu=array(
 	array('label'=>'<div id="menu"><strong>Opciones de mantenimiento</strong></div>'),
-	array('label'=>'      Registro de fallas', 'url'=>array('registrarFalla')),
+	array('label'=>'      Registro de incidentes', 'url'=>array('registrarFalla')),
 	array('label'=>'      Registro de mejoras', 'url'=>array('registrarMejora')),
 	//array('label'=>'      Registrar matenimientos iniciales <span class="badge badge-'.$color.' pull-right">'.$mi.'</span>', 'url'=>array('mttoPreventivo/iniciales/')),
 	//array('label'=>'      Ajuste de fechas en calendario', 'url'=>array('calendario')),
@@ -24,14 +24,14 @@ $this->menu=array(
 	
 	
 	array('label'=>'<div id="menu"><strong>Historial</strong></div>'),
-	array('label'=>'      Histórico de fallas', 'url'=>array('mttoCorrectivo/historicoCorrectivo')),
+	array('label'=>'      Histórico de incidentes', 'url'=>array('mttoCorrectivo/historicoCorrectivo')),
 	array('label'=>'      Histórico de mejoras', 'url'=>array('mttoCorrectivo/historicoMejoras')),
 	array('label'=>'      Histórico de gastos', 'url'=>array('historicoGastos')),
 	array('label'=>'      Histórico de ordenes', 'url'=>array('historicoOrdenes')),
 );
 ?>
 <div class='crugepanel user-assignments-role-list'>
-<h1>Histórico de fallas reparadas</h1>
+<h1>Histórico de incidentes  </h1>
 <div id="filtro" style="width:20%">
 <i>Por # de unidad: </i>
 
@@ -63,14 +63,14 @@ $this->widget('zii.widgets.grid.CGridView', array(
 					'htmlOptions'=>array('style'=>'text-align:center;width:40px'),
 				),
 				array(
-					'header'=>'Fecha de falla',
+					'header'=>'Fecha',
 					'name'=>'fechaFalla',
 					'value'=>'date("d/m/Y",strtotime($data->fechaFalla))',
 					'htmlOptions'=>array('style'=>'text-align:center;width:50px'),
 				),
 			
 				array(
-					'header'=>'Falla reportada',
+					'header'=>'Evento reportado',
 					'name'=>'idfalla',
 					'value'=>'$data->idfalla0->falla',
 					'htmlOptions'=>array('style'=>'text-align:center;width:250px'),
@@ -88,7 +88,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
 					'htmlOptions'=>array('style'=>'text-align:center;width:100px'),
 				),
 				array(
-					'header'=>'Fecha reparada',
+					'header'=>'Fecha reparado',
 					'name'=>'fechaRealizada',
 					'value'=>'date("d/m/Y",strtotime($data->fechaRealizada))',
 					'htmlOptions'=>array('style'=>'text-align:center;width:50px'),

@@ -54,7 +54,7 @@
 	
 	<div class="row">
 			<?php echo $form->labelEx($model,'Conductor*'); ?>
-		<?php echo $form->dropDownList($model,'idempleado',$data,array('style' => 'width:295px;')); ?>
+		<?php echo $form->dropDownList($model,'idempleado',$data,array('style' => 'width:150px;')); ?>
 		<?php echo $form->error($model,'idempleado'); ?>
 	</div>
 	

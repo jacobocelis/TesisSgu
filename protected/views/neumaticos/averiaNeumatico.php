@@ -83,7 +83,7 @@ $this->menu=array(
 </div>
 <div id="averia"class='crugepanel user-assignments-role-list'>
 <h1>Averías por atender</h1>
-<div id="registrado" style="display:none">se registró la avería correctamente</div>
+<div id="resultado"></div>
 <?php
 $this->widget('zii.widgets.grid.CGridView', array(
                 'id'=>'averias',
@@ -205,16 +205,6 @@ $this->beginWidget('zii.widgets.jui.CJuiDialog', array( // the dialog
 
 <script>
 
-var reg="<?php echo $registrado?>";
-if(reg==1){
-	$('#registrado').css('background','#9EF79C');
-	$("#registrado").show();
-	//$.scrollTo($('#averia').offset().top-100, { duration:300});
-	
-      $("html, body").animate({scrollTop:$(document).height()+"px"});
-
-
-}
 function AgregarAveriaNueva(){
 	$('#dialog').dialog('open');
 	var dir="<?php echo Yii::app()->baseUrl;?>"+"/neumaticos/AgregarAveriaNueva/";
@@ -251,7 +241,7 @@ var dir="<?php echo Yii::app()->baseUrl;?>"+"/neumaticos/ajaxActualizarAverias";
 }
 
 //agregarAveria();
-function agregarAveria(){
+/*function agregarAveria(){
 	jQuery.ajax({
                 url: "RegistrarAveriaNeumatico",
                 'data':$(this).serialize(),
@@ -265,9 +255,11 @@ function agregarAveria(){
                                 }
                                 else{
                                         $('#averia').html(data.div);
+                                        $('#resultado').html(data.mensaje);
+                                        $('body').scrollTo('#resultado',{duration:'slow', offsetTop : '0'});
                                         //setTimeout("$('#dialog').dialog('close') ",1000);
                                         //window.setTimeout('agregarAveria()',1000);
-										window.setTimeout('location.reload()', 1000);
+										//window.setTimeout('location.reload()', 1000);
 										$.fn.yiiGridView.update('averias');
 										
 										
@@ -275,7 +267,7 @@ function agregarAveria(){
                         } ,
                 'cache':false});
     return false; 
-}
+}*/
 function actualizarSpanAverias(){
 	var dir="<?php echo Yii::app()->baseUrl;?>"+"/neumaticos/ActualizarSpanAverias";
 	$.ajax({

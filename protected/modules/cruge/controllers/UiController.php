@@ -164,7 +164,8 @@ class UiController extends Controller
         if(!Yii::app()->user->isGuest)
             $this->redirect(Yii::app()->user->returnUrl);
         
-        $this->layout = CrugeUtil::config()->loginLayout;
+        //$this->layout = CrugeUtil::config()->loginLayout;
+        $this->layout = 'login';
 
         $model = Yii::app()->user->um->getNewCrugeLogon('login');
 
@@ -230,8 +231,8 @@ class UiController extends Controller
     }*/
 	public function actionPwdRec(){
 		
-        $this->layout = CrugeUtil::config()->resetPasswordLayout;
-
+        //$this->layout = CrugeUtil::config()->resetPasswordLayout;
+        $this->layout = 'login';
         $model = Yii::app()->user->um->getNewCrugeLogon('pwdrec');
 
         Yii::app()->user->setFlash('pwdrecflash', null);

@@ -59,7 +59,7 @@ class Falla extends CActiveRecord
 	{
 		return array(
 			'id' => 'ID',
-			'falla' => 'Falla',
+			'falla' => 'Incidente',
 			'tipo'=>'Tipo',
 		);
 	}

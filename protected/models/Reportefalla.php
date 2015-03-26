@@ -163,7 +163,7 @@ class Reportefalla extends CActiveRecord
 			array('fechaFalla, diasParo, idtiempo, idvehiculo, idempleado, idfalla, idestatus,tipo,fechaRealizada', 'required'),
 			array('kmRealizada, diasParo, idtiempo, idvehiculo, idempleado, idfalla, idestatus,tipo', 'numerical', 'integerOnly'=>true),
 			array('detalle', 'length', 'max'=>150),
-			array('fechaRealizada', 'safe'),
+			//array('fechaRealizada', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
 			array('id, detalle, fechaFalla, fechaRealizada, kmRealizada, diasParo, idtiempo, idvehiculo, idempleado, idfalla, idestatus,tipo', 'safe', 'on'=>'search'),
@@ -203,7 +203,7 @@ class Reportefalla extends CActiveRecord
 			'idtiempo' => 'Idtiempo',
 			'idvehiculo' => 'Unidad',
 			'idempleado' => 'Reportó',
-			'idfalla' => 'Falla',
+			'idfalla' => 'Incidente',
 			'idestatus' => 'Estatus',
 			'tipo' => 'Tipo',
 		);

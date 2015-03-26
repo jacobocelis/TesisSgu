@@ -5,7 +5,7 @@
 );
 $this->menu=array(
 	array('label'=>'<div id="menu"><strong>Opciones de mantenimiento</strong></div>'),
-	array('label'=>'      Registro de fallas', 'url'=>array('registrarFalla')),
+	array('label'=>'      Registro de incidentes', 'url'=>array('registrarFalla')),
 	array('label'=>'      Registro de mejoras', 'url'=>array('mttoCorrectivo/registrarMejora')),
 	//array('label'=>'      Registrar matenimientos iniciales <span class="badge badge-'.$color.' pull-right">'.$mi.'</span>', 'url'=>array('mttoPreventivo/iniciales/')),
 	//array('label'=>'      Ajuste de fechas en calendario', 'url'=>array('calendario')),
@@ -22,7 +22,7 @@ $this->menu=array(
 	
 	array('label'=>'<div id="menu"><strong>Historial</strong></div>'),
 	
-	array('label'=>'      Histórico de fallas', 'url'=>array('mttoCorrectivo/historicoCorrectivo')),
+	array('label'=>'      Histórico de incidentes', 'url'=>array('mttoCorrectivo/historicoCorrectivo')),
 	array('label'=>'      Histórico de mejoras', 'url'=>array('mttoCorrectivo/historicoMejoras')),
 	array('label'=>'      Histórico de gastos', 'url'=>array('historicoGastos')),
 	array('label'=>'      Histórico de ordenes', 'url'=>array('historicoOrdenes')),
@@ -33,6 +33,7 @@ $this->menu=array(
 </div>
 <div class='crugepanel user-assignments-role-list'>
 <h1>Mejoras registradas</h1>
+<div id="resultado"></div>
 <?php
 $this->widget('zii.widgets.grid.CGridView', array(
                 'id'=>'fallas',
@@ -163,11 +164,13 @@ function agregarFalla(){
                                         $('#falla  form').submit(agregarFalla); // updatePaymentComment
                                 }
                                 else{
-                                        $('#falla').html(data.div);
+                                		$('#resultado').html(data.mensaje);
+                                        $('body').scrollTo('#resultado',{duration:'slow', offsetTop : '0'});
+                                        //$('#falla').html(data.div);
                                         //setTimeout("$('#dialog').dialog('close') ",1000);
 										 
                                         //window.setTimeout('agregarFalla()',1000);
-										window.setTimeout('location.reload()', 1000);
+										//window.setTimeout('location.reload()', 1000);
 										$.fn.yiiGridView.update('fallas');
                                 }
                         } ,

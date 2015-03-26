@@ -78,7 +78,8 @@ class NeumaticosController extends Controller
 				   
 					echo CJSON::encode(array(
                         'status'=>'success', 
-                        'div'=>"se agregó la avería correctamente"
+                        'div'=>"se agregó la avería correctamente",
+                        
                         ));
                     exit;
                 }

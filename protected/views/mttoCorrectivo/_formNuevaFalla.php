@@ -16,8 +16,8 @@
 )); ?>
 
 	<div class="row">
-		<?php echo $form->labelEx($model,'Nueva falla*'); ?>
-		<?php echo $form->textArea($model,'falla',array('size'=>60,'maxlength'=>120,'style'=>"width:250px")); ?>
+		<?php echo $form->labelEx($model,'Nuevo incidente*'); ?>
+		<?php echo $form->textArea($model,'falla',array('size'=>60,'maxlength'=>120,'style'=>"width:350px")); ?>
 		<?php echo $form->error($model,'falla'); ?>
 	</div>
 	<div class="row">
