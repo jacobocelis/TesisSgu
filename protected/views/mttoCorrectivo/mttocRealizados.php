@@ -90,7 +90,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
 	</div>
 <?php if(count($dataProvider->getData())>0){?>
 <div class='crugepanel user-assignments-role-list'>
-	<i>*Fallas reportadas</i>
+	<i>*Incidentes reportados</i>
 <?php
 $this->widget('zii.widgets.grid.CGridView', array(
                 'id'=>'fallas',
@@ -149,7 +149,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
 <?php
 $this->widget('zii.widgets.grid.CGridView', array(
                 'id'=>'mejoras',
-				'selectionChanged'=>'validar',
+				//'selectionChanged'=>'validar',
 				'summaryText'=>'',
 			    'enableSorting' => true,
 				'template'=>"{items}\n{summary}\n{pager}",

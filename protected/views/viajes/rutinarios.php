@@ -24,6 +24,7 @@ $this->menu=array(
 
 </div>
 <div class='crugepanel user-assignments-detail'>
+	<div id="resultado"></div>
 <h1>Listado de viajes rutinarios registrados</h1>
 		<div id='etiqueta' ><?php echo CHtml::link('Registrar viajes de última rutina', "",  
  array(
@@ -51,12 +52,13 @@ $this->widget('zii.widgets.grid.CGridView', array(
 					'htmlOptions'=>array('style'=>'text-align:center;width:50px;'),
 				),
 				array(
-					'header'=>'Ruta realizada',
-					'name'=>'idviaje',
-					'value'=>'$data->idviaje0->idOrigen0->lugar.\' - \'.$data->idviaje0->idDestino0->lugar',
+					'header'=>'Fecha',
+					'name'=>'fechaSalida',
+					'value'=>'date("d/m/Y", strtotime($data->fechaSalida));',
 					//'value'=>'$data->idplan0->idplanGrupo0->CompiledColour->$data-id.\' \'.$data->CompiledColour',
-					'htmlOptions'=>array('style'=>'text-align:center;width:100px;'),
+					'htmlOptions'=>array('style'=>'text-align:center;width:40px;'),
 				),
+				
 
 				array(
 					'header'=>'Hora de salida',
@@ -68,6 +70,13 @@ $this->widget('zii.widgets.grid.CGridView', array(
 					'header'=>'Hora de llegada',
 					'name'=>'horaLlegada',
 					'value'=>'date("g:i a", strtotime($data->horaLlegada));',
+					'htmlOptions'=>array('style'=>'text-align:center;width:100px;'),
+				),
+				array(
+					'header'=>'Ruta realizada',
+					'name'=>'idviaje',
+					'value'=>'$data->idviaje0->idOrigen0->lugar.\' - \'.$data->idviaje0->idDestino0->lugar',
+					//'value'=>'$data->idplan0->idplanGrupo0->CompiledColour->$data-id.\' \'.$data->CompiledColour',
 					'htmlOptions'=>array('style'=>'text-align:center;width:100px;'),
 				),
 				array(
@@ -153,8 +162,6 @@ $this->beginWidget('zii.widgets.jui.CJuiDialog', array( // the dialog
 #viaje{
 	width: 600px;
 }
-</style>
-<style>
 .grid-view table.items th {
 	color: rgba(0, 0, 0, 1);
     text-align: center;
@@ -191,11 +198,10 @@ function actualizarSpan(){
 
 agregarViajeRutinario();
 function agregarViajeRutinario(){
-	var fecha=$('#fecha').val();
 	var dir="<?php echo Yii::app()->baseUrl."/viajes/agregarViajeRutinario/"?>";
 	jQuery.ajax({
                 url: dir,
-                'data':$(this).serialize()+"&fecha="+fecha,
+                'data':$(this).serialize(),
                 'type':'post',
                 'dataType':'json',
                 'success':function(data){
@@ -204,11 +210,13 @@ function agregarViajeRutinario(){
                                         $('#viaje form').submit(agregarViajeRutinario);
                                 }
                                 else{
-                                        $('#viaje').html(data.div);
-										$('#viaje').css('background','#9EF79C');
+                                        //$('#viaje').html(data.div);
+										//$('#viaje').css('background','#9EF79C');
                                         //setTimeout("$('#viaje').dialog('close') ",1000);
-                                        window.setTimeout('agregarViajeRutinario()', 2000);
-										$.fn.yiiGridView.update('viajes');
+                                         agregarViajeRutinario();
+                                         $('body').scrollTo('#resultado',{duration:'slow', offsetTop : '0'});
+                                         $('#resultado').html(data.mensaje);
+										 $.fn.yiiGridView.update('viajes');
                                 }
                         },
                 'cache':false});

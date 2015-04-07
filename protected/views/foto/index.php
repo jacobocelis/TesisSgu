@@ -13,7 +13,7 @@ $this->menu=array(
 	array('label'=>'Editar vehiculo', 'url'=>array('vehiculo/update', 'id'=>$vehiculo->id)),
 	array('label'=>'Agregar fotografía', 'url'=>array('foto/index', 'id'=>$vehiculo->id)),
 	
-	array('label'=>'<div id="menu"><strong>Zona peligrosa</strong></div>' , 'visible'=>'1'),
+	array('label'=>'<div id="menu"><strong>Operaciones</strong></div>' , 'visible'=>'1'),
 	array('label'=>'Desincorporar vehiculo', 'url'=>array('vehiculo/desincorporar', 'id'=>$vehiculo->id) ,'linkOptions'=>array('style'=>'cursor:pointer;')),
 	
 	array('label'=>'Eliminar vehiculo', 'url'=>'' ,'linkOptions'=>array('confirm'=>'¿Confirma que desea eliminar el vehiculo?','onclick'=>'eliminar('.$vehiculo->id.')','style'=>'cursor:pointer;background:#FFE0E1;')),

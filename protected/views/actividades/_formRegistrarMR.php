@@ -37,7 +37,7 @@
 	
 	<div class="row">
 		<?php echo $form->labelEx($model,'fechaRealizada'); ?>
-		<?php echo $form->textField($model,'fechaRealizada',array('value'=>$id?'':date("d/m/Y", strtotime($model->fechaRealizada)),'readonly'=>'readonly','style' => 'width:100px;cursor:pointer;')); ?>
+		<?php echo $form->textField($model,'fechaRealizada',array('value'=>$id?date('d/m/Y'):date("d/m/Y", strtotime($model->fechaRealizada)),'readonly'=>'readonly','style' => 'width:100px;cursor:pointer;')); ?>
 		<?php echo $form->error($model,'fechaRealizada'); ?>
 	</div>
 

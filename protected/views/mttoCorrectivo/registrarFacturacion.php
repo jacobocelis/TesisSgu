@@ -119,7 +119,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
 				),
 			
 				array(
-					'header'=>'Falla reportada',
+					'header'=>'Incidente reportado',
 					'name'=>'idfalla',
 					'value'=>'$data->idfalla0->falla',
 					'htmlOptions'=>array('style'=>'text-align:center;width:250px'),
@@ -406,7 +406,7 @@ $this->beginWidget('zii.widgets.jui.CJuiDialog', array( // the dialog
         'title'=>'Registrar mantenimiento realizado',
         'autoOpen'=>false,
         'modal'=>true,
-        'width'=>500,
+        'width'=>'30%',
         'position'=>array(null,100),
 		'resizable'=>false
     ),

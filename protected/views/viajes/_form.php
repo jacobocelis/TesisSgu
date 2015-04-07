@@ -20,9 +20,9 @@
 	<?php echo $form->errorSummary($model); ?>
 
 	<div class="row">
-		<?php echo $form->labelEx($model,'fecha'); ?>
-		<?php echo $form->textField($model,'fecha'); ?>
-		<?php echo $form->error($model,'fecha'); ?>
+		<?php echo $form->labelEx($model,'fechaSalida'); ?>
+		<?php echo $form->textField($model,'fechaSalida'); ?>
+		<?php echo $form->error($model,'fechaSalida'); ?>
 	</div>
 
 	<div class="row">
@@ -32,9 +32,27 @@
 	</div>
 
 	<div class="row">
+		<?php echo $form->labelEx($model,'fechaLlegada'); ?>
+		<?php echo $form->textField($model,'fechaLlegada'); ?>
+		<?php echo $form->error($model,'fechaLlegada'); ?>
+	</div>
+
+	<div class="row">
 		<?php echo $form->labelEx($model,'horaLlegada'); ?>
 		<?php echo $form->textField($model,'horaLlegada'); ?>
 		<?php echo $form->error($model,'horaLlegada'); ?>
+	</div>
+
+	<div class="row">
+		<?php echo $form->labelEx($model,'nroPersonas'); ?>
+		<?php echo $form->textField($model,'nroPersonas'); ?>
+		<?php echo $form->error($model,'nroPersonas'); ?>
+	</div>
+
+	<div class="row">
+		<?php echo $form->labelEx($model,'ultimaRutina'); ?>
+		<?php echo $form->textField($model,'ultimaRutina'); ?>
+		<?php echo $form->error($model,'ultimaRutina'); ?>
 	</div>
 
 	<div class="row">
@@ -50,9 +68,9 @@
 	</div>
 
 	<div class="row">
-		<?php echo $form->labelEx($model,'nroPersonas'); ?>
-		<?php echo $form->textField($model,'nroPersonas'); ?>
-		<?php echo $form->error($model,'nroPersonas'); ?>
+		<?php echo $form->labelEx($model,'idconductor'); ?>
+		<?php echo $form->textField($model,'idconductor'); ?>
+		<?php echo $form->error($model,'idconductor'); ?>
 	</div>
 
 	<div class="row buttons">

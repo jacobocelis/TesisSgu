@@ -17,10 +17,18 @@
 <h1>Registro de viajes especiales</h1>
 	<p class="note">Campos con  <span class="required">*</span> son obligatorios.</p>
 	<div class="row">
-		<?php echo $form->labelEx($model,'fecha'); ?>
-		<?php echo $form->textField($model,'fecha',array('id'=>'fecha','size'=>10,'readonly'=>'readonly','value'=>date('d/m/Y'),'maxlength'=>8, 'style'=>'width:100px;cursor:pointer;')); ?>
-	<?php echo $form->error($model,'fecha'); ?>
+		<?php echo $form->labelEx($model,'fechaSalida'); ?>
+		<?php echo $form->textField($model,'fechaSalida',array('id'=>'fechaSalida','size'=>10,'readonly'=>'readonly','maxlength'=>8, 'style'=>'width:80px;cursor:pointer;')); ?>
+	<?php echo $form->error($model,'fechaSalida'); ?>
 	</div>
+
+	<div id="salida" class="row">
+		<?php echo $form->labelEx($model,'horaSalida'); ?>
+		<?php echo $form->textField($model,'horaSalida',array('readonly'=>'readonly',"onblur"=>"validarHora()",'style' => 'width:80px;cursor:pointer;')); ?>
+		<?php echo $form->error($model,'horaSalida'); ?>
+	</div>
+
+
 	<div class="row">
 		<?php echo $form->labelEx($model,'idvehiculo'); ?>
 		<?php echo $form->dropDownList($model,'idvehiculo',CHtml::listData(Vehiculo::model()->findAll(),'id','numeroUnidad'),array('prompt'=>'Seleccione: ','style' => 'width:110px;','onchange'=>'obtenerConductor(this.value);')); ?>
@@ -42,10 +50,16 @@
 	
 	<div id="registrar"></div>
 	
-	<div id="salida" class="row">
-		<?php echo $form->labelEx($model,'horaSalida'); ?>
-		<?php echo $form->textField($model,'horaSalida',array('readonly'=>'readonly',"onblur"=>"validarHora()",'style' => 'width:80px;cursor:pointer;')); ?>
-		<?php echo $form->error($model,'horaSalida'); ?>
+	<div id="pasajeros" class="row">
+		<?php echo $form->labelEx($model,'nroPersonas'); ?>
+		<?php echo $form->textField($model,'nroPersonas',array('size'=>3,'maxlength'=>3,'style' => 'width:40px;')); ?>
+		<?php echo $form->error($model,'nroPersonas'); ?>
+	</div>
+
+	<div class="row">
+		<?php echo $form->labelEx($model,'fechaLlegada'); ?>
+		<?php echo $form->textField($model,'fechaLlegada',array('id'=>'fechaLlegada','size'=>10,'readonly'=>'readonly','maxlength'=>8, 'style'=>'width:80px;cursor:pointer;')); ?>
+	<?php echo $form->error($model,'fechaLlegada'); ?>
 	</div>
 
 	<div id="llegada" class="row">
@@ -54,12 +68,6 @@
 		<?php echo $form->error($model,'horaLlegada'); ?>
 	</div>
 
-	<div id="pasajeros" class="row">
-		<?php echo $form->labelEx($model,'nroPersonas'); ?>
-		<?php echo $form->textField($model,'nroPersonas',array('size'=>3,'maxlength'=>3,'style' => 'width:40px;')); ?>
-		<?php echo $form->error($model,'nroPersonas'); ?>
-	</div>
-	
 	<div id="boton" class="row buttons">
 		<?php echo CHtml::submitButton($model->isNewRecord ? 'Registrar' : 'Actualizar'); 
 		?>
@@ -107,7 +115,7 @@ function validarHora(){
                 millisecText: 'Milisegundos',
                 timezoneText: 'Huso horario',
                 currentText: 'Ahora',
-                closeText: 'Cerrar',
+                closeText: 'Aceptar',
                 timeFormat: 'hh:mm tt',
                 amNames: ['am', 'AM', 'A'],
                 pmNames: ['pm', 'PM', 'P'],
@@ -147,9 +155,11 @@ $("#Historicoviajes_horaSalida").timepicker({
 	    };
 	    $.datepicker.setDefaults($.datepicker.regional['es']);
 	});      		
-	$("#fecha").datepicker({
-		onSelect: function(selected){
 
+	$("#fechaSalida").datepicker({
+		onSelect: function(data){
+			$("#fechaLlegada").datepicker();
+			$("#fechaLlegada").datepicker("option","minDate", data);
 		}
 });
 </script>

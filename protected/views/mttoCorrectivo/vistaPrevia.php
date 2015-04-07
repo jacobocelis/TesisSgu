@@ -122,17 +122,32 @@ $this->widget('zii.widgets.grid.CGridView', array(
 					),
 					array(
 						'type'=>'raw',
-						//'headerHtmlOptions'=>array('style'=>'width:10%;text-align:left;'),
+						'htmlOptions'=>array('style'=>'width:350px;text-align:left;'),
 						'header'=>'         Falla',
 						'value'=>'$data->idfalla0->falla',
 						'htmlOptions'=>array('style'=>'text-align:left'),
 					),
-					
+					array(
+						'type'=>'raw',
+						//'headerHtmlOptions'=>array('style'=>'width:50px;text-align:left;'),
+						'header'=>'         Falla',
+						'value'=>'\'<strong>Detalle:</strong> \'.CHtml::link(
+                        CHtml::image(Yii::app()->request->baseUrl."/imagenes/ver.png",
+                                          "Ver detalle",array("title"=>"Ver")),
+										  
+                        "",
+                        array(	
+                                \'style\'=>\'cursor: pointer;text-decoration: underline;text-align:center;\',
+                                 \'onclick\'=>\'{ mostrarDetalle("\'.$data->id.\'")}\'
+                        )
+                );',
+						'htmlOptions'=>array('style'=>'text-align:left;width:80px;'),
+					),
 					array(
 						'type'=>'raw',
 						//'headerHtmlOptions'=>array('style'=>'text-align:right;'),
 						'value'=>'$data->color($data->idestatus,$data->idestatus0->estatus).\'  \'.(date("d/m/Y",strtotime($data->fechaRealizada))=="31/12/1969"?"":date("d/m/Y",strtotime($data->fechaRealizada)))',
-						'htmlOptions'=>array('style'=>'text-align:center;width:20%;margin-left:10px;'),
+						'htmlOptions'=>array('style'=>'text-align:center;width:150px;margin-left:10px;'),
 					),
 				)
     ));
@@ -258,10 +273,62 @@ $this->widget('zii.widgets.grid.CGridView', array(
     ));
 ?>		
 </div><?php }?>
+<?php
+
+$this->beginWidget('zii.widgets.jui.CJuiDialog', array( // the dialog
+    'id'=>'dialog',
+    'options'=>array(
+        'title'=>'',
+        'autoOpen'=>false,
+		'position'=>array(null,100),
+        'modal'=>true,
+        'width'=>"50%",
+        //'height'=>255,
+		'resizable'=>false
+    ),
+));?>
+<?php
+$this->widget('zii.widgets.grid.CGridView', array(
+                'id'=>'detalle',
+				//'selectionChanged'=>'validar',
+				'summaryText'=>'',
+				//'hideHeader'=>true,
+			    'enableSorting' => true,
+				'template'=>"{items}\n{summary}\n{pager}",
+				'selectableRows'=>0,
+				'emptyText'=>'no hay un detalle registrado',
+                'dataProvider'=>$det,
+				'columns'=>array(
+					array(
+					'header'=>'Fecha de incidente',
+					'name'=>'fechaFalla',
+					'value'=>'date("d/m/Y",strtotime($data->fechaFalla))',
+					'htmlOptions'=>array('style'=>'text-align:center;width:50px'),
+				),
+				array(
+						'type'=>'raw',
+						//'headerHtmlOptions'=>array('style'=>'width:10%;text-align:left;'),
+						'header'=>'Detalle',
+						'value'=>'$data->detalle',
+						'htmlOptions'=>array('style'=>'text-align:center;width:100px;'),
+				),
+
+				array(
+					'header'=>'Reportó',
+					'name'=>'idempleado',
+					'value'=>'$data->idempleado0->nombre.\' \'.$data->idempleado0->apellido',
+					'htmlOptions'=>array('style'=>'text-align:center;width:100px'),
+				),
+					
+			)
+    ));
+		?>
+ 
+<?php $this->endWidget();?>
 <style>
 strong {
     font-weight: bold;
-    font-size: 115%;
+  
 }
 pre {
     display: block;
@@ -346,6 +413,11 @@ h1 {
 </style>
 <script>
 $('#formulario').hide();
+function mostrarDetalle(id){
+
+	$.fn.yiiGridView.update('detalle',{ data : "idAct="+id});
+	$("#dialog").dialog("open");
+}
 function validar(){
 var idAct = $.fn.yiiGridView.getSelection('actividades');
 	if(idAct=="")

@@ -33,11 +33,11 @@ class Historicoviajes extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('fecha, horaSalida, horaLlegada, idviaje, idvehiculo,nroPersonas,idconductor', 'required'),
+			array('fechaSalida,fechaLlegada,horaSalida,horaLlegada, idviaje, idvehiculo,nroPersonas,idconductor', 'required'),
 			array('idviaje, idvehiculo,nroPersonas,idconductor', 'numerical', 'integerOnly'=>true),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, fecha, horaSalida, horaLlegada, idviaje, idvehiculo,idconductor', 'safe', 'on'=>'search'),
+			array('id, fechaSalida, fechaLlegada, idviaje, idvehiculo,idconductor', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -62,7 +62,8 @@ class Historicoviajes extends CActiveRecord
 	{
 		return array(
 			'id' => 'ID',
-			'fecha' => 'Fecha',
+			'fechaSalida' => 'Fecha de salida',
+			'fechaLlegada' => 'Fecha de llegada',
 			'horaSalida' => 'Hora de salida',
 			'horaLlegada' => 'Hora de llegada',
 			'idviaje' => 'Ruta realizada',
@@ -94,6 +95,8 @@ class Historicoviajes extends CActiveRecord
 		$criteria->compare('fecha',$this->fecha,true);
 		$criteria->compare('horaSalida',$this->horaSalida,true);
 		$criteria->compare('horaLlegada',$this->horaLlegada,true);
+		$criteria->compare('fechaSalida',$this->horaSalida,true);
+		$criteria->compare('fechaLlegada',$this->horaLlegada,true);
 		$criteria->compare('idviaje',$this->idviaje);
 		$criteria->compare('idvehiculo',$this->idvehiculo);
 		$criteria->compare('nroPersonas',$this->nroPersonas);

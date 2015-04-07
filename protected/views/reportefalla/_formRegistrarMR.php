@@ -31,10 +31,9 @@
 		<?php echo $form->error($model,'kmRealizada'); ?>
 	</div>
 	
-	
 	<div class="row">
 		<?php echo $form->labelEx($model,'fechaRealizada'); ?>
-		<?php echo $form->textField($model,'fechaRealizada',array('value'=>$id?'':date("d/m/Y", strtotime($model->fechaRealizada)),'readonly'=>'readonly','style' => 'width:100px;cursor:pointer;')); ?>
+		<?php echo $form->textField($model,'fechaRealizada',array('value'=>$id?date('d/m/Y'):date("d/m/Y", strtotime($model->fechaRealizada)),'readonly'=>'readonly','style' => 'width:100px;cursor:pointer;')); ?>
 		<?php echo $form->error($model,'fechaRealizada'); ?>
 	</div>
 
@@ -89,6 +88,7 @@ var idvehiculo="<?php echo $model->idvehiculo;?>";
 	    $.datepicker.setDefaults($.datepicker.regional['es']);
 	});      		
 	$("#Reportefalla_fechaRealizada").datepicker({
+		//setDate: "7/11/2011",
 		onSelect: function(selected){
           getUltimoKm(selected,idvehiculo);
 		}

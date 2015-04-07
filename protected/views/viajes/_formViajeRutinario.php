@@ -16,11 +16,34 @@
 )); ?>
  
 <h1>Registro de viajes rutinarios</h1>
-<label >Seleccione la fecha:  </label><br><?php echo CHtml::textField('Fecha',date('d/m/Y'),array('id'=>'fecha','size'=>10,'readonly'=>'readonly','maxlength'=>8, 'style'=>'width:100px;cursor:pointer;'));?>
+
 	<p class="note">Campos con  <span class="required">*</span> son obligatorios.</p>
 	
-		<?php echo $form->hiddenField($model,'fecha',array('value'=>$fecha)); ?>
+	<div class="row">
+		<?php echo $form->labelEx($model,'Fecha *'); ?>
+		<?php echo $form->textField($model,'fechaSalida',array('readonly'=>'readonly','style' =>'width:80px;cursor:pointer','value'=>date('d/m/Y'))); ?>
+		<?php echo $form->error($model,'fechaSalida'); ?>
+	</div>
 
+	
+
+	<div class="row">
+		<?php echo $form->labelEx($model,'horaSalida'); ?>
+		<?php echo $form->textField($model,'horaSalida',array('readonly'=>'readonly','style' =>'width:60px;cursor:pointer')); ?>
+		<?php echo $form->error($model,'horaSalida'); ?>
+	</div>
+
+	<div class="row">
+	
+		<?php echo $form->hiddenField($model,'fechaLlegada',array('readonly'=>'readonly','style' =>'width:80px;cursor:pointer')); ?>
+	
+	</div>
+
+	<div class="row">
+		<?php echo $form->labelEx($model,'horaLlegada'); ?>
+		<?php echo $form->textField($model,'horaLlegada',array('readonly'=>'readonly','style' =>'width:60px;cursor:pointer')); ?>
+		<?php echo $form->error($model,'horaLlegada'); ?>
+	</div>
 	<div class="row">
 		<?php echo $form->labelEx($model,'idvehiculo'); ?>
 		<?php echo $form->dropDownList($model,'idvehiculo',CHtml::listData(Vehiculo::model()->findAll(),'id','numeroUnidad'),array('prompt'=>'Seleccione: ','onchange'=>'obtenerPuestos(this.value);','style' => 'width:110px;')); ?>
@@ -46,17 +69,7 @@
 	</div>
 	<div id="registrar"></div>
 	
-	<div id="salida" class="row">
-		<?php echo $form->labelEx($model,'horaSalida'); ?>
-		<?php echo $form->textField($model,'horaSalida',array('readonly'=>'readonly',"onblur"=>"validarHora()",'style' => 'width:80px;cursor:pointer;')); ?>
-		<?php echo $form->error($model,'horaSalida'); ?>
-	</div>
-
-	<div id="llegada" class="row">
-		<?php echo $form->labelEx($model,'horaLlegada'); ?>
-		<?php echo $form->textField($model,'horaLlegada',array('readonly'=>'readonly','style' => 'width:80px;cursor:pointer;')); ?>
-		<?php echo $form->error($model,'horaLlegada'); ?>
-	</div>
+	
 
 	<div class="row">
 		
@@ -83,6 +96,11 @@
 }
 </style>
 <script>
+$( "#historicoviajes-form" ).submit(function( event ) {
+$( "#Historicoviajes_fechaLlegada").val($( "#Historicoviajes_fechaSalida").val())
+event.preventDefault();
+});
+
 function obtenerPuestos(id){
 	obtenerConductor(id);
 var dir="<?php echo Yii::app()->baseUrl;?>"+"/viajes/puestos/"+id;
@@ -137,13 +155,13 @@ $(function($){
 	    };
 	    $.datepicker.setDefaults($.datepicker.regional['es']);
 	});      		
-	$("#fecha").datepicker({
+	$("#Historicoviajes_fechaSalida").datepicker({
 		onSelect: function(selected){
-			var fecha=$('#fecha').val();
-			$('#Historicoviajes_fecha').val($('#fecha').val());
+			var fecha=$('#Historicoviajes_fechaSalida').val();
+			$('#Historicoviajes_fecha').val($('#Historicoviajes_fechaSalida').val());
 			$.fn.yiiGridView.update('viajes',{data:"fecha="+fecha});
 			var hoy="<?php echo date('d/m/Y');?>";
-				if($('#fecha').val()==hoy)
+				if($('#Historicoviajes_fechaSalida').val()==hoy)
 			$('#etiqueta').show();
 			else
 				$('#etiqueta').hide();
@@ -165,7 +183,7 @@ function validarHora(){
                 millisecText: 'Milisegundos',
                 timezoneText: 'Huso horario',
                 currentText: 'Ahora',
-                closeText: 'Cerrar',
+                closeText: 'Aceptar',
                 timeFormat: 'hh:mm tt',
                 amNames: ['am', 'AM', 'A'],
                 pmNames: ['pm', 'PM', 'P'],
@@ -180,6 +198,11 @@ $("#Historicoviajes_horaSalida").timepicker({
 });
 </script>
 <script>
+$( "#target" ).submit(function( event ) {
+alert( "Handler for .submit() called." );
+event.preventDefault();
+});
+
 $('#registrar').hide();
 AgregarRutaNueva(0);
 function AgregarRutaNueva(tip){

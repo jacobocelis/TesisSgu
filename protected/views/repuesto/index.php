@@ -7,10 +7,11 @@ $this->breadcrumbs=array(
 );
 
 $this->menu=array(
+	array('label'=>'<div id="menu"><strong>Repuestos</strong></div>' , 'visible'=>'1'),
 	array('label'=>'Registrar repuesto', 'url'=>array('repuesto/create')),
 	array('label'=>'Asignación de repuestos a grupos', 'url'=>array('repuesto/AsignarPiezaGrupo')),
 	array('label'=>'Ver repuestos asignados', 'url'=>array('repuesto/detallePiezaGrupo')),
-	array('label'=>'Administrar repuestos', 'url'=>array('admin')),
+	array('label'=>'<div id="menu"><strong>Administrar parámetros</strong></div>' , 'visible'=>'1'),
 );
 ?>
 <div class='crugepanel user-assignments-role-list'>

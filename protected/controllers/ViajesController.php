@@ -44,7 +44,7 @@ class ViajesController extends Controller
 		);
 	}
 public function actionActualizarSpan(){
-		$tot=Yii::app()->db->createCommand("select count(*) as total from sgu_historicoViajes hv, sgu_viaje v where hv.idviaje=v.id and v.idtipo=1 and fecha<>date(now())")->queryRow();
+		$tot=Yii::app()->db->createCommand("select count(*) as total from sgu_historicoViajes hv, sgu_viaje v where hv.idviaje=v.id and v.idtipo=1 and date(fechaSalida)<>date(now())")->queryRow();
 		echo CJSON::encode(array(
 			'total'=>$tot["total"],
 		));
@@ -85,7 +85,8 @@ public function actionActualizarSpan(){
 		if(isset($_POST['Historicoviajes'])){
             $model->attributes=$_POST['Historicoviajes'];
 			if($model->validate()){
-				$model->fecha=date("Y-m-d", strtotime(str_replace('/', '-', $_POST['Historicoviajes']['fecha'])));
+				$model->fechaSalida=date("Y-m-d", strtotime(str_replace('/', '-', $_POST['Historicoviajes']['fechaSalida'])));
+				$model->fechaLlegada=date("Y-m-d", strtotime(str_replace('/', '-', $_POST['Historicoviajes']['fechaLlegada'])));
 				if($_POST['Historicoviajes']['horaSalida']<>'')
 					$model->horaSalida=date("H:i", strtotime($_POST['Historicoviajes']['horaSalida']));
 				if(isset($_POST['Historicoviajes']['horaLlegada'])<>'')
@@ -100,7 +101,11 @@ public function actionActualizarSpan(){
                 if (Yii::app()->request->isAjaxRequest){
                     echo CJSON::encode(array(
                         'status'=>'success', 
-                        'div'=>"Viaje especial agregado"
+                        'div'=>"se registró el viaje correctamente",
+                        'mensaje'=>'<div class="alert alert-success">
+							<button type="button" class="close" data-dismiss="alert">×</button>
+                            <b>El viaje se registró correctamente</b>
+                        	</div>',
                         ));
 					exit;
                 }
@@ -120,15 +125,13 @@ public function actionActualizarSpan(){
          $model=new Historicoviajes;
         // Uncomment the following line if AJAX validation is needed
          //$this->performAjaxValidation($model);
-			if(isset($_POST['fecha']))
-				$fecha=date('Y-m-d',strtotime(str_replace('/', '-', $_POST['fecha'])));
-			else
-				$fecha='';
+			
 				
 		if(isset($_POST['Historicoviajes'])){
             $model->attributes=$_POST['Historicoviajes'];
 			if($model->validate()){
-				$model->fecha=date('Y-m-d',strtotime(str_replace('/', '-', $_POST['fecha'])));
+				$model->fechaSalida=date('Y-m-d',strtotime(str_replace('/', '-', $_POST['Historicoviajes']['fechaSalida'])));
+				$model->fechaLlegada=date('Y-m-d',strtotime(str_replace('/', '-', $_POST['Historicoviajes']['fechaLlegada'])));
 			if($_POST['Historicoviajes']['horaSalida']<>'')
 				$model->horaSalida=date("H:i", strtotime($_POST['Historicoviajes']['horaSalida']));
 			if(isset($_POST['Historicoviajes']['horaLlegada'])<>'')
@@ -142,7 +145,11 @@ public function actionActualizarSpan(){
                 if (Yii::app()->request->isAjaxRequest){
 					echo CJSON::encode(array(
                         'status'=>'success', 
-                        'div'=>"se registró el viaje correctamente"
+                        'div'=>"se registró el viaje correctamente",
+                        'mensaje'=>'<div class="alert alert-success">
+							<button type="button" class="close" data-dismiss="alert">×</button>
+                            <b>El viaje se registró correctamente</b>
+                        	</div>',
                         ));
                     exit;
                 }
@@ -151,7 +158,7 @@ public function actionActualizarSpan(){
         if (Yii::app()->request->isAjaxRequest){
             echo CJSON::encode(array(
                 'status'=>'failure', 
-                'div'=>$this->renderPartial('_formViajeRutinario', array('model'=>$model,'fecha'=>$fecha), true)));
+                'div'=>$this->renderPartial('_formViajeRutinario', array('model'=>$model), true)));
             exit;               
         }
         /*else
@@ -208,8 +215,8 @@ public function actionActualizarSpan(){
 	}
 	public function actionUltimosViajes(){
              
-					Yii::app()->db->createCommand("INSERT  ignore INTO `tsg`.`sgu_historicoViajes` (`fecha`,`horaSalida`,`horaLlegada`,`idviaje`,`idvehiculo`,`idconductor`,`nroPersonas`)
-					select date(now()) as fecha, horaSalida, horaLlegada, idviaje, idvehiculo, idconductor, nroPersonas from sgu_historicoViajes where fecha=(select fecha from sgu_historicoViajes hv, sgu_viaje v where hv.idviaje=v.id and v.idtipo=1 and fecha<>date(now()) group by fecha order by fecha desc limit 1)")->query();
+					Yii::app()->db->createCommand("INSERT  ignore INTO `tsg`.`sgu_historicoViajes` (`fechaSalida`,`horaSalida`,`fechaLlegada`,`horaLlegada`,`nroPersonas`,`ultimaRutina`,`idviaje`,`idvehiculo`,`idconductor`)
+					select date(now()) as fechaSalida, horaSalida, date(now()) as fechaLlegada, horaLlegada, nroPersonas, ultimaRutina,idviaje, idvehiculo, idconductor  from sgu_historicoViajes where fechaSalida=(select fechaSalida from sgu_historicoViajes hv, sgu_viaje v where hv.idviaje=v.id and v.idtipo=1 and fechaSalida<>date(now()) group by fechaSalida order by fechaSalida desc limit 1)")->query();
     
         if (Yii::app()->request->isAjaxRequest){
             echo CJSON::encode(array(
@@ -332,9 +339,9 @@ public function actionActualizarSpan(){
 		}
 		$dataProvider=new CActiveDataProvider('Historicoviajes',
 		array('criteria' => array(
-			'condition'=>'t.fecha="'.$Fecha.'" and id in (select hv.id as id from sgu_historicoViajes hv, sgu_viaje v where hv.idviaje=v.id and v.idtipo=1)',
+			'condition'=>'date(fechaSalida)="'.$Fecha.'" and id in (select hv.id as id from sgu_historicoViajes hv, sgu_viaje v where hv.idviaje=v.id and v.idtipo=1)',
 		)));
-		$tot=Yii::app()->db->createCommand("select count(*) as total from sgu_historicoViajes hv, sgu_viaje v where hv.idviaje=v.id and v.idtipo=1 and fecha<>date(now())")->queryRow();
+		$tot=Yii::app()->db->createCommand("select count(*) as total from sgu_historicoViajes hv, sgu_viaje v where hv.idviaje=v.id and v.idtipo=1 and date(fechaSalida)<>date(now())")->queryRow();
 		
 		$this->render('rutinarios',array(
 			'dataProvider'=>$dataProvider,

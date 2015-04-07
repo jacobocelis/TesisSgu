@@ -179,9 +179,17 @@ class MttoCorrectivoController extends Controller
 		$factura=new CActiveDataProvider('Factura',array('criteria' => array(
 			'condition'=>'idordenMtto="'.$id.'"'),
 			'pagination'=>array('pageSize'=>9999999)));
-			
+		$det=new CActiveDataProvider('Reportefalla',array('criteria' => array(
+				'condition' =>'id="0"',
+				)));
+		if(isset($_GET["idAct"])){
+			$det=new CActiveDataProvider('Reportefalla',array('criteria' => array(
+				'condition' =>'id='.$_GET["idAct"].'',
+				)));
+		}
 		$this->render('vistaPrevia',array(
 			'vehiculos'=>$vehiculos,
+			'det'=>$det,
 			'totalVeh'=>$totalVeh,
 			'actividades'=>$actividades,
 			'idvehiculo'=>$idvehiculo,

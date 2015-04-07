@@ -43,9 +43,9 @@ class Reportefalla extends CActiveRecord
 	public function tipo($id){
 		$total=Yii::app()->db->createCommand("select tipo from sgu_reporteFalla where id=".$id."")->queryRow();
 			if($total["tipo"]==0)
-				return 'Reparar falla';
+				return 'Incidente';
 			else
-				return 'Realizar mejora';
+				return 'Mejora';
     }
 	public function valores($id){
 		if($id=='0000-01-01'||$id==-1)

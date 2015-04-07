@@ -68,12 +68,12 @@ $this->widget('zii.widgets.grid.CGridView', array(
 					'value'=>'$data->idfalla0->falla',
 					'htmlOptions'=>array('style'=>'text-align:center;width:250px'),
 				),
-				/*array(
-					'header'=>'Reportó',
-					'name'=>'idempleado',
-					'value'=>'$data->idempleado0->nombre.\' \'.$data->idempleado0->apellido',
-					'htmlOptions'=>array('style'=>'text-align:center;width:100px'),
-				),*/
+				array(
+					'header'=>'Detalle',
+					'name'=>'detalle',
+					//'value'=>'$data->idfalla0->falla',
+					'htmlOptions'=>array('style'=>'text-align:center;width:250px'),
+				),
 				array(
 					'header'=>'Fecha realizada',
 					'name'=>'fechaRealizada',
