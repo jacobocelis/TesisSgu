@@ -32,7 +32,7 @@ $this->menu=array(
 
 ?>
 <div class='crugepanel user-assignments-role-list'>
-<h1>Listado de incidentes reportados en vehiculos</h1>
+<h1>Incidentes reportados en vehiculos</h1>
 <div id="filtro">
 <select id="lista" >
 			<option value="1">Por atender</option>
@@ -67,7 +67,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
 				
 			
 				array(
-					'header'=>'Falla reportada',
+					'header'=>'Incidente reportado',
 					'name'=>'idfalla',
 					'value'=>'$data->idfalla0->falla',
 					'htmlOptions'=>array('style'=>'text-align:center;width:250px'),

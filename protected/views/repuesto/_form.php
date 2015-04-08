@@ -17,7 +17,7 @@
 
 	<p class="note">Los campos con <span class="required">*</span> son obligatorios.</p>
 
-	<?php echo $form->errorSummary($model); ?>
+	
 
 	<div class="row">
 		<?php echo $form->labelEx($model,'repuesto'); ?>
@@ -25,16 +25,13 @@
 		<?php echo $form->error($model,'repuesto'); ?>
 	</div>
 
-	<div class="row">
-		<?php echo $form->labelEx($model,'descripcion'); ?>
-		<?php echo $form->textField($model,'descripcion',array('size'=>45,'maxlength'=>45)); ?>
-		<?php echo $form->error($model,'descripcion'); ?>
-	</div>
+
 
 	<div class="row">
 		<?php echo $form->labelEx($tipo,'tipo'); ?>
 		<?php echo $form->dropDownList($tipo,'id',CHtml::listData(Tiporepuesto::model()->findAll(array('order' => 'id ASC')), 'id', 'tipo'),
 		array(
+			'style'=>'width:120px',
 			'ajax'=>array(
 			'type'=>'POST',
 			'url'=>CController::createUrl('Repuesto/Selectdos'),
@@ -47,13 +44,13 @@
 	
 	<div class="row">
 		<?php echo $form->labelEx($model,'idsubTipoRepuesto'); ?>
-		<?php echo $form->dropDownList($model,'idsubTipoRepuesto',array()); ?>
+		<?php echo $form->dropDownList($model,'idsubTipoRepuesto',array(),array('style'=>'width:180px')); ?>
 		<?php echo $form->error($model,'idsubTipoRepuesto'); ?>
 	</div>
 	
 	<div class="row">
 		<?php echo $form->labelEx($model,'idunidad'); ?>
-		<?php echo $form->dropDownList($model,'idunidad',CHtml::listData(Unidad::model()->findAll(), 'id', 'unidad')); ?>
+		<?php echo $form->dropDownList($model,'idunidad',CHtml::listData(Unidad::model()->findAll(), 'id', 'unidad'),array('style'=>'width:170px')); ?>
 		<?php echo $form->error($model,'idunidad'); ?>
 	</div>
 	
@@ -63,4 +60,13 @@
 
 <?php $this->endWidget(); ?>
 
-</div><!-- form -->
+</div><!-- form
+
+
+	<div class="row">
+		<?php echo $form->labelEx($model,'descripcion'); ?>
+		<?php echo $form->textField($model,'descripcion',array('size'=>45,'maxlength'=>45)); ?>
+		<?php echo $form->error($model,'descripcion'); ?>
+	</div>
+
+ -->

@@ -1,3 +1,4 @@
+
 <style type="text/css">
 .grid-view table.items td {
     font-size: 0.9em;
@@ -282,7 +283,7 @@ ul, ol {
 </style>
 <?php 
 	$this->breadcrumbs=array(
-	'Partes y piezas'=>array('repuesto/index'),
+	'Repuestos'=>array('repuesto/index'),
 	'Asignación',
 );
 
@@ -291,16 +292,26 @@ ul, ol {
 	$seleccionCantidad = 'cantidad';
 	
 	$this->menu=array(
-	array('label'=>'Registrar pieza', 'url'=>array('repuesto/create')),
-	array('label'=>'Crear nuevo grupo', 'url'=>array('grupo/create')),
-	array('label'=>'Ver piezas asignadas', 'url'=>array('detallePiezaGrupo/detallepieza')),
-	array('label'=>'Atrás', 'url'=>array('repuesto/index')),
-);
+	array('label'=>'<div id="menu"><strong>Repuestos</strong></div>' , 'visible'=>'1'),
+	array('label'=>'      Repuestos y partes', 'url'=>array('repuesto/index')),
+	array('label'=>'      Registrar repuesto', 'url'=>array('repuesto/create')),
+	array('label'=>'      Asignación de repuestos', 'url'=>array('repuesto/AsignarPiezaGrupo')),
+	array('label'=>'      Registrar repuestos iniciales <span class="badge badge- pull-right">0</span>', 'url'=>array('repuesto/iniciales/')),
+	
+	array('label'=>'<div id="menu"><strong>Histórial</strong></div>' , 'visible'=>'1'),
+	array('label'=>'      Histórico de repuestos', 'url'=>array('repuesto/historicoCambios')),
+
+	array('label'=>'<div id="menu"><strong>Administrar</strong></div>' , 'visible'=>'1'),
+	array('label'=>'      Parámetros y datos maestros', 'url'=>array('repuesto/parametros')),
+	);
+
 ?>
 <div class='form'>
 <div class='crugepanel user-assignments-role-list'>
-	<h1>Seleccione un grupo para asignar las piezas que posee</h1>
+	<h1>Asignación de repuestos y detalle</h1>
+
 	<strong><p>Grupos registrados:</p></strong>
+	
 	<ul class='auth-item'>
 	<?php 
 		$loader = "<span class='loader'></span>";		
@@ -309,6 +320,7 @@ ul, ol {
 		}
 	?>
 	</ul>
+	<i>*Seleccione un grupo para asignar los repuestos de froma general, luego puede agregar un detalle por cada repuesto agregado</i>
 </div>
 <div class='crugepanel user-assignments-detail'>
 	<h6><div id='mostrarSeleccion'>Seleccione un grupo</div></h6>
@@ -322,10 +334,7 @@ ul, ol {
 	</div>
 
 	<?php 
-		
-	//print_r($uno);
-	//echo 'separoo';
-	//print_r($dos);
+
 		$this->widget('ext.selgridview.SelGridView', array(
 			'id'=>'_lista1',
 			'selectableRows'=>2,
@@ -361,6 +370,20 @@ ul, ol {
 					
 					//'footer'=>'',
 				),
+				array(
+						'headerHtmlOptions'=>array('style'=>'text-align:center;width:50px;'),
+						'htmlOptions'=>array('style'=>'text-align:center;'),
+						'header'=>'Detalle',
+						'type'=>'raw',
+						'value'=>'CHtml::link(
+                        CHtml::image(Yii::app()->request->baseUrl."/imagenes/agregar.png",
+                                          "Ver detalle",array("title"=>"Editar")),		  
+                        "",
+                        array(
+                                \'style\'=>\'cursor: pointer;text-decoration: underline;text-align:center;\',
+								\'onclick\'=>\'{mostrarDetalle("\'.$data["idCaracteristicaVehGrupo"].\'");}\'
+                        )
+                );',),
 			),
 		));
 	?>	
@@ -422,6 +445,76 @@ ul, ol {
 </div>
 </div>
 
+<?php $this->beginWidget('zii.widgets.jui.CJuiDialog', array( // the dialog
+    'id'=>'dialog',
+    'options'=>array(
+        'title'=>'Detalle del repuesto en general',
+        'autoOpen'=>false,
+		'position'=>array(null,100),
+        'modal'=>true,
+        'width'=>"50%",
+        //'height'=>255,
+		'resizable'=>false
+    ),
+));?>
+<div id="detalle" style="display:none">
+<?php
+		$this->widget('zii.widgets.grid.CGridView', array(
+			'id'=>'repdetalle',
+			'selectableRows'=>0,
+			
+			'summaryText' =>'',
+			'emptyText'=>'',
+			'dataProvider'=>$detalle,
+			'enablePagination' => false,
+			
+			'enableSorting' => false,
+			'columns'=>array(
+				array(
+					'header'=>'Repuesto',
+					'value'=>'$data->idCaracteristicaVehGrupo0->idrepuesto0->repuesto',
+					'htmlOptions'=>array('style'=>'text-align:center;'),
+				),
+				array(
+					'header'=>'Detalle',
+					'name'=>'detallePieza',
+					'htmlOptions'=>array('style'=>'text-align:center;'),
+				),
+				array(
+						'header'=>'Agregar',
+						'type'=>'raw',
+						'value'=>'CHtml::link(CHtml::image(Yii::app()->request->baseUrl."/imagenes/agregar.png","Agregar",array("title"=>"Agregar/Editar")),"",
+                        array(
+                                \'style\'=>\'cursor: pointer; width:50px;text-decoration: underline;\',
+                                \'onclick\'=>\'{addDetalle("\'.Yii::app()->createUrl("DetallePiezaGrupo/agregarDetalle",array("id"=>$data["id"],"fila"=>$row+1)
+								).\'"); $("#dialog2").dialog("open");}\'
+                        )
+                );',
+				'htmlOptions'=>array('style'=>'width:90px;text-align:center'),
+				),
+			),
+		));			
+?>
+
+</div>
+ 
+<?php $this->endWidget();?>
+
+<?php 
+$this->beginWidget('zii.widgets.jui.CJuiDialog', array( // the dialog
+    'id'=>'dialog2',
+    'options'=>array(
+        'title'=>'Detalle general',
+        'autoOpen'=>false,
+        'modal'=>true,
+        'width'=>280,
+        'height'=>140,
+        'position'=>array(null,200),
+		'resizable'=>false
+    ),
+));?>
+<div class="divForForm2"></div>
+<?php $this->endWidget();?>
 <script>
 	var i=0;
 	var itemName=""	;
@@ -554,7 +647,44 @@ function geTotal(){
 			return values;
     }
 	
+function mostrarDetalle(id){
+	
+	$('#detalle').show();
+	$('#dialog').dialog('open');
+	$.fn.yiiGridView.update('repdetalle',{ data : "&iddetalle="+id});	
+}
 
+var dir_url;
+function addDetalle(_url){
+//$.fn.yiiGridView.update('detalle');
+        // If its a string then set the global variable, if its an object then don't set
+        if (typeof(_url)=='string')
+                dir_url=_url;
+
+        jQuery.ajax({
+                url: dir_url,
+                'data':$(this).serialize(),
+                'type':'post',
+                'dataType':'json',
+                'success':function(data)
+                        {
+                                if (data.status == 'failure')
+                                {
+                                        $('#dialog2 div.divForForm2').html(data.div);
+                                        // Here is the trick: on submit-> once again this function!
+                                        $('#dialog2 div.divForForm2 form').submit(addDetalle); // updatePaymentComment
+                                }
+                                else
+                                {
+                                        $('#dialog2 div.divForForm2').html(data.div);
+                                        setTimeout("$('#dialog2').dialog('close') ",1000);
+                                        $.fn.yiiGridView.update('repdetalle');
+                                }
+
+                        } ,
+                'cache':false});
+        return false;
+}
 
 </script>
 

@@ -32,7 +32,7 @@ class RepuestoController extends Controller
 				'users'=>array('@'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create','update','crear','Selectdos','buscarRepuesto','DetalleRepuestoVehiculo','AsignarPiezaGrupo','DetallePiezaGrupo'),
+				'actions'=>array('create','update','crear','Selectdos','buscarRepuesto','DetalleRepuestoVehiculo','AsignarPiezaGrupo','DetallePiezaGrupo','iniciales'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -154,9 +154,20 @@ class RepuestoController extends Controller
 				$pieza=$pieza_->buscar($authItemName);
 				//$pieza=$pieza_->ActualizarRepuestos($authItemName);
 			}
-		}		
+		}	
+		$idetalle=4;
+		if(isset($_GET["iddetalle"])){
+
+			$idetalle=$_GET["iddetalle"];
+		}
+			
+		$detalle=new CActiveDataProvider('CantidadGrupo',array(
+                    'criteria'=>array(                          
+                      'condition'=>'t.idCaracteristicaVehGrupo="'.$idetalle.'"',
+               )));
+
 		/*paso 1: en lista1 mostrar los repuestos al hacer click en el grupo*/
-		$consulta=Yii::app()->db->createCommand('select re.id, re.repuesto, cg.cantidad, st.subTipo, u.unidad from sgu_unidad u ,sgu_CaracteristicaVehGrupo cg, 
+		$consulta=Yii::app()->db->createCommand('select re.id, re.repuesto, cg.cantidad, st.subTipo, u.unidad, cg.id as idCaracteristicaVehGrupo from sgu_unidad u ,sgu_CaracteristicaVehGrupo cg, 
 		sgu_grupo gu, sgu_subTipoRepuesto st, sgu_repuesto re where cg.idgrupo=gu.id and gu.grupo="'.$authItemName.'" 
 		and re.idSubTipoRepuesto=st.id and re.idunidad=u.id
 		and re.id=cg.idrepuesto ORDER BY st.subTipo ASC')->queryAll(); 
@@ -169,6 +180,7 @@ class RepuestoController extends Controller
 				'grupo'=>$grupo,
 				'model'=>$pieza_,
 				'actualizar'=>$actualizar,
+				'detalle'=>$detalle,
 				
             )
         );
@@ -380,6 +392,35 @@ class RepuestoController extends Controller
 						'condition' =>"idCaracteristicaVeh = '".$_GET['id']."'",
 						'order'=>'id')));
 		$this->render('index',array(
+			'dataProvider'=>$dataProvider,
+			'det'=>$det,
+		));
+	}
+		public function actionIniciales(){
+		
+		$dataProvider=new CActiveDataProvider('CaracteristicaVeh');
+		if(isset($_GET["repuesto"]) and isset($_GET["vehiculo"])){
+				if($_GET["repuesto"]==null and $_GET["vehiculo"]==null)
+					$dataProvider=new CActiveDataProvider('CaracteristicaVeh');	
+				if($_GET["repuesto"]<>null and $_GET["vehiculo"]<>null)
+					$dataProvider=new CActiveDataProvider('CaracteristicaVeh',array('criteria' => array(
+						'condition' =>"idrepuesto in (select id from sgu_repuesto where repuesto like '%".$_GET['repuesto']."%') and idvehiculo=".$_GET['vehiculo']."",
+						'order'=>'idrepuesto')));	
+				if($_GET["repuesto"]<>null and $_GET["vehiculo"]==null)
+					$dataProvider=new CActiveDataProvider('CaracteristicaVeh',array('criteria' => array(
+						'condition' =>"idrepuesto in (select id from sgu_repuesto where repuesto like '%".$_GET['repuesto']."%')",
+						'order'=>'idrepuesto')));	
+				if($_GET["repuesto"]==null and $_GET["vehiculo"]<>null)
+					$dataProvider=new CActiveDataProvider('CaracteristicaVeh',array('criteria' => array(
+						'condition' =>"idvehiculo=".$_GET['vehiculo']."",
+						'order'=>'idrepuesto')));			
+		}
+		$det=new CActiveDataProvider('Cantidad');
+		if(isset($_GET["id"]))
+			$det=new CActiveDataProvider('Cantidad',array('criteria' => array(
+						'condition' =>"idCaracteristicaVeh = '".$_GET['id']."'",
+						'order'=>'id')));
+		$this->render('iniciales',array(
 			'dataProvider'=>$dataProvider,
 			'det'=>$det,
 		));

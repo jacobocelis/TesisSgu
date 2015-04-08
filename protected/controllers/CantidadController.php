@@ -53,7 +53,7 @@ class CantidadController extends Controller
 	 $model=$this->loadModel($id);
 	 if(isset($_POST['Cantidad'])){
             $model->attributes=$_POST['Cantidad'];
-           
+           	$model->fechaIncorporacion=date("Y-m-d", strtotime(str_replace('/', '-',$_POST['Cantidad']['fechaIncorporacion'])));
 			if($model->save()){
 				if (Yii::app()->request->isAjaxRequest){
                     echo CJSON::encode(array(

@@ -16,18 +16,17 @@ $repuesto=new Repuesto();
 	'enableAjaxValidation'=>false,
 )); ?>
 
-	<?php echo $form->errorSummary($model); ?>
 	
 	<div class="row">
-		<?php echo $form->labelEx($repuesto,'repuesto'); ?>
-		<?php echo $form->textField($repuesto,'repuesto',array('size'=>60,'maxlength'=>100,'readonly'=>true,'value'=>$rep)); ?>
-		<?php echo $form->error($repuesto,'repuesto'); ?>
+		
+		<?php echo $form->hiddenField($repuesto,'repuesto',array('size'=>60,'maxlength'=>100,'readonly'=>true,'value'=>$rep)); ?>
+		
 	</div>
 	
 	<div class="row">
-		<?php echo $form->labelEx($model,'detallePieza'); ?>
-		<?php echo $form->textField($model,'detallePieza',array('size'=>60,'maxlength'=>100,'readonly'=>true)); ?>
-		<?php echo $form->error($model,'detallePieza'); ?>
+		
+		<?php echo $form->hiddenField($model,'detallePieza',array('size'=>60,'maxlength'=>100,'readonly'=>true)); ?>
+	
 	</div>
 	
 	<div class="row">
@@ -40,7 +39,7 @@ $repuesto=new Repuesto();
 
 	<div class="row">
 		<?php echo $form->labelEx($model,'fechaIncorporacion'); ?>
-		<?php echo $form->textField($model,'fechaIncorporacion'); ?>
+		<?php echo $form->textField($model,'fechaIncorporacion',array('value'=>$model->fechaIncorporacion=='0000-01-01'?date("d/m/Y"):date("d/m/Y", strtotime(str_replace('/', '-',$model->fechaIncorporacion))),'readonly'=>'readonly','style' => 'width:100px;cursor:pointer;')); ?>
 		<?php echo $form->error($model,'fechaIncorporacion'); ?>
 	</div>
 
@@ -70,11 +69,14 @@ $repuesto=new Repuesto();
 	        dayNamesShort: ['Dom','Lun','Mar','Mié','Juv','Vie','Sáb'],
 	        dayNamesMin: ['Do','Lu','Ma','Mi','Ju','Vi','Sá'],
 	        weekHeader: 'Sm',
-	        dateFormat: 'yy-mm-dd',
+	        dateFormat: 'dd/mm/yy',
 	        firstDay: 1,
 	        isRTL: false,
 	        showMonthAfterYear: false,
 	        yearSuffix: '',
+	        maxDate: 0,
+	        changeMonth: true,
+            changeYear: true,
 	        
 	    };
 	    $.datepicker.setDefaults($.datepicker.regional['es']);

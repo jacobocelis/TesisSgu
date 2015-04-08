@@ -60,9 +60,9 @@ class Cantidad extends CActiveRecord
 	{
 		return array(
 			'id' => 'ID',
-			'codigoPiezaEnUso' => 'Codigo Pieza En Uso',
-			'detallePieza' => 'Detalle Pieza',
-			'fechaIncorporacion' => 'Fecha Incorporacion',
+			'codigoPiezaEnUso' => 'Codigo',
+			'detallePieza' => 'Detalle de repuesto',
+			'fechaIncorporacion' => 'Fecha de cambio',
 			'idCaracteristicaVeh' => 'Id Caracteristica Veh',
 		);
 	}
