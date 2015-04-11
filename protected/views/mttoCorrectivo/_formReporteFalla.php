@@ -40,7 +40,7 @@
 
 	<div class="row">
 	<?php echo $form->labelEx($model,'idvehiculo'); ?>
-		<?php echo $form->dropDownList($model,'idvehiculo',CHtml::listData(Vehiculo::model()->findAll(),'id','numeroUnidad'),array('prompt'=>'Seleccione: ','style' => 'width:170px;','onchange'=>'obtenerConductor(this.value);')); ?>
+		<?php echo $form->dropDownList($model,'idvehiculo',CHtml::listData(Vehiculo::model()->findAll(),'id','numeroUnidad'),array('prompt'=>'Seleccione: ','style' => 'width:120px;','onchange'=>'obtenerConductor(this.value);')); ?>
 		<?php echo $form->error($model,'idvehiculo'); ?>
 	</div>
 	<?php 

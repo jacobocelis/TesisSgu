@@ -16,11 +16,12 @@ $this->menu=array(
 	array('label'=>'      Registrar repuestos iniciales <span class="badge badge- pull-right">0</span>', 'url'=>array('repuesto/iniciales/')),
 	
 	array('label'=>'<div id="menu"><strong>Histórial</strong></div>' , 'visible'=>'1'),
-	array('label'=>'      Histórico de repuestos', 'url'=>array('repuesto/AsignarPiezaGrupo')),
+	array('label'=>'      Histórico de repuestos', 'url'=>array('repuesto/historico')),
 
 	array('label'=>'<div id="menu"><strong>Administrar</strong></div>' , 'visible'=>'1'),
-	array('label'=>'      Parámetros y datos maestros', 'url'=>array('repuesto/AsignarPiezaGrupo')),
+	array('label'=>'      Parámetros y datos maestros', 'url'=>array('repuesto/parametros')),
 );
+
 ?>
 <div class='crugepanel user-assignments-role-list'>
 <h1>Repuestos iniciales</h1>
@@ -48,7 +49,7 @@ $this->widget('zii.widgets.jui.CJuiAutoComplete',array(
     'source'=>$this->createUrl("repuesto/buscarRepuesto"),
     'htmlOptions'=>array(
         'style'=>'height:20px;',
-		'placeholder'=>"Ejemplo: amortiguador",
+		'placeholder'=>"Ejemplo: batería",
     ),
 ));
 ?>
@@ -73,6 +74,35 @@ $this->widget('zii.widgets.grid.CGridView', array(
 					'htmlOptions'=>array('style'=>'text-align:center;width:20px'),
 				),
 				array(
+					'header'=>'Placa',
+					'name'=>'idvehiculo',
+					'value'=>'$data->idvehiculo0->placa',
+					//'value'=>'$data->idplan0->idplanGrupo0->CompiledColour->$data-id.\' \'.$data->CompiledColour',
+					'htmlOptions'=>array('style'=>'text-align:center;width:20px'),
+				),
+				array(
+					'header'=>'Marca',
+					'name'=>'idvehiculo',
+					'value'=>'$data->idvehiculo0->idmodelo0->idmarca0->marca',
+					//'value'=>'$data->idplan0->idplanGrupo0->CompiledColour->$data-id.\' \'.$data->CompiledColour',
+					'htmlOptions'=>array('style'=>'text-align:center;width:20px'),
+				),
+				array(
+					'header'=>'Modelo',
+					'name'=>'idvehiculo',
+					'value'=>'$data->idvehiculo0->idmodelo0->modelo',
+					//'value'=>'$data->idplan0->idplanGrupo0->CompiledColour->$data-id.\' \'.$data->CompiledColour',
+					'htmlOptions'=>array('style'=>'text-align:center;width:20px'),
+				),
+				array(
+					'header'=>'Color',
+					'name'=>'idvehiculo',
+					'value'=>'$data->idvehiculo0->idcolor0->color',
+					//'value'=>'$data->idplan0->idplanGrupo0->CompiledColour->$data-id.\' \'.$data->CompiledColour',
+					'htmlOptions'=>array('style'=>'text-align:center;width:20px'),
+				),
+				
+				array(
 					'type'=>'raw',
 					'header'=>'Repuesto',
 					'name'=>'idrepuesto',
@@ -95,6 +125,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
 					//'value'=>'$data->idplan0->idplanGrupo0->CompiledColour->$data-id.\' \'.$data->CompiledColour',
 					'htmlOptions'=>array('style'=>'text-align:center;width:20px'),
 				),
+
 				array(
 						'headerHtmlOptions'=>array('style'=>'text-align:center;width:50px;'),
 						'htmlOptions'=>array('style'=>'text-align:center;'),
@@ -139,7 +170,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
 				'htmlOptions'=>array('style'=>'cursor:pointer;'),
 				'columns'=>array(
 				array(
-					'header'=>'Pieza',
+					'header'=>'Repuesto',
 					//'name'=>'codigoPiezaEnUso',
 					//'value'=>'str_pad((int) $data->idvehiculo0->numeroUnidad,2,"0",STR_PAD_LEFT);',
 					'value'=>'$data->idCaracteristicaVeh0->idrepuesto0->repuesto',
@@ -154,23 +185,40 @@ $this->widget('zii.widgets.grid.CGridView', array(
 					'htmlOptions'=>array('style'=>'text-align:center;width:20px'),
 				),
 				array(
-					'header'=>'# Pieza instalada',
+					'header'=>'Número de serial',
 					'name'=>'codigoPiezaEnUso',
 					//'value'=>'str_pad((int) $data->idvehiculo0->numeroUnidad,2,"0",STR_PAD_LEFT);',
 					//'value'=>'$data->idplan0->idplanGrupo0->CompiledColour->$data-id.\' \'.$data->CompiledColour',
 					'htmlOptions'=>array('style'=>'text-align:center;width:20px'),
 				),
 				array(
-					'header'=>'Fecha instalada',
+					'headerHtmlOptions'=>array('style'=>'text-align:center;width:50px;'),
+					'header'=>'Evento',
+					'name'=>'evento',
+					'value'=>'$data->eventoRepuesto($data->evento)',
+					//'value'=>'$data->idplan0->idplanGrupo0->CompiledColour->$data-id.\' \'.$data->CompiledColour',
+					'htmlOptions'=>array('style'=>'text-align:center;width:20px'),
+				),
+				array(
+					'header'=>'Fecha de evento',
 					'name'=>'codigoPiezaEnUso',
 					//'value'=>'str_pad((int) $data->idvehiculo0->numeroUnidad,2,"0",STR_PAD_LEFT);',
 					'value'=>'$data->fechaIncorporacion=="0000-01-01"?"-":date("d/m/Y",strtotime($data->fechaIncorporacion))',
 					'htmlOptions'=>array('style'=>'text-align:center;width:20px'),
 				),
-				
+				array(
+					'headerHtmlOptions'=>array('style'=>'text-align:center;width:50px;'),
+					'header'=>'Estado',
+					'name'=>'estado',
+					'value'=>'$data->estadoRepuesto($data->estado)',
+					//'value'=>'$data->idplan0->idplanGrupo0->CompiledColour->$data-id.\' \'.$data->CompiledColour',
+					'htmlOptions'=>array('style'=>'text-align:center;width:20px'),
+				),
+
 				array(
 						'header'=>'Registrar',
 						'type'=>'raw',
+
 						'value'=>'CHtml::link(CHtml::image(Yii::app()->request->baseUrl."/imagenes/agregar.png","Agregar",array("title"=>"Agregar")),"",
                         array(
                                 \'style\'=>\'cursor: pointer; width:50px;text-decoration: underline;\',

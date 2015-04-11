@@ -63,7 +63,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
 					'htmlOptions'=>array('style'=>'text-align:center;width:40px'),
 				),
 				array(
-					'header'=>'Fecha',
+					'header'=>'Fecha evento',
 					'name'=>'fechaFalla',
 					'value'=>'date("d/m/Y",strtotime($data->fechaFalla))',
 					'htmlOptions'=>array('style'=>'text-align:center;width:50px'),

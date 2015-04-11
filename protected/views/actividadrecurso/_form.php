@@ -94,4 +94,7 @@ function validar(){
 	var total=(parseFloat(cantidad) * parseFloat(costo));
 	$("#Actividadrecurso_costoTotal").val(total);
 }
+function nuevoSerial(){
+	alert()
+}
 </script>

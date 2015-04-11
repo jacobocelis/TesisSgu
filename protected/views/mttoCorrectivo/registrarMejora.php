@@ -171,6 +171,7 @@ function agregarFalla(){
 										 
                                         //window.setTimeout('agregarFalla()',1000);
 										//window.setTimeout('location.reload()', 1000);
+										agregarFalla();
 										$.fn.yiiGridView.update('fallas');
                                 }
                         } ,

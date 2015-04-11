@@ -395,6 +395,7 @@ class MttoPreventivoController extends Controller
         }
 	}
 	public function actionRegistrarFacturacion($id,$nom,$dir){
+		$tieneAsignado=1;
 		$model = new Factura;
 		$idrecurso=0;
 		$recurso=new CActiveDataProvider('Actividadrecurso',array('criteria'=>array('condition'=>'idactividades="'.$idrecurso.'"')));
@@ -412,6 +413,22 @@ class MttoPreventivoController extends Controller
 			'pagination'=>array('pageSize'=>9999999)));
 		$tot=Yii::app()->db->createCommand('select * from sgu_factura where idordenMtto="'.$id.'"')->queryAll();
 		$total=count($tot);
+
+		$det=new CActiveDataProvider('Cantidad',array('criteria' => array(
+			'condition' =>"estado=0 or estado=1")));
+
+		if(isset($_GET["idRep"])){
+			$Actividadrecurso = Actividadrecurso::model()->findByPk($_GET["idRep"]);
+			
+			$Actividades = Actividades::model()->findByPk($Actividadrecurso->idactividades);
+			$consulta=Yii::app()->db->createCommand("select * from sgu_CaracteristicaVeh where idvehiculo=".$Actividades->idvehiculo." and idrepuesto=".$Actividadrecurso->idrepuesto."")->queryRow();
+			if(count($consulta)==0)
+				$tieneAsignado=0;
+			else
+			$det=new CActiveDataProvider('Cantidad',array('criteria' => array(
+			'condition' =>"idCaracteristicaVeh = '".$consulta['id']."' and (estado=0 or estado=1)",
+			'order'=>'id')));
+		}
 		$this->render('registrarFacturacion',array(
 			'dataProvider'=>$dataProvider,
 			'modelofactura'=>$model,
@@ -421,6 +438,8 @@ class MttoPreventivoController extends Controller
 			'total'=>$total,
 			'nom'=>$nom,
 			'dir'=>$dir,
+			'det'=>$det,
+			'tieneAsignado'=>$tieneAsignado,
 		));
 	}
 	public function actionCrearOrden(){

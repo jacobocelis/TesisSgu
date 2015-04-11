@@ -69,6 +69,13 @@ class Actividades extends CActiveRecord
 				return 0;
 		return $intervalo;
 	}
+	function kmsRestantes($actual,$proxima){
+
+		if(($proxima-$actual)<0)
+			return 0;
+		else
+			return $proxima-$actual;
+	}
 	function kmRestantes($id,$prox){
 		$km=Kilometraje::model()->findAll(array(
 			'condition'=>'t.idvehiculo ='.$id.' order by t.id desc limit 1',
@@ -97,11 +104,12 @@ class Actividades extends CActiveRecord
 		//$interval = $datetime2->diff($datetime1);
 		//$retraso=$interval->format('%R%a');
 		
-                $retraso =((strtotime($fin)-strtotime(date("Y-m-d")))/86400);
+        $retraso =((strtotime($fin)-strtotime(date("Y-m-d")))/86400);
+		
 		if($retraso==-1)
-			return abs($retraso).' Día';
+			return (int)(abs($retraso)).' Día';
 		if($retraso<-1)
-			return abs($retraso).' Días';
+			return (int)abs($retraso).' Días';
 		return "";
 	}
 	public function atrasoKm($id,$prox){

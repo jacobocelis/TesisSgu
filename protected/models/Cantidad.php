@@ -22,7 +22,23 @@ class Cantidad extends CActiveRecord
 	{
 		return 'sgu_Cantidad';
 	}
+		public function estadoRepuesto($id){
+		if($id==0)
+			return "No definido";
+		if($id==1)
+			return "Montado";
+		if($id==2)
+			return "Historico";
+	}
 
+	public function eventoRepuesto($id){
+		if($id==0)
+			return "No definido";
+		if($id==1)
+			return "Cambio";
+		if($id==2)
+			return "Reparación";
+	}
 	/**
 	 * @return array validation rules for model attributes.
 	 */
@@ -31,13 +47,13 @@ class Cantidad extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('id, idCaracteristicaVeh,fechaIncorporacion', 'required'),
-			array('id, idCaracteristicaVeh', 'numerical', 'integerOnly'=>true),
+			array('idCaracteristicaVeh,fechaIncorporacion,estado,evento', 'required'),
+			array('idCaracteristicaVeh,estado,evento', 'numerical', 'integerOnly'=>true),
 			array('codigoPiezaEnUso, detallePieza', 'length', 'max'=>100),
 			//array('fechaIncorporacion', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, codigoPiezaEnUso, detallePieza, fechaIncorporacion, idCaracteristicaVeh', 'safe', 'on'=>'search'),
+			array('codigoPiezaEnUso, detallePieza, fechaIncorporacion, idCaracteristicaVeh', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -62,8 +78,10 @@ class Cantidad extends CActiveRecord
 			'id' => 'ID',
 			'codigoPiezaEnUso' => 'Codigo',
 			'detallePieza' => 'Detalle de repuesto',
-			'fechaIncorporacion' => 'Fecha de cambio',
+			'fechaIncorporacion' => 'Fecha de evento',
 			'idCaracteristicaVeh' => 'Id Caracteristica Veh',
+			'estado'=>'Estado',
+			'evento'=>'Evento',
 		);
 	}
 

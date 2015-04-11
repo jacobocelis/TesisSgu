@@ -18,14 +18,11 @@
 	<p class="note">Los campos con <span class="required">*</span> son obligatorios.</p>
 
 	
-
 	<div class="row">
 		<?php echo $form->labelEx($model,'repuesto'); ?>
 		<?php echo $form->textField($model,'repuesto',array('size'=>60,'maxlength'=>200)); ?>
 		<?php echo $form->error($model,'repuesto'); ?>
 	</div>
-
-
 
 	<div class="row">
 		<?php echo $form->labelEx($tipo,'tipo'); ?>
@@ -44,7 +41,7 @@
 	
 	<div class="row">
 		<?php echo $form->labelEx($model,'idsubTipoRepuesto'); ?>
-		<?php echo $form->dropDownList($model,'idsubTipoRepuesto',array(),array('style'=>'width:180px')); ?>
+		<?php echo $form->dropDownList($model,'idsubTipoRepuesto',CHtml::listData(Subtiporepuesto::model()->findAll(), 'id', 'subTipo'),array('style'=>'width:180px')); ?>
 		<?php echo $form->error($model,'idsubTipoRepuesto'); ?>
 	</div>
 	
@@ -62,11 +59,5 @@
 
 </div><!-- form
 
-
-	<div class="row">
-		<?php echo $form->labelEx($model,'descripcion'); ?>
-		<?php echo $form->textField($model,'descripcion',array('size'=>45,'maxlength'=>45)); ?>
-		<?php echo $form->error($model,'descripcion'); ?>
-	</div>
 
  -->

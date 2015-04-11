@@ -42,9 +42,9 @@ class Actividadrecurso extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('cantidad, idactividades, idunidad,costoUnitario', 'required'),
-			array('cantidad, idactividades, idinsumo, idrepuesto, idservicio, idunidad, idactividadRecursoGrupo, garantia, idtiempoGarantia', 'numerical', 'integerOnly'=>true),
-			array('costoUnitario, costoTotal', 'numerical'),
+			array('cantidad, idactividades, idunidad,costoUnitario,serialGuardado', 'required'),
+			array('cantidad, serialGuardado, idactividades, idinsumo, idrepuesto, idservicio, idunidad, idactividadRecursoGrupo, garantia, idtiempoGarantia', 'numerical', 'integerOnly'=>true),
+			array('costoUnitario, costoTotal,serialGuardado', 'numerical'),
 			array('detalle', 'length', 'max'=>100),
 			array('costoUnitario', 'validarCosto'),
 			array('costoUnitario', 'validarCantidad'),
@@ -100,6 +100,7 @@ class Actividadrecurso extends CActiveRecord
 			'costoTotal' => 'Costo total',
 			'garantia' => 'Garantía',
 			'idtiempoGarantia' => 'Idtiempo Garantia',
+			'serialGuardado'=>'serialGuardado',
 		);
 	}
 

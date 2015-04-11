@@ -299,7 +299,7 @@ ul, ol {
 	array('label'=>'      Registrar repuestos iniciales <span class="badge badge- pull-right">0</span>', 'url'=>array('repuesto/iniciales/')),
 	
 	array('label'=>'<div id="menu"><strong>Histórial</strong></div>' , 'visible'=>'1'),
-	array('label'=>'      Histórico de repuestos', 'url'=>array('repuesto/historicoCambios')),
+	array('label'=>'      Histórico de repuestos', 'url'=>array('repuesto/historico')),
 
 	array('label'=>'<div id="menu"><strong>Administrar</strong></div>' , 'visible'=>'1'),
 	array('label'=>'      Parámetros y datos maestros', 'url'=>array('repuesto/parametros')),

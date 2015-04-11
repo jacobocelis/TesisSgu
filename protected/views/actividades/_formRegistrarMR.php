@@ -101,9 +101,24 @@
 
 </div><!-- form -->
 <script>
+var dir="<?php echo Yii::app()->baseUrl."/mttoPreventivo/getUltimoKm/"?>";	
+function getUltimoKm(selected,idvehiculo){
+
+	jQuery.ajax({
+                url: dir+idvehiculo,
+                'data':$(this).serialize()+"fecha="+selected,
+                'type':'post',
+                'dataType':'json',
+                'success':function(data)
+                        {
+                              $("#Actividades_kmRealizada").val(data.valor);
+                        } ,
+                'cache':false});
+    return false; 
+}
 var diass = "<?php echo $dias2;?>";
 var idvehiculo="<?php echo $model->idvehiculo;?>";
-
+getUltimoKm($("#Actividades_fechaRealizada").val(),idvehiculo);
 	$(function($){
 	    $.datepicker.regional['es'] = {
 	        closeText: 'Cerrar',
@@ -135,21 +150,7 @@ var idvehiculo="<?php echo $model->idvehiculo;?>";
 	});
 </script>
 <script type="text/javascript">
-var dir="<?php echo Yii::app()->baseUrl."/mttoPreventivo/getUltimoKm/"?>";	
-function getUltimoKm(selected,idvehiculo){
 
-	jQuery.ajax({
-                url: dir+idvehiculo,
-                'data':$(this).serialize()+"fecha="+selected,
-                'type':'post',
-                'dataType':'json',
-                'success':function(data)
-                        {
-                              $("#Actividades_kmRealizada").val(data.valor);
-                        } ,
-                'cache':false});
-    return false; 
-}
 
 $("#Kilometraje_lectura").click(function(){
 	$("#Actividades_kmRealizada").val($("#Kilometraje_lectura").val());

@@ -225,6 +225,7 @@ $this->beginWidget('zii.widgets.jui.CJuiDialog', array( // the dialog
 					'headerHtmlOptions'=>array('style'=>'text-align:left;'),
 					'header'=>'Total',
 					'name'=>'costoTotal',
+
 					'value'=>'number_format($data->costoTotal, 2,",",".").\' Bs.\'',
 					'htmlOptions'=>array('style'=>'width:50px;'),
 					//'footer'=>'',
@@ -240,9 +241,25 @@ $this->beginWidget('zii.widgets.jui.CJuiDialog', array( // the dialog
                         "",
                         array(
                                 \'style\'=>\'cursor: pointer;text-decoration: underline;text-align:center;\',
-                                \'onclick\'=>\'{editarActividad("\'.Yii::app()->createUrl("actividadrecurso/update",array("id"=>$data["id"])).\'"); $("#dialog").dialog("open");}\'
+                                \'onclick\'=>\'{editarActividad("\'.Yii::app()->createUrl("actividadrecurso/update",array("id"=>$data["id"])).\'","\'.$data["id"].\'");}\'
                         )
                 );',),
+                /*array(
+						'headerHtmlOptions'=>array('style'=>'text-align:center;width:30px;'),
+						'htmlOptions'=>array('style'=>'text-align:center;'),
+						'header'=>'Actualizar serial',
+						'type'=>'raw',
+						//'visible'=>'$data->costoTotal<=0?FALSE:TRUE',
+
+						'value'=>'CHtml::link(
+                        CHtml::image(Yii::app()->request->baseUrl."/imagenes/agregar.png",
+                                          "Agregar",array("title"=>"Editar")),
+                        "",
+                        array(
+                                \'style\'=>\'cursor: pointer;text-decoration: underline;text-align:center;\',
+                                \'onclick\'=>\'{actualizarSerial("\'.$data["id"].\'");}\'
+                        )
+                );',),*/
 				array(
 					'header'=>'Eliminar',
 					'class'=>'CButtonColumn',
@@ -289,13 +306,90 @@ $this->beginWidget('zii.widgets.jui.CJuiDialog', array( // the dialog
         'title'=>'Agregar costo',
         'autoOpen'=>false,
         'modal'=>true,
-        'width'=>390,
+        'width'=>500,
 		'position'=>array(null,100),
         //'height'=>260,
 		'resizable'=>false
     ),
 ));?>
 <div class="divForForm"></div> 
+<div id="gridSerial" class='crugepanel user-assignments-role-list' style="display:none">
+	<i>Seleccione el repuesto para actualizar el nuevo serial</i>
+<?php
+$this->widget('zii.widgets.grid.CGridView', array(
+                'id'=>'repdetalle',
+				'summaryText'=>'',
+				//'selectionChanged'=>'nuevoSerial',
+				'template'=>"{items}\n{summary}\n{pager}",
+				'selectableRows'=>0,
+				'emptyText'=>'No hay repuestos asignados',
+                'dataProvider'=>$det,
+				'htmlOptions'=>array('style'=>'cursor:pointer;'),
+				'columns'=>array(
+		
+				array(
+					'header'=>'Repuesto',
+					//'name'=>'codigoPiezaEnUso',
+					//'value'=>'str_pad((int) $data->idvehiculo0->numeroUnidad,2,"0",STR_PAD_LEFT);',
+					'value'=>'$data->idCaracteristicaVeh0->idrepuesto0->repuesto',
+					'htmlOptions'=>array('style'=>'text-align:center;width:20px'),
+				),
+				
+				array(
+					'header'=>'Detalle',
+					'name'=>'detallePieza',
+					//'value'=>'str_pad((int) $data->idvehiculo0->numeroUnidad,2,"0",STR_PAD_LEFT);',
+					//'value'=>'$data->idplan0->idplanGrupo0->CompiledColour->$data-id.\' \'.$data->CompiledColour',
+					'htmlOptions'=>array('style'=>'text-align:center;width:20px'),
+				),
+				array(
+					'header'=>'Serial',
+					'name'=>'codigoPiezaEnUso',
+					//'value'=>'str_pad((int) $data->idvehiculo0->numeroUnidad,2,"0",STR_PAD_LEFT);',
+					//'value'=>'$data->idplan0->idplanGrupo0->CompiledColour->$data-id.\' \'.$data->CompiledColour',
+					'htmlOptions'=>array('style'=>'text-align:center;width:20px'),
+				),
+				array(
+					'headerHtmlOptions'=>array('style'=>'text-align:center;width:50px;'),
+					'header'=>'Evento',
+					'name'=>'evento',
+					'value'=>'$data->evento',
+					//'value'=>'$data->idplan0->idplanGrupo0->CompiledColour->$data-id.\' \'.$data->CompiledColour',
+					'htmlOptions'=>array('style'=>'text-align:center;width:20px'),
+				),
+				array(
+					'header'=>'Fecha de evento',
+					'name'=>'codigoPiezaEnUso',
+					//'value'=>'str_pad((int) $data->idvehiculo0->numeroUnidad,2,"0",STR_PAD_LEFT);',
+					'value'=>'$data->fechaIncorporacion=="0000-01-01"?"-":date("d/m/Y",strtotime($data->fechaIncorporacion))',
+					'htmlOptions'=>array('style'=>'text-align:center;width:20px'),
+				),
+				array(
+					'headerHtmlOptions'=>array('style'=>'text-align:center;width:50px;'),
+					'header'=>'Estado',
+					'name'=>'estado',
+					'value'=>'$data->estado',
+					//'value'=>'$data->idplan0->idplanGrupo0->CompiledColour->$data-id.\' \'.$data->CompiledColour',
+					'htmlOptions'=>array('style'=>'text-align:center;width:20px'),
+				),
+
+				array(
+						'header'=>'Actualizar',
+						'type'=>'raw',
+						'value'=>'CHtml::link(CHtml::image(Yii::app()->request->baseUrl."/imagenes/agregar.png","Agregar",array("title"=>"Agregar")),"",
+                        array(
+                                \'style\'=>\'cursor: pointer; width:50px;text-decoration: underline;\',
+                                \'onclick\'=>\'{addDetalle("\'.Yii::app()->createUrl("cantidad/actualizarSerial",array("id"=>$data["id"],"fila"=>$row+1,"rep"=>$data->idCaracteristicaVeh0->idrepuesto0->repuesto)
+								).\'"); $("#dialog2").dialog("open");}\'
+                        )
+                );',
+				'htmlOptions'=>array('style'=>'width:50px;text-align:center;'),
+				),
+			)
+        ));
+
+		?>
+</div>
 <?php $this->endWidget();?>
 
 <?php
@@ -314,6 +408,24 @@ $this->beginWidget('zii.widgets.jui.CJuiDialog', array( // the dialog
 <div class="divForForm"></div>
  
 <?php $this->endWidget();?>
+
+<?php 
+$this->beginWidget('zii.widgets.jui.CJuiDialog', array( // the dialog
+    'id'=>'dialog2',
+    'options'=>array(
+        'title'=>'Registro de serial nuevo',
+        'autoOpen'=>false,
+        'modal'=>true,
+        'width'=>320,
+       // 'height'=>270,
+        'position'=>array(null,200),
+		'resizable'=>false
+    ),
+));?>
+<div class="divForForm2"></div>
+<?php $this->endWidget();?>
+
+
 <style>
 .crugepanel {
     background-color: #FFF;
@@ -397,7 +509,14 @@ idAct=id;
 }
 var Uurl;
 var idfac=<?php echo $idfac?>;
-function editarActividad(id){
+var idRep;
+function editarActividad(id,rep){
+$("#gridSerial").show();
+
+if(rep!=undefined){
+	idRep=rep;	
+	$.fn.yiiGridView.update('repdetalle',{ data : "idRep="+rep});	
+}
 
 
 $('#dialog').dialog('open');
@@ -425,7 +544,56 @@ $('#dialog').dialog('open');
                                 }
                         } ,
                 'cache':false});
+
     return false; 
+}
+function nuevoSerial(){
+
+	$('#divRenovacion').show(500);
+	var idrenov = $.fn.yiiGridView.getSelection('renovaciones');
+	if(idrenov==""){
+		$('#divRenovacion').hide();	
+		idrenov=0;
+	}
+	$.fn.yiiGridView.update('nuevoMontaje',{ data : {idrenov:idrenov.toString()},
+			complete: function(jqXHR, status) {
+            if (status=='success'){
+				$.fn.yiiGridView.update('factu');
+                verificar(idrenov.toString());
+			}
+		}
+	});
+}
+var dirurl;
+function addDetalle(_url){
+
+//$.fn.yiiGridView.update('detalle');
+        // If its a string then set the global variable, if its an object then don't set
+        if (typeof(_url)=='string')
+                dirurl=_url;
+
+        jQuery.ajax({
+                url: dirurl,
+                'data':$(this).serialize()+'&idrep='+idRep,
+                'type':'post',
+                'dataType':'json',
+                'success':function(data){
+				
+                                if (data.status == 'failure')
+                                {   
+										$('#dialog2 div.divForForm2').html(data.div);
+                                        // Here is the trick: on submit-> once again this function!
+                                        $('#dialog2 div.divForForm2 form').submit(addDetalle); // updatePaymentComment
+                                }
+                                else
+                                {		
+                                        $('#dialog2 div.divForForm2').html(data.div);
+                                        setTimeout("$('#dialog2').dialog('close') ",1000);
+                                        $.fn.yiiGridView.update('repdetalle');
+                                }
+                        } ,
+                'cache':false});
+        return false;
 }
 function editarFactura(id){
 $('#ModFactura').dialog('open');

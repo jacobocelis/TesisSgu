@@ -32,7 +32,7 @@ class RepuestoController extends Controller
 				'users'=>array('@'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create','update','crear','Selectdos','buscarRepuesto','DetalleRepuestoVehiculo','AsignarPiezaGrupo','DetallePiezaGrupo','iniciales'),
+				'actions'=>array('create','update','crear','Selectdos','buscarRepuesto','DetalleRepuestoVehiculo','AsignarPiezaGrupo','DetallePiezaGrupo','iniciales','historico','ActualizarSerial','parametros','actualizar'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -369,7 +369,8 @@ class RepuestoController extends Controller
 	
 	public function actionIndex(){
 		
-		$dataProvider=new CActiveDataProvider('CaracteristicaVeh');
+		$dataProvider=new CActiveDataProvider('CaracteristicaVeh',array('criteria' => array(
+			'condition' =>"id=0")));
 		if(isset($_GET["repuesto"]) and isset($_GET["vehiculo"])){
 				if($_GET["repuesto"]==null and $_GET["vehiculo"]==null)
 					$dataProvider=new CActiveDataProvider('CaracteristicaVeh');	
@@ -386,17 +387,18 @@ class RepuestoController extends Controller
 						'condition' =>"idvehiculo=".$_GET['vehiculo']."",
 						'order'=>'idrepuesto')));			
 		}
-		$det=new CActiveDataProvider('Cantidad');
+		$det=new CActiveDataProvider('Cantidad',array('criteria' => array(
+			'condition' =>"id=0")));
 		if(isset($_GET["id"]))
 			$det=new CActiveDataProvider('Cantidad',array('criteria' => array(
-						'condition' =>"idCaracteristicaVeh = '".$_GET['id']."'",
+						'condition' =>"(estado=0 or estado=1) and idCaracteristicaVeh = '".$_GET['id']."'",
 						'order'=>'id')));
 		$this->render('index',array(
 			'dataProvider'=>$dataProvider,
 			'det'=>$det,
 		));
 	}
-		public function actionIniciales(){
+	public function actionIniciales(){
 		
 		$dataProvider=new CActiveDataProvider('CaracteristicaVeh');
 		if(isset($_GET["repuesto"]) and isset($_GET["vehiculo"])){
@@ -415,15 +417,75 @@ class RepuestoController extends Controller
 						'condition' =>"idvehiculo=".$_GET['vehiculo']."",
 						'order'=>'idrepuesto')));			
 		}
-		$det=new CActiveDataProvider('Cantidad');
+		$det=new CActiveDataProvider('Cantidad',array('criteria' => array(
+						'condition' =>"id=0")));
 		if(isset($_GET["id"]))
 			$det=new CActiveDataProvider('Cantidad',array('criteria' => array(
 						'condition' =>"idCaracteristicaVeh = '".$_GET['id']."'",
-						'order'=>'id')));
+						'limit'=>1,
+						'order'=>'id',
+						)));
+			$det->setPagination(false);
 		$this->render('iniciales',array(
 			'dataProvider'=>$dataProvider,
 			'det'=>$det,
 		));
+	}
+
+	public function actionHistorico(){
+		
+		$det=new CActiveDataProvider('Cantidad',array('criteria' => array(
+				'condition' =>"estado = 2",
+				'order'=>'id')));
+
+		if(isset($_GET["repuesto"]) and isset($_GET["vehiculo"])){
+				if($_GET["repuesto"]==null and $_GET["vehiculo"]==null)
+					$det=new CActiveDataProvider('Cantidad',array('criteria' => array(
+				'condition' =>"estado = 2",
+				'order'=>'id')));
+				if($_GET["repuesto"]<>null and $_GET["vehiculo"]<>null)
+					$det=new CActiveDataProvider('Cantidad',array('criteria' => array(
+						'condition' =>"estado=2 and idCaracteristicaVeh in (select id from sgu_CaracteristicaVeh where idrepuesto in (select id from sgu_repuesto where repuesto like '%".$_GET['repuesto']."%') and idvehiculo=".$_GET['vehiculo'].")",
+						'order'=>'id')));	
+				if($_GET["repuesto"]<>null and $_GET["vehiculo"]==null)
+					$det=new CActiveDataProvider('Cantidad',array('criteria' => array(
+						'condition' =>"estado=2 and idCaracteristicaVeh in (select id from sgu_CaracteristicaVeh where idrepuesto in (select id from sgu_repuesto where repuesto like '%".$_GET['repuesto']."%'))",
+						'order'=>'id')));	
+				if($_GET["repuesto"]==null and $_GET["vehiculo"]<>null)
+					$det=new CActiveDataProvider('Cantidad',array('criteria' => array(
+						'condition' =>"estado=2 and idCaracteristicaVeh in (select id from sgu_CaracteristicaVeh where idrepuesto in (select id from sgu_repuesto where repuesto like '%".$_GET['repuesto']."%') and idvehiculo=".$_GET['vehiculo'].")",
+						'order'=>'id')));			
+		}
+		
+		$this->render('historico',array(
+			'det'=>$det,
+		));
+	}
+
+	public function actionParametros(){
+			$repuestos=new CActiveDataProvider('Repuesto',array('criteria' => array(
+				'condition' =>"1",
+				'order'=>'id')));
+
+			$tipo=new CActiveDataProvider('Tiporepuesto',array('criteria' => array(
+				'condition' =>"1",
+				'order'=>'id')));
+
+			$subtipo=new CActiveDataProvider('Subtiporepuesto',array('criteria' => array(
+				'condition' =>"id=0",
+				'order'=>'id')));
+
+			if(isset($_GET["idtipo"]))
+				$subtipo=new CActiveDataProvider('Subtiporepuesto',array('criteria' => array(
+				'condition' =>"idTipoRepuesto='".$_GET["idtipo"]."'",
+				'order'=>'id')));
+
+			$this->render('parametros',array(
+			'repuestos'=>$repuestos,
+			'tipo'=>$tipo,
+			'subtipo'=>$subtipo,
+		));
+
 	}
 	public function actionBuscarRepuesto(){
 			$request=trim($_GET['term']);
@@ -451,7 +513,29 @@ class RepuestoController extends Controller
 			'model'=>$model,
 		));
 	}
-
+	public function actionActualizar($id){
+		$model=$this->loadModel($id);
+		
+		if(isset($_POST['Repuesto'])){
+            $model->attributes=$_POST['Repuesto'];
+            if($model->save()){
+			
+                if (Yii::app()->request->isAjaxRequest){
+                    echo CJSON::encode(array(
+                        'status'=>'success', 
+                        'div'=>"se actualizo correctamente"
+                        ));
+                    exit;               
+                }
+            }
+        }
+        if (Yii::app()->request->isAjaxRequest){
+            echo CJSON::encode(array(
+                'status'=>'failure', 
+                'div'=>$this->renderPartial('_formActualizar', array('model'=>$model), true)));
+            exit;               
+        }
+	}
 	/**
 	 * Returns the data model based on the primary key given in the GET variable.
 	 * If the data model is not found, an HTTP exception will be raised.
