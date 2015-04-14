@@ -1,0 +1,21 @@
+To: operador@unet.edu.ve
+Subject: Tu Encabezado del asunto - Sus credenciales de acceso
+To: operador@unet.edu.ve
+From: jacobo.celis@gmail.com
+Reply-To: jacobo.celis@gmail.com
+MIME-Version: 1.0
+Content-type: text/html; charset=utf-8
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta name="language" content="en" />
+</head>
+<body>
+	<b>Usuario y Clave</b>
+<p>Estimado usuario, las credenciales de su cuenta son:</p>
+<p>usuario: Operador email: operador@unet.edu.ve</p>
+<p>su nueva clave es: d573f8a4</p>
+<p>Por favor tome las precauciones necesarias para guardar su nueva clave</p></body>
+

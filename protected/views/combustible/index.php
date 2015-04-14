@@ -8,14 +8,15 @@ $this->breadcrumbs=array(
 $this->menu=array(
 
 	array('label'=>'<div id="menu"><strong>Combustible</strong></div>'),
+	array('label'=>'      Reposiciónes', 'url'=>array('combustible/index')),
 	array('label'=>'      Registrar reposición', 'url'=>array('registrarReposicion')),
 	
 	
 	array('label'=>'<div id="menu"><strong>Historial</strong></div>'),
-	array('label'=>'      Histórico de reposiciónes', 'url'=>array('historicoReposicion')),
-	array('label'=>'      Histórico de gastos', 'url'=>array('historicoGastos')),
+	array('label'=>'      Histórico de reposiciónes', 'url'=>array('combustible/historicoReposicion')),
+	array('label'=>'      Histórico de gastos', 'url'=>array('combustible/historicoGastos')),
 	array('label'=>'<div id="menu"><strong>Parámetros</strong></div>'),
-	array('label'=>'      Administración de parámetros', 'url'=>array('parametros')),
+	array('label'=>'      Administración de parámetros', 'url'=>array('combustible/parametros')),
 	
 );
 ?>
@@ -45,11 +46,30 @@ $this->menu=array(
 					'htmlOptions'=>array('style'=>'text-align:center;width:40px'),
 				),
 				array(
-					'header'=>'Litros',
-					'name'=>'litros',
-					//'value'=>'$data->idfalla0->falla',
-					'htmlOptions'=>array('style'=>'text-align:center;width:25px'),
+					//'headerHtmlOptions'=>array('style'=>'width:7%'),
+					'header'=>'Placa',
+					'name'=>'idplan',
+					'value'=>'$data->idvehiculo0->placa',
+					//'value'=>'$data->idplan0->idplanGrupo0->CompiledColour->$data-id.\' \'.$data->CompiledColour',
+					'htmlOptions'=>array('style'=>'text-align:center;width:50px'),
 				),
+				array(
+					//'headerHtmlOptions'=>array('style'=>'width:7%'),
+					'header'=>'Marca',
+					'name'=>'idplan',
+					'value'=>'$data->idvehiculo0->idmodelo0->idmarca0->marca',
+					//'value'=>'$data->idplan0->idplanGrupo0->CompiledColour->$data-id.\' \'.$data->CompiledColour',
+					'htmlOptions'=>array('style'=>'text-align:center;width:80px'),
+				),
+				array(
+					//'headerHtmlOptions'=>array('style'=>'width:7%'),
+					'header'=>'Modelo',
+					'name'=>'idplan',
+					'value'=>'$data->idvehiculo0->idmodelo0->modelo',
+					//'value'=>'$data->idplan0->idplanGrupo0->CompiledColour->$data-id.\' \'.$data->CompiledColour',
+					'htmlOptions'=>array('style'=>'text-align:center;width:80px'),
+				),
+			
 				array(
 					'header'=>'Conductor',
 					'name'=>'idempleado',
@@ -66,7 +86,13 @@ $this->menu=array(
 					'header'=>'Fecha y hora',
 					'name'=>'fecha',
 					'value'=>'date("d/m/Y h:i A",strtotime($data->fecha))',
-					'htmlOptions'=>array('style'=>'text-align:center;width:40px'),
+					'htmlOptions'=>array('style'=>'text-align:center;width:80px'),
+				),
+					array(
+					'header'=>'Litros',
+					'name'=>'litros',
+					//'value'=>'$data->idfalla0->falla',
+					'htmlOptions'=>array('style'=>'text-align:center;width:25px;color:green;font-weight: bold;'),
 				),
 				array(
 					'type'=>'raw',

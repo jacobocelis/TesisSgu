@@ -9,16 +9,16 @@ $this->breadcrumbs=array(
 
 $this->menu=array(
 
-	array('label'=>'<div id="menu"><strong>Combustible</strong></div>'),
-	array('label'=>'      Registrar reposición', 'url'=>array('registrarReposicion')),
-	
-	
-	array('label'=>'<div id="menu"><strong>Historial</strong></div>'),
-	array('label'=>'      Histórico de reposiciónes', 'url'=>array('historicoReposicion')),
-	array('label'=>'      Histórico de gastos', 'url'=>array('combustible/historicoGastos')),
-	array('label'=>'<div id="menu"><strong>Parámetros</strong></div>'),
-	array('label'=>'      Administración de parámetros', 'url'=>array('combustible/parametros')),
-	
+    array('label'=>'<div id="menu"><strong>Combustible</strong></div>'),
+    array('label'=>'      Reposiciónes', 'url'=>array('combustible/index')),
+    array('label'=>'      Registrar reposición', 'url'=>array('combustible/registrarReposicion')),
+    
+    array('label'=>'<div id="menu"><strong>Historial</strong></div>'),
+    array('label'=>'      Histórico de reposiciónes', 'url'=>array('combustible/historicoReposicion')),
+    array('label'=>'      Histórico de gastos', 'url'=>array('combustible/historicoGastos')),
+    array('label'=>'<div id="menu"><strong>Parámetros</strong></div>'),
+    array('label'=>'      Administración de parámetros', 'url'=>array('combustible/parametros')),
+    
 );
 ?>
 <div class='crugepanel user-assignments-detail'>

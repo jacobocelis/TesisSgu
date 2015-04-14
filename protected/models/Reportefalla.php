@@ -31,11 +31,13 @@ class Reportefalla extends CActiveRecord
 		
     }
 	
-	public function color($id,$estatus){
+	public function color($id){
+		if($id==8)
+			return '<strong><span style="color:red">'.$this->idestatus0->estatus.'</span></strong>'; 
 		if($id==4)
-			return '<strong><span style="color:orange">'.$estatus.'</span></strong>';
+			return '<strong><span style="color:orange">'.$this->idestatus.'</span></strong>';
 		if($id==3)
-			return '<strong><span style="color:green">'.$estatus.'</span></strong>';
+			return '<strong><span style="color:green">'.$this->idestatus.'</span></strong>';
     }
 	public function noasignado(){
 			return '<span style="color:red">no registrado</span>';
@@ -52,25 +54,7 @@ class Reportefalla extends CActiveRecord
 			return 0;
 		return 1;
     }
-	function diasRestantes($fin){
-		$datetime1 = new DateTime($fin);
-		$datetime2 = new DateTime("now");
-		$datetime2=$datetime2->format('Y-m-d');
-		$fecha=new DateTime($datetime2);
-		$interval = $fecha->diff($datetime1);
-			if($interval->format('%R%a')<0)
-				return 0;
-		return $interval->format('%a');
-	}
-	function kmRestantes($id,$prox){
-		$km=Kilometraje::model()->findAll(array(
-			'condition'=>'t.idvehiculo ='.$id.' order by t.id desc limit 1',
-		));
-		if(($prox-$km[0]["lectura"])<0)
-			return 0;
-		else
-			return $prox-$km[0]["lectura"];
-	}
+	
 	public function beforeValidate(){
 		
         if($this->tipo==1 and $this->idfalla==null){
@@ -80,7 +64,7 @@ class Reportefalla extends CActiveRecord
         }
 		if($this->tipo==0 and $this->idfalla==null){
 			$this->addErrors(array(
-            	'idfalla'=>'Debe seleccionar una falla .',
+            	'idfalla'=>'Debe seleccionar un incidente .',
             ));
 		}
 		 //var_dump($this->getErrors());
@@ -100,43 +84,7 @@ class Reportefalla extends CActiveRecord
 		
 		return 100-(($diasR/$diasT)*100);
 	}*/
-	public function atraso($fin){
-		$datetime1 = new DateTime($fin);
-		$datetime2 = new DateTime("now");
-		$interval = $datetime2->diff($datetime1);
-		$retraso=$interval->format('%R%a');
-		
-		if($retraso==-1)
-			return $interval->format('%a Día');
-		if($retraso<-1)
-			return $interval->format('%a Días');
-		return "";
-	}
-	public function atrasoKm($id,$prox){
-		$km=Kilometraje::model()->findAll(array(
-			'condition'=>'t.idvehiculo ='.$id.' order by t.id desc limit 1',
-		));
-		if(($prox-$km[0]["lectura"])<0)
-			return "+ ".abs($prox-$km[0]["lectura"])." Km";
-		else
-			return "";
-	}
-	public function porcentaje($ini,$fin){
-		$datetime1 = new DateTime($fin);
-		$datetime2 = new DateTime("now");
-		$datetime2=$datetime2->format('Y-m-d');
-		$fecha=new DateTime($datetime2);
-		$interval = $fecha->diff($datetime1);
-		
-		if($interval->format('%R%a')<0)
-			return 100;
-		$diasR=$interval->format('%a');
-		if($diasR>5)
-			return 0;
-		else	
-			return 100-(($diasR/5)*100);
-		
-	}
+	
 	public function obtColor($restante){
 		if($restante<=5)
 			return 'F00';

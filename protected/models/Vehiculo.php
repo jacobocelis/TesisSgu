@@ -44,6 +44,14 @@ class Vehiculo extends CActiveRecord
 	{
 		return 'sgu_vehiculo';
 	}
+	public function setEstado($estado,$motivo){
+		$model = new Historicoedos;
+		$model->idestado=$estado;
+		$model->idvehiculo=$this->id;
+		$model->motivo=$motivo;
+		$model->fecha=date("Y-m-d");
+		return $model->save();
+	}
 	public function getEstado($id){
 		
 		$estado=Yii::app()->db->createCommand("select he.idestado, e.estado from sgu_historicoEdos he, sgu_estado e where e.id=he.idestado and he.idvehiculo=".$id." order by he.id desc limit 1")->queryRow();
@@ -56,11 +64,15 @@ class Vehiculo extends CActiveRecord
 		if($estado["idestado"]=='4')
 			return '<div style="color:grey"><b>'.$estado["estado"].'</b></div>';
 	}
-public function getTotal($data)
+	public function totalGastos($data)
 	{
 		$total=0;
-		foreach($data as $dat)
-			$total=$total+$dat["costoTotal"];
+		foreach($data as $dat){
+			$orden=Detalleorden::model()->find('idactividades='.$dat['idactividades'].'');
+			$factura=Factura::model()->find('idordenMtto='.$orden->idordenMtto.'');
+			$total=$total+($dat["costoTotal"]+($dat["costoTotal"]*($factura->iva/$factura->total)));
+		}
+			
 		return $total;
 	}
 	/**
@@ -71,12 +83,13 @@ public function getTotal($data)
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('numeroUnidad, serialCarroceria,serialMotor, placa, anno , idmodelo, idgrupo, idcombustible, idcolor,idpropiedad,KmInicial', 'required'),
+			array('numeroUnidad, nroPuestos,serialCarroceria,serialMotor, placa, anno , idmodelo, idgrupo, idcombustible, idcolor,idpropiedad,KmInicial', 'required'),
 			array('numeroUnidad, anno, nroPuestos, idmodelo, idgrupo, idcombustible,idcolor,idpropiedad,KmInicial', 'numerical', 'integerOnly'=>true),
 			array('serialCarroceria', 'length', 'max'=>45),
 			array('placa', 'length', 'max'=>7),
 			array('comentario', 'length', 'max'=>200),
 			array('estatus,tipo', 'safe', 'on'=>'search'),
+			array('numeroUnidad','unique'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
 			array('id, numeroUnidad, serialCarroceria, serialChasis, placa, anno, nroPuestos, idmodelo, idgrupo, idcombustible,idcolor,idpropiedad, idtipo,', 'safe', 'on'=>'search'),

@@ -66,6 +66,12 @@ class Actividadrecurso extends CActiveRecord
 	/**
 	 * @return array relational rules.
 	 */
+	public function iva(){
+		
+		$orden=Detalleorden::model()->find('idactividades='.$this->idactividades.'');
+		$factura=Factura::model()->find('idordenMtto='.$orden->idordenMtto.'');
+		return $this->costoTotal*($factura->iva/$factura->total); 
+	}
 	public function relations()
 	{
 		// NOTE: you may need to adjust the relation name and the related

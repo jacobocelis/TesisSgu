@@ -10,14 +10,14 @@ $this->breadcrumbs=array(
 $this->menu=array(
 
 	array('label'=>'<div id="menu"><strong>Combustible</strong></div>'),
-	array('label'=>'      Registrar reposición', 'url'=>array('registrarReposicion')),
-	
-	
+	array('label'=>'      Reposiciónes', 'url'=>array('combustible/index')),
+	array('label'=>'      Registrar reposición', 'url'=>array('combustible/registrarReposicion')),
+		
 	array('label'=>'<div id="menu"><strong>Historial</strong></div>'),
-	array('label'=>'      Histórico de reposiciónes', 'url'=>array('historicoReposicion')),
+	array('label'=>'      Histórico de reposiciónes', 'url'=>array('combustible/historicoReposicion')),
 	array('label'=>'      Histórico de gastos', 'url'=>array('combustible/historicoGastos')),
 	array('label'=>'<div id="menu"><strong>Parámetros</strong></div>'),
-	array('label'=>'      Administración de parámetros', 'url'=>array('parametros')),
+	array('label'=>'      Administración de parámetros', 'url'=>array('combustible/parametros')),
 	
 );
 ?>
@@ -58,6 +58,30 @@ $this->widget('zii.widgets.grid.CGridView', array(
 					'htmlOptions'=>array('style'=>'text-align:center;width:30px'),
 				),
 				array(
+					//'headerHtmlOptions'=>array('style'=>'width:7%'),
+					'header'=>'Placa',
+					'name'=>'idplan',
+					'value'=>'$data->idvehiculo0->placa',
+					//'value'=>'$data->idplan0->idplanGrupo0->CompiledColour->$data-id.\' \'.$data->CompiledColour',
+					'htmlOptions'=>array('style'=>'text-align:center;width:50px'),
+				),
+				array(
+					//'headerHtmlOptions'=>array('style'=>'width:7%'),
+					'header'=>'Marca',
+					'name'=>'idplan',
+					'value'=>'$data->idvehiculo0->idmodelo0->idmarca0->marca',
+					//'value'=>'$data->idplan0->idplanGrupo0->CompiledColour->$data-id.\' \'.$data->CompiledColour',
+					'htmlOptions'=>array('style'=>'text-align:center;width:80px'),
+				),
+				array(
+					//'headerHtmlOptions'=>array('style'=>'width:7%'),
+					'header'=>'Modelo',
+					'name'=>'idplan',
+					'value'=>'$data->idvehiculo0->idmodelo0->modelo',
+					//'value'=>'$data->idplan0->idplanGrupo0->CompiledColour->$data-id.\' \'.$data->CompiledColour',
+					'htmlOptions'=>array('style'=>'text-align:center;width:80px'),
+				),
+				array(
 					'header'=>'Litros',
 					'name'=>'litros',
 					//'value'=>'$data->idfalla0->falla',
@@ -88,13 +112,13 @@ $this->widget('zii.widgets.grid.CGridView', array(
 					'header'=>'Fecha reposición',
 					'name'=>'fecha',
 					'value'=>'date("d/m/Y h:m A",strtotime($data->fecha))',
-					'htmlOptions'=>array('style'=>'text-align:center;width:50px'),
+					'htmlOptions'=>array('style'=>'text-align:center;width:80px'),
 				),
 				array(
 					'header'=>'Costo Bs.',
 					'name'=>'costoTotal',
 					//'value'=>'$data->idfalla0->falla',
-					'htmlOptions'=>array('style'=>'text-align:center;width:40px'),
+					'htmlOptions'=>array('style'=>'text-align:center;width:60px'),
 					'footer'=>'<strong>Total: </strong>'.number_format($this->getTotalGastosCombustible($dataProvider->getData()), 2,",",".").' Bs.',
 					'footerHtmlOptions'=>array("style"=>"background: none repeat scroll 0% 0% rgba(5, 255, 0, 0.35)"),
 				),

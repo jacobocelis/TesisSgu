@@ -9,6 +9,7 @@ $this->breadcrumbs=array(
 $this->menu=array(
 	//if(Yii::app()->user->checkAccess('xxx')):
 	array('label'=>'<div id="menu"><strong>Opciones de mantenimiento</strong></div>' , 'visible'=>Yii::app()->user->checkAccess('action_mttopreventivo_planes')),
+	array('label'=>'      Actividades de mantenimiento', 'url'=>array('mttoPreventivo/index') , 'visible'=>Yii::app()->user->checkAccess('action_mttopreventivo_index')),
 	array('label'=>'      Registrar actividades de mantenimiento', 'url'=>array('mttoPreventivo/planes') , 'visible'=>Yii::app()->user->checkAccess('action_mttopreventivo_planes')),
 	array('label'=>'      Registrar matenimientos iniciales <span id="mi" class="badge badge-'.$color.' pull-right">'.$mi.'</span>', 'url'=>array('mttoPreventivo/iniciales/') , 'visible'=>Yii::app()->user->checkAccess('action_mttopreventivo_iniciales')),
 	array('label'=>'      Ajuste de fechas en calendario', 'url'=>array('mttoPreventivo/calendario') , 'visible'=>Yii::app()->user->checkAccess('action_mttopreventivo_calendario')),
@@ -47,7 +48,7 @@ $this->menu=array(
 		echo CHtml::submitButton('Buscar',array("id"=>"boton","onclick"=>"FiltrarFecha()","style"=>"float:right;margin-top:2px;margin-left:10px;")); ?>
 </div>
 <?php  
-			$v=new Vehiculo;
+			
 			$this->widget('zii.widgets.grid.CGridView', array(
 			'id'=>'gastos',
 			'selectableRows'=>1,
@@ -58,52 +59,90 @@ $this->menu=array(
 			//'summaryText' => '',
 			'columns'=>array(
 				array(
-					'headerHtmlOptions'=>array('style'=>'text-align:left;'),
+					'headerHtmlOptions'=>array('style'=>'text-align:center;'),
 					'header'=>'Unidad',
 					'value'=>'str_pad((int) $data->idactividades0->idvehiculo0->numeroUnidad,2,"0",STR_PAD_LEFT)',
-					'htmlOptions'=>array('style'=>'width:50px;'),
-					//'footer'=>'',
-				),	
-				array(
-					'headerHtmlOptions'=>array('style'=>'text-align:left;'),
-					'header'=>'Recurso',
-					'name'=>'idservicio',
-					'value'=>'(($data->idinsumo == null?\'\':$data->idinsumo0->insumo).\'\'.($data->idrepuesto == null?\'\':$data->idrepuesto0->repuesto).\'\'.($data->idservicio == null?\'\':$data->idservicio0->servicio)).\'\'.$data->detalle',
-					'htmlOptions'=>array('style'=>'width:250px;'),
+					'htmlOptions'=>array('style'=>'width:50px;text-align:center;'),
 					//'footer'=>'',
 				),
 				array(
-					'headerHtmlOptions'=>array('style'=>'text-align:left;'),
+					//'headerHtmlOptions'=>array('style'=>'width:7%'),
+					'header'=>'Placa',
+					'name'=>'idplan',
+					'value'=>'$data->idactividades0->idvehiculo0->placa',
+					//'value'=>'$data->idplan0->idplanGrupo0->CompiledColour->$data-id.\' \'.$data->CompiledColour',
+					'htmlOptions'=>array('style'=>'text-align:center;'),
+				),
+				array(
+					//'headerHtmlOptions'=>array('style'=>'width:7%'),
+					'header'=>'Marca',
+					'name'=>'idplan',
+					'value'=>'$data->idactividades0->idvehiculo0->idmodelo0->idmarca0->marca',
+					//'value'=>'$data->idplan0->idplanGrupo0->CompiledColour->$data-id.\' \'.$data->CompiledColour',
+					'htmlOptions'=>array('style'=>'text-align:center;width:80px'),
+				),
+				array(
+					//'headerHtmlOptions'=>array('style'=>'width:7%'),
+					'header'=>'Modelo',
+					'name'=>'idplan',
+					'value'=>'$data->idactividades0->idvehiculo0->idmodelo0->modelo',
+					//'value'=>'$data->idplan0->idplanGrupo0->CompiledColour->$data-id.\' \'.$data->CompiledColour',
+					'htmlOptions'=>array('style'=>'text-align:center;width:80px'),
+				),
+	
+				array(
+					'headerHtmlOptions'=>array('style'=>'text-align:center;'),
+					'header'=>'Recurso',
+					'name'=>'idservicio',
+					'value'=>'(($data->idinsumo == null?\'\':$data->idinsumo0->insumo).\'\'.($data->idrepuesto == null?\'\':$data->idrepuesto0->repuesto).\'\'.($data->idservicio == null?\'\':$data->idservicio0->servicio)).\'\'.$data->detalle',
+					'htmlOptions'=>array('style'=>'text-align:center;'),
+					//'footer'=>'',
+				),
+				array(
+					'headerHtmlOptions'=>array('style'=>'text-align:center;'),
 					'header'=>'Cantidad',
 					'name'=>'cantidad',
-					'htmlOptions'=>array('style'=>'width:50px;'),
+					'htmlOptions'=>array('style'=>'text-align:center;'),
 					
 					//'footer'=>'',
 				),
 				array(
-					'headerHtmlOptions'=>array('style'=>'text-align:left;'),
+					'headerHtmlOptions'=>array('style'=>'text-align:center;'),
 					'header'=>'Unidad',
 					'name'=>'idunidad',
 					'value'=>'$data->idunidad0->corto',
-					'htmlOptions'=>array('style'=>'width:50px;'),
+					'htmlOptions'=>array('style'=>'text-align:center;'),
 					//'footer'=>'',
 				),
 				array(
-					'headerHtmlOptions'=>array('style'=>'text-align:left;'),
+					'headerHtmlOptions'=>array('style'=>'text-align:center;'),
 					'header'=>'Precio unitario',
 					'value'=>'number_format($data->costoUnitario, 2,",",".").\' Bs.\'',
 					'name'=>'costoUnitario',
 					
-					'htmlOptions'=>array('style'=>'width:50px;'),
+					'htmlOptions'=>array('style'=>'text-align:center;'),
 					//'footer'=>'',
 				),
 				array(
-					'headerHtmlOptions'=>array('style'=>'text-align:left;'),
-					'header'=>'Sub-total',
+					'headerHtmlOptions'=>array('style'=>'text-align:center;'),
+					'header'=>'Base',
 					'name'=>'costoTotal',
 					'value'=>'number_format($data->costoTotal, 2,",",".").\' Bs.\'',
-					'htmlOptions'=>array('style'=>'width:50px;'),
-					'footer'=>'<strong>Total: </strong>'.$v->getTotal($dataProvider->getData()).' Bs.',
+					'htmlOptions'=>array('style'=>'text-align:center;'),
+					),
+				array(
+					'headerHtmlOptions'=>array('style'=>'text-align:center;'),
+					'header'=>'IVA',
+					'value'=>'number_format($data->iva(), 2,",",".").\' Bs.\'',
+					'htmlOptions'=>array('style'=>'text-align:center;'),
+					),
+				array(
+					'headerHtmlOptions'=>array('style'=>'text-align:center;'),
+					'header'=>'Total',
+					'name'=>'costoTotal',
+					'value'=>'number_format($data->costoTotal+$data->iva(), 2,",",".").\' Bs.\'',
+					'htmlOptions'=>array('style'=>' text-align:center;'),
+					'footer'=>'<strong>Total: </strong>'.$vehiculo->totalGastos($dataProvider->getData()).' Bs.',
 					'footerHtmlOptions'=>array("style"=>"background: none repeat scroll 0% 0% rgba(5, 255, 0, 0.35)"),
 				),
 			),

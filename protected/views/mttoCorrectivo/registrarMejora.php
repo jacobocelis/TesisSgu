@@ -32,7 +32,7 @@ $this->menu=array(
 <div id="falla"></div>
 </div>
 <div class='crugepanel user-assignments-role-list'>
-<h1>Mejoras registradas</h1>
+<h1>Mejoras por atender</h1>
 <div id="resultado"></div>
 <?php
 $this->widget('zii.widgets.grid.CGridView', array(
@@ -48,6 +48,30 @@ $this->widget('zii.widgets.grid.CGridView', array(
 					'value'=>'str_pad((int) $data->idvehiculo0->numeroUnidad,2,"0",STR_PAD_LEFT);',
 					//'value'=>'$data->idplan0->idplanGrupo0->CompiledColour->$data-id.\' \'.$data->CompiledColour',
 					'htmlOptions'=>array('style'=>'text-align:center;width:40px'),
+				),
+				array(
+					//'headerHtmlOptions'=>array('style'=>'width:7%'),
+					'header'=>'Placa',
+					'name'=>'idplan',
+					'value'=>'$data->idvehiculo0->placa',
+					//'value'=>'$data->idplan0->idplanGrupo0->CompiledColour->$data-id.\' \'.$data->CompiledColour',
+					'htmlOptions'=>array('style'=>'text-align:center;width:50px'),
+				),
+				array(
+					//'headerHtmlOptions'=>array('style'=>'width:7%'),
+					'header'=>'Marca',
+					'name'=>'idplan',
+					'value'=>'$data->idvehiculo0->idmodelo0->idmarca0->marca',
+					//'value'=>'$data->idplan0->idplanGrupo0->CompiledColour->$data-id.\' \'.$data->CompiledColour',
+					'htmlOptions'=>array('style'=>'text-align:center;width:80px'),
+				),
+				array(
+					//'headerHtmlOptions'=>array('style'=>'width:7%'),
+					'header'=>'Modelo',
+					'name'=>'idplan',
+					'value'=>'$data->idvehiculo0->idmodelo0->modelo',
+					//'value'=>'$data->idplan0->idplanGrupo0->CompiledColour->$data-id.\' \'.$data->CompiledColour',
+					'htmlOptions'=>array('style'=>'text-align:center;width:80px'),
 				),
 				array(
 					'header'=>'Fecha registro',

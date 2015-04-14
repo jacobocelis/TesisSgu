@@ -35,14 +35,14 @@ $this->widget('zii.widgets.grid.CGridView', array(
 				),*/
 				array(
 					'type'=>'raw',
-					'header'=>'<PRE>C. operativo</PRE>',
+					'header'=>'<PRE>Coordinador operativo</PRE>',
 					//'name'=>'cOperativo',
 					'value'=>'$data->cOperativo0->nombre.\'  \'.$data->cOperativo0->apellido',
 					'htmlOptions'=>array('style'=>'text-align:center;width:80px'),
 				),
 				array(
 					'type'=>'raw',
-					'header'=>'<PRE>C. de transporte</PRE>',
+					'header'=>'<PRE>Coordinador de transporte</PRE>',
 					//'name'=>'cTaller',
 					'value'=>'$data->cTaller0->nombre.\'  \'.$data->cTaller0->apellido',
 					'htmlOptions'=>array('style'=>'text-align:center;width:80px'),

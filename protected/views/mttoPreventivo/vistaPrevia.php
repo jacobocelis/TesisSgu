@@ -30,7 +30,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
 					//'name'=>'id',
 					'value'=>'str_pad((int) $data->id,6,"0",STR_PAD_LEFT);',
 					//'value'=>'$data->idplan0->idplanGrupo0->CompiledColour->$data-id.\' \'.$data->CompiledColour',
-					'htmlOptions'=>array('style'=>'text-align:center;width:150px'),
+					'htmlOptions'=>array('style'=>'text-align:center;width:170px'),
 				),
 				array(
 					'header'=>'Fecha y hora',
@@ -46,13 +46,13 @@ $this->widget('zii.widgets.grid.CGridView', array(
 					'htmlOptions'=>array('style'=>'text-align:center;width:100px'),
 				),
 				array(
-					'header'=>'C. operativo',
+					'header'=>'Coordinador operativo',
 					'name'=>'cOperativo',
 					'value'=>'$data->cOperativo0->nombre.\'  \'.$data->cOperativo0->apellido',
 					'htmlOptions'=>array('style'=>'text-align:center;width:80px'),
 				),
 				array(
-					'header'=>'C. de transporte',
+					'header'=>'Coordinador de transporte',
 					'name'=>'cTaller',
 					'value'=>'$data->cTaller0->nombre.\'  \'.$data->cTaller0->apellido',
 					'htmlOptions'=>array('style'=>'text-align:center;width:80px'),

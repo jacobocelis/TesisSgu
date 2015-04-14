@@ -6,6 +6,7 @@
 $this->menu=array(
 	//if(Yii::app()->user->checkAccess('xxx')):
 	array('label'=>'<div id="menu"><strong>Opciones de mantenimiento</strong></div>' , 'visible'=>Yii::app()->user->checkAccess('action_mttopreventivo_planes')),
+	array('label'=>'      Actividades de mantenimiento', 'url'=>array('mttoPreventivo/index') , 'visible'=>Yii::app()->user->checkAccess('action_mttopreventivo_index')),
 	array('label'=>'      Registrar actividades de mantenimiento', 'url'=>array('mttoPreventivo/planes') , 'visible'=>Yii::app()->user->checkAccess('action_mttopreventivo_planes')),
 	array('label'=>'      Registrar matenimientos iniciales <span id="mi" class="badge badge-'.$color.' pull-right">'.$mi.'</span>', 'url'=>array('mttoPreventivo/iniciales/') , 'visible'=>Yii::app()->user->checkAccess('action_mttopreventivo_iniciales')),
 	array('label'=>'      Ajuste de fechas en calendario', 'url'=>array('mttoPreventivo/calendario') , 'visible'=>Yii::app()->user->checkAccess('action_mttopreventivo_calendario')),
@@ -61,13 +62,13 @@ $this->widget('zii.widgets.grid.CGridView', array(
 					'htmlOptions'=>array('style'=>'text-align:center;width:50px'),
 				),
 				array(
-					'header'=>'C. operativo',
+					'header'=>'Coordinador operativo',
 					'name'=>'cOperativo',
 					'value'=>'$data->cOperativo0->nombre.\'  \'.$data->cOperativo0->apellido',
 					'htmlOptions'=>array('style'=>'text-align:center;width:80px'),
 				),
 				array(
-					'header'=>'C. de transporte',
+					'header'=>'Coordinador de transporte',
 					'name'=>'cTaller',
 					'value'=>'$data->cTaller0->nombre.\'  \'.$data->cTaller0->apellido',
 					'htmlOptions'=>array('style'=>'text-align:center;width:80px'),
@@ -148,6 +149,9 @@ $this->widget('zii.widgets.grid.CGridView', array(
 					     'buttons'=>array(
 							'delete' => array(
 								'url'=>'Yii::app()->createUrl("ordenmtto/delete", array("id"=>$data->id))',
+								'options'=>array(
+									'confirm'=>'¿Desea cancelar la órden? Todas las actividades volverán a su estado anterior'
+									),
 						),
 					),
 				),

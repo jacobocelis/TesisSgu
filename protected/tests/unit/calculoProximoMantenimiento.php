@@ -16,7 +16,7 @@ class calculoProximoMantenimiento extends CTestCase {
         $this->actividad->fechaRealizada='2015-01-01';
         $this->actividad->frecuenciaMes=30;
         $this->actividad->idtiempof=1; //1=dias,2=meses,3=años
-        $this->actividad->idestatus=4; //en progreso
+        $this->actividad->idestatus=4; 
         return $this->actividad;
     }
     function testProximoMantenimiento(){

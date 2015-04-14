@@ -10,14 +10,15 @@ $this->breadcrumbs=array(
 $this->menu=array(
 
 	array('label'=>'<div id="menu"><strong>Combustible</strong></div>'),
-	array('label'=>'      Registrar reposición', 'url'=>array('registrarReposicion')),
+	array('label'=>'      Reposiciónes', 'url'=>array('combustible/index')),
+	array('label'=>'      Registrar reposición', 'url'=>array('combustible/registrarReposicion')),
 	
 	
 	array('label'=>'<div id="menu"><strong>Historial</strong></div>'),
 	array('label'=>'      Histórico de reposiciónes', 'url'=>array('combustible/historicoReposicion')),
-	array('label'=>'      Histórico de gastos', 'url'=>array('historicoGastos')),
+	array('label'=>'      Histórico de gastos', 'url'=>array('combustible/historicoGastos')),
 	array('label'=>'<div id="menu"><strong>Parámetros</strong></div>'),
-	array('label'=>'      Administración de parámetros', 'url'=>array('parametros')),
+	array('label'=>'      Administración de parámetros', 'url'=>array('combustible/parametros')),
 	
 );
 ?>
@@ -55,18 +56,29 @@ $this->widget('zii.widgets.grid.CGridView', array(
 					//'value'=>'$data->idplan0->idplanGrupo0->CompiledColour->$data-id.\' \'.$data->CompiledColour',
 					'htmlOptions'=>array('style'=>'text-align:center;width:40px'),
 				),
-				array(
-					'header'=>'Litros',
-					'name'=>'litros',
-					//'value'=>'$data->idfalla0->falla',
-					'htmlOptions'=>array('style'=>'text-align:center;width:25px'),
+					array(
+					//'headerHtmlOptions'=>array('style'=>'width:7%'),
+					'header'=>'Placa',
+					'name'=>'idplan',
+					'value'=>'$data->idvehiculo0->placa',
+					//'value'=>'$data->idplan0->idplanGrupo0->CompiledColour->$data-id.\' \'.$data->CompiledColour',
+					'htmlOptions'=>array('style'=>'text-align:center;width:50px'),
 				),
 				array(
-					'type'=>'raw',
-					'header'=>'Combustible',
-					'name'=>'idcombust',
-					'value'=>'$data->idcombust0->tipo',
-					'htmlOptions'=>array('style'=>'text-align:center;width:50px'),
+					//'headerHtmlOptions'=>array('style'=>'width:7%'),
+					'header'=>'Marca',
+					'name'=>'idplan',
+					'value'=>'$data->idvehiculo0->idmodelo0->idmarca0->marca',
+					//'value'=>'$data->idplan0->idplanGrupo0->CompiledColour->$data-id.\' \'.$data->CompiledColour',
+					'htmlOptions'=>array('style'=>'text-align:center;width:80px'),
+				),
+				array(
+					//'headerHtmlOptions'=>array('style'=>'width:7%'),
+					'header'=>'Modelo',
+					'name'=>'idplan',
+					'value'=>'$data->idvehiculo0->idmodelo0->modelo',
+					//'value'=>'$data->idplan0->idplanGrupo0->CompiledColour->$data-id.\' \'.$data->CompiledColour',
+					'htmlOptions'=>array('style'=>'text-align:center;width:80px'),
 				),
 				array(
 					'header'=>'Conductor',
@@ -74,11 +86,26 @@ $this->widget('zii.widgets.grid.CGridView', array(
 					'value'=>'$data->idconductor0->nombre.\' \'.$data->idconductor0->apellido',
 					'htmlOptions'=>array('style'=>'text-align:center;width:100px'),
 				),
+				
+				array(
+					'type'=>'raw',
+					'header'=>'Combustible',
+					'name'=>'idcombust',
+					'value'=>'$data->idcombust0->tipo',
+					'htmlOptions'=>array('style'=>'text-align:center;width:50px'),
+				),
+				
 				array(
 					'header'=>'Estación',
 					'name'=>'idestacionServicio',
 					'value'=>'$data->idestacionServicio0->nombre',
 					'htmlOptions'=>array('style'=>'text-align:center;width:60px'),
+				),
+				array(
+					'header'=>'Litros',
+					'name'=>'litros',
+					//'value'=>'$data->idfalla0->falla',
+					'htmlOptions'=>array('style'=>'text-align:center;width:25px'),
 				),
 				array(
 					'type'=>'raw',

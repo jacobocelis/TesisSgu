@@ -76,12 +76,6 @@ else{
             <a class="brand" href="<?php echo Yii::app()->baseUrl; ?>"><img src=" <?php echo Yii::app()->theme->baseUrl; ?>/img/logo-unet-blanco.png "  width="20px" height="20px"> Sistema para la gestión de flotas<small></small></a>
 
             <div class="nav-collapse">
-                <?php
-                
-                if (Yii::app()->request->getParam("cid") == 1) {
-                    
-                }
-                ?>              
 
                 <?php
                 $this->widget('zii.widgets.CMenu', array(
@@ -106,7 +100,8 @@ else{
                             'visible' => !Yii::app()->user->isGuest),
 							array('label' => 'Viajes', 'url' => array('/viajes'), 
                             'visible' => !Yii::app()->user->isGuest),
-							
+							array('label' => 'Indicadores', 'url' => array('/indicadores'), 
+                            'visible' => !Yii::app()->user->isGuest),
 							
 							array('label' => 'Mi cuenta<span class="caret"></span>', 'url' => '#', 
                             'visible' => !Yii::app()->user->isSuperAdmin and !Yii::app()->user->isGuest,
@@ -135,6 +130,7 @@ else{
 								array('label' => 'Perfil', 'url' => array('/cruge/ui/editprofile')),
 								array('label' => 'Bitácora', 'url' => array('/cruge/ui/bitacora')),
                                 array('label' => 'Opciones', 'url' => array('/cruge/ui/systemupdate')),
+                                array('label' => 'Cerrar Sesión ', 'url' => Yii::app()->user->ui->logoutUrl, 'visible' => !Yii::app()->user->isGuest and Yii::app()->user->isSuperAdmin),
 								
                             )),
 
@@ -151,7 +147,7 @@ else{
                         array('label' => 'Iniciar', 'url' => array('/cruge/ui/login'), 
                             'visible' => Yii::app()->user->isGuest),
                         //(' . Yii::app()->user->name . ')
-                        array('label' => 'Cerrar Sesión ', 'url' => Yii::app()->user->ui->logoutUrl, 'visible' => !Yii::app()->user->isGuest and Yii::app()->user->isSuperAdmin),
+                        //array('label' => 'Cerrar Sesión ', 'url' => Yii::app()->user->ui->logoutUrl, 'visible' => !Yii::app()->user->isGuest and Yii::app()->user->isSuperAdmin),
                       ),
                 ));
                 ?>

@@ -201,6 +201,8 @@ class VehiculoController extends Controller
 		{
 			$model->attributes=$_POST['Vehiculo'];
 			if($model->save()){
+				/*estatus inicial activo*/
+				$model->setEstado(1,"Se registró el vehiculo");
 				/*insertar km inicial en tabla kilometraje*/
 				$km=new Kilometraje();
 				$km->fecha=date('Y-m-d');

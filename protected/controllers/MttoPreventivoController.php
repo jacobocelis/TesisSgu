@@ -421,7 +421,7 @@ class MttoPreventivoController extends Controller
 			$Actividadrecurso = Actividadrecurso::model()->findByPk($_GET["idRep"]);
 			
 			$Actividades = Actividades::model()->findByPk($Actividadrecurso->idactividades);
-			$consulta=Yii::app()->db->createCommand("select * from sgu_CaracteristicaVeh where idvehiculo=".$Actividades->idvehiculo." and idrepuesto=".$Actividadrecurso->idrepuesto."")->queryRow();
+			$consulta=Yii::app()->db->createCommand("select * from sgu_CaracteristicaVeh where idvehiculo=".$Actividades->idvehiculo." and idrepuesto='".$Actividadrecurso->idrepuesto."'")->queryRow();
 			if(count($consulta)==0)
 				$tieneAsignado=0;
 			else
@@ -800,7 +800,8 @@ class MttoPreventivoController extends Controller
 	/**
 	 * Lists all models.
 	 */
-	public function actionHistoricoGastos(){	
+	public function actionHistoricoGastos(){
+	$vehiculo=new Vehiculo;	
 		$dataProvider=new CActiveDataProvider('Actividadrecurso',array('criteria'=>array('condition'=>'costoTotal>0')));
 		
 		if(isset($_GET["fechaIni"]) or isset($_GET["fechaFin"]) or isset($_GET["vehiculo"])){
@@ -844,6 +845,7 @@ class MttoPreventivoController extends Controller
 			'Colorabi'=>$this->getColor($this->getOrdenesAbiertas()),
 			'Colorli'=>$this->getColor($this->getOrdenesListas()),
 			'listas'=>$this->getOrdenesListas(),
+			'vehiculo'=>$vehiculo,
 		));
 	}
 	public function actionHistoricoPreventivo(){

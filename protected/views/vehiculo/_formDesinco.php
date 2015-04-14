@@ -42,7 +42,7 @@
 	</div>
 
 	<div class="row buttons">
-		<?php echo CHtml::submitButton($model->isNewRecord ? 'Desincorporar' : 'Save', array('confirm'=>'¿Está completamente seguro de realizar ésta acción?')); ?>
+		<?php echo CHtml::submitButton($model->isNewRecord ? 'Desincorporar' : 'Save', array('confirm'=>'Ésta acción no se puede revertir ¿Está completamente seguro?')); ?>
 	</div>
 
 <?php $this->endWidget(); ?>
