@@ -62,6 +62,12 @@ class Recursofalla extends CActiveRecord
                     $this->addError('cantidad', 'Cantidad debe ser mayor a cero');
                 }
 	}
+	public function iva(){
+		
+		$orden=Detalleordenco::model()->find('idreporteFalla='.$this->idreporteFalla.'');
+		$factura=Factura::model()->find('idordenMtto='.$orden->idordenMtto.'');
+		return $this->costoTotal*($factura->iva/$factura->total); 
+	}
 	/**
 	 * @return array relational rules.
 	 */

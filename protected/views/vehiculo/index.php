@@ -15,6 +15,9 @@ $this->menu=array(
 	array('label'=>'<div id="menu"><strong>Grupos</strong></div>' , 'visible'=>'1'),
 	array('label'=>'Ver grupos', 'url'=>array('grupo/index')),
 	array('label'=>'Crear grupo', 'url'=>array('grupo/create')),
+
+	array('label'=>'<div id="menu"><strong>Administrar</strong></div>' , 'visible'=>'1'),
+	array('label'=>'      Parámetros y datos maestros', 'url'=>array('repuesto/parametros')),
 );
 ?>
 	

@@ -15,13 +15,16 @@ $this->menu=array(
 	array('label'=>'<div id="menu"><strong>Historial</strong></div>'),
 	array('label'=>'      Histórico de viajes rutinarios', 'url'=>array('viajes/historicoRutinarios')),
 	array('label'=>'      Histórico de viajes especiales', 'url'=>array('viajes/historicoEspeciales')),
+
+	array('label'=>'<div id="menu"><strong>Administrar</strong></div>' , 'visible'=>'1'),
+	array('label'=>'      Parámetros y datos maestros', 'url'=>array('mttoPreventivo/parametros')),
 );
 ?>
 <div class='crugepanel user-assignments-detail'>
 <h1></h1>
 
 <?php
-$this->Widget('ext.highcharts.HighchartsWidget', array(
+/*$this->Widget('ext.highcharts.HighchartsWidget', array(
    'options'=>array(
 		'chart'=>array(
 			'type'=>'pie'
@@ -74,7 +77,7 @@ $this->Widget('ext.highcharts.HighchartsWidget', array(
         ),
    )
 ));
-
+*/
 	?>
 	</div>
 <style>

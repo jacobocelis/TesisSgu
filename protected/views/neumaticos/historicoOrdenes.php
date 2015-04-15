@@ -8,6 +8,7 @@ $this->breadcrumbs=array(
 );
 $this->menu=array(
 	array('label'=>'<div id="menu"><strong>Neumáticos</strong></div>'),
+	array('label'=>'      Neumáticos actuales', 'url'=>array('neumaticos/index')),
 	array('label'=>'      Plantillas de montaje', 'url'=>array('plantilla')),
 	array('label'=>'      Montajes iniciales <span title="hay '.$iniciales.' montajes iniciales por definir" class="badge badge-'.$this->Color($iniciales).' pull-right">'.$iniciales.'</span>', 'url'=>array('montajeInicial')),
 	
@@ -29,10 +30,10 @@ $this->menu=array(
 	array('label'=>'      Histórico de montajes', 'url'=>array('historicoMontajes')),
 	//array('label'=>'      Histórico de rotaciones', 'url'=>array('historicoRotaciones')),
 	array('label'=>'      Histórico de gastos', 'url'=>array('historicoGastos')),
-	array('label'=>'      Histórico de ordenes', 'url'=>array('historicoOrdenes')),
+	array('label'=>'      Histórico de ordenes', 'url'=>array('neumaticos/historicoOrdenes')),
 	
-	array('label'=>'<div id="menu"><strong>Parámetros</strong></div>'),
-	array('label'=>'      Admin. de parámetros', 'url'=>array('')),
+	array('label'=>'<div id="menu"><strong>Administrar</strong></div>' , 'visible'=>'1'),
+	array('label'=>'      Parámetros y datos maestros', 'url'=>array('neumaticos/parametros')),
 );
 ?>
 <div class='crugepanel user-assignments-role-list'>
@@ -86,13 +87,13 @@ $this->widget('zii.widgets.grid.CGridView', array(
 					'htmlOptions'=>array('style'=>'text-align:center;width:50px'),
 				),
 				array(
-					'header'=>'C. operativo',
+					'header'=>'Coordinador operativo',
 					'name'=>'cOperativo',
 					'value'=>'$data->cOperativo0->nombre.\'  \'.$data->cOperativo0->apellido',
 					'htmlOptions'=>array('style'=>'text-align:center;width:80px'),
 				),
 				array(
-					'header'=>'C. de transporte',
+					'header'=>'Coordinador de transporte',
 					'name'=>'cTaller',
 					'value'=>'$data->cTaller0->nombre.\'  \'.$data->cTaller0->apellido',
 					'htmlOptions'=>array('style'=>'text-align:center;width:80px'),

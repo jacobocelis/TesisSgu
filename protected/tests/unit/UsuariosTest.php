@@ -1,15 +1,8 @@
 <?php
-
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 /**
  * Description of UsuariosTest
  *
- * @author Jacobo
+ * 
  */
 class UsuariosTest extends CDbTestCase {
     private $usuario_id;
@@ -18,7 +11,7 @@ class UsuariosTest extends CDbTestCase {
         $usuario = Yii::app()->user->um->loadUserById($id,true);
         return $usuario->username;
     }
-    function testUsuarios(){
+    function testListarUsuarios(){
         $this->assertEquals("admin",  $this->obtenerUsuario(1));
     }
     function testRegistrarUsuario(){

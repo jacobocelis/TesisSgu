@@ -127,7 +127,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
 					'headerHtmlOptions'=>array('style'=>'text-align:center;width:50px;'),
 					'header'=>'Evento',
 					'name'=>'evento',
-					'value'=>'$data->evento',
+					'value'=>'$data->eventoRepuesto($data->evento)',
 					//'value'=>'$data->idplan0->idplanGrupo0->CompiledColour->$data-id.\' \'.$data->CompiledColour',
 					'htmlOptions'=>array('style'=>'text-align:center;width:20px'),
 				),

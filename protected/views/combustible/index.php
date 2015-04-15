@@ -27,7 +27,11 @@ $this->menu=array(
 <i style="float:right">Mostrar alerta cuando un vehiculo no tenga reposición a partir de 
 <select id="lista" >
 		<?php for($i=1;$i<11;$i++)
-			echo '<option value="'.$i.'">'.$i.'</option>';
+			
+			if($i==10)
+				echo '<option value="'.$i.'">10+</option>';
+			else
+				echo '<option value="'.$i.'">'.$i.'</option>';	
 			?>
 		</select> días.</i>
 <?php $this->widget('zii.widgets.grid.CGridView', array(

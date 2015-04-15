@@ -8,6 +8,7 @@ $this->breadcrumbs=array(
 );
 $this->menu=array(
 	array('label'=>'<div id="menu"><strong>Opciones de mantenimiento</strong></div>'),
+	array('label'=>'      Incidentes reportados', 'url'=>array('mttoCorrectivo/index')),
 	array('label'=>'      Registro de incidentes', 'url'=>array('registrarFalla')),
 	array('label'=>'      Registro de mejoras', 'url'=>array('registrarMejora')),
 	//array('label'=>'      Registrar matenimientos iniciales <span class="badge badge-'.$color.' pull-right">'.$mi.'</span>', 'url'=>array('mttoPreventivo/iniciales/')),
@@ -29,6 +30,9 @@ $this->menu=array(
 	array('label'=>'      Histórico de mejoras', 'url'=>array('mttoCorrectivo/historicoMejoras')),
 	array('label'=>'      Histórico de gastos', 'url'=>array('mttoCorrectivo/historicoGastos')),
 	array('label'=>'      Histórico de ordenes', 'url'=>array('historicoOrdenes')),
+
+	array('label'=>'<div id="menu"><strong>Administrar</strong></div>' , 'visible'=>'1'),
+	array('label'=>'      Parámetros y datos maestros', 'url'=>array('mttoCorrectivo/parametros')),
 );
 ?>
 <div class='crugepanel user-assignments-role-list'>
@@ -63,49 +67,53 @@ $this->menu=array(
 					
 					'value'=>'str_pad((int) $data->idreporteFalla0->idvehiculo0->numeroUnidad,2,"0",STR_PAD_LEFT);',
 					//'value'=>'$data->idplan0->idplanGrupo0->CompiledColour->$data-id.\' \'.$data->CompiledColour',
-					'htmlOptions'=>array('style'=>'text-align:center;width:40px'),
+					'htmlOptions'=>array('style'=>'text-align:center;'),
 				),
 				array(
-					'headerHtmlOptions'=>array('style'=>'text-align:left;'),
+					'headerHtmlOptions'=>array('style'=>'text-align:center;'),
 					'header'=>'Recurso',
 					'name'=>'idservicio',
 					'value'=>'(($data->idinsumo == null?\'\':$data->idinsumo0->insumo).\'\'.($data->idrepuesto == null?\'\':$data->idrepuesto0->repuesto).\'\'.($data->idservicio == null?\'\':$data->idservicio0->servicio)).\'\'',
-					'htmlOptions'=>array('style'=>'width:250px;'),
+					'htmlOptions'=>array('style'=>'text-align:center;'),
 					//'footer'=>'',
 				),
 				array(
-					'headerHtmlOptions'=>array('style'=>'text-align:left;'),
+					'headerHtmlOptions'=>array('style'=>'text-align:center;'),
 					'header'=>'Cantidad',
 					'name'=>'cantidad',
-					'htmlOptions'=>array('style'=>'width:50px;'),
+					'htmlOptions'=>array('style'=>'text-align:center;'),
 					
 					//'footer'=>'',
 				),
 				array(
-					'headerHtmlOptions'=>array('style'=>'text-align:left;'),
+					'headerHtmlOptions'=>array('style'=>'text-align:center;'),
 					'header'=>'Unidad',
 					'name'=>'idunidad',
 					'value'=>'$data->idunidad0->corto',
-					'htmlOptions'=>array('style'=>'width:50px;'),
+					'htmlOptions'=>array('style'=>'text-align:center;'),
 					//'footer'=>'',
 				),
 				array(
-					'headerHtmlOptions'=>array('style'=>'text-align:left;'),
-					'header'=>'Precio unitario',
-					'value'=>'number_format($data->costoUnitario, 2,",",".").\' Bs.\'',
-					'name'=>'costoUnitario',
-					
-					'htmlOptions'=>array('style'=>'width:50px;'),
-					//'footer'=>'',
-				),
-				array(
-					'headerHtmlOptions'=>array('style'=>'text-align:left;'),
-					'header'=>'Total',
+					'headerHtmlOptions'=>array('style'=>'text-align:center;'),
+					'header'=>'Base',
 					'name'=>'costoTotal',
 					'value'=>'number_format($data->costoTotal, 2,",",".").\' Bs.\'',
-					'footer'=>'<strong>Total: </strong>'.number_format($v->getTotal($dataProvider->getData()), 2,",",".").' Bs.',
+					'htmlOptions'=>array('style'=>'text-align:center;'),
+					),
+				array(
+					'headerHtmlOptions'=>array('style'=>'text-align:center;'),
+					'header'=>'IVA',
+					'value'=>'number_format($data->iva(), 2,",",".").\' Bs.\'',
+					'htmlOptions'=>array('style'=>'text-align:center;'),
+					),
+				array(
+					'headerHtmlOptions'=>array('style'=>'text-align:center;'),
+					'header'=>'Total',
+					'name'=>'costoTotal',
+					'value'=>'number_format($data->costoTotal+$data->iva(), 2,",",".").\' Bs.\'',
+					'htmlOptions'=>array('style'=>' text-align:center;'),
+					'footer'=>'<strong>Total: </strong>'.$vehiculo->totalGastosCo($dataProvider->getData()).' Bs.',
 					'footerHtmlOptions'=>array("style"=>"background: none repeat scroll 0% 0% rgba(5, 255, 0, 0.35)"),
-					'htmlOptions'=>array('style'=>'width:80px;'),
 					//'footer'=>'',
 				),
 				

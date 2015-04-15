@@ -1,37 +1,45 @@
-<?php
-/*
-  aqui: $this->beginContent('//layouts/main'); indica que este layout se amolda
-  al layout que se haya definido para todo el sistema, y dentro de el colocara
-  su propio layout para amoldar a un CPortlet.
+<?php /*
+ *  @var $this Controller */ ?>
+<?php $this->beginContent('//layouts/main'); ?>
 
-  esto es para asegurar que el sistema disponga de un portlet,
-  esto es casi lo mismo que haber puesto en UiController::layout = '//layouts/column2'
-  a diferencia que aqui se indica el uso de un archivo CSS para estilos predefinidos
-
-  Yii::app()->layout asegura que estemos insertando este contenido en el layout que
-  se ha definido para el sistema principal.
- */
-?>
-<?php
-$this->beginContent('//layouts/' . Yii::app()->layout);
-?>
-
-<?php
-if (Yii::app()->user->isSuperAdmin)
-    echo Yii::app()->user->ui->superAdminNote();
-?>
-<?php if (Yii::app()->user->checkAccess('admin')) { ?>	
-    <div class="span-5 last">
-
-    </div>
-<?php } ?>
-<div class="container">
-    <div class="span-19">
-        <div id="content">
-            <?php echo $content; ?>
-        </div><!-- content -->
+  <div class="row-fluid">
+  <div class="span3">
+    <div class="sidebar-nav">
+        
+  <?php
+      $this->beginWidget('zii.widgets.CPortlet', array(
+      'title'=>'Menú',
+    ));
+    $this->widget('zii.widgets.CMenu', array(
+      'encodeLabel' => false,
+      'items'=>$this->menu,
+      'htmlOptions'=>array('class'=>'operations'),
+    ));
+    $this->endWidget();
+  ?>
     </div>
 
+      </div>
+    
+          <div class="span9">
+    
+    <?php if(isset($this->breadcrumbs)):?>
+    <?php 
+    
+    $this->widget('zii.widgets.CBreadcrumbs', array(
+            'links'=>$this->breadcrumbs,
+      'homeLink'=>CHtml::link('S.G.U',Yii::app()->baseUrl),
+      'htmlOptions'=>array('class'=>'breadcrumb')
+        )); ?><!-- breadcrumbs -->
+    <?php endif?>
+    
+    <!-- Include content pages -->
+    <?php echo $content; ?>
 
-</div>
+  </div><!--/span-->
+    </div><!--/span-->
+            
+
+
+
 <?php $this->endContent(); ?>

@@ -10,11 +10,12 @@ $this->breadcrumbs=array(
 $this->menu=array(
 
 	array('label'=>'<div id="menu"><strong>Neumáticos</strong></div>'),
+	array('label'=>'      Neumáticos actuales', 'url'=>array('neumaticos/index')),
 	array('label'=>'      Plantillas de montaje', 'url'=>array('plantilla')),
 	array('label'=>'      Montajes iniciales <span title="hay '.$iniciales.' montajes iniciales por definir" class="badge badge-'.$this->Color($iniciales).' pull-right">'.$iniciales.'</span>', 'url'=>array('montajeInicial')),
 	
 	array('label'=>'<div id="menu"><strong>Averías</strong></div>'),
-	array('label'=>'      Registro de averías', 'url'=>array('ListaAveriaNeumatico')),
+	array('label'=>'      Registro de averías', 'url'=>array('averiaNeumatico')),
 	
 	array('label'=>'      Averías por atender <span title="hay '.$totalFalla.' averías en neumaticos por atender" class="badge badge-'.$this->Color($totalFalla).' pull-right">'.$totalFalla.'</span>', 'url'=>array('neumaticos/listaAveriaNeumatico')),
 	
@@ -33,8 +34,8 @@ $this->menu=array(
 	array('label'=>'      Histórico de gastos', 'url'=>array('historicoGastos')),
 	array('label'=>'      Histórico de ordenes', 'url'=>array('historicoOrdenes')),
 	
-	array('label'=>'<div id="menu"><strong>Parámetros</strong></div>'),
-	array('label'=>'      Admin. de parámetros', 'url'=>array('')),
+	array('label'=>'<div id="menu"><strong>Administrar</strong></div>' , 'visible'=>'1'),
+	array('label'=>'      Parámetros y datos maestros', 'url'=>array('neumaticos/parametros')),
 );
 ?>
 <?php

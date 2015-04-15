@@ -8,11 +8,11 @@ $this->breadcrumbs=array(
 );
 $this->menu=array(
 	array('label'=>'<div id="menu"><strong>Opciones de mantenimiento</strong></div>'),
+	array('label'=>'      Incidentes reportados', 'url'=>array('mttoCorrectivo/index')),
 	array('label'=>'      Registro de incidentes', 'url'=>array('registrarFalla')),
 	array('label'=>'      Registro de mejoras', 'url'=>array('registrarMejora')),
 	//array('label'=>'      Registrar matenimientos iniciales <span class="badge badge-'.$color.' pull-right">'.$mi.'</span>', 'url'=>array('mttoPreventivo/iniciales/')),
 	//array('label'=>'      Ajuste de fechas en calendario', 'url'=>array('calendario')),
-	
 	
 	array('label'=>'<div id="menu"><strong>Órdenes de mantenimiento</strong></div>'),
 	array('label'=>'      Crear orden de mantenimiento', 'url'=>array('crearOrdenCorrectiva')),
@@ -29,6 +29,9 @@ $this->menu=array(
 	array('label'=>'      Histórico de mejoras', 'url'=>array('mttoCorrectivo/historicoMejoras')),
 	array('label'=>'      Histórico de gastos', 'url'=>array('historicoGastos')),
 	array('label'=>'      Histórico de ordenes', 'url'=>array('mttoCorrectivo/historicoOrdenes')),
+
+	array('label'=>'<div id="menu"><strong>Administrar</strong></div>' , 'visible'=>'1'),
+	array('label'=>'      Parámetros y datos maestros', 'url'=>array('mttoCorrectivo/parametros')),
 );
 ?>
 <div class='crugepanel user-assignments-role-list'>

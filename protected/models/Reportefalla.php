@@ -35,9 +35,9 @@ class Reportefalla extends CActiveRecord
 		if($id==8)
 			return '<strong><span style="color:red">'.$this->idestatus0->estatus.'</span></strong>'; 
 		if($id==4)
-			return '<strong><span style="color:orange">'.$this->idestatus.'</span></strong>';
+			return '<strong><span style="color:orange">'.$this->idestatus0->estatus.'</span></strong>';
 		if($id==3)
-			return '<strong><span style="color:green">'.$this->idestatus.'</span></strong>';
+			return '<strong><span style="color:green">'.$this->idestatus0->estatus.'</span></strong>';
     }
 	public function noasignado(){
 			return '<span style="color:red">no registrado</span>';

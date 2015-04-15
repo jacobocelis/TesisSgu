@@ -664,7 +664,7 @@ function cerrar(orden){
                 'type':'post',
                 'dataType':'json',
 				'success':function(){
-					window.location.replace("<?php echo Yii::app()->baseUrl."/mttoCorrectivo/index"?>");	
+					window.location.replace("<?php echo Yii::app()->baseUrl."/neumaticos/index"?>");	
 				},
                 'cache':false});			
 	}

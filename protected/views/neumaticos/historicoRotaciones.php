@@ -8,6 +8,7 @@ $this->breadcrumbs=array(
 );
 $this->menu=array(
 	array('label'=>'<div id="menu"><strong>Neumáticos</strong></div>'),
+	array('label'=>'      Neumáticos actuales', 'url'=>array('neumaticos/index')),
 	array('label'=>'      Plantillas de montaje', 'url'=>array('plantilla')),
 	array('label'=>'      Montajes iniciales <span title="hay '.$iniciales.' montajes iniciales por definir" class="badge badge-'.$this->Color($iniciales).' pull-right">'.$iniciales.'</span>', 'url'=>array('montajeInicial')),
 	

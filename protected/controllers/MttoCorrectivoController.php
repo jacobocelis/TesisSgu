@@ -787,7 +787,8 @@ class MttoCorrectivoController extends Controller
 	/**
 	 * Lists all models.
 	 */
-	public function actionHistoricoGastos(){	
+	public function actionHistoricoGastos(){
+		$vehiculo = new Vehiculo;	
 		$dataProvider=new CActiveDataProvider('Recursofalla',array('criteria'=>array('condition'=>'costoTotal>0')));
 		if(isset($_GET["fechaIni"]) or isset($_GET["fechaFin"]) or isset($_GET["vehiculo"])){
 				if($_GET["fechaIni"]=="" and $_GET["fechaFin"]=="" and $_GET["vehiculo"]==""){
@@ -829,6 +830,7 @@ class MttoCorrectivoController extends Controller
 			'Colorabi'=>$this->getColor($this->getOrdenesAbiertas()),
 			'Colorli'=>$this->getColor($this->getOrdenesListas()),
 			'listas'=>$this->getOrdenesListas(),
+			'vehiculo'=>$vehiculo,
 		));
 	}
 		public function actionHistoricoMejoras(){

@@ -1,3 +1,21 @@
+<?php
+	/*
+		$model:  es una instancia que implementa a ICrugeStoredUser
+	*/
+	$this->breadcrumbs=array(
+	'Administrar usuarios',
+);
+
+$this->menu=array(
+	array('label'=>'<div id="menu"><strong>Sistema</strong></div>' , 'visible'=>'1'),
+	array('label'=>'Crear usuario', 'url'=>array('/cruge/ui/usermanagementcreate')),
+	array('label'=>'Administrar usuarios', 'url'=>array('/cruge/ui/usermanagementadmin')),
+	array('label'=>'Sesiones de usuarios', 'url'=>array('/cruge/ui/sessionadmin')),
+	array('label'=>'Perfil', 'url'=>array('/cruge/ui/editprofile')),
+	array('label'=>'Bitácora', 'url'=>array('/cruge/ui/bitacora')),
+);
+?>
+
 <div class='crugepanel '>
 <div class="form">
 <h1><?php echo ucwords(CrugeTranslator::t('admin', 'Administrar usuarios'));?></h1>
@@ -34,7 +52,9 @@ $cols[] = array(
 	
 	'template' => '{update} {eliminar}',
 	'deleteConfirmation'=>CrugeTranslator::t('admin', 'Are you sure you want to delete this user'),
+	'header'=>'Opciones',
 	'buttons' => array(
+
 			'update'=>array(
 				'label'=>CrugeTranslator::t('admin', 'Update User'),
 				'url'=>'array("usermanagementupdate","id"=>$data->getPrimaryKey())'

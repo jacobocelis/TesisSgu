@@ -75,6 +75,17 @@ class Vehiculo extends CActiveRecord
 			
 		return $total;
 	}
+	public function totalGastosCo($data)
+	{
+		$total=0;
+		foreach($data as $dat){
+			$orden=Detalleordenco::model()->find('idreporteFalla='.$dat['idreporteFalla'].'');
+			$factura=Factura::model()->find('idordenMtto='.$orden->idordenMtto.'');
+			$total=$total+($dat["costoTotal"]+($dat["costoTotal"]*($factura->iva/$factura->total)));
+		}
+			
+		return $total;
+	}
 	/**
 	 * @return array validation rules for model attributes.
 	 */

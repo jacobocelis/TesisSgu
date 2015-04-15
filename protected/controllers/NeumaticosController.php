@@ -197,7 +197,7 @@ class NeumaticosController extends Controller
 				else
 					$idv=$_GET["idvehiculo"];
 			}	
-		$montados=new CActiveDataProvider('Historicocaucho',array("criteria"=>array("condition"=>"idvehiculo=".$idv." and idestatusCaucho=1"),'pagination' => false));
+		$montados=new CActiveDataProvider('Historicocaucho',array("criteria"=>array("condition"=>"idvehiculo=".$idv." and idestatusCaucho=1 and id not in (select idhistoricoCaucho from sgu_detalleEventoCa where idestatus=8 or idestatus=4)"),'pagination' => false));
 		$reg=0;
 		if(isset($_POST['Detalleeventoca'])){	
 			$model->attributes=$_POST['Detalleeventoca'];

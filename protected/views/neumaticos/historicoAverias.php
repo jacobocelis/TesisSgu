@@ -8,6 +8,7 @@ $this->breadcrumbs=array(
 );
 $this->menu=array(
 	array('label'=>'<div id="menu"><strong>Neumáticos</strong></div>'),
+	array('label'=>'      Neumáticos actuales', 'url'=>array('neumaticos/index')),
 	array('label'=>'      Plantillas de montaje', 'url'=>array('plantilla')),
 	array('label'=>'      Montajes iniciales <span title="hay '.$iniciales.' montajes iniciales por definir" class="badge badge-'.$this->Color($iniciales).' pull-right">'.$iniciales.'</span>', 'url'=>array('montajeInicial')),
 	
@@ -25,14 +26,14 @@ $this->menu=array(
 	
 	
 	array('label'=>'<div id="menu"><strong>Historial</strong></div>'),
-	array('label'=>'      Histórico de averías', 'url'=>array('historicoAverias')),
+	array('label'=>'      Histórico de averías', 'url'=>array('neumaticos/historicoAverias')),
 	array('label'=>'      Histórico de montajes', 'url'=>array('historicoMontajes')),
 	//array('label'=>'      Histórico de rotaciones', 'url'=>array('historicoRotaciones')),
 	array('label'=>'      Histórico de gastos', 'url'=>array('historicoGastos')),
 	array('label'=>'      Histórico de ordenes', 'url'=>array('historicoOrdenes')),
 	
-	array('label'=>'<div id="menu"><strong>Parámetros</strong></div>'),
-	array('label'=>'      Admin. de parámetros', 'url'=>array('')),
+	array('label'=>'<div id="menu"><strong>Administrar</strong></div>' , 'visible'=>'1'),
+	array('label'=>'      Parámetros y datos maestros', 'url'=>array('neumaticos/parametros')),
 );
 ?>
 <div class='crugepanel user-assignments-role-list'>

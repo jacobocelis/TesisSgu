@@ -21,8 +21,9 @@ class Ordenmtto extends CActiveRecord
 	public function color($id,$estatus){
 		if($id==5)
 			return '<strong><span style="color:orange">'.$estatus.'</span></strong>';
-		if($id==6)
+		if($id==6 or $id==7)
 			return '<strong><span style="color:green">'.$estatus.'</span></strong>';
+		
     }
 	public function estado($id){
 		if($id==5)

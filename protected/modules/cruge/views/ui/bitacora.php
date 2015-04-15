@@ -1,4 +1,21 @@
 <?php
+	/*
+		$model:  es una instancia que implementa a ICrugeStoredUser
+	*/
+	$this->breadcrumbs=array(
+	'Bitácora',
+);
+
+$this->menu=array(
+	array('label'=>'<div id="menu"><strong>Sistema</strong></div>' , 'visible'=>'1'),
+	array('label'=>'Crear usuario', 'url'=>array('/cruge/ui/usermanagementcreate')),
+	array('label'=>'Administrar usuarios', 'url'=>array('/cruge/ui/usermanagementadmin')),
+	array('label'=>'Sesiones de usuarios', 'url'=>array('/cruge/ui/sessionadmin')),
+	array('label'=>'Perfil', 'url'=>array('/cruge/ui/editprofile')),
+	array('label'=>'Bitácora', 'url'=>array('/cruge/ui/bitacora')),
+);
+?>
+<?php
 /* @var $this BitacoraController */
 /* @var $dataProvider CActiveDataProvider */
 
