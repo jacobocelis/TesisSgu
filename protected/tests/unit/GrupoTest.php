@@ -13,11 +13,11 @@ class GrupoTest extends CTestCase{
             'descripcion'=>"",
             'idtipo'=>1,
         );
-
-    public function testRegistroRepuesto(){
+    
+    public function testRegistroGrupo(){
         $grupo= new Grupo;
         $grupo->setAttributes($this->valores);
-        //se registra el grupo
+        
         $this->assertTrue($grupo->save());
         $this->grupo_id=$grupo->id;
         //se verifica que los datos guardados del grupo fueron los ingresados

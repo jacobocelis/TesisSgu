@@ -25,6 +25,22 @@ class Falla extends CActiveRecord
 	/**
 	 * @return array validation rules for model attributes.
 	 */
+	public function beforeValidate(){
+		
+        if($this->tipo==1){
+            $this->addErrors(array(
+            	'falla'=>'Mejora no puede ser vacío',
+            ));
+        }
+		if($this->tipo==0){
+			$this->addErrors(array(
+            	'falla'=>'Incidente no puede ser vacío',
+            ));
+		}
+		 //var_dump($this->getErrors());
+
+        return parent::beforeValidate();
+    }
 	public function rules()
 	{
 		// NOTE: you should only define rules for those attributes that

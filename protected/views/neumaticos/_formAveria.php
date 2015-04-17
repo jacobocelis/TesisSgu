@@ -43,7 +43,8 @@
 	
 	<div class="row">
 		<?php echo $form->labelEx($model,'idfallaCaucho'); ?>
-		<?php echo $form->dropDownList($model,'idfallaCaucho',CHtml::listData(Fallacaucho::model()->findAll(),'id','falla')); echo CHtml::link('(+)', "",array('title'=>'Registrar avería',
+		<?php echo $form->dropDownList($model,'idfallaCaucho',CHtml::listData(Fallacaucho::model()->findAll(),'id','falla')); echo CHtml::link(CHtml::image(Yii::app()->request->baseUrl."/imagenes/agregar.png",
+                                          "Agregar",array("title"=>"Nueva mejora")), "",array('title'=>'Registrar avería',
 		 //'class'=>'botonAgregar',
         'style'=>'cursor: pointer;font-size:15px',
         'onclick'=>"{
@@ -80,48 +81,54 @@
 					'header'=>'Fecha de montaje',
 					'value'=>'$data->fecha=="0000-01-01"?$data->porDefinir($data->fecha):date("d/m/Y",strtotime($data->fecha))',
 					'name'=>'fecha',
-					'htmlOptions'=>array('style'=>'text-align:center;width:5px'),
+					'htmlOptions'=>array('style'=>'text-align:center;'),
 				),
 				array(
-					'type'=>"raw",
-					'header'=>'Serial',
-					'value'=>'$data->serial=="0"?$data->porDefinir($data->serial):strtoupper($data->serial);',
-					'name'=>'serial',
-					'htmlOptions'=>array('style'=>'text-align:center;width:65px'),
+						'header'=>'Última falla',
+						'value'=>'$data->diasUltimaFalla()',
+						'htmlOptions'=>array('style'=>'text-align:center;'),
+					),
+				array(
+					'header'=>'Eje',
+					'value'=>'$data->iddetalleRueda==null?\' - \':$data->iddetalleRueda0->iddetalleEje0->idposicionEje0->posicionEje',
+					'name'=>'iddetalleRueda',
+					'htmlOptions'=>array('style'=>'text-align:center;'),
 				),
+				array(
+					'header'=>'Posición',
+					'value'=>'$data->iddetalleRueda==null?\' - \':$data->iddetalleRueda0->idposicionRueda0->posicionRueda',
+					'name'=>'iddetalleRueda',
+					'htmlOptions'=>array('style'=>'text-align:center;'),
+				),
+				
 				array(
 					'type'=>'raw',
 					'header'=>'Marca',
 					'value'=>'$data->idmarcaCaucho==""?$data->porDefinir(""):$data->idmarcaCaucho0->nombre',
 					'name'=>'idmarcaCaucho',
-					'htmlOptions'=>array('style'=>'text-align:center;width:85px'),
+					'htmlOptions'=>array('style'=>'text-align:center;'),
 				),
 				
 				array(
 					'header'=>'Detalle',
 					'value'=>'$data->idcaucho0->idmedidaCaucho0->medida.\' R\'.$data->idcaucho0->idrin0->rin.\' \'.$data->idcaucho0->idpiso0->piso',
 					'name'=>'idcaucho',
-					'htmlOptions'=>array('style'=>'text-align:center;width:85px'),
-				),
-				array(
-					'header'=>'Eje',
-					'value'=>'$data->iddetalleRueda==null?\' - \':$data->iddetalleRueda0->iddetalleEje0->idposicionEje0->posicionEje',
-					'name'=>'iddetalleRueda',
-					'htmlOptions'=>array('style'=>'text-align:center;width:85px'),
-				),
-				array(
-					'header'=>'Posición',
-					'value'=>'$data->iddetalleRueda==null?\' - \':$data->iddetalleRueda0->idposicionRueda0->posicionRueda',
-					'name'=>'iddetalleRueda',
-					'htmlOptions'=>array('style'=>'text-align:center;width:85px'),
+					'htmlOptions'=>array('style'=>'text-align:center;'),
 				),
 				array(
 					'type'=>"raw",
-					'headerHtmlOptions'=>array('style'=>'text-align:center;width:50px;'),
+					'header'=>'Serial',
+					'value'=>'$data->serial=="0"?$data->porDefinir($data->serial):strtoupper($data->serial);',
+					'name'=>'serial',
+					'htmlOptions'=>array('style'=>'text-align:center;'),
+				),
+				array(
+					'type'=>"raw",
+					'headerHtmlOptions'=>array('style'=>'text-align:center;'),
 					'header'=>'Estatus',
 					'value'=>'$data->coloresEstatus($data)',
 					'name'=>'idestatusCaucho',
-					'htmlOptions'=>array('style'=>'text-align:center;width:45px;font-weight: bold;'),
+					'htmlOptions'=>array('style'=>'text-align:center;font-weight: bold;'),
 				),
 			),
         ));?>

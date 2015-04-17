@@ -148,6 +148,7 @@ class MttoCorrectivoController extends Controller
 		 exit;
 	}	 
 	public function actionVistaPrevia($id,$nom,$dir){
+		$tipo=-1;
 		$orden=new CActiveDataProvider('Ordenmtto',array('criteria' => array(
 			'condition' =>'id='.$id."")
 			,'pagination'=>array('pageSize'=>9999999)));
@@ -187,7 +188,11 @@ class MttoCorrectivoController extends Controller
 				'condition' =>'id='.$_GET["idAct"].'',
 				)));
 		}
+		if(isset($_GET["idTipo"])){
+			$tipo=$_GET["idTipo"];
+		}
 		$this->render('vistaPrevia',array(
+			'tipo'=>$tipo,
 			'vehiculos'=>$vehiculos,
 			'det'=>$det,
 			'totalVeh'=>$totalVeh,
@@ -284,7 +289,7 @@ class MttoCorrectivoController extends Controller
 	public function actionVerOrdenes(){
 		$dataProvider=new CActiveDataProvider('Ordenmtto',array('criteria' => array(
 			'condition' =>'id in (select id from sgu_ordenMtto where (idestatus=5 or idestatus=6) and tipo=1)',
-			'order'=>'idestatus '
+			'order'=>'id desc'
 			)));
 		$this->render('verOrdenes',array(
 			'dataProvider'=>$dataProvider,
@@ -300,6 +305,7 @@ class MttoCorrectivoController extends Controller
 		$model=new Factura;
 		if(isset($_POST['Factura'])){
             $model->attributes=$_POST['Factura'];
+            if($model->fechaFactura<>null)
 			$model->fechaFactura=date("Y-m-d", strtotime(str_replace('/', '-',$model->fechaFactura )));
             if($model->save()){
                 if (Yii::app()->request->isAjaxRequest){

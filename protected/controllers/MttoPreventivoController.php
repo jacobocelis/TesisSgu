@@ -373,6 +373,7 @@ class MttoPreventivoController extends Controller
 		if(isset($_POST['Factura'])){
 				
             $model->attributes=$_POST['Factura'];
+            if($model->fechaFactura<>null)
 			$model->fechaFactura=date("Y-m-d", strtotime(str_replace('/', '-',$model->fechaFactura)));
             if($model->save()){
 			

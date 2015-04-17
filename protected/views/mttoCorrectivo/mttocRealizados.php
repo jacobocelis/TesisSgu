@@ -41,20 +41,15 @@ $this->widget('zii.widgets.grid.CGridView', array(
 					'value'=>'date("d/m/Y h:i A",strtotime($data->fecha))',
 					'htmlOptions'=>array('style'=>'text-align:center;width:100px'),
 				),
+				
 				array(
-					'header'=>'Estado',
-					//'name'=>'idestatus',
-					'value'=>'$data->idestatus0->estatus',
-					'htmlOptions'=>array('style'=>'text-align:center;width:50px'),
-				),
-				array(
-					'header'=>'C. operativo',
+					'header'=>'Coordinador operativo',
 					'name'=>'cOperativo',
 					'value'=>'$data->cOperativo0->nombre.\'  \'.$data->cOperativo0->apellido',
 					'htmlOptions'=>array('style'=>'text-align:center;width:80px'),
 				),
 				array(
-					'header'=>'C. de transporte',
+					'header'=>'Coordinador de transporte',
 					'name'=>'cTaller',
 					'value'=>'$data->cTaller0->nombre.\'  \'.$data->cTaller0->apellido',
 					'htmlOptions'=>array('style'=>'text-align:center;width:80px'),
@@ -64,6 +59,12 @@ $this->widget('zii.widgets.grid.CGridView', array(
 					'name'=>'taller',
 					'value'=>'$data->taller0->nombre',
 					'htmlOptions'=>array('style'=>'text-align:center;width:80px'),
+				),
+				array(
+					'header'=>'Estado',
+					//'name'=>'idestatus',
+					'value'=>'$data->idestatus0->estatus',
+					'htmlOptions'=>array('style'=>'text-align:center;width:50px'),
 				),
 				array(
 						'headerHtmlOptions'=>array('style'=>'text-align:left;width:10px;text-align:center;'),
@@ -108,33 +109,39 @@ $this->widget('zii.widgets.grid.CGridView', array(
 					'name'=>'idvehiculo',
 					'value'=>'str_pad((int) $data->idvehiculo0->numeroUnidad,2,"0",STR_PAD_LEFT);',
 					//'value'=>'$data->idplan0->idplanGrupo0->CompiledColour->$data-id.\' \'.$data->CompiledColour',
-					'htmlOptions'=>array('style'=>'text-align:center;width:40px'),
+					'htmlOptions'=>array('style'=>'text-align:center;width:60px'),
 				),
 				array(
 					'header'=>'Fecha',
 					'name'=>'fechaFalla',
 					'value'=>'date("d/m/Y",strtotime($data->fechaFalla))',
-					'htmlOptions'=>array('style'=>'text-align:center;width:50px'),
+					'htmlOptions'=>array('style'=>'text-align:center;'),
 				),
 			
 				array(
-					'header'=>'Falla reportada',
+					'header'=>'Incidente reportado',
 					'name'=>'idfalla',
 					'value'=>'$data->idfalla0->falla',
-					'htmlOptions'=>array('style'=>'text-align:center;width:250px'),
+					'htmlOptions'=>array('style'=>'text-align:center;'),
+				),
+				array(
+					'header'=>'Lugar',
+					'name'=>'lugar',
+					//'value'=>'$data->idfalla0->falla',
+					'htmlOptions'=>array('style'=>'text-align:center;'),
 				),
 				array(
 					'header'=>'Reportó',
 					'name'=>'idempleado',
 					'value'=>'$data->idempleado0->nombre.\' \'.$data->idempleado0->apellido',
-					'htmlOptions'=>array('style'=>'text-align:center;width:100px'),
+					'htmlOptions'=>array('style'=>'text-align:center;'),
 				),
 				array(
 					'header'=>'Estatus',
 					'name'=>'idestatus',
 					'type'=>'raw',
 					'value'=>'$data->color($data->idestatus,$data->idestatus0->estatus)',
-					'htmlOptions'=>array('style'=>'text-align:center;width:60px'),
+					'htmlOptions'=>array('style'=>'text-align:center;width:100px'),
 				),
 				
 			)
@@ -163,33 +170,34 @@ $this->widget('zii.widgets.grid.CGridView', array(
 					'name'=>'idvehiculo',
 					'value'=>'str_pad((int) $data->idvehiculo0->numeroUnidad,2,"0",STR_PAD_LEFT);',
 					//'value'=>'$data->idplan0->idplanGrupo0->CompiledColour->$data-id.\' \'.$data->CompiledColour',
-					'htmlOptions'=>array('style'=>'text-align:center;width:40px'),
+					'htmlOptions'=>array('style'=>'text-align:center;width:60px'),
 				),
 				
 				array(
 					'header'=>'Mejora',
 					'name'=>'idfalla',
 					'value'=>'$data->idfalla0->falla',
-					'htmlOptions'=>array('style'=>'text-align:center;width:250px'),
+					'htmlOptions'=>array('style'=>'text-align:center;'),
 				),
+				 
 				array(
 					'header'=>'Detalle',
 					'name'=>'detalle',
 					
-					'htmlOptions'=>array('style'=>'text-align:center;width:200px'),
+					'htmlOptions'=>array('style'=>'text-align:center;'),
 				),
-				array(
+				/*array(
 					'header'=>'Conductor',
 					'name'=>'idempleado',
 					'value'=>'$data->idempleado0->nombre.\' \'.$data->idempleado0->apellido',
-					'htmlOptions'=>array('style'=>'text-align:center;width:100px'),
-				),
+					'htmlOptions'=>array('style'=>'text-align:center;'),
+				),*/
 				array(
 					'header'=>'Estatus',
 					'name'=>'idestatus',
 					'type'=>'raw',
 					'value'=>'$data->color($data->idestatus,$data->idestatus0->estatus)',
-					'htmlOptions'=>array('style'=>'text-align:center;width:60px'),
+					'htmlOptions'=>array('style'=>'text-align:center;width:100px'),
 				),
 				
 			)

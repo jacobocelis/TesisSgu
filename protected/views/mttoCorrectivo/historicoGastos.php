@@ -112,8 +112,8 @@ $this->menu=array(
 					'name'=>'costoTotal',
 					'value'=>'number_format($data->costoTotal+$data->iva(), 2,",",".").\' Bs.\'',
 					'htmlOptions'=>array('style'=>' text-align:center;'),
-					'footer'=>'<strong>Total: </strong>'.$vehiculo->totalGastosCo($dataProvider->getData()).' Bs.',
-					'footerHtmlOptions'=>array("style"=>"background: none repeat scroll 0% 0% rgba(5, 255, 0, 0.35)"),
+					'footer'=>'<strong>Total: </strong>'.number_format($vehiculo->totalGastosCo($dataProvider->getData()), 2,",",".").' Bs.',
+					'footerHtmlOptions'=>array("style"=>"text-align:center;background: none repeat scroll 0% 0% rgba(5, 255, 0, 0.35)"),
 					//'footer'=>'',
 				),
 				

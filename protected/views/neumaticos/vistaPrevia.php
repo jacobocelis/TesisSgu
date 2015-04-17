@@ -16,6 +16,7 @@ $this->menu=array(
 ?>
 <div class='crugepanel user-assignments-role-list'>
 	<h1>Detalle de orden de neumáticos</h1>
+	
 <?php
 $this->widget('zii.widgets.grid.CGridView', array(
                 'id'=>'factura',
@@ -74,7 +75,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
 					'value'=>'$data->color($data->idestatus,$data->idestatus0->estatus)',
 					'htmlOptions'=>array('style'=>'text-align:center;width:50px'),
 				),
-				array(
+				/*array(
 						'headerHtmlOptions'=>array('style'=>'text-align:left;width:20px;text-align:center;'),
 						'htmlOptions'=>array('style'=>'text-align:center;width:30px;'),
 						'header'=>'Actualizar',
@@ -87,7 +88,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
                         array(
                                 \'style\'=>\'cursor: pointer;text-decoration: underline;text-align:center;\',
                         )
-                );',),
+                );',),*/
 			)
         ));
 		?>

@@ -15,9 +15,8 @@
 	'enableAjaxValidation'=>false,
 )); ?>
 <h1>Registro de mejoras</h1>
-	<p class="note">Campos con <span class="required">*</span> obligatorios.</p>
-	
-<div class="row">
+	<p class="note">Campos con <span class="required">*</span> obligatorios.</p>	
+	<div class="row">
 		
 		<?php echo $form->hiddenField($model,'fechaFalla',array('id'=>'fecha','size'=>10,'readonly'=>'readonly','value'=>date('d/m/Y'),'maxlength'=>8, 'style'=>'width:100px;cursor:pointer;')); ?>
 
@@ -41,9 +40,9 @@
 	</div>
 
 	<div class="row">
-	<?php echo $form->labelEx($model,'idvehiculo'); ?>
+	<?php echo $form->labelEx($model,'idvehiculo',array('style' =>'width:80px;')); ?>
 		<?php echo $form->dropDownList($model,'idvehiculo',CHtml::listData(Vehiculo::model()->findAll(),'id','numeroUnidad'),array('prompt'=>'Seleccione: ','style' => 'width:110px;','onchange'=>'obtenerConductor(this.value);')); ?>
-		<?php echo $form->error($model,'idvehiculo'); ?>
+		<?php echo $form->error($model,'idvehiculo',array('style'=>'margin-left:80px')); ?>
 	</div>
 	<?php 
 		$models = Empleado::model()->findAll();
@@ -53,30 +52,28 @@
 	?>
 	
 	<div class="row">
-			<?php echo $form->labelEx($model,'Conductor*'); ?>
+		<?php echo $form->labelEx($model,'Conductor*',array('style' =>'width:80px;')); ?>
 		<?php echo $form->dropDownList($model,'idempleado',$data,array('style' => 'width:150px;')); ?>
-		<?php echo $form->error($model,'idempleado'); ?>
+		<?php echo $form->error($model,'idempleado',array('style'=>'margin-left:80px')); ?>
 	</div>
 	
 	<div class="row">
-		<?php echo $form->labelEx($model,'Mejora*'); ?>
-		<?php echo $form->dropDownList($model,'idfalla',CHtml::listData(Falla::model()->findAll('tipo=1 order by id desc'),'id','falla'),array('prompt'=>'Seleccione: ','style' => 'width:320px;')); ?>
-		<?php echo $form->error($model,'idfalla'); ?>
+		<?php echo $form->labelEx($model,'Mejora*',array('style' =>'width:80px;')); ?>
+		<?php echo $form->dropDownList($model,'idfalla',CHtml::listData(Falla::model()->findAll('tipo=1 order by id desc'),'id','falla'),array('prompt'=>'Seleccione: ','style' => 'width:220px;'));  echo CHtml::link(CHtml::image(Yii::app()->request->baseUrl."/imagenes/agregar.png",
+                                          "Agregar",array("title"=>"Nueva mejora")), "",  // the link for open the dialog
+		array(
+			'style'=>'cursor: pointer; text-decoration: underline;font-size:13px;',
+			'onclick'=>"{falla(); }")); ?>
+		<?php echo $form->error($model,'idfalla',array('style'=>'margin-left:80px')); ?>
 	</div>
 			
-	<div id="registrarFalla">			
-		<?php echo CHtml::link('Nueva mejora', "",  // the link for open the dialog
-		array(
-			'style'=>'cursor: pointer; text-decoration: underline;font-size:13px;margin-left:290px;',
-			'onclick'=>"{falla(); }"));
-			?>
-	</div>		
-		<div id="nuevaFalla"></div>
+ 
+	<div id="nuevaFalla"></div>
 	
 	<div id="detalle" class="row">
 	<br>
-		<?php echo $form->labelEx($model,'detalle'); ?>
-		<?php echo $form->textArea($model,'detalle',array('size'=>160,'maxlength'=>150,'style'=>'width:310px')); ?>
+		<?php echo $form->labelEx($model,'detalle',array('style' =>'width:80px;')); ?>
+		<?php echo $form->textArea($model,'detalle',array('size'=>160,'maxlength'=>150,'style'=>'width:220px')); ?>
 		<?php echo $form->error($model,'detalle'); ?>
 	</div>
 

@@ -18,9 +18,9 @@ $this->breadcrumbs=array(
 	else
 		$idfac=0;
 ?>
-<div id="factura" class='crugepanel user-assignments-role-list'></div>
+<div id="factura" class='crugepanel'></div>
 
-<div id="detalle" class='crugepanel user-assignments-role-list'>
+<div id="detalle" class='crugepanel'>
 <h1>Información de facturación</h1>
 <?php
 $this->widget('zii.widgets.grid.CGridView', array(
@@ -93,7 +93,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
     ));
 ?>	
 <?php if(count($averias->getData())>0){?>
-<div id="mostrarAverias" class='crugepanel user-assignments-role-list'>
+<div id="mostrarAverias" class='crugepanel'>
 <h1>Averías</h1>
 <p><i>Selecciona una avería para asignar los gastos individuales por vehiculo</p></i>
 <strong><p></p></strong>
@@ -113,51 +113,51 @@ $this->widget('zii.widgets.grid.CGridView', array(
 					'name'=>'idhistoricocaucho',
 					'value'=>'str_pad((int) $data->idhistoricoCaucho0->idvehiculo0->numeroUnidad,2,"0",STR_PAD_LEFT);',
 					//'value'=>'$data->idplan0->idplanGrupo0->CompiledColour->$data-id.\' \'.$data->CompiledColour',
-					'htmlOptions'=>array('style'=>'text-align:center;width:40px'),
+					'htmlOptions'=>array('style'=>'text-align:center;width:60px'),
 				),
 				array(
 					'header'=>'Fecha',
 					'name'=>'fechaFalla',
 					'value'=>'date("d/m/Y",strtotime($data->fechaFalla))',
-					'htmlOptions'=>array('style'=>'text-align:center;width:50px'),
+					'htmlOptions'=>array('style'=>'text-align:center;'),
 				),
 			
 				array(
 					'header'=>'Avería reportada',
 					'name'=>'idfallacaucho',
 					'value'=>'$data->idfallaCaucho==null?\' \':$data->idfallaCaucho0->falla',
-					'htmlOptions'=>array('style'=>'text-align:center;width:250px'),
-				),
-				array(
-					'header'=>'Serial',
-					
-					'value'=>'$data->idhistoricoCaucho==null?\' \':$data->idhistoricoCaucho0->serial',
-					'htmlOptions'=>array('style'=>'text-align:center;width:70px'),
-				),
-				array(
-					'header'=>'Medida',
-					'value'=>'$data->idhistoricoCaucho0->idcaucho0->idmedidaCaucho0->medida.\' R\'.$data->idhistoricoCaucho0->idcaucho0->idrin0->rin.\' \'.$data->idhistoricoCaucho0->idcaucho0->idpiso0->piso',
-					'name'=>'idcaucho',
-					'htmlOptions'=>array('style'=>'text-align:center;width:85px'),
+					'htmlOptions'=>array('style'=>'text-align:center;'),
 				),
 				array(
 					'header'=>'Eje',
 					'value'=>'$data->idhistoricoCaucho0->iddetalleRueda0->iddetalleEje0->idposicionEje0->posicionEje',
 					'name'=>'iddetalleRueda',
-					'htmlOptions'=>array('style'=>'text-align:center;width:85px'),
+					'htmlOptions'=>array('style'=>'text-align:center;'),
 				),
 				array(
 					'header'=>'Lado',
 					'value'=>'$data->idhistoricoCaucho0->iddetalleRueda0->idposicionRueda0->posicionRueda',
 					'name'=>'iddetalleRueda',
-					'htmlOptions'=>array('style'=>'text-align:center;width:85px'),
+					'htmlOptions'=>array('style'=>'text-align:center;'),
 				),
+				array(
+					'header'=>'Medida',
+					'value'=>'$data->idhistoricoCaucho0->idcaucho0->idmedidaCaucho0->medida.\' R\'.$data->idhistoricoCaucho0->idcaucho0->idrin0->rin.\' \'.$data->idhistoricoCaucho0->idcaucho0->idpiso0->piso',
+					'name'=>'idcaucho',
+					'htmlOptions'=>array('style'=>'text-align:center;'),
+				),
+				array(
+					'header'=>'Serial',
+					'value'=>'$data->idhistoricoCaucho==null?\' \':$data->idhistoricoCaucho0->serial',
+					'htmlOptions'=>array('style'=>'text-align:center;'),
+				),
+
 				
 				array(
 					'header'=>'Reportó',
 					'name'=>'idempleado',
 					'value'=>'$data->idempleado==""?\' \':$data->idempleado0->nombre.\' \'.$data->idempleado0->apellido',
-					'htmlOptions'=>array('style'=>'text-align:center;width:100px'),
+					'htmlOptions'=>array('style'=>'text-align:center;'),
 				),
 				array(
 					'headerHtmlOptions'=>array('style'=>'text-align:center;width:30px;background:#B0E3FF'),
@@ -314,10 +314,10 @@ $this->beginWidget('zii.widgets.jui.CJuiDialog', array( // the dialog
 <?php $this->endWidget();?>
 
 </div>
-</div>
+
 <?php }?>
 <?php if(count($renovaciones->getData())>0){?>
-<div id="mostrarRenovaciones" class='crugepanel user-assignments-role-list'> 
+<div id="mostrarRenovaciones" class='crugepanel'> 
 <h1>Renovaciones</h1>
 <i>Seleccione un neumático para registrar la renovación del mismo</i>
 	<?php
@@ -690,7 +690,7 @@ $this->beginWidget('zii.widgets.jui.CJuiDialog', array( // the dialog
 
 		
 </div>
- 
+
 <?php $this->endWidget();?>
 <?php
 /*ventana agregar recurso*/

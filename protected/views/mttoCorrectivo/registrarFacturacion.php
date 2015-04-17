@@ -16,8 +16,11 @@ $this->breadcrumbs=array(
 );
 ?>
 <div id="factura" class='crugepanel user-assignments-role-list'>
+
 </div>
+
 <div id="detalle" style="display:none" class='crugepanel user-assignments-role-list'>	
+
 <h1>Información de facturación</h1>
 <?php
 $this->widget('zii.widgets.grid.CGridView', array(
@@ -91,7 +94,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
 ?>	
 <?php if(count($dataProvider->getData())>0){?>
 <div class='crugepanel user-assignments-role-list'>
-	<i>*Fallas reportadas</i>
+	<i>*Incidentes reportados</i>
 <?php
 $this->widget('zii.widgets.grid.CGridView', array(
                 'id'=>'fallas',
@@ -109,26 +112,32 @@ $this->widget('zii.widgets.grid.CGridView', array(
 					'name'=>'idvehiculo',
 					'value'=>'str_pad((int) $data->idvehiculo0->numeroUnidad,2,"0",STR_PAD_LEFT);',
 					//'value'=>'$data->idplan0->idplanGrupo0->CompiledColour->$data-id.\' \'.$data->CompiledColour',
-					'htmlOptions'=>array('style'=>'text-align:center;width:40px'),
+					'htmlOptions'=>array('style'=>'text-align:center;width:60px'),
 				),
 				array(
-					'header'=>'Fecha',
+					'header'=>'Fecha incidente',
 					'name'=>'fechaFalla',
 					'value'=>'date("d/m/Y",strtotime($data->fechaFalla))',
-					'htmlOptions'=>array('style'=>'text-align:center;width:50px'),
+					'htmlOptions'=>array('style'=>'text-align:center;'),
 				),
 			
 				array(
 					'header'=>'Incidente reportado',
 					'name'=>'idfalla',
 					'value'=>'$data->idfalla0->falla',
-					'htmlOptions'=>array('style'=>'text-align:center;width:250px'),
+					'htmlOptions'=>array('style'=>'text-align:center;'),
+				),
+				array(
+					'header'=>'Lugar',
+					'name'=>'lugar',
+					//'value'=>'$data->idfalla0->falla',
+					'htmlOptions'=>array('style'=>'text-align:center;'),
 				),
 				array(
 					'header'=>'Reportó',
 					'name'=>'idempleado',
 					'value'=>'$data->idempleado0->nombre.\' \'.$data->idempleado0->apellido',
-					'htmlOptions'=>array('style'=>'text-align:center;width:100px'),
+					'htmlOptions'=>array('style'=>'text-align:center;'),
 				),
 				/*array(
 					'headerHtmlOptions'=>array('style'=>'text-align:center;width:30px;'),
@@ -145,7 +154,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
                         )
                 );',),*/
 				array(
-					'headerHtmlOptions'=>array('style'=>'text-align:center;width:30px;background:#B0E3FF'),
+					'headerHtmlOptions'=>array('style'=>'text-align:center;width:100px;background:#B0E3FF'),
 					'header'=>'Fecha de reparación',
 					'name'=>'fechaRealizada',
 					'type'=>'raw',
@@ -166,7 +175,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
                                 \'onclick\'=>\'{registrarMR("\'.Yii::app()->createUrl("reportefalla/actualizar",array("id"=>$data["id"])).\'"); $("#dialog2").dialog("open");}\'
                         )
                 )',
-					'htmlOptions'=>array('style'=>'width:80px;text-align:center;'),
+					'htmlOptions'=>array('style'=>'text-align:center;'),
 				),
 				array(
 					'headerHtmlOptions'=>array('style'=>'text-align:center;width:30px;background:#B0E3FF'),
@@ -187,7 +196,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
 					'header'=>'Estatus',
 					'name'=>'idestatus',
 					'value'=>'$data->color($data->idestatus,$data->idestatus0->estatus)',
-					'htmlOptions'=>array('style'=>'text-align:center;width:80px'),
+					'htmlOptions'=>array('style'=>'text-align:center;'),
 				),
 				
 			)
@@ -215,29 +224,29 @@ $this->widget('zii.widgets.grid.CGridView', array(
 					'name'=>'idvehiculo',
 					'value'=>'str_pad((int) $data->idvehiculo0->numeroUnidad,2,"0",STR_PAD_LEFT);',
 					//'value'=>'$data->idplan0->idplanGrupo0->CompiledColour->$data-id.\' \'.$data->CompiledColour',
-					'htmlOptions'=>array('style'=>'text-align:center;width:40px'),
+					'htmlOptions'=>array('style'=>'text-align:center;width:60px'),
 				),
 				
 				array(
 					'header'=>'Mejora',
 					'name'=>'idfalla',
 					'value'=>'$data->idfalla0->falla',
-					'htmlOptions'=>array('style'=>'text-align:center;width:250px'),
+					'htmlOptions'=>array('style'=>'text-align:center;'),
 				),
 				array(
 					'header'=>'Detalle',
 					'name'=>'detalle',
 					
-					'htmlOptions'=>array('style'=>'text-align:center;width:200px'),
+					'htmlOptions'=>array('style'=>'text-align:center;'),
 				),
-				array(
+				/*array(
 					'header'=>'Conductor',
 					'name'=>'idempleado',
 					'value'=>'$data->idempleado0->nombre.\' \'.$data->idempleado0->apellido',
 					'htmlOptions'=>array('style'=>'text-align:center;width:100px'),
-				),
+				),*/
 				array(
-					'headerHtmlOptions'=>array('style'=>'text-align:center;width:30px;background:#B0E3FF'),
+					'headerHtmlOptions'=>array('style'=>'text-align:center;background:#B0E3FF;width:100px;'),
 					'header'=>'Fecha de ejecución',
 					'name'=>'fechaRealizada',
 					'type'=>'raw',
@@ -258,10 +267,10 @@ $this->widget('zii.widgets.grid.CGridView', array(
                                 \'onclick\'=>\'{registrarMR("\'.Yii::app()->createUrl("reportefalla/actualizar",array("id"=>$data["id"])).\'"); $("#dialog2").dialog("open");}\'
                         )
                 )',
-					'htmlOptions'=>array('style'=>'width:80px;text-align:center;'),
+					'htmlOptions'=>array('style'=>'text-align:center;'),
 				),
 				array(
-					'headerHtmlOptions'=>array('style'=>'text-align:center;width:30px;background:#B0E3FF'),
+					'headerHtmlOptions'=>array('style'=>'text-align:center;background:#B0E3FF;width:80px;'),
 					'htmlOptions'=>array('style'=>'text-align:center;'),
 					'header'=>'Registrar gastos',
 					'type'=>'raw',
@@ -275,11 +284,12 @@ $this->widget('zii.widgets.grid.CGridView', array(
                         )
                 );',),
 				array(
+					'headerHtmlOptions'=>array('style'=>'text-align:center;width:100px;'),
 					'type'=>'raw',
 					'header'=>'Estatus',
 					'name'=>'idestatus',
 					'value'=>'$data->color($data->idestatus,$data->idestatus0->estatus)',
-					'htmlOptions'=>array('style'=>'text-align:center;width:80px'),
+					'htmlOptions'=>array('style'=>'text-align:center;'),
 				),	
 			)
         ));

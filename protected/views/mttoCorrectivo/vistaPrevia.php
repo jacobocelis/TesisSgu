@@ -138,7 +138,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
                         "",
                         array(	
                                 \'style\'=>\'cursor: pointer;text-decoration: underline;text-align:center;\',
-                                 \'onclick\'=>\'{ mostrarDetalle("\'.$data->id.\'")}\'
+                                 \'onclick\'=>\'{ mostrarDetalle("\'.$data->id.\'","\'.$data->tipo.\'")}\'
                         )
                 );',
 						'htmlOptions'=>array('style'=>'text-align:left;width:80px;'),
@@ -282,7 +282,7 @@ $this->beginWidget('zii.widgets.jui.CJuiDialog', array( // the dialog
         'autoOpen'=>false,
 		'position'=>array(null,100),
         'modal'=>true,
-        'width'=>"50%",
+        'width'=>"60%",
         //'height'=>255,
 		'resizable'=>false
     ),
@@ -303,21 +303,38 @@ $this->widget('zii.widgets.grid.CGridView', array(
 					'header'=>'Fecha de incidente',
 					'name'=>'fechaFalla',
 					'value'=>'date("d/m/Y",strtotime($data->fechaFalla))',
-					'htmlOptions'=>array('style'=>'text-align:center;width:50px'),
+					'htmlOptions'=>array('style'=>'text-align:center;'),
+					'visible'=>$tipo==0?true:false,
 				),
+					array(
+					'header'=>'Lugar',
+					'name'=>'lugar',
+					//'value'=>'$data->idfalla0->falla',
+					'htmlOptions'=>array('style'=>'text-align:center;'),
+					'visible'=>$tipo==0?true:false,
+
+				),
+				
 				array(
 						'type'=>'raw',
 						//'headerHtmlOptions'=>array('style'=>'width:10%;text-align:left;'),
 						'header'=>'Detalle',
 						'value'=>'$data->detalle',
-						'htmlOptions'=>array('style'=>'text-align:center;width:100px;'),
+						'htmlOptions'=>array('style'=>'text-align:center;'),
 				),
-
+				array(
+					'header'=>'Reparación',
+					'name'=>'arreglos',
+					//'value'=>'$data->idfalla0->falla',
+					'htmlOptions'=>array('style'=>'text-align:center;'),
+					'visible'=>$tipo==0?true:false,
+				),
 				array(
 					'header'=>'Reportó',
 					'name'=>'idempleado',
 					'value'=>'$data->idempleado0->nombre.\' \'.$data->idempleado0->apellido',
-					'htmlOptions'=>array('style'=>'text-align:center;width:100px'),
+					'htmlOptions'=>array('style'=>'text-align:center;'),
+					'visible'=>$tipo==0?true:false,
 				),
 					
 			)
@@ -413,9 +430,9 @@ h1 {
 </style>
 <script>
 $('#formulario').hide();
-function mostrarDetalle(id){
+function mostrarDetalle(id,tipo){
 
-	$.fn.yiiGridView.update('detalle',{ data : "idAct="+id});
+	$.fn.yiiGridView.update('detalle',{ data : "idAct="+id+"&idTipo="+tipo});
 	$("#dialog").dialog("open");
 }
 function validar(){

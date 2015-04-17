@@ -27,9 +27,7 @@
  */
 class Reportefalla extends CActiveRecord
 {
-	public function total($info){
-		
-    }
+	
 	
 	public function color($id){
 		if($id==8)
@@ -110,11 +108,12 @@ class Reportefalla extends CActiveRecord
 		return array(
 			array('fechaFalla, diasParo, idtiempo, idvehiculo, idempleado, idfalla, idestatus,tipo,fechaRealizada', 'required'),
 			array('kmRealizada, diasParo, idtiempo, idvehiculo, idempleado, idfalla, idestatus,tipo', 'numerical', 'integerOnly'=>true),
-			array('detalle', 'length', 'max'=>150),
+			array('detalle,lugar', 'length', 'max'=>150),
+			array('arreglos', 'length', 'max'=>150),
 			//array('fechaRealizada', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, detalle, fechaFalla, fechaRealizada, kmRealizada, diasParo, idtiempo, idvehiculo, idempleado, idfalla, idestatus,tipo', 'safe', 'on'=>'search'),
+			array('id, detalle, lugar ,fechaFalla, fechaRealizada, kmRealizada, diasParo, idtiempo, idvehiculo, idempleado, idfalla, idestatus,tipo', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -154,6 +153,7 @@ class Reportefalla extends CActiveRecord
 			'idfalla' => 'Incidente',
 			'idestatus' => 'Estatus',
 			'tipo' => 'Tipo',
+			'arreglos'=>'Reparación realizada',
 		);
 	}
 

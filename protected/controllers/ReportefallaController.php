@@ -52,11 +52,13 @@ public function actionActualizar($id){
 		$model=$this->loadModel($id);
 		if($model->kmRealizada==-1 or $model->fechaRealizada=='0000-01-01')
 			$var=1;
-		else
+		else 
 			$var=0;
 			if(isset($_POST['Reportefalla'])){
             $model->attributes=$_POST['Reportefalla'];
+            
 			$model->fechaRealizada=date("Y-m-d", strtotime(str_replace('/', '-', $model->fechaRealizada)));
+            $model->diasParo=((strtotime($model->fechaRealizada)-strtotime($model->fechaFalla))/86400);
             if($model->save()){
 			if (Yii::app()->request->isAjaxRequest){
 			

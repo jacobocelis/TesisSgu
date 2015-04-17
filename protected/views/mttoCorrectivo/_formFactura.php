@@ -16,7 +16,7 @@
 	<p class="note">Campos con <span class="required">*</span> obligatorios.</p>
 	<div class="row">
 		<?php echo $form->labelEx($model,'fechaFactura'); ?>
-		<?php echo $form->textField($model,'fechaFactura',array('readonly'=>'readonly','style' => 'width:100px;cursor:pointer;')); ?>
+		<?php echo $form->textField($model,'fechaFactura',array('readonly'=>'readonly','value'=>$model->fechaFactura==""?date('d/m/Y'):date("d/m/Y", strtotime( $model->fechaFactura )),'style' => 'width:100px;cursor:pointer;')); ?>
 		<?php echo $form->error($model,'fechaFactura'); ?>
 	</div>
 	

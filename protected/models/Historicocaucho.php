@@ -31,6 +31,36 @@ class Historicocaucho extends CActiveRecord
 	{
 		return 'sgu_historicoCaucho';
 	}
+	public function diasUltimoCambio(){
+
+		$dias=((strtotime(date("Y-m-d"))-strtotime($this->fecha))/86400);
+		if($dias==0)
+			return 'Hoy';
+		if($dias==1)
+			return 'Ayer';
+		if($dias==2)
+			return 'Hace '.$dias.' día';
+		if($dias>=3)
+			return 'Hace '.$dias.' días';
+		
+	}
+		public function diasUltimaFalla(){
+			$consulta=Yii::app()->db->createCommand("select fechaFalla from sgu_detalleEventoCa where idhistoricoCaucho=".$this->id." and idfallaCaucho is not null order by fechaFalla desc limit 1")->queryRow();
+		if($consulta["fechaFalla"]=="")
+			return 'Nunca antes';
+		else{
+		$dias=((strtotime(date("Y-m-d"))-strtotime($consulta["fechaFalla"]))/86400);
+			if($dias==0)
+				return 'Hoy';
+			if($dias==1)
+				return 'Ayer';
+			if($dias==2)
+				return 'Hace '.$dias.' día';
+			if($dias>=3)
+				return 'Hace '.$dias.' días';
+		}	
+		
+	}
 	public function porDefinir($data){
 		if($data=='0000-01-01'||$data=="0"||$data=="")
 			return '<span style="color:red">Por definir</span>';

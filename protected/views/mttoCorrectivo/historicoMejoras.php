@@ -64,7 +64,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
 					'name'=>'idvehiculo',
 					'value'=>'str_pad((int) $data->idvehiculo0->numeroUnidad,2,"0",STR_PAD_LEFT);',
 					//'value'=>'$data->idplan0->idplanGrupo0->CompiledColour->$data-id.\' \'.$data->CompiledColour',
-					'htmlOptions'=>array('style'=>'text-align:center;width:40px'),
+					'htmlOptions'=>array('style'=>'text-align:center;width:60px'),
 				),
 				array(
 					'header'=>'Mejora',
@@ -82,14 +82,14 @@ $this->widget('zii.widgets.grid.CGridView', array(
 					'header'=>'Fecha realizada',
 					'name'=>'fechaRealizada',
 					'value'=>'date("d/m/Y",strtotime($data->fechaRealizada))',
-					'htmlOptions'=>array('style'=>'text-align:center;width:50px'),
+					'htmlOptions'=>array('style'=>'text-align:center;'),
 				),
 				array(
 					"type"=>"raw",
 					'header'=>'Estatus',
 					'name'=>'idestatus',
 					'value'=>'$data->color($data->idestatus,$data->idestatus0->estatus)',
-					'htmlOptions'=>array('style'=>'text-align:center;width:60px'),
+					'htmlOptions'=>array('style'=>'text-align:center;'),
 				),
 			)
         ));

@@ -38,15 +38,27 @@
 	</div>
 
 	<div class="row">
-		<?php echo $form->labelEx($model,'diasParo'); ?>
-		<?php echo $form->textField($model,'diasParo',array('style' => 'width:30px;'));  echo $form->dropDownList($model,'idtiempo',CHtml::listData(Tiempo::model()->findAll(array("condition"=>"id <> 5 order by id=1 DESC")),'id','tiempo'),array('id'=>'tiempo','style' => 'width:90px;')); ?>
-		<?php echo $form->error($model,'diasParo'); ?>
+		 
+		<?php echo $form->hiddenField($model,'diasParo');  
+		 echo $form->hiddenField($model,'idtiempo',array('value' =>1)); ?>
 	</div>
+	<?php 
+	if($model->tipo==0){?>
+
+	<div class="row">
+		<?php echo $form->labelEx($model,'arreglos'); ?>
+		<?php echo $form->textArea($model,'arreglos',array('style' => 'width:80%;')); ?>
+		<?php echo $form->error($model,'arreglos'); ?>
+	</div>
+
+	<?php }else{?>
+
 	<div class="row">
 		<?php echo $form->labelEx($model,'detalle'); ?>
 		<?php echo $form->textArea($model,'detalle',array('style' => 'width:80%;')); ?>
 		<?php echo $form->error($model,'detalle'); ?>
 	</div>
+	<?php }?>
 	
 	<?php echo $form->hiddenField($model,'idvehiculo'); ?>
 	<?php echo $form->hiddenField($model,'idempleado'); ?>

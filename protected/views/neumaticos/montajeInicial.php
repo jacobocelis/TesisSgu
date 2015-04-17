@@ -303,7 +303,7 @@ $this->beginWidget('zii.widgets.jui.CJuiDialog', array( // the dialog
         'title'=>'Montaje inicial',
         'autoOpen'=>false,
         'modal'=>true,
-        //'width'=>'65%',
+        'width'=>'350px',
         'position'=>array(null,100),
 		'resizable'=>false
     ),

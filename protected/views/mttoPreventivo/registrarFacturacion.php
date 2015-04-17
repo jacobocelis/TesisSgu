@@ -350,7 +350,13 @@ $this->widget('zii.widgets.grid.CGridView', array(
                 'dataProvider'=>$det,
 				'htmlOptions'=>array('style'=>'cursor:pointer;'),
 				'columns'=>array(
-		
+				array(
+					'header'=>'Unidad',
+					'name'=>'idvehiculo',
+					'value'=>'str_pad((int) $data->idCaracteristicaVeh0->idvehiculo0->numeroUnidad,2,"0",STR_PAD_LEFT);',
+					//'value'=>'$data->idplan0->idplanGrupo0->CompiledColour->$data-id.\' \'.$data->CompiledColour',
+					'htmlOptions'=>array('style'=>'text-align:center;width:60px'),
+				),
 				array(
 					'header'=>'Repuesto',
 					//'name'=>'codigoPiezaEnUso',
@@ -373,32 +379,32 @@ $this->widget('zii.widgets.grid.CGridView', array(
 					//'value'=>'$data->idplan0->idplanGrupo0->CompiledColour->$data-id.\' \'.$data->CompiledColour',
 					'htmlOptions'=>array('style'=>'text-align:center;width:20px'),
 				),
-				array(
+				/*array(
 					'headerHtmlOptions'=>array('style'=>'text-align:center;width:50px;'),
 					'header'=>'Evento',
 					'name'=>'evento',
 					'value'=>'$data->evento',
 					//'value'=>'$data->idplan0->idplanGrupo0->CompiledColour->$data-id.\' \'.$data->CompiledColour',
 					'htmlOptions'=>array('style'=>'text-align:center;width:20px'),
-				),
+				),*/
 				array(
-					'header'=>'Fecha de evento',
-					'name'=>'codigoPiezaEnUso',
+					'header'=>'Último evento',
+					//'name'=>'codigoPiezaEnUso',
 					//'value'=>'str_pad((int) $data->idvehiculo0->numeroUnidad,2,"0",STR_PAD_LEFT);',
-					'value'=>'$data->fechaIncorporacion=="0000-01-01"?"-":date("d/m/Y",strtotime($data->fechaIncorporacion))',
+					'value'=>'$data->diasUltimoEvento()',
 					'htmlOptions'=>array('style'=>'text-align:center;width:20px'),
 				),
-				array(
+				/*array(
 					'headerHtmlOptions'=>array('style'=>'text-align:center;width:50px;'),
 					'header'=>'Estado',
 					'name'=>'estado',
 					'value'=>'$data->estado',
 					//'value'=>'$data->idplan0->idplanGrupo0->CompiledColour->$data-id.\' \'.$data->CompiledColour',
 					'htmlOptions'=>array('style'=>'text-align:center;width:20px'),
-				),
+				),*/
 
 				array(
-						'header'=>'Actualizar',
+						'header'=>'Nuevo serial',
 						'type'=>'raw',
 						'value'=>'CHtml::link(CHtml::image(Yii::app()->request->baseUrl."/imagenes/agregar.png","Agregar",array("title"=>"Agregar")),"",
                         array(

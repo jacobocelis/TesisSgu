@@ -59,7 +59,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
 					'name'=>'idplan',
 					'value'=>'$data->idvehiculo0->placa',
 					//'value'=>'$data->idplan0->idplanGrupo0->CompiledColour->$data-id.\' \'.$data->CompiledColour',
-					'htmlOptions'=>array('style'=>'text-align:center;width:50px'),
+					'htmlOptions'=>array('style'=>'text-align:center;'),
 				),
 				array(
 					//'headerHtmlOptions'=>array('style'=>'width:7%'),
@@ -67,7 +67,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
 					'name'=>'idplan',
 					'value'=>'$data->idvehiculo0->idmodelo0->idmarca0->marca',
 					//'value'=>'$data->idplan0->idplanGrupo0->CompiledColour->$data-id.\' \'.$data->CompiledColour',
-					'htmlOptions'=>array('style'=>'text-align:center;width:80px'),
+					'htmlOptions'=>array('style'=>'text-align:center;'),
 				),
 				array(
 					//'headerHtmlOptions'=>array('style'=>'width:7%'),
@@ -75,32 +75,33 @@ $this->widget('zii.widgets.grid.CGridView', array(
 					'name'=>'idplan',
 					'value'=>'$data->idvehiculo0->idmodelo0->modelo',
 					//'value'=>'$data->idplan0->idplanGrupo0->CompiledColour->$data-id.\' \'.$data->CompiledColour',
-					'htmlOptions'=>array('style'=>'text-align:center;width:80px'),
+					'htmlOptions'=>array('style'=>'text-align:center;'),
 				),
 				array(
 					'header'=>'Fecha registro',
 					'name'=>'fechaFalla',
 					'value'=>'date("d/m/Y",strtotime($data->fechaFalla))',
-					'htmlOptions'=>array('style'=>'text-align:center;width:100px'),
+					'htmlOptions'=>array('style'=>'text-align:center;'),
 				),
 			
 				array(
 					'header'=>'Mejora',
 					'name'=>'idfalla',
 					'value'=>'$data->idfalla0->falla',
-					'htmlOptions'=>array('style'=>'text-align:center;width:250px'),
+					'htmlOptions'=>array('style'=>'text-align:center;'),
 				),
-				/*array(
-					'header'=>'Reportó',
-					'name'=>'idempleado',
-					'value'=>'$data->idempleado0->nombre.\' \'.$data->idempleado0->apellido',
-					'htmlOptions'=>array('style'=>'text-align:center;width:100px'),
-				),*/
 				array(
+					'header'=>'Detalle',
+					'name'=>'detalle',
+					//'value'=>'$data->idempleado0->nombre.\' \'.$data->idempleado0->apellido',
+					'htmlOptions'=>array('style'=>'text-align:center;'),
+				),
+				array(
+					'type'=>'raw',
 					'header'=>'Estado',
 					'name'=>'idestatus',
-					'value'=>'$data->idestatus0->estatus',
-					'htmlOptions'=>array('style'=>'text-align:center;width:60px'),
+					'value'=>'$data->color($data->idestatus)',
+					'htmlOptions'=>array('style'=>'text-align:center;'),
 				),
 				array(
 					'header'=>'Eliminar',

@@ -30,13 +30,25 @@ class Cantidad extends CActiveRecord
 		if($id==2)
 			return "Historico";
 	}
+	public function diasUltimoEvento(){
 
-	public function eventoRepuesto($id){
-		if($id==0)
+		$dias=((strtotime(date("Y-m-d"))-strtotime($this->fechaIncorporacion))/86400);
+		if($dias==0)
+			return $this->eventoRepuesto().': Hoy';
+		if($dias==1)
+			return $this->eventoRepuesto().': Ayer';
+		if($dias==2)
+			return $this->eventoRepuesto().': hace '.$dias.' día';
+		if($dias>=3)
+			return $this->eventoRepuesto().': hace '.$dias.' días';
+		
+	}
+	public function eventoRepuesto(){
+		if($this->evento==0)
 			return "No definido";
-		if($id==1)
+		if($this->evento==1)
 			return "Cambio";
-		if($id==2)
+		if($this->evento==2)
 			return "Reparación";
 	}
 	/**
