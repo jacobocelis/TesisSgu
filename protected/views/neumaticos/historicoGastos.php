@@ -3,8 +3,8 @@
 /* @var $dataProvider CActiveDataProvider */
 
 $this->breadcrumbs=array(
-	'Mantenimiento correctivo'=>array('mttoCorrectivo/index'),
-	'Histórico de mantenimientos',
+	'Neumáticos'=>array('neumaticos/index'),
+	'Histórico de gastos',
 );
 $this->menu=array(
 	array('label'=>'<div id="menu"><strong>Neumáticos</strong></div>'),
@@ -29,7 +29,7 @@ $this->menu=array(
 	array('label'=>'      Histórico de averías', 'url'=>array('historicoAverias')),
 	array('label'=>'      Histórico de montajes', 'url'=>array('historicoMontajes')),
 	//array('label'=>'      Histórico de rotaciones', 'url'=>array('historicoRotaciones')),
-	array('label'=>'      Histórico de gastos', 'url'=>array('historicoGastos')),
+	array('label'=>'      Histórico de gastos', 'url'=>array('neumaticos/historicoGastos')),
 	array('label'=>'      Histórico de ordenes', 'url'=>array('historicoOrdenes')),
 	
 	array('label'=>'<div id="menu"><strong>Administrar</strong></div>' , 'visible'=>'1'),
@@ -37,7 +37,7 @@ $this->menu=array(
 );
 ?>
 <div class='crugepanel user-assignments-role-list'>
-<h1>Histórico de gastos y consumos</h1>
+<h1>Histórico de gastos</h1>
 <div id="filtro" style="width:20%">
 <i>Por # de unidad: </i>
 
@@ -56,107 +56,88 @@ $this->menu=array(
 <?php 
 			$this->widget('zii.widgets.grid.CGridView', array(
 			'id'=>'rec',
-			'selectableRows'=>1,
-			'dataProvider'=>$dataProvider,
+			'selectableRows'=>0,
+			'dataProvider'=>$recursos,
 			'enablePagination' => false,
 			'template'=>"{items}{summary}{pager}",
 			'emptyText' => 'no hay recursos agregados',
 			'summaryText' => '',
 			'columns'=>array(
+ 
 				array(
 					'header'=>'Unidad',
-					
-					'value'=>'str_pad((int) $data->idreporteFalla0->idvehiculo0->numeroUnidad,2,"0",STR_PAD_LEFT);',
+					'name'=>'idvehiculo',
+					'value'=>'str_pad((int) $data->iddetalleEventoCa0->idhistoricoCaucho0->idvehiculo0->numeroUnidad,2,"0",STR_PAD_LEFT);',
 					//'value'=>'$data->idplan0->idplanGrupo0->CompiledColour->$data-id.\' \'.$data->CompiledColour',
 					'htmlOptions'=>array('style'=>'text-align:center;width:40px'),
 				),
 				array(
-					'headerHtmlOptions'=>array('style'=>'text-align:left;'),
+					'header'=>'Fecha',
+					//'name'=>'fechaFalla',
+					'value'=>'date("d/m/Y",strtotime($data->iddetalleEventoCa0->fechaRealizada))',
+					'htmlOptions'=>array('style'=>'text-align:center;'),
+				),	
+				array(
+					'headerHtmlOptions'=>array('style'=>'text-align:center;'),
 					'header'=>'Recurso',
-					'name'=>'idservicio',
-					'value'=>'(($data->idinsumo == null?\'\':$data->idinsumo0->insumo).\'\'.($data->idrepuesto == null?\'\':$data->idrepuesto0->repuesto).\'\'.($data->idservicio == null?\'\':$data->idservicio0->servicio)).\'\'',
-					'htmlOptions'=>array('style'=>'width:250px;'),
+					'name'=>'idrecursoCaucho',
+					'value'=>'$data->idrecursoCaucho0->recurso',
+					'htmlOptions'=>array('style'=>'text-align:center;'),
 					//'footer'=>'',
 				),
 				array(
-					'headerHtmlOptions'=>array('style'=>'text-align:left;'),
+					'headerHtmlOptions'=>array('style'=>'text-align:center;'),
 					'header'=>'Cantidad',
 					'name'=>'cantidad',
-					'htmlOptions'=>array('style'=>'width:50px;'),
+					'htmlOptions'=>array('style'=>'text-align:center;'),
 					
 					//'footer'=>'',
 				),
 				array(
-					'headerHtmlOptions'=>array('style'=>'text-align:left;'),
+					'headerHtmlOptions'=>array('style'=>'text-align:center;'),
 					'header'=>'Unidad',
 					'name'=>'idunidad',
 					'value'=>'$data->idunidad0->corto',
-					'htmlOptions'=>array('style'=>'width:50px;'),
+					'htmlOptions'=>array('style'=>'text-align:center;'),
 					//'footer'=>'',
 				),
 				array(
-					'headerHtmlOptions'=>array('style'=>'text-align:left;'),
+					'headerHtmlOptions'=>array('style'=>'text-align:center;'),
 					'header'=>'Precio unitario',
 					'value'=>'number_format($data->costoUnitario, 2,",",".").\' BsF.\'',
 					'name'=>'costoUnitario',
 					
-					'htmlOptions'=>array('style'=>'width:50px;'),
+					'htmlOptions'=>array('style'=>'text-align:center;'),
 					//'footer'=>'',
 				),
 				array(
-					'headerHtmlOptions'=>array('style'=>'text-align:left;'),
-					'header'=>'Total',
+					'headerHtmlOptions'=>array('style'=>'text-align:center;'),
+					'header'=>'Base',
 					'name'=>'costoTotal',
 					'value'=>'number_format($data->costoTotal, 2,",",".").\' Bs.\'',
-					'htmlOptions'=>array('style'=>'width:50px;'),
+					'htmlOptions'=>array('style'=>'text-align:center;'),
+					),
+				array(
+					'headerHtmlOptions'=>array('style'=>'text-align:center;'),
+					'header'=>'IVA',
+					'value'=>'number_format($data->iva(), 2,",",".").\' Bs.\'',
+					'htmlOptions'=>array('style'=>'text-align:center;'),
+					),
+				array(
+					'headerHtmlOptions'=>array('style'=>'text-align:center;'),
+					'header'=>'Total',
+					//'name'=>'costoTotal',
+					'value'=>'number_format($data->costoTotal+$data->iva(), 2,",",".").\' Bs.\'',
+					'htmlOptions'=>array('style'=>' text-align:center;'),
+					'footer'=>'<strong>Total: </strong>'.number_format($vehiculo->totalGastosNeumatico($recursos->getData()), 2,",",".").' Bs.',
+					'footerHtmlOptions'=>array("style"=>"text-align:center;background: none repeat scroll 0% 0% rgba(5, 255, 0, 0.35)"),
 					//'footer'=>'',
 				),
-				
 			),
 	));
-			
-$this->Widget('ext.highcharts.HighchartsWidget', array(
-   'options'=>array(
-		'chart'=>array(
-			'type'=>'column'
-		),
-		'title' => array(
-			'text' => 'Gastos por mes realizados en todas las unidades'
-		),
-		'xAxis' => array(
-			'categories' => array('Enero', 'Febrero', 'Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre')
-		),
-		'yAxis' => array(
-			'title' => array('text' => 'Costo(Bs.)')
-		),
-		'series' => array(
-			array('name' => 'Preventivo', 'data' => array(57480, 74850, 25321,11227.77)),
-			array('name' => 'Correctivo', 'data' => array(14150, 9480, 8142,7324.77))
-      ),
-	    'tooltip'=>array(
-            'headerFormat'=>'<span style="font-size:10px">{point.key}</span><table>',
-            'pointFormat'=>'<tr><td style="color:{series.color};padding:0">{series.name}: </td><td style="padding:0"><b>{point.y:.1f} Bs.</b></td></tr>',
-            'footerFormat'=> '</table>',
-            'shared'=> true,
-            'useHTML'=> true,
-        ),
-   )
-));
 
 	?>
-	<?php
-/*ventana agregar actividad*/
-$this->beginWidget('zii.widgets.jui.CJuiDialog', array( // the dialog
-    'id'=>'nuevaPos',
-    'options'=>array(
- 
-        'autoOpen'=>false,
-        'modal'=>true, 
-    ),
-));?>
-<?php $this->endWidget();?>
-
-	</div>
+</div>
 <style>
 .grid-view table.items th {
     color: #000;

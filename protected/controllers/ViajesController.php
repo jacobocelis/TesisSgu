@@ -31,7 +31,7 @@ class ViajesController extends Controller
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create','update','agregarViajeRutinario','agregarViajeEspecial','rutinarios','ultimosViajes','especiales','formAgregarEspecial','agregarRutaNueva','actualizarSpan','validarRuta','puestos','insumos','repuesto','validarRutaNormal','actualizarListaConductor','historicoRutinarios','historicoEspeciales'),
+				'actions'=>array('create','update','agregarViajeRutinario','agregarViajeEspecial','rutinarios','ultimosViajes','especiales','formAgregarEspecial','agregarRutaNueva','actualizarSpan','validarRuta','puestos','insumos','repuesto','validarRutaNormal','actualizarListaConductor','historicoRutinarios','historicoEspeciales','ActualizarListaLugar'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -358,29 +358,29 @@ public function actionActualizarSpan(){
 				if($_GET["fechaIni"]=="" and $_GET["fechaFin"]=="" and $_GET["vehiculo"]==""){
 					$dataProvider=new CActiveDataProvider('Historicoviajes',array('criteria' => array(
 						'condition' =>'id in (select hv.id as id from sgu_historicoViajes hv, sgu_viaje v where hv.idviaje=v.id and v.idtipo=1)',
-						'order'=>'fecha')));	
+						'order'=>'fechaSalida')));	
 				}
 				if($_GET["fechaIni"]!="" and $_GET["vehiculo"]==""){
 					$fechaini=date("Y-m-d", strtotime(str_replace('/', '-',$_GET["fechaIni"])));
 					$fechafin=date("Y-m-d", strtotime(str_replace('/', '-',$_GET["fechaFin"])));
 					$dataProvider=new CActiveDataProvider('Historicoviajes',array('criteria' => array(
-						'condition' =>'id in (select hv.id as id from sgu_historicoViajes hv, sgu_viaje v where hv.idviaje=v.id and v.idtipo=1) and (fecha>="'.$fechaini.'" and fecha<="'.$fechafin.'")',
-						'order'=>'fecha',
+						'condition' =>'id in (select hv.id as id from sgu_historicoViajes hv, sgu_viaje v where hv.idviaje=v.id and v.idtipo=1) and (fechaSalida>="'.$fechaini.'" and fechaSalida<="'.$fechafin.'")',
+						'order'=>'fechaSalida',
 					)));		
 				}
 				if($_GET["fechaIni"]=="" and $_GET["vehiculo"]!=""){
 					
 					$dataProvider=new CActiveDataProvider('Historicoviajes',array('criteria' => array(
 						'condition' =>'id in (select hv.id as id from sgu_historicoViajes hv, sgu_viaje v where hv.idviaje=v.id and v.idtipo=1) and idvehiculo='.$_GET["vehiculo"].'',
-						'order'=>'fecha',
+						'order'=>'fechaSalida',
 					)));	
 				}
 				if($_GET["fechaIni"]!="" and $_GET["vehiculo"]!=""){
 					$fechaini=date("Y-m-d", strtotime(str_replace('/', '-',$_GET["fechaIni"])));
 					$fechafin=date("Y-m-d", strtotime(str_replace('/', '-',$_GET["fechaFin"])));
 					$dataProvider=new CActiveDataProvider('Historicoviajes',array('criteria' => array(
-						'condition' =>'id in (select hv.id as id from sgu_historicoViajes hv, sgu_viaje v where hv.idviaje=v.id and v.idtipo=1) and (fecha>="'.$fechaini.'" and fecha<="'.$fechafin.'") and idvehiculo='.$_GET["vehiculo"].'',
-						'order'=>'fecha',
+						'condition' =>'id in (select hv.id as id from sgu_historicoViajes hv, sgu_viaje v where hv.idviaje=v.id and v.idtipo=1) and (fechaSalida>="'.$fechaini.'" and fechaSalida<="'.$fechafin.'") and idvehiculo='.$_GET["vehiculo"].'',
+						'order'=>'fechaSalida',
 					)));	
 				}
 			}
@@ -400,29 +400,29 @@ public function actionActualizarSpan(){
 				if($_GET["fechaIni"]=="" and $_GET["fechaFin"]=="" and $_GET["vehiculo"]==""){
 					$dataProvider=new CActiveDataProvider('Historicoviajes',array('criteria' => array(
 						'condition' =>'id in (select hv.id as id from sgu_historicoViajes hv, sgu_viaje v where hv.idviaje=v.id and (v.idtipo=2 or v.idtipo=3))',
-						'order'=>'fecha')));	
+						'order'=>'fechaSalida')));	
 				}
 				if($_GET["fechaIni"]!="" and $_GET["vehiculo"]==""){
 					$fechaini=date("Y-m-d", strtotime(str_replace('/', '-',$_GET["fechaIni"])));
 					$fechafin=date("Y-m-d", strtotime(str_replace('/', '-',$_GET["fechaFin"])));
 					$dataProvider=new CActiveDataProvider('Historicoviajes',array('criteria' => array(
-						'condition' =>'id in (select hv.id as id from sgu_historicoViajes hv, sgu_viaje v where hv.idviaje=v.id and (v.idtipo=2 or v.idtipo=3)) and (fecha>="'.$fechaini.'" and fecha<="'.$fechafin.'")',
-						'order'=>'fecha',
+						'condition' =>'id in (select hv.id as id from sgu_historicoViajes hv, sgu_viaje v where hv.idviaje=v.id and (v.idtipo=2 or v.idtipo=3)) and (fechaSalida>="'.$fechaini.'" and fechaSalida<="'.$fechafin.'")',
+						'order'=>'fechaSalida',
 					)));		
 				}
 				if($_GET["fechaIni"]=="" and $_GET["vehiculo"]!=""){
 					
 					$dataProvider=new CActiveDataProvider('Historicoviajes',array('criteria' => array(
 						'condition' =>'id in (select hv.id as id from sgu_historicoViajes hv, sgu_viaje v where hv.idviaje=v.id and (v.idtipo=2 or v.idtipo=3)) and idvehiculo='.$_GET["vehiculo"].'',
-						'order'=>'fecha',
+						'order'=>'fechaSalida',
 					)));	
 				}
 				if($_GET["fechaIni"]!="" and $_GET["vehiculo"]!=""){
 					$fechaini=date("Y-m-d", strtotime(str_replace('/', '-',$_GET["fechaIni"])));
 					$fechafin=date("Y-m-d", strtotime(str_replace('/', '-',$_GET["fechaFin"])));
 					$dataProvider=new CActiveDataProvider('Historicoviajes',array('criteria' => array(
-						'condition' =>'id in (select hv.id as id from sgu_historicoViajes hv, sgu_viaje v where hv.idviaje=v.id and (v.idtipo=2 or v.idtipo=3)) and (fecha>="'.$fechaini.'" and fecha<="'.$fechafin.'") and idvehiculo='.$_GET["vehiculo"].'',
-						'order'=>'fecha',
+						'condition' =>'id in (select hv.id as id from sgu_historicoViajes hv, sgu_viaje v where hv.idviaje=v.id and (v.idtipo=2 or v.idtipo=3)) and (fechaSalida>="'.$fechaini.'" and fechaSalida<="'.$fechafin.'") and idvehiculo='.$_GET["vehiculo"].'',
+						'order'=>'fechaSalida',
 					)));	
 				}
 			}
@@ -518,5 +518,13 @@ public function actionActualizarSpan(){
 			//echo CHtml::tag('option',array('type'=>'text','value'=>(($mode->id))),Chtml::encode(($data[$mode->id])),true);
 			echo CJSON::encode(array('lista'=>CHtml::tag('option',array('type'=>'text','value'=>(($mode->id))),Chtml::encode(($data[$mode->id])),true)));
 		}*/
+	}
+	public function actionActualizarListaLugar(){
+	
+			$lista2=Lugar::model()->findAll('1 order by id desc');
+			foreach($lista2 as $li){
+				echo CHtml::tag('option',array('type'=>'text','value'=>(($li->id))),Chtml::encode(($li->lugar)),true);
+			
+		}
 	}
 }

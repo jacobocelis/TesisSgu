@@ -306,13 +306,13 @@ $this->widget('zii.widgets.grid.CGridView', array(
 		'id'=>'agregarRenovacion',
         'style'=>'cursor: pointer; text-decoration: underline;',
         'onclick'=>"{agregarRenovacion(); }"));
-		?>	
+		?>
 <?php
 /*ventana agregar recurso*/
 $this->beginWidget('zii.widgets.jui.CJuiDialog', array( // the dialog
     'id'=>'ventanaRenovar',
     'options'=>array(
-        'title'=>'Crear orden de neumáticos',
+        'title'=>' ',
         'autoOpen'=>false,
         'modal'=>true,
         'width'=>'80%',
@@ -331,77 +331,7 @@ $this->beginWidget('zii.widgets.jui.CJuiDialog', array( // the dialog
 <div style="display:none" class='crugepanel user-assignments-role-list'>
 	<h2>Rotaciones</h2>
 <?php
-$this->widget('zii.widgets.grid.CGridView', array(
-                'id'=>'rotaciones',
-				'selectionChanged'=>'validar',
-				'summaryText'=>'',
-			    'enableSorting' => true,
-				'template'=>"{items}\n{summary}\n{pager}",
-				'selectableRows'=>2,
-				'emptyText'=>'No hay neumáticos agregados para renovar',
-                'dataProvider'=>$rotaciones,
-				'htmlOptions'=>array('style'=>'cursor:pointer;'),
-				'columns'=>array(
-				array(
-					//'header'=>'Seleccione las actividades a incluir',
-					'class'=>'CCheckBoxColumn',
-					'htmlOptions'=>array('style'=>'text-align:center;'),
-				),
-				array(
-					'type'=>'raw',
-					'header'=>'Nombre',
-					'name'=>'nombre',
-					'htmlOptions'=>array('style'=>'text-align:center;width:85px'),
-				),
-				array(
-					'header'=>'Descripción',
-					'name'=>'descripcion',
-					'htmlOptions'=>array('style'=>'text-align:center;width:200px'),
-				),
-				array(
-						'headerHtmlOptions'=>array('style'=>'text-align:center;width:12px;'),
-						'htmlOptions'=>array('style'=>'text-align:center;'),
-						'header'=>'Movimientos',
-						'type'=>'raw',
-						'value'=>'($data->id==0?\'-\':\' \').CHtml::link(
-                        CHtml::image(Yii::app()->request->baseUrl."/imagenes/ver.png",
-                                          "Agregar",array("title"=>"Agregar movimiento de neumáticos")),
-                        "",
-                        array(
-                                \'style\'=>\'cursor: pointer;text-decoration: underline;text-align:center;\',
-                                \'onclick\'=>\'{mostrarMovimientos("\'.$data["id"].\'");}\'
-                        )
-                );',),
-				array(
-						'headerHtmlOptions'=>array('style'=>'text-align:center;width:30px;'),
-						'htmlOptions'=>array('style'=>'text-align:center;'),
-						'header'=>'Editar',
-						'type'=>'raw',
-						'value'=>'CHtml::link(
-                        CHtml::image(Yii::app()->request->baseUrl."/imagenes/agregar.png",
-                                          "Agregar",array("title"=>"Editar")),
-                        "",
-                        array(
-                                \'style\'=>\'cursor: pointer;text-decoration: underline;text-align:center;\',
-                                \'onclick\'=>\'{editarRotacion("\'.Yii::app()->createUrl("Rotacioncauchos/update",array("id"=>$data["id"])).\'"); $("#dialog").dialog("open");}\'
-                        )
-                );',),
-				array(
-					'header'=>'Eliminar',
-					'class'=>'CButtonColumn',
-					 'template'=>'{delete}',
-					 'afterDelete'=>'function(link,success,data){
-	                                cancelarB();
-	                        }',
-					
-					     'buttons'=>array(
-							'delete' => array(
-								'url'=>'Yii::app()->createUrl("Rotacioncauchos/delete", array("id"=>$data->id))',
-						),
-					),
-				),
-			)
-        ));
+
 		?>
 				<?php echo CHtml::link('nueva rotación(+)', "",  // the link for open the dialog
     array(
@@ -427,95 +357,7 @@ $this->beginWidget('zii.widgets.jui.CJuiDialog', array( // the dialog
 ));?>
 <div id="amovimiento" style="display:none">
 <i>La rotación seleccionada incluye los siguientes movimientos:</i>
-<?php $this->widget('zii.widgets.grid.CGridView', array(
-                'id'=>'movimientos',
-				'selectionChanged'=>'validar',
-				'summaryText'=>'',
-			    'enableSorting' => true,
-				'template'=>"{items}\n{summary}\n{pager}",
-				'selectableRows'=>0,
-				'emptyText'=>'No hay movimientos agregados',
-                'dataProvider'=>$movimientos,
-				'columns'=>array(
-			
-				/*array(
-					'type'=>'raw',
-					'header'=>'',
-					'value'=>'\'<strong>Origen</strong>\'',
-					'htmlOptions'=>array('style'=>'text-align:center;width:85px'),
-				),*/
-				array(
-					'header'=>'Unidad',
-					'name'=>'idhistoricoCaucho',
-					'value'=>'str_pad((int) $data->cauchoOrigen0->idvehiculo0->numeroUnidad,2,"0",STR_PAD_LEFT);',
-					//'value'=>'$data->idplan0->idplanGrupo0->CompiledColour->$data-id.\' \'.$data->CompiledColour',
-					'htmlOptions'=>array('style'=>'text-align:center;width:40px'),
-				),
-				array(
-					'type'=>"raw",
-					'header'=>'Serial',
-					'value'=>'$data->idhistoricoCaucho0->serial=="0"?$data->porDefinir($data->idhistoricoCaucho0->serial):strtoupper($data->idhistoricoCaucho0->serial);',
-					//'name'=>'serial',
-					'htmlOptions'=>array('style'=>'text-align:center;width:65px'),
-				),
-				array(
-					'header'=>'Eje',
-					'value'=>'$data->posicionOrigen==null?\'-\':$data->posicionOrigen0->iddetalleEje0->idposicionEje0->posicionEje',
-					'name'=>'iddetalleRueda',
-					'htmlOptions'=>array('style'=>'text-align:center;width:85px'),
-				),
-				array(
-					'header'=>'Lado',
-					'value'=>'$data->posicionOrigen==null?\'Repuesto\':$data->posicionOrigen0->idposicionRueda0->posicionRueda',
-					'name'=>'iddetalleRueda',
-					'htmlOptions'=>array('style'=>'text-align:center;width:85px'),
-				),
-				/*array(
-					'type'=>'raw',
-					'header'=>'',
-					'value'=>'\'<strong>Destino</strong>\'',
-					'htmlOptions'=>array('style'=>'text-align:center;width:85px'),
-				),*/
-				array(
-					'type'=>'raw',
-					'header'=>'Movimiento',
-					'value'=>'
-                        CHtml::image(Yii::app()->request->baseUrl."/imagenes/arrow_right.png",
-                                          "Movimiento",array("title"=>"desde->hacia"))',
-					'htmlOptions'=>array('style'=>'text-align:center;width:85px'),
-				),
-				array(
-					'header'=>'Unidad',
-					'name'=>'idhistoricoCaucho',
-					'value'=>'str_pad((int) $data->cauchoDestino0->idvehiculo0->numeroUnidad,2,"0",STR_PAD_LEFT);',
-					//'value'=>'$data->idplan0->idplanGrupo0->CompiledColour->$data-id.\' \'.$data->CompiledColour',
-					'htmlOptions'=>array('style'=>'text-align:center;width:40px'),
-				),
-				
-				array(
-					'header'=>'Eje',
-					'value'=>'$data->posicionDestino==null?\'-\':$data->posicionDestino0->iddetalleEje0->idposicionEje0->posicionEje',
-					'name'=>'iddetalleRueda',
-					'htmlOptions'=>array('style'=>'text-align:center;width:85px'),
-				),
-				array(
-					'header'=>'Lado',
-					'value'=>'$data->posicionDestino==null?\'Repuesto\':$data->posicionDestino0->idposicionRueda0->posicionRueda',
-					'name'=>'iddetalleRueda',
-					'htmlOptions'=>array('style'=>'text-align:center;width:85px'),
-				),
-				/*array(
-					'header'=>'Eliminar',
-					'class'=>'CButtonColumn',
-					 'template'=>'{delete}',
-					     'buttons'=>array(
-							'delete' => array(
-								'url'=>'Yii::app()->createUrl("detalleEventoCa/delete", array("id"=>$data->id))',
-						),
-					),
-				),*/
-			)
-        ));
+<?php 
 		 echo CHtml::link('agregar movimiento(+)', "",  // the link for open the dialog
     array(
 		'id'=>'agregarMovimiento',
@@ -585,20 +427,20 @@ $('#scrollingDiv').css({
 		});
 	});*/
 	
-var idRotacion;
+
 
 $( "#scrollingDiv" ).click(function() {
 	$('#scrollingDiv').hide(300);
 	$("#formulario").dialog('open');
 });
 var idfalla;
-var idrot;
+
 var idren;
 function validar(){
 idren = $.fn.yiiGridView.getSelection('renovaciones');
 idfalla = $.fn.yiiGridView.getSelection('fallas');
-idrot = $.fn.yiiGridView.getSelection('rotaciones');
-	if(idfalla=="" && idrot=="" && idren=="")
+
+	if(idfalla=="" &&  idren=="")
 		/*$('#formulario').hide(); */
 		$('#scrollingDiv').hide(300);
 	else
@@ -613,7 +455,7 @@ idrot = $.fn.yiiGridView.getSelection('rotaciones');
 function crear(){
 jQuery.ajax({
                 url: "crearOrden",
-                'data':$(this).serialize()+'&idfalla=' + idfalla + '&idren=' + idren + '&idrot=' + idrot,
+                'data':$(this).serialize()+'&idfalla=' + idfalla + '&idren=' + idren,
                 'type':'post',
                 'dataType':'json',
                 'success':function(data){

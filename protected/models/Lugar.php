@@ -31,8 +31,8 @@ class Lugar extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('lugar, idestados', 'required'),
-			array('idestados', 'numerical', 'integerOnly'=>true),
+			array('lugar, idestados, primario', 'required'),
+			array('idestados, primario', 'numerical', 'integerOnly'=>true),
 			array('lugar', 'length', 'max'=>45),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
@@ -62,7 +62,8 @@ class Lugar extends CActiveRecord
 		return array(
 			'id' => 'ID',
 			'lugar' => 'Lugar',
-			'idestados' => 'Idestados',
+			'idestados' => 'Estado',
+			'primario'=>'Primario',
 		);
 	}
 

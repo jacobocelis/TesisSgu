@@ -120,7 +120,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
 			</div>
 <div id="uno">
 
-<?php $this->widget('zii.widgets.grid.CGridView', array(
+<?php $this->widget('ext.selgridview.SelGridView', array(
                 'id'=>'ejes',
 				'summaryText'=>'',
 			   // 'enableSorting' => false,
@@ -181,7 +181,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
 </div>
 <div id="dos">
 
-	<?php $this->widget('zii.widgets.grid.CGridView', array(
+	<?php $this->widget('ext.selgridview.SelGridView', array(
                 'id'=>'cauchos',
 				'summaryText'=>'',
 			   // 'enableSorting' => false,
@@ -240,8 +240,8 @@ $this->widget('zii.widgets.grid.CGridView', array(
 </div>
 </div>
 <div id="llantaRep" style="display:none">
-<strong>Neumático de repuesto</strong>
-	<?php $this->widget('zii.widgets.grid.CGridView', array(
+ 
+	<?php $this->widget('ext.selgridview.SelGridView', array(
                 'id'=>'rep',
 				'summaryText'=>'',
 			   // 'enableSorting' => false,
@@ -253,7 +253,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
 				'columns'=>array(
 				array(
 					 'sortable'=>false,
-					'header'=>'Detalle de neumático',
+					'header'=>'Neumático de repuesto',
 					'value'=>'$data->idcaucho0->idmedidaCaucho0->medida.\' R\'.$data->idcaucho0->idrin0->rin.\' \'.$data->idcaucho0->idpiso0->piso',
 					'name'=>'idcaucho',
 					'htmlOptions'=>array('style'=>'text-align:center;width:185px'),
@@ -331,7 +331,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
 	</div>
 </div>
 <?php
-/*ventana agregar actividad*/
+
 $this->beginWidget('zii.widgets.jui.CJuiDialog', array( // the dialog
     'id'=>'nuevoChasis',
     'options'=>array(
@@ -348,12 +348,47 @@ $this->beginWidget('zii.widgets.jui.CJuiDialog', array( // the dialog
  
 <?php $this->endWidget();?>
 
+<?php $this->beginWidget('zii.widgets.jui.CJuiDialog', array(
+    'id'=>'Posicion',
+    'options'=>array(
+        'title'=>'',
+        'autoOpen'=>false,
+        'modal'=>true,
+        'width'=>400,
+        //'height'=>480,
+		'resizable'=>false,	
+		'position'=>array(null,150),
+    ),
+));?>
+<div class="divForForm"></div>
+
+<?php $this->endWidget();?>
+
 <?php
-/*ventana agregar actividad*/
+
 $this->beginWidget('zii.widgets.jui.CJuiDialog', array( // the dialog
     'id'=>'nuevaPos',
     'options'=>array(
         'title'=>'Nueva posición de eje',
+        'autoOpen'=>false,
+        'modal'=>true,
+        'width'=>400,
+        //'height'=>480,
+		'resizable'=>false,	
+		'position'=>array(null,130),
+    ),
+));?>
+<div class="divForForm"></div>
+
+<?php $this->endWidget();?>
+
+
+<?php
+
+$this->beginWidget('zii.widgets.jui.CJuiDialog', array( // the dialog
+    'id'=>'nuevoNeumatico',
+    'options'=>array(
+        'title'=>'Agregar neumático',
         'autoOpen'=>false,
         'modal'=>true,
         'width'=>420,
@@ -366,7 +401,74 @@ $this->beginWidget('zii.widgets.jui.CJuiDialog', array( // the dialog
 
 <?php $this->endWidget();?>
 
-<div class='crugepanel user-assignments-role-list'>
+<?php
+
+$this->beginWidget('zii.widgets.jui.CJuiDialog', array( 
+    'id'=>'nuevoRepuesto',
+    'options'=>array(
+        'title'=>'Agregar repuesto',
+        'autoOpen'=>false,
+        'modal'=>true,
+        'width'=>420,
+        //'height'=>480,
+		'resizable'=>false,	
+		'position'=>array(null,130),
+    ),
+));?>
+<div class="divForForm"></div>
+
+<?php $this->endWidget();?>
+
+
+<?php $this->beginWidget('zii.widgets.jui.CJuiDialog', array(
+    'id'=>'nuevaPosCaucho',
+    'options'=>array(
+        'title'=>'',
+        'autoOpen'=>false,
+        'modal'=>true,
+        'width'=>400,
+        //'height'=>480,
+		'resizable'=>false,	
+		'position'=>array(null,150),
+    ),
+));?>
+<div class="divForForm"></div>
+
+<?php $this->endWidget();?>
+
+<?php $this->beginWidget('zii.widgets.jui.CJuiDialog', array(
+    'id'=>'nuevaMedCaucho',
+    'options'=>array(
+        'title'=>'Registro de medida',
+        'autoOpen'=>false,
+        'modal'=>true,
+        'width'=>300,
+        //'height'=>480,
+		'resizable'=>false,	
+		'position'=>array(null,150),
+    ),
+));?>
+<div class="divForForm"></div>
+
+<?php $this->endWidget();?>
+
+<?php $this->beginWidget('zii.widgets.jui.CJuiDialog', array(
+    'id'=>'Repuesto',
+    'options'=>array(
+        'title'=>'Agregar repuesto',
+        'autoOpen'=>false,
+        'modal'=>true,
+        'width'=>400,
+        //'height'=>480,
+		'resizable'=>false,	
+		'position'=>array(null,150),
+    ),
+));?>
+<div class="divForForm"></div>
+
+<?php $this->endWidget();?>
+
+<div class='crugepanel'>
 <h1>Lista de plantillas asociadas</h1>
 <div id="asociados">
 <?php $this->widget('zii.widgets.grid.CGridView', array(
@@ -728,8 +830,9 @@ $('#nuevoChasis').dialog('open');
     return false; 
 }
 function nuevoEje(){
-	$('#nuevoEje').show();
-	$('#eje').hide();
+	//$('#nuevoEje').show();
+	//$('#eje').hide();
+	$('#nuevaPos').dialog('open');
 	var id = $("#plantilla option:selected").val();
 	jQuery.ajax({
                 url: "<?php echo Yii::app()->baseUrl;?>"+"/Detalleeje/agregar/"+id,
@@ -738,15 +841,15 @@ function nuevoEje(){
                 'dataType':'json',
                 'success':function(data){
                                 if (data.status == 'failure'){
-                                        $('#nuevoEje').html(data.div);
-                                        $('#nuevoEje form').submit(nuevoEje);
+                                        $('#nuevaPos div.divForForm').html(data.div);
+                                        $('#nuevaPos div.divForForm form').submit(nuevoEje);
                                 }
                                 else{
-                                        $('#nuevoEje').html(data.div);
-                                        setTimeout("$('#nuevoEje').hide();",2000);
-										 setTimeout("$('#plantilla').change()",2000);
-										$.fn.yiiGridView.update('ejes');
-										$('#caucho').hide();
+                                        $('#nuevaPos div.divForForm').html(data.div);
+                                      
+										 $('#plantilla').change();
+										//$.fn.yiiGridView.update('ejes');
+										setTimeout("$('#nuevaPos').dialog('close') ",1000);
 										
                                 }
                 },
@@ -754,8 +857,9 @@ function nuevoEje(){
     return false; 
 }
 function nuevoCaucho(){
-	$('#nuevoCaucho').show();
-	$('#caucho').hide();
+	//$('#nuevoCaucho').show();
+	//$('#caucho').hide();
+	$('#nuevoNeumatico').dialog('open');
 	var idEje = $.fn.yiiGridView.getSelection('ejes');
 	jQuery.ajax({
                 url: "<?php echo Yii::app()->baseUrl;?>"+"/Detallerueda/agregar/"+idEje,
@@ -764,13 +868,13 @@ function nuevoCaucho(){
                 'dataType':'json',
                 'success':function(data){
                                 if (data.status == 'failure'){
-                                        $('#nuevoCaucho').html(data.div);
-                                        $('#nuevoCaucho form').submit(nuevoCaucho);
+                                        $('#nuevoNeumatico div.divForForm').html(data.div);
+                                        $('#nuevoNeumatico div.divForForm form').submit(nuevoCaucho);
                                 }
                                 else{
-                                        $('#nuevoCaucho').html(data.div);
-                                        setTimeout("$('#nuevoCaucho').hide();",2000);
-										setTimeout("mostrarRuedas()",2000);
+                                        $('#nuevoNeumatico div.divForForm').html(data.div);
+                                        setTimeout("$('#nuevoNeumatico').dialog('close') ",1000);
+										mostrarRuedas();
 										$.fn.yiiGridView.update('cauchos');
 										actualizarEstado($("#plantilla option:selected").val());
                                 }
@@ -779,8 +883,7 @@ function nuevoCaucho(){
     return false; 
 }
 function nuevoCauchoRep(){
-	$('#nuevoCauchoRep').show();
-	$('#cauchoRep').hide();
+	 $('#Repuesto').dialog('open');
 	var id = $("#plantilla option:selected").val();
 	jQuery.ajax({
                 url: "<?php echo Yii::app()->baseUrl;?>"+"/cauchorep/agregar/"+id,
@@ -789,21 +892,23 @@ function nuevoCauchoRep(){
                 'dataType':'json',
                 'success':function(data){
                                 if (data.status == 'failure'){
-                                        $('#nuevoCauchoRep').html(data.div);
-                                        $('#nuevoCauchoRep form').submit(nuevoCauchoRep);
+                                        $('#Repuesto div.divForForm ').html(data.div);
+                                        $('#Repuesto div.divForForm form').submit(nuevoCauchoRep);
                                 }
                                 else{
-                                        $('#nuevoCauchoRep').html(data.div);
-                                        setTimeout("$('#nuevoCauchoRep').hide();",2000);
+                                        $('#Repuesto div.divForForm').html(data.div);
+                                        //setTimeout("$('#nuevoCauchoRep').hide();",2000);
 										//setTimeout("mostrarRuedas()",2000);
-										$.fn.yiiGridView.update('rep');
+										 $('#plantilla').change();
+										setTimeout("$('#Repuesto').dialog('close') ",1000);
+										//$.fn.yiiGridView.update('rep');
 										actualizarEstado($("#plantilla option:selected").val());
+
                                 }
                 },
                 'cache':false});
     return false; 
 }
-
 function agregarAgrupo(){
 	
 	var id = $("#plantilla option:selected").val();
@@ -822,7 +927,7 @@ function agregarAgrupo(){
                                         //setTimeout("$('#agregarAgrupo').hide();",000);
 										//setTimeout("$('#divGrupo').show();",000);
 										$.fn.yiiGridView.update('grup');
-										setTimeout("tieneGrupo()",000);
+										tieneGrupo();
 										$.fn.yiiGridView.update("plantillagrup");
 										actualizarSpan();
 										//setTimeout("mostrarRuedas()",2000);

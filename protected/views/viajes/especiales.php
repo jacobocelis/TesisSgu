@@ -67,12 +67,12 @@ $this->widget('zii.widgets.grid.CGridView', array(
 
 				
 				
-				array(
+				/*array(
 					'header'=>'Distancia',
 					'value'=>'$data->idviaje0->distanciaKm.\' Km \'',
 					//'value'=>'date("g:i a", strtotime($data->horaLlegada));',
 					'htmlOptions'=>array('style'=>'text-align:center;width:50px;'),
-				),
+				),*/
 				array(
 					'header'=>'Pasajeros',
 					'name'=>'nroPersonas',
@@ -165,6 +165,40 @@ $this->beginWidget('zii.widgets.jui.CJuiDialog', array( // the dialog
 <div class="divForForm"></div>
  
 <?php $this->endWidget();?>
+
+
+<?php
+$this->beginWidget('zii.widgets.jui.CJuiDialog', array( // the dialog
+    'id'=>'nuevoDestino',
+    'options'=>array(
+        'title'=>'',
+        'autoOpen'=>false,
+        'modal'=>true,
+        'width'=>500,
+		'resizable'=>false,	
+		'position'=>array(null,130),
+    ),
+));?>
+<div class="divForForm"></div>
+
+<?php $this->endWidget();?>
+
+<?php
+$this->beginWidget('zii.widgets.jui.CJuiDialog', array( // the dialog
+    'id'=>'destino',
+    'options'=>array(
+        'title'=>'',
+        'autoOpen'=>false,
+        'modal'=>true,
+        'width'=>350,
+		'resizable'=>false,	
+		'position'=>array(null,160),
+    ),
+));?>
+<div class="divForForm"></div>
+
+<?php $this->endWidget();?>
+
 <style>
 .badge {
     margin-left: 3px;

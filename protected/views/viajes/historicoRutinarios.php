@@ -50,6 +50,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
 				'htmlOptions'=>array('style'=>'font-size: 1.0em;'),
 				
 				'columns'=>array(
+				
 				array(
 					'header'=>'Unidad',
 					'name'=>'idvehiculo',
@@ -58,18 +59,19 @@ $this->widget('zii.widgets.grid.CGridView', array(
 					'htmlOptions'=>array('style'=>'text-align:center;width:50px;'),
 				),
 				array(
+					'header'=>'Fecha',
+					'name'=>'fechaSalida',
+					'value'=>'date("d/m/Y", strtotime($data->fechaSalida));',
+					'htmlOptions'=>array('style'=>'text-align:center;width:100px;'),
+				),
+				array(
 					'header'=>'Ruta realizada',
 					'name'=>'idviaje',
 					'value'=>'$data->idviaje0->idOrigen0->lugar.\' - \'.$data->idviaje0->idDestino0->lugar',
 					//'value'=>'$data->idplan0->idplanGrupo0->CompiledColour->$data-id.\' \'.$data->CompiledColour',
 					'htmlOptions'=>array('style'=>'text-align:center;width:100px;'),
 				),
-				array(
-					'header'=>'Fecha',
-					'name'=>'fecha',
-					'value'=>'date("d/m/Y", strtotime($data->fecha));',
-					'htmlOptions'=>array('style'=>'text-align:center;width:100px;'),
-				),
+				
 				array(
 					'header'=>'Hora de salida',
 					'name'=>'horaSalida',
@@ -77,47 +79,23 @@ $this->widget('zii.widgets.grid.CGridView', array(
 					'htmlOptions'=>array('style'=>'text-align:center;width:100px;'),
 				),
 				array(
-					'header'=>'Hora de llegada',
+					'header'=>'Hora de retorno',
 					'name'=>'horaLlegada',
 					'value'=>'date("g:i a", strtotime($data->horaLlegada));',
 					'htmlOptions'=>array('style'=>'text-align:center;width:100px;'),
 				),
-				array(
+				/*array(
 					'header'=>'Distancia',
 					'value'=>'$data->idviaje0->distanciaKm.\' Km \'',
 					//'value'=>'date("g:i a", strtotime($data->horaLlegada));',
 					'htmlOptions'=>array('style'=>'text-align:center;width:100px;'),
-				),
+				),*/
 				
 				array(
 					'header'=>'Conductor',
 					'value'=>'$data->idconductor0->nombre.\'  \'.$data->idconductor0->apellido',
 					//'value'=>'date("g:i a", strtotime($data->horaLlegada));',
 					'htmlOptions'=>array('style'=>'text-align:center;width:100px;'),
-				),
-				array(
-						'headerHtmlOptions'=>array('style'=>'text-align:center;width:10px;'),
-						'htmlOptions'=>array('style'=>'text-align:center;width:30px;'),
-						'header'=>'Modificar',
-						'type'=>'raw',
-						'value'=>'CHtml::link(
-                        CHtml::image(Yii::app()->request->baseUrl."/imagenes/agregar.png",
-                                          "Agregar",array("title"=>"Editar")),
-                        "",
-                        array(
-                                \'style\'=>\'cursor: pointer;text-decoration: underline;text-align:center;\',
-                                \'onclick\'=>\'{editarViaje("\'.Yii::app()->createUrl("Viajes/update",array("id"=>$data["id"])).\'"); $("#modificar").dialog("open");}\'
-                        )
-                );',),
-				array(
-					'header'=>'Eliminar',
-					'class'=>'CButtonColumn',
-					 'template'=>'{delete}',
-					     'buttons'=>array(
-							'delete' => array(
-								'url'=>'Yii::app()->createUrl("viajes/delete", array("id"=>$data->id))',
-						),
-					),
 				),
 			)
         ));
@@ -126,16 +104,22 @@ $this->widget('zii.widgets.grid.CGridView', array(
 </div>
 				
 <?php
-/*ventana agregar actividad*/
+
 $this->beginWidget('zii.widgets.jui.CJuiDialog', array( // the dialog
-    'id'=>'nuevaPos',
+    'id'=>'nuevoDestino',
     'options'=>array(
- 
+        'title'=>'Agregar destino',
         'autoOpen'=>false,
-        'modal'=>true, 
+        'modal'=>true,
+        'width'=>420,
+		'resizable'=>false,	
+		'position'=>array(null,130),
     ),
 ));?>
-<?php $this->endWidget();?>		
+<div class="divForForm"></div>
+
+<?php $this->endWidget();?>
+
 <style>
 .badge {
     margin-left: 3px;

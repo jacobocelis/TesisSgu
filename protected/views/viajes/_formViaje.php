@@ -15,27 +15,31 @@
 	'enableAjaxValidation'=>false,
 )); ?>
 <div id="verde">
-<strong>Complete los datos para registrar una ruta:</strong>
+<strong></strong>
 
 	<div class="row">
-		<?php echo $form->labelEx($model,'idOrigen'); ?>
-		<?php echo $form->dropDownList($model,'idOrigen',CHtml::listData(Lugar::model()->findAll(),'id','lugar'),array(
+		<?php echo $form->labelEx($model,'idOrigen',array('style'=>'width:80px')); ?>
+		<?php echo $form->dropDownList($model,'idOrigen',CHtml::listData(Lugar::model()->findAll('primario=1'),'id','lugar'),array(
 			'style' => 'width:150px;','prompt'=>'Seleccione: ','onchange'=>'validarLugar(this.value);')); ?>
 		<?php echo $form->error($model,'idOrigen'); ?>
 	</div>
 
-	<div class="row">
-		<?php echo $form->labelEx($model,'idDestino'); ?>
-		<?php echo $form->dropDownList($model,'idDestino',array(),array('prompt'=>'-','style' => 'width:150px;')); ?>
+	<div class="row" id="dest" style="display:none">
+		<?php echo $form->labelEx($model,'idDestino',array('style'=>'width:80px')); ?>
+		<?php echo $form->dropDownList($model,'idDestino',array(),array('prompt'=>'-','style' => 'width:150px;'));  	echo CHtml::link(CHtml::image(Yii::app()->request->baseUrl."/imagenes/agregar.png",
+                                          "Agregar",array("title"=>"Nuevo destino")), "",array('title'=>'',
+        'style'=>'cursor: pointer;',
+        'onclick'=>"{
+		destino();}")); ?>
 		<?php echo $form->error($model,'idDestino'); ?>
 	</div>
 	<div class="row">
-		<?php echo $form->labelEx($model,'distanciaKm'); ?>
-		<?php echo $form->textField($model,'distanciaKm',array('style' => 'width:50px;')); ?>
+		<?php echo $form->labelEx($model,'distanciaKm',array('style'=>'width:80px')); ?>
+		<?php echo $form->textField($model,'distanciaKm',array('style' => 'width:50px;')); ?><i> *Total Kms ida y regreso al origen</i>
 		<?php echo $form->error($model,'distanciaKm'); ?>
 	</div>
 	<div class="row">
-		<?php echo $form->labelEx($model,'idtipo'); ?>
+		<?php echo $form->labelEx($model,'idtipo',array('style'=>'width:80px')); ?>
 		<?php echo $form->dropDownList($model,'idtipo',CHtml::listData(Tipoviaje::model()->findAll($tipo),'id','tipo'),array('style' => 'width:50px;')); ?>
 		<?php echo $form->error($model,'idtipo'); ?>
 	</div>
@@ -43,10 +47,7 @@
 	<div class="row">
 		<?php echo $form->hiddenField($model,'viaje',array('size'=>60,'maxlength'=>80)); ?>
 	</div>
-	<?php
-		echo CHtml::link('Cancelar', "",array('title'=>'Cancelar',
-        'style'=>'cursor: pointer;font-size:10px;float:right;',
-        'onclick'=>"{cancelar()}"));?>
+ 
 	
 	<div class="row buttons">
 		<?php echo CHtml::submitButton($model->isNewRecord ? 'Agregar' : 'Save'); ?>
@@ -54,8 +55,53 @@
 </div>
 <?php $this->endWidget(); ?>
 
-</div><!-- form -->
+</div>
 <script>
+$( "#Viaje_idOrigen" ).change(function() {
+  if($("#Viaje_idOrigen").val()!="")
+  		$("#dest").show();
+  	else
+  		$("#dest").hide();
+});
+
+function destino(){
+$('#destino').dialog('open');
+	 var dir="<?php echo Yii::app()->baseUrl."/Lugar/agregar/"?>";
+	jQuery.ajax({
+                url: dir,
+                'data':$(this).serialize(),
+                'type':'post',
+                'dataType':'json',
+                'success':function(data)
+                 {
+                                if (data.status == 'failure')
+                                {
+                                        $('#destino div.divForForm').html(data.div);
+                                        // Here is the trick: on submit-> once again this function!
+                                        $('#destino div.divForForm form').submit(destino); // updatePaymentComment
+                                }
+                                else
+                                {
+                                        $('#destino div.divForForm').html(data.div);
+                                        setTimeout("$('#destino').dialog('close') ",1000);
+                                        actualizarLista();
+										
+                                }
+                } ,
+                'cache':false});
+    return false; 
+}
+function actualizarLista(){
+
+var dir="<?php echo Yii::app()->baseUrl;?>"+"/viajes/actualizarListaLugar";
+	$.ajax({  		
+          url: dir,
+        })
+  	.done(function(result) {    	
+    	     $('#Viaje_idDestino').html(result);
+  	});
+	
+}
 function validarLugar(id){
 var dir="<?php echo Yii::app()->baseUrl;?>"+"/viajes/validarRuta/"+id;
 	$.ajax({  		
@@ -69,21 +115,20 @@ $("#viaje-form").submit(function(event){
 	event.preventDefault();
 	$('#Viaje_viaje').val($('#Viaje_idOrigen option:selected').text()+" -> "+$('#Viaje_idDestino option:selected').text());
 });
-function cancelar(){
-	$('#registrar').hide();
-	$('#salida').show();
-	$('#llegada').show();
-	$('#pasajeros').show();
-	$('#boton').show();
-	$('#registrarRuta').show();
-}
+
 </script>
 <style>
 #verde{
-	background: #D9EDFF;
-	width:320px;
+	background: #F9FDFD; 
 	padding: 5px;
-	 border: 1px solid #94A8FF;
-	
+	border: 1px solid #94A8FF;	
 }
+div.form .tooltip {
+    display: none;
+    background-color: #EFFDFF;
+    border: 1px solid #79B4DC;
+    padding: 10px;
+    width: 300px;
+}
+
 </style>

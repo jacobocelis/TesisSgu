@@ -17,53 +17,52 @@
 <h1>Registro de viajes especiales</h1>
 	<p class="note">Campos con  <span class="required">*</span> son obligatorios.</p>
 	<div class="row">
-		<?php echo $form->labelEx($model,'fechaSalida'); ?>
+		<?php echo $form->labelEx($model,'fechaSalida',array("style"=>"width:120px")); ?>
 		<?php echo $form->textField($model,'fechaSalida',array('id'=>'fechaSalida','size'=>10,'readonly'=>'readonly','maxlength'=>8, 'style'=>'width:80px;cursor:pointer;')); ?>
 	<?php echo $form->error($model,'fechaSalida'); ?>
 	</div>
 
 	<div id="salida" class="row">
-		<?php echo $form->labelEx($model,'horaSalida'); ?>
+		<?php echo $form->labelEx($model,'horaSalida',array("style"=>"width:120px")); ?>
 		<?php echo $form->textField($model,'horaSalida',array('readonly'=>'readonly',"onblur"=>"validarHora()",'style' => 'width:80px;cursor:pointer;')); ?>
 		<?php echo $form->error($model,'horaSalida'); ?>
 	</div>
 
 
 	<div class="row">
-		<?php echo $form->labelEx($model,'idvehiculo'); ?>
+		<?php echo $form->labelEx($model,'idvehiculo',array("style"=>"width:120px")); ?>
 		<?php echo $form->dropDownList($model,'idvehiculo',CHtml::listData(Vehiculo::model()->findAll(),'id','numeroUnidad'),array('prompt'=>'Seleccione: ','style' => 'width:110px;','onchange'=>'obtenerConductor(this.value);')); ?>
 		<?php echo $form->error($model,'idvehiculo'); ?>
 	</div>
 	<div class="row">
-		<?php echo $form->labelEx($model,'idconductor'); ?>
+		<?php echo $form->labelEx($model,'idconductor',array("style"=>"width:120px")); ?>
 		<?php echo $form->dropDownList($model,'idconductor',array(),array('style' => 'width:170px;')); ?>
 		<?php echo $form->error($model,'idconductor'); ?>
 	</div>
 	<div class="row">
-		<?php echo $form->labelEx($model,'idviaje'); ?>
-		<?php echo $form->dropDownList($model,'idviaje',CHtml::listData(Viaje::model()->findAll('idtipo=2  or idtipo=3'),'id','viaje')); echo CHtml::link('(+)', "",array('title'=>'Registrar ruta',
+		<?php echo $form->labelEx($model,'idviaje',array("style"=>"width:120px")); ?>
+		<?php echo $form->dropDownList($model,'idviaje',CHtml::listData(Viaje::model()->findAll('idtipo=2  or idtipo=3'),'id','viaje')); echo CHtml::link(CHtml::image(Yii::app()->request->baseUrl."/imagenes/agregar.png",
+                                          "Agregar",array("title"=>"Nueva ruta")), "",array('title'=>'Registrar ruta',
         'style'=>'cursor: pointer;font-size:15px',
         'onclick'=>"{
 		AgregarRutaNueva(1);}"));?>
 		<?php echo $form->error($model,'idviaje');?>
 	</div>
-	
-	<div id="registrar"></div>
-	
+ 
 	<div id="pasajeros" class="row">
-		<?php echo $form->labelEx($model,'nroPersonas'); ?>
+		<?php echo $form->labelEx($model,'nroPersonas',array("style"=>"width:120px")); ?>
 		<?php echo $form->textField($model,'nroPersonas',array('size'=>3,'maxlength'=>3,'style' => 'width:40px;')); ?>
 		<?php echo $form->error($model,'nroPersonas'); ?>
 	</div>
 
 	<div class="row">
-		<?php echo $form->labelEx($model,'fechaLlegada'); ?>
+		<?php echo $form->labelEx($model,'fechaLlegada',array("style"=>"width:120px")); ?>
 		<?php echo $form->textField($model,'fechaLlegada',array('id'=>'fechaLlegada','size'=>10,'readonly'=>'readonly','maxlength'=>8, 'style'=>'width:80px;cursor:pointer;')); ?>
 	<?php echo $form->error($model,'fechaLlegada'); ?>
 	</div>
 
 	<div id="llegada" class="row">
-		<?php echo $form->labelEx($model,'horaLlegada'); ?>
+		<?php echo $form->labelEx($model,'horaLlegada',array("style"=>"width:120px")); ?>
 		<?php echo $form->textField($model,'horaLlegada',array('readonly'=>'readonly','style' => 'width:80px;cursor:pointer;')); ?>
 		<?php echo $form->error($model,'horaLlegada'); ?>
 	</div>
@@ -83,7 +82,7 @@
     padding: 5px;
     border: 1px solid #94A8FF;
     margin-top: 5px;
-    width: 600px;
+  
 }
 </style>
 <script>
@@ -165,14 +164,15 @@ $("#Historicoviajes_horaSalida").timepicker({
 </script>
 <script>
 $('#registrar').hide();
-AgregarRutaNueva(0);
+ 
 function AgregarRutaNueva(tip){
+	$('#nuevoDestino').dialog('open');
 if(tip){
-$('#registrar').show();
-	$('#salida').hide();
-	$('#llegada').hide();
-	$('#pasajeros').hide();
-	$('#boton').hide();
+//$('#registrar').show();
+//	$('#salida').hide();
+//	$('#llegada').hide();
+//	$('#pasajeros').hide();
+//	$('#boton').hide();
 }
 	var dir="<?php echo Yii::app()->baseUrl;?>"+"/viajes/agregarRutaNueva/1";
 	jQuery.ajax({
@@ -186,17 +186,13 @@ $('#registrar').show();
 										//if($('#registrar').html()!="")
 											//$('#registrar').html("");
 										//else
-											$('#registrar').html(data.div);
-                                        $('#registrar  form').submit(AgregarRutaNueva);
+										
+										$('#nuevoDestino div.divForForm').html(data.div);
+                                        $('#nuevoDestino div.divForForm  form').submit(AgregarRutaNueva);
                                 }
                                 else{
-                                        $('#registrar form').html(data.div);
-										
-                                        setTimeout("$('#registrar').hide(); ",0);
-										$('#salida').show();
-										$('#llegada').show();
-										$('#pasajeros').show();
-										$('#boton').show();
+                                      $('#nuevoDestino div.divForForm form').html(data.div);
+										$('#nuevoDestino').dialog('close');
 										//window.setTimeout('location.reload()');
 										actualizarListaViajes();
                           

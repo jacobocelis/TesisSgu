@@ -39,7 +39,7 @@ class Historicocaucho extends CActiveRecord
 		if($dias==1)
 			return 'Ayer';
 		if($dias==2)
-			return 'Hace '.$dias.' día';
+			return 'Hace '.$dias.' días';
 		if($dias>=3)
 			return 'Hace '.$dias.' días';
 		
@@ -59,6 +59,17 @@ class Historicocaucho extends CActiveRecord
 			if($dias>=3)
 				return 'Hace '.$dias.' días';
 		}	
+		
+	}
+	public function iva(){
+
+		$evento=Detalleeventoca::model()->find('idhistoricoCaucho='.$this->id.' and idaccionCaucho=1');
+		if($evento["id"]<>null){
+			$orden=Detordneumatico::model()->find('iddetalleEventoCa='.$evento["id"].'');
+			$factura=Factura::model()->find('idordenMtto='.$orden->idordenMtto.'');
+			return $this->costounitario*($factura->iva/$factura->total); 
+		}else
+			return -1;
 		
 	}
 	public function porDefinir($data){

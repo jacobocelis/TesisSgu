@@ -23,13 +23,14 @@
 	</div>
 	<div class="row">
 		<?php echo $form->labelEx($model,'idposicionEje'); ?>
-		<?php echo $form->dropDownList($model,'idposicionEje',CHtml::listData(Posicioneje::model()->findAll(),'id','posicionEje'),array('style' => 'width:200px;')); ?>
-		<div id="registrar">
-		
-	<?php echo CHtml::link('Agregar posición', "",array('title'=>'',
-        'style'=>'cursor: pointer;font-size:13px;margin-left:210px;',
+		<?php echo $form->dropDownList($model,'idposicionEje',CHtml::listData(Posicioneje::model()->findAll(),'id','posicionEje'),array('style' => 'width:200px;'));  echo CHtml::link(CHtml::image(Yii::app()->request->baseUrl."/imagenes/agregar.png",
+                                          "Agregar",array("title"=>"Nueva posición eje")), "",array('title'=>'Agregar posición',
+        'style'=>'cursor: pointer;font-size:13px;',
         'onclick'=>"{
-		AgregarPosicionNueva(1);}"));?>
+		AgregarPosicionNueva();}"));?>
+	
+		
+	
 		
 		
 		<?php echo $form->error($model,'idposicionEje'); ?>
@@ -45,10 +46,7 @@
 		<?php echo $form->hiddenField($model,'idchasis',array("value"=>$idchasis)); ?>
 	
 	</div>
-<?php
-		echo CHtml::link('Cancelar', "",array('title'=>'Cancelar',
-        'style'=>'cursor: pointer;font-size:10px;float:right;',
-        'onclick'=>"{cancelar()}"));?>
+
 		
 	<div class="row buttons">
 		<?php echo CHtml::submitButton($model->isNewRecord ? 'Agregar' : 'Save'); ?>
@@ -63,7 +61,7 @@
     padding: 5px;
     border: 1px solid #94A8FF;
     margin-top: 5px;
-    width: 320px;
+   /* width: 320px;*/
 	clear:both;
 }
 </style>
@@ -79,21 +77,9 @@ var dir="<?php echo Yii::app()->baseUrl;?>"+"/neumaticos/actualizarListaPosicion
   	});
 	
 }
-function cancelar(){
-	$('#nuevoEje').hide();
-	$('#eje').show();
-	
-}
-function AgregarPosicionNueva(tip){
-$('#nuevaPos').dialog('open');
-if(tip){
-$('#registrar').show();
-	$('#salida').hide();
-	$('#llegada').hide();
-	$('#pasajeros').hide();
-	$('#boton').hide();
-	$('#registrarRuta').hide();
-}
+function AgregarPosicionNueva(){
+$('#Posicion').dialog('open');
+ 
 	var dir="<?php echo Yii::app()->baseUrl;?>"+"/posicioneje/agregarPosicionNueva/";
 	jQuery.ajax({
                 url: dir,
@@ -104,12 +90,12 @@ $('#registrar').show();
 								
                                 if (data.status == 'failure'){
 										
-										$('#nuevaPos div.divForForm').html(data.div);
-                                        $('#nuevaPos div.divForForm form').submit(AgregarPosicionNueva);
+										$('#Posicion div.divForForm').html(data.div);
+                                        $('#Posicion div.divForForm form').submit(AgregarPosicionNueva);
                                 }
                                 else{
-                                        $('#nuevaPos div.divForForm').html(data.div);
-										setTimeout("$('#nuevaPos').dialog('close') ",1000);
+                                        $('#Posicion div.divForForm').html(data.div);
+										setTimeout("$('#Posicion').dialog('close') ",1000);
                                         //setTimeout("$('#registrar').hide(); ",0);
 										actualizarListaPosiciones();
 										//$('#registrarRuta').show();

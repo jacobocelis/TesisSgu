@@ -49,6 +49,34 @@ class RepuestoController extends Controller
 	 * Displays a particular model.
 	 * @param integer $id the ID of the model to be displayed
 	 */
+        public function RegistrarRepuesto(){
+            $model=new Repuesto;
+            if(isset($_POST['Repuesto'])){
+                $model->attributes=$_POST['Repuesto'];
+                if($model->save()){
+                    echo "Repuesto registrado correctamente\n";
+                    return true;
+                }
+                else{
+                    echo "No se pudo registrar el repuesto, verifique los datos ingresados";
+                    return false;
+                }	
+            }
+	}
+        public function AsignarRepuestoGrupo(){
+            $model=new CaracteristicaVehGrupo;
+            if(isset($_POST['CaracteristicaVehGrupo'])){
+                $model->attributes=$_POST['CaracteristicaVehGrupo'];
+                if($model->save()){
+                    echo "Repuesto asignado al grupo correctamente\n";
+                    return true;
+                }
+                else{
+                    echo "No se pudo asignar el repuesto, verifique los datos ingresados";
+                    return false;
+                }	
+            }
+	}
 		public function actionAsignarPiezaGrupo(){
 	
 		$actualizar=0;

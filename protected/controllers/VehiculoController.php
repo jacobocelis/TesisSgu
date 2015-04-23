@@ -32,7 +32,7 @@ class VehiculoController extends Controller
 				'users'=>array('@'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create','update','Desincorporar','historico','detalleHistorico'),
+				'actions'=>array('create','update','Desincorporar','historico','detalleHistorico','RegistrarVehiculo'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -251,6 +251,20 @@ class VehiculoController extends Controller
 			'model'=>$model,
 			'marca'=>$marca,
 		));
+	}
+	public function RegistrarVehiculo(){
+            $model=new Vehiculo;
+            if(isset($_POST['Vehiculo'])){
+                $model->attributes=$_POST['Vehiculo'];
+                if($model->save()){
+                    echo "Vehiculo registrado correctamente\n";
+                    return true;
+                }
+                else{
+                    echo "No se pudo registrar el vehiculo, verifique los datos ingresados";
+                    return false;
+                }	
+            }
 	}
 	/**
 	 * Updates a particular model.

@@ -55,6 +55,12 @@ class Detreccaucho extends CActiveRecord
                     $this->addError('cantidad', 'Cantidad debe ser mayor a cero');
                 }
 	}
+	public function iva(){
+		
+		$orden=Detordneumatico::model()->find('iddetalleEventoCa='.$this->iddetalleEventoCa.'');
+		$factura=Factura::model()->find('idordenMtto='.$orden->idordenMtto.'');
+		return $this->costoTotal*($factura->iva/$factura->total); 
+	}
 	/**
 	 * @return array relational rules.
 	 */

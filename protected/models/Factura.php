@@ -50,11 +50,11 @@ class Factura extends CActiveRecord
 						}
 					
 						//rotaciones
-						$rotaciones=Rotacioncauchos::model()->findAll(array(
+						/*$rotaciones=Rotacioncauchos::model()->findAll(array(
 						'condition' =>'id in (select de.idrotacionCauchos as id from sgu_detOrdNeumatico d, sgu_detalleEventoCa de where d.iddetalleEventoCa=de.id and d.idordenMtto='.$factura->idordenMtto.' and de.idaccionCaucho=2 group by de.idrotacionCauchos) and idestatus= 3','order'=>'id'));
 						
 						for($i=0;$i<count($rotaciones);$i++)
-							$subTotal+=$rotaciones[$i]["costoTotal"];
+							$subTotal+=$rotaciones[$i]["costoTotal"];*/
 						
 		return $subTotal;
 	}

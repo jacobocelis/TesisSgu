@@ -32,7 +32,7 @@ class NeumaticosController extends Controller
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create','EditarMontado','plantilla','ActualizarListaPlantillas','MostrarLinkEje','actualizarListaPosicionesEje','MostrarLinkCaucho','actualizarEstado','MostrarLinkRep','MostrarDivRep','TieneGrupo','montajeInicial','montar','alertaCambioCauchos','ActualizarSpan','averiaNeumatico','RegistrarAveriaNeumatico','AgregarAveriaNueva','ajaxActualizarAverias','CrearOrdenNeumaticos','crearOrden','agregarNeumaticosRenovar','agregarNeumaticosRotar','verOrdenes','vistaPrevia','AgregarRotacionNueva','MttonRealizados','agregarFactura','registrarFacturacion','actualizarCheck','agregarRecursoAveria','estatusOrden','vistaPreviaPDF','nuevoRec','actualizarListaRecursos','montarNuevo','verificarEstadoRenovacion','cerrarOrdenes','HistoricoOrdenes','HistoricoAverias','historicoMontajes','historicoRotaciones','ActualizarSpanListas','ListaAveriaNeumatico','ActualizarSpanAverias'),
+				'actions'=>array('create','EditarMontado','plantilla','ActualizarListaPlantillas','MostrarLinkEje','actualizarListaPosicionesEje','MostrarLinkCaucho','actualizarEstado','MostrarLinkRep','MostrarDivRep','TieneGrupo','montajeInicial','montar','alertaCambioCauchos','ActualizarSpan','averiaNeumatico','RegistrarAveriaNeumatico','AgregarAveriaNueva','ajaxActualizarAverias','CrearOrdenNeumaticos','crearOrden','agregarNeumaticosRenovar','agregarNeumaticosRotar','verOrdenes','vistaPrevia','AgregarRotacionNueva','MttonRealizados','agregarFactura','registrarFacturacion','actualizarCheck','agregarRecursoAveria','estatusOrden','vistaPreviaPDF','nuevoRec','actualizarListaRecursos','montarNuevo','verificarEstadoRenovacion','cerrarOrdenes','HistoricoOrdenes','HistoricoAverias','historicoMontajes','historicoRotaciones','ActualizarSpanListas','ListaAveriaNeumatico','ActualizarSpanAverias','ActualizarListaPosCaucho','ActualizarListaMedCaucho','HistoricoGastos'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -536,11 +536,11 @@ class NeumaticosController extends Controller
 				)));
 		}
 		//para solo rotaciones and idaccionCaucho=2
-		$Rot=Yii::app()->db->createCommand("select de.idrotacionCauchos as id,count(de.idrotacionCauchos) as totRot from sgu_detOrdNeumatico d, sgu_detalleEventoCa de where d.iddetalleEventoCa=de.id and d.idordenMtto=".$id." and de.idaccionCaucho=2 group by de.idrotacionCauchos")->queryAll();
-		$totalRot=count($Rot);
+		//$Rot=Yii::app()->db->createCommand("select de.idrotacionCauchos as id,count(de.idrotacionCauchos) as totRot from sgu_detOrdNeumatico d, sgu_detalleEventoCa de where d.iddetalleEventoCa=de.id and d.idordenMtto=".$id." and de.idaccionCaucho=2 group by de.idrotacionCauchos")->queryAll();
+		//$totalRot=count($Rot);
 		
 		//necesario cuando no existan rotaciones
-		if($totalRot==0){
+		/*if($totalRot==0){
 			$Rotaciones[$i]=new CActiveDataProvider('Rotacioncauchos',array('criteria' => array(
 				'condition' =>'id=0',
 				)));
@@ -548,9 +548,9 @@ class NeumaticosController extends Controller
 		$actividadesRot[$i]=new CActiveDataProvider('Detalleeventoca',array('criteria' => array(
 				'condition' =>'idrotacionCauchos=0',
 				)));
-		}
+		}*/
 		
-		for($i=0;$i<$totalRot;$i++){
+		/*for($i=0;$i<$totalRot;$i++){
 		$Rotaciones[$i]=new CActiveDataProvider('Rotacioncauchos',array('criteria' => array(
 				'condition' =>'id="'.$Rot[$i]["id"].'"',
 				)));
@@ -558,7 +558,7 @@ class NeumaticosController extends Controller
 		$actividadesRot[$i]=new CActiveDataProvider('Detalleeventoca',array('criteria' => array(
 				'condition' =>'idrotacionCauchos="'.$Rot[$i]["id"].'"',
 				)));	
-		}
+		}*/
 		
 		$totFactura=Yii::app()->db->createCommand('select (round(sum(ar.costoTotal),2)) as Total from sgu_detRecCaucho ar, sgu_detOrdNeumatico d where d.iddetalleEventoCa=ar.iddetalleEventoCa and d.idordenMtto="'.$id.'"')->queryRow();
 
@@ -590,9 +590,9 @@ class NeumaticosController extends Controller
 			'actividadesMont'=>$actividadesMont,
 			'idvehiculoMont'=>$idvehiculoMont,
 			
-			'Rotaciones'=>$Rotaciones,
-			'actividadesRot'=>$actividadesRot,
-			'totalRot'=>$totalRot,
+			
+			
+			
 			
 			'orden'=>$orden,
 			'factura'=>$factura,
@@ -665,11 +665,11 @@ class NeumaticosController extends Controller
 				)));
 		}
 		//para solo rotaciones and idaccionCaucho=2
-		$Rot=Yii::app()->db->createCommand("select de.idrotacionCauchos as id,count(de.idrotacionCauchos) as totRot from sgu_detOrdNeumatico d, sgu_detalleEventoCa de where d.iddetalleEventoCa=de.id and d.idordenMtto=".$id." and de.idaccionCaucho=2 group by de.idrotacionCauchos")->queryAll();
-		$totalRot=count($Rot);
+		//$Rot=Yii::app()->db->createCommand("select de.idrotacionCauchos as id,count(de.idrotacionCauchos) as totRot from sgu_detOrdNeumatico d, sgu_detalleEventoCa de where d.iddetalleEventoCa=de.id and d.idordenMtto=".$id." and de.idaccionCaucho=2 group by de.idrotacionCauchos")->queryAll();
+		//$totalRot=count($Rot);
 		
 		//necesario cuando no existan rotaciones
-		if($totalRot==0){
+		/*if($totalRot==0){
 			$Rotaciones[$i]=new CActiveDataProvider('Rotacioncauchos',array('criteria' => array(
 				'condition' =>'id=0',
 				)));
@@ -677,9 +677,9 @@ class NeumaticosController extends Controller
 		$actividadesRot[$i]=new CActiveDataProvider('Detalleeventoca',array('criteria' => array(
 				'condition' =>'idrotacionCauchos=0',
 				)));
-		}
+		}*/
 		
-		for($i=0;$i<$totalRot;$i++){
+		/*for($i=0;$i<$totalRot;$i++){
 		$Rotaciones[$i]=new CActiveDataProvider('Rotacioncauchos',array('criteria' => array(
 				'condition' =>'id="'.$Rot[$i]["id"].'"',
 				)));
@@ -687,7 +687,7 @@ class NeumaticosController extends Controller
 		$actividadesRot[$i]=new CActiveDataProvider('Detalleeventoca',array('criteria' => array(
 				'condition' =>'idrotacionCauchos="'.$Rot[$i]["id"].'"',
 				)));	
-		}
+		}*/
 		
 		$totFactura=Yii::app()->db->createCommand('select (round(sum(ar.costoTotal),2)) as Total from sgu_detRecCaucho ar, sgu_detOrdNeumatico d where d.iddetalleEventoCa=ar.iddetalleEventoCa and d.idordenMtto="'.$id.'"')->queryRow();
 
@@ -707,9 +707,7 @@ class NeumaticosController extends Controller
 			'actividadesMont'=>$actividadesMont,
 			'idvehiculoMont'=>$idvehiculoMont,
 			
-			'Rotaciones'=>$Rotaciones,
-			'actividadesRot'=>$actividadesRot,
-			'totalRot'=>$totalRot,
+		 
 			
 			'orden'=>$orden,
 			'factura'=>$factura,
@@ -771,33 +769,26 @@ class NeumaticosController extends Controller
 			'condition' =>'idaccionCaucho=1 and id in (select iddetalleEventoCa from sgu_detOrdNeumatico where idordenMtto="'.$id.'")',
 			'order'=>'fechaFalla DESC'
 			)));
-		$rotaciones=new CActiveDataProvider('Rotacioncauchos',array('criteria' => array(
-			'condition' =>'id in (select de.idrotacionCauchos as id from sgu_detOrdNeumatico d, sgu_detalleEventoCa de where d.iddetalleEventoCa=de.id and d.idordenMtto='.$id.' and de.idaccionCaucho=2 group by de.idrotacionCauchos)',
-			'order'=>'id'
-			)));
+		 
 		if(isset($_GET["idRot"])){
 			$idRot=$_GET["idRot"];
 		}
-		$movimientos=new CActiveDataProvider('Detalleeventoca',array('criteria' => array(
-			'condition' =>'idrotacionCauchos='.$idRot.'',
-			//'order'=>'fechaFalla'
-			)));
-		$totMov=Yii::app()->db->createCommand("select count(de.idrotacionCauchos) as tot from sgu_detOrdNeumatico d, sgu_detalleEventoCa de where d.iddetalleEventoCa=de.id and d.idordenMtto=".$id." and de.idaccionCaucho=2 group by de.idrotacionCauchos")->queryRow();
+		 
+		//$totMov=Yii::app()->db->createCommand("select count(de.idrotacionCauchos) as tot from sgu_detOrdNeumatico d, sgu_detalleEventoCa de where d.iddetalleEventoCa=de.id and d.idordenMtto=".$id." and de.idaccionCaucho=2 group by de.idrotacionCauchos")->queryRow();
 		
 		$this->render('mttonRealizados',array(
 			'averias'=>$averias,
 			'renovaciones'=>$renovaciones,
-			'rotaciones'=>$rotaciones,
+			//'rotaciones'=>$rotaciones,
 			'orden'=>$orden,
 			'id'=>$id,
 			'nom'=>$nom,
 			'dir'=>$dir,
-			'totMov'=>$totMov['tot'],
-			'movimientos'=>$movimientos
+			//'totMov'=>$totMov['tot'],
+			//'movimientos'=>$movimientos
 		));
 	}
 	public function actionHistoricoMontajes(){
-	//idplan in (select id from sgu_plan) and ??
 			
 			$des=new CActiveDataProvider('Historicocaucho',array("criteria"=>array("condition"=>"idestatusCaucho=3 or idestatusCaucho=1",'order'=>"idestatusCaucho asc")));
 			//$mi=Yii::app()->db->createCommand("select count(*) as total from sgu_reporteFalla where idestatus=8")->queryRow();
@@ -809,20 +800,21 @@ class NeumaticosController extends Controller
 					'abiertas'=>$this->getOrdenesAbiertas(),
 			));
 	}
-	public function actionHistoricoRotaciones(){
-	//idplan in (select id from sgu_plan) and ??
-			$rotaciones=new CActiveDataProvider('Rotacioncauchos',array('criteria' => array(
-			'condition' =>'idestatus=3',
+	public function actionHistoricoGastos(){
+			$vehiculo = new Vehiculo;
+			$recursos=new CActiveDataProvider('Detreccaucho',array('criteria' => array(
+			'condition' =>'1',
 			//'order'=>'fechaFalla'
 			)));
 			
-		$this->render('historicoRotaciones',array(
-				'rotaciones'=>$rotaciones,
+		$this->render('historicoGastos',array(
+				'recursos'=>$recursos,
 				'iniciales'=>$this->getPorDefinir(),
-					'totalFalla'=>$this->getTotalFallas(),
-					'listas'=>$this->getOrdenesListas(),
-					'abiertas'=>$this->getOrdenesAbiertas(),
-			));
+				'totalFalla'=>$this->getTotalFallas(),
+				'listas'=>$this->getOrdenesListas(),
+				'abiertas'=>$this->getOrdenesAbiertas(),
+				'vehiculo'=>$vehiculo,
+			));	
 	}
 	
 	public function actionHistoricoAverias(){
@@ -911,6 +903,7 @@ class NeumaticosController extends Controller
 			if($model->save()){
 				$det->idestatus=3;
 				$det->fechaRealizada=$model->fecha;
+				$det->idNuevoCaucho=$model->id;
 				$det->save();
 				$viejo->idestatusCaucho=3;
 				$viejo->save();
@@ -981,11 +974,8 @@ class NeumaticosController extends Controller
 			'condition' =>'idaccionCaucho=1 and id in (select iddetalleEventoCa from sgu_detOrdNeumatico where idordenMtto="'.$id.'")',
 			'order'=>'fechaFalla DESC'
 			)));
-		$rotaciones=new CActiveDataProvider('Rotacioncauchos',array('criteria' => array(
-			'condition' =>'id in (select de.idrotacionCauchos as id from sgu_detOrdNeumatico d, sgu_detalleEventoCa de where d.iddetalleEventoCa=de.id and d.idordenMtto='.$id.' and de.idaccionCaucho=2 group by de.idrotacionCauchos)',
-			'order'=>'id'
-			)));
-		$totMov=Yii::app()->db->createCommand("select count(de.idrotacionCauchos) as tot from sgu_detOrdNeumatico d, sgu_detalleEventoCa de where d.iddetalleEventoCa=de.id and d.idordenMtto=".$id." and de.idaccionCaucho=2 group by de.idrotacionCauchos")->queryRow();
+		 
+		//$totMov=Yii::app()->db->createCommand("select count(de.idrotacionCauchos) as tot from sgu_detOrdNeumatico d, sgu_detalleEventoCa de where d.iddetalleEventoCa=de.id and d.idordenMtto=".$id." and de.idaccionCaucho=2 group by de.idrotacionCauchos")->queryRow();
 		
 		$factura=new CActiveDataProvider('Factura',array('criteria' => array(
 			'condition'=>'idordenMtto="'.$id.'"'),
@@ -996,15 +986,12 @@ class NeumaticosController extends Controller
 		if(isset($_GET["idRot"])){
 			$idRot=$_GET["idRot"];
 		}
-		$movimientos=new CActiveDataProvider('Detalleeventoca',array('criteria' => array(
-			'condition' =>'idrotacionCauchos='.$idRot.'',
-			//'order'=>'fechaFalla'
-			)));
+		 
 			
 		$this->render('registrarFacturacion',array(
 			'averias'=>$averias,
 			'renovaciones'=>$renovaciones,
-			'rotaciones'=>$rotaciones,
+			 
 			'modelofactura'=>$model,
 			'factura'=>$factura,
 			'id'=>$id,
@@ -1013,8 +1000,7 @@ class NeumaticosController extends Controller
 			'nom'=>$nom,
 			'nuevomont'=>$nuevomont,
 			'dir'=>$dir,
-			'totMov'=>$totMov['tot'],
-			'movimientos'=>$movimientos
+			 
 		));
 	}
 	public function actionVerificarEstadoRenovacion($id){
@@ -1115,7 +1101,7 @@ class NeumaticosController extends Controller
 					}	
 				}
 			}
-			if(isset($_POST['idrot'])){
+			/*if(isset($_POST['idrot'])){
 				if($_POST['idrot']!=""){
 				$rot = explode(",", $_POST['idrot']);
 				foreach($rot as $idrot){
@@ -1127,7 +1113,7 @@ class NeumaticosController extends Controller
 						}
 					}
 				}
-			}
+			}*/
 			
                 if (Yii::app()->request->isAjaxRequest){
 				   /*inserts por debajo del plan de mantenimiento a cada vehiculo del grupo*/
@@ -1370,7 +1356,27 @@ class NeumaticosController extends Controller
 				echo CHtml::tag('option',array('type'=>'text','value'=>(($li->id))),Chtml::encode(($li->posicionEje)),true);
 		}
 	}
+	public function actionActualizarListaPosCaucho(){
 	
+			$lista2=Posicionrueda::model()->findAll('1 order by id desc');
+			foreach($lista2 as $li){
+				echo CHtml::tag('option',array('type'=>'text','value'=>(($li->id))),Chtml::encode(($li->posicionRueda)),true);
+		}
+	}
+	public function actionActualizarListaMedCaucho(){
+		$models = Caucho::model()->findAll('1 order by id desc');
+		$data = array();
+		
+		foreach ($models as $mode){
+			$piso=Piso::model()->findByPk($mode->idpiso);
+			$rin=Rin::model()->findByPk($mode->idrin);
+			$medida=Medidacaucho::model()->findByPk($mode->idmedidaCaucho);
+			$data[$mode->id] = $medida->medida . ' '. $rin->rin .' '.$piso->piso; 
+
+			echo CHtml::tag('option',array('type'=>'text','value'=>(($mode->id))),Chtml::encode(($data[$mode->id])),true);
+		
+		}		
+	}
 	public function actionActualizarEstado($id){
 		if($id==0){
 			echo -1;
@@ -1430,16 +1436,13 @@ class NeumaticosController extends Controller
 			'condition' =>'idaccionCaucho=1 and id in (select iddetalleEventoCa from sgu_detOrdNeumatico where idordenMtto="'.$id.'")',
 			'order'=>'fechaFalla DESC'
 			)));
-		$rotaciones=new CActiveDataProvider('Rotacioncauchos',array('criteria' => array(
-			'condition' =>'id in (select de.idrotacionCauchos as id from sgu_detOrdNeumatico d, sgu_detalleEventoCa de where d.iddetalleEventoCa=de.id and d.idordenMtto='.$id.' and de.idaccionCaucho=2 group by de.idrotacionCauchos)',
-			'order'=>'id'
-			)));
-			
+		 $fac=Yii::app()->db->createCommand('select total from sgu_factura where idordenMtto="'.$id.'"')->queryRow();
+        
 		$data1=$averias->getData();
 		if(count($data1)>0)
 		for($i=0;$i<count($data1);$i++){
 			
-			if($data1[$i]["idestatus"]<>3){
+			if($data1[$i]["idestatus"]<>3 or $fac["total"]==0){
 				$estado=0;
 				break;
 			}else	
@@ -1449,22 +1452,13 @@ class NeumaticosController extends Controller
 		if(count($data2)>0)
 		for($i=0;$i<count($data2);$i++){
 			
-			if($data2[$i]["idestatus"]<>3){
+			if($data2[$i]["idestatus"]<>3  or $fac["total"]==0){
 				$estado=0;
 				break;
 			}else	
 				$estado=1;
 		}
-		$data3=$rotaciones->getData();
-		if(count($data3)>0)
-		for($i=0;$i<count($data3);$i++){
-			
-			if($data3[$i]["idestatus"]<>3){
-				$estado=0;
-				break;
-			}else	
-				$estado=1;
-		}
+		 
 		  echo CJSON::encode(array(
                 'estado'=>$estado, 
                 ));

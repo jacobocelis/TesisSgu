@@ -270,7 +270,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
 			    'enableSorting' => true,
 				'template'=>"{items}\n{summary}\n{pager}",
 				'selectableRows'=>0,
-				'emptyText'=>'No hay ordenes listas para cerrar',
+				'emptyText'=>'',
                 'dataProvider'=>$vehiculosMont[$i],
 				'columns'=>array(
 				array(
@@ -282,8 +282,8 @@ $this->widget('zii.widgets.grid.CGridView', array(
 				),
 			),
 		)
-    ));
-	
+    ));?>
+	<i>*Neumaticos anteriores:</i><?php
 	$this->widget('zii.widgets.grid.CGridView', array(
                 'id'=>'fallas2',
 				//'selectionChanged'=>'validar',
@@ -328,74 +328,11 @@ $this->widget('zii.widgets.grid.CGridView', array(
 					'name'=>'iddetalleRueda',
 					'htmlOptions'=>array('style'=>'text-align:center;width:85px'),
 				),
-				)
-    ));
-	
-}
-?>
-</div>
-<?php }?>
-<?php if($totalRot>0){?>
-<div class='crugepanel user-assignments-role-list'>
-<h2>Rotaciones</h2>
-<?php
-for($i=0;$i<$totalRot;$i++){
-$this->widget('zii.widgets.grid.CGridView', array(
-                'id'=>'rota',
-				//'hideHeader'=>true,
-				//'selectionChanged'=>'validar',
-				'summaryText'=>'',
-			    'enableSorting' => true,
-				'template'=>"{items}\n{summary}\n{pager}",
-				'selectableRows'=>0,
-				'emptyText'=>'No hay ordenes listas para cerrar',
-                'dataProvider'=>$Rotaciones[$i],
-				'columns'=>array(
-				/*array(
-					'type'=>'raw',
-					'headerHtmlOptions'=>array('style'=>'width:7%;text-align:left;background:#F3FDA4'),
-					'header'=>'Vehiculo',
-					'value'=>'\'<strong>Unidad: </strong> #0\'.$data->numeroUnidad.\' \'.$data->idmodelo0->idmarca0->marca.\'  \'.$data->idmodelo0->modelo.\' \'.$data->anno.\' \'.$data->idcolor0->color',
-					'htmlOptions'=>array('style'=>'text-align:left;width:100px;background:#F3FDA4'
-				),
-			),*/
-				array(
-					'header'=>'Nombre',
-					//'value'=>'$data->posicionDestino==null?\'Repuesto\':$data->posicionDestino0->idposicionRueda0->posicionRueda',
-					'name'=>'nombre',
-					'htmlOptions'=>array('style'=>'text-align:center;width:85px'),
-				),
-				array(
-					'header'=>'Detalle',
-					//'value'=>'$data->posicionDestino==null?\'Repuesto\':$data->posicionDestino0->idposicionRueda0->posicionRueda',
-					'name'=>'descripcion',
-					'htmlOptions'=>array('style'=>'text-align:center;width:285px'),
-				),
-				array(
-					'header'=>'Realizada',
-					'name'=>'fechaRealizada',
-					'type'=>'raw',
-					'value'=>'date("d/m/Y",strtotime($data->fechaRealizada))',
-					'htmlOptions'=>array('style'=>'width:80px;text-align:center;'),
-				),
-				array(
-					'header'=>'Costo',
-					'value'=>'number_format($data->costoTotal, 2,",",".").\' Bs.\'',
-					'name'=>'costoTotal',
-					'htmlOptions'=>array('style'=>'text-align:center;width:85px'),
-				),
-				array(
-					'header'=>'Estado',
-					'name'=>'idestatus',
-					'type'=>'raw',
-					'value'=>'$data->color($data->idestatus,$data->idestatus0->estatus)',
-					'htmlOptions'=>array('style'=>'width:80px;text-align:center;'),
-				),
-		)
+			)
     ));?>
-	<i><strong>Movimientos:</strong></i><?php
-	$this->widget('zii.widgets.grid.CGridView', array(
-                'id'=>'detallerot',
+<i>*Neumáticos nuevos:</i><?php
+		$this->widget('zii.widgets.grid.CGridView', array(
+                'id'=>'nuevos',
 				//'selectionChanged'=>'validar',
 				'summaryText'=>'',
 				//'hideHeader'=>true,
@@ -403,68 +340,56 @@ $this->widget('zii.widgets.grid.CGridView', array(
 				'template'=>"{items}\n{summary}\n{pager}",
 				'selectableRows'=>0,
 				'emptyText'=>'',
-                'dataProvider'=>$actividadesRot[$i],
+                'dataProvider'=>$actividadesMont[$i],
 				'columns'=>array(
 				
 				array(
-					'header'=>'Unidad',
-					'name'=>'idhistoricoCaucho',
-					'value'=>'str_pad((int) $data->cauchoOrigen0->idvehiculo0->numeroUnidad,2,"0",STR_PAD_LEFT);',
-					//'value'=>'$data->idplan0->idplanGrupo0->CompiledColour->$data-id.\' \'.$data->CompiledColour',
-					'htmlOptions'=>array('style'=>'text-align:center;width:40px'),
+					'type'=>"raw",
+					'header'=>'Serial',
+					'value'=>'$data->idNuevoCaucho0->serial=="0"?$data->porDefinir($data->idNuevoCaucho0->serial):strtoupper($data->idNuevoCaucho0->serial);',
+					//'name'=>'serial',
+					'htmlOptions'=>array('style'=>'text-align:center;'),
+				),
+				array(
+					'type'=>'raw',
+					'header'=>'Marca',
+					'value'=>'$data->idNuevoCaucho0->idmarcaCaucho==""?$data->porDefinir(""):$data->idNuevoCaucho0->idmarcaCaucho0->nombre',
+					'name'=>'idmarcaCaucho',
+					'htmlOptions'=>array('style'=>'text-align:center;'),
+				),
+				array(
+					'header'=>'Detalle',
+					'value'=>'$data->idNuevoCaucho0->idcaucho0->idmedidaCaucho0->medida.\' R\'.$data->idNuevoCaucho0->idcaucho0->idrin0->rin.\' \'.$data->idNuevoCaucho0->idcaucho0->idpiso0->piso',
+					'name'=>'idcaucho',
+					'htmlOptions'=>array('style'=>'text-align:center;'),
 				),
 				array(
 					'header'=>'Eje',
-					'value'=>'$data->posicionOrigen==null?\'-\':$data->posicionOrigen0->iddetalleEje0->idposicionEje0->posicionEje',
+					'value'=>'$data->idNuevoCaucho0->iddetalleRueda0->iddetalleEje0->idposicionEje0->posicionEje',
 					'name'=>'iddetalleRueda',
-					'htmlOptions'=>array('style'=>'text-align:center;width:85px'),
+					'htmlOptions'=>array('style'=>'text-align:center;'),
 				),
 				array(
-					'header'=>'Lado',
-					'value'=>'$data->posicionOrigen==null?\'Repuesto\':$data->posicionOrigen0->idposicionRueda0->posicionRueda',
+					'header'=>'Posición',
+					'value'=>'$data->idNuevoCaucho0->iddetalleRueda0->idposicionRueda0->posicionRueda',
 					'name'=>'iddetalleRueda',
-					'htmlOptions'=>array('style'=>'text-align:center;width:85px'),
-				),
-				/*array(
-					'type'=>'raw',
-					'header'=>'',
-					'value'=>'\'<strong>Destino</strong>\'',
-					'htmlOptions'=>array('style'=>'text-align:center;width:85px'),
-				),*/
-				array(
-					'type'=>'raw',
-					'header'=>'Movimiento',
-					'value'=>'
-                        CHtml::image(Yii::app()->request->baseUrl."/imagenes/arrow_right.png",
-                                          "Movimiento",array("title"=>"desde->hacia"))',
-					'htmlOptions'=>array('style'=>'text-align:center;width:85px'),
+					'htmlOptions'=>array('style'=>'text-align:center;'),
 				),
 				array(
-					'header'=>'Unidad',
-					'name'=>'idhistoricoCaucho',
-					'value'=>'str_pad((int) $data->cauchoDestino0->idvehiculo0->numeroUnidad,2,"0",STR_PAD_LEFT);',
-					//'value'=>'$data->idplan0->idplanGrupo0->CompiledColour->$data-id.\' \'.$data->CompiledColour',
-					'htmlOptions'=>array('style'=>'text-align:center;width:40px'),
-				),
-				array(
-					'header'=>'Eje',
-					'value'=>'$data->posicionDestino==null?\'-\':$data->posicionDestino0->iddetalleEje0->idposicionEje0->posicionEje',
-					'name'=>'iddetalleRueda',
-					'htmlOptions'=>array('style'=>'text-align:center;width:85px'),
-				),
-				array(
-					'header'=>'Lado',
-					'value'=>'$data->posicionDestino==null?\'Repuesto\':$data->posicionDestino0->idposicionRueda0->posicionRueda',
-					'name'=>'iddetalleRueda',
-					'htmlOptions'=>array('style'=>'text-align:center;width:85px'),
+					'headerHtmlOptions'=>array('style'=>'text-align:center;'),
+					'header'=>'Costo',
+					'name'=>'costounitario',
+					'value'=>'number_format($data->idNuevoCaucho0->costounitario, 2,",",".").\' Bs.\'',
+					'htmlOptions'=>array('style'=>'text-align:center;'),
 				),
 			)
     ));
-	
 }
 ?>
 </div>
 <?php }?>
+
+
 
 <?php
 if(count($factura->getData())>0){?>

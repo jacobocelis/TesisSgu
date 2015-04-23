@@ -308,7 +308,7 @@ ul, ol {
 ?>
 <div class='form'>
 <div class='crugepanel user-assignments-role-list'>
-	<h1>Asignación de repuestos y detalle</h1>
+	<h1>Asignación de repuestos</h1>
 
 	<strong><p>Grupos registrados:</p></strong>
 	

@@ -37,7 +37,7 @@ $this->menu=array(
 );
 ?>
 <div class='crugepanel user-assignments-role-list'>
-<h1>Histórico de montajes realizados</h1>
+<h1>Histórico de montajes</h1>
 <div id="filtro" style="width:20%">
 <i>Por # de unidad: </i>
 
@@ -69,7 +69,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
 					'header'=>'Fecha de montaje',
 					'value'=>'$data->fecha=="0000-01-01"?$data->porDefinir($data->fecha):date("d/m/Y",strtotime($data->fecha))',
 					'name'=>'fecha',
-					'htmlOptions'=>array('style'=>'text-align:center;width:5px'),
+					'htmlOptions'=>array('style'=>'text-align:center;'),
 				),
 				array(
 					'header'=>'Unidad',
@@ -78,7 +78,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
 					//'value'=>'$data->idplan0->idplanGrupo0->CompiledColour->$data-id.\' \'.$data->CompiledColour',
 					'htmlOptions'=>array('style'=>'text-align:center;width:40px'),
 				),
-				array(
+				/*array(
 					'type'=>"raw",
 					'header'=>'Serial',
 					'value'=>'$data->serial=="0"?$data->porDefinir($data->serial):strtoupper($data->serial);',
@@ -97,19 +97,43 @@ $this->widget('zii.widgets.grid.CGridView', array(
 					'value'=>'$data->idcaucho0->idmedidaCaucho0->medida.\' R\'.$data->idcaucho0->idrin0->rin.\' \'.$data->idcaucho0->idpiso0->piso',
 					'name'=>'idcaucho',
 					'htmlOptions'=>array('style'=>'text-align:center;width:85px'),
-				),
+				),*/
 				array(
 					'header'=>'Eje',
 					'value'=>'$data->iddetalleRueda0->iddetalleEje0->idposicionEje0->posicionEje',
 					'name'=>'iddetalleRueda',
-					'htmlOptions'=>array('style'=>'text-align:center;width:85px'),
+					'htmlOptions'=>array('style'=>'text-align:center;'),
 				),
 				array(
 					'header'=>'Posición',
 					'value'=>'$data->iddetalleRueda0->idposicionRueda0->posicionRueda',
 					'name'=>'iddetalleRueda',
-					'htmlOptions'=>array('style'=>'text-align:center;width:85px'),
+					'htmlOptions'=>array('style'=>'text-align:center;'),
 				),
+ 
+				array(
+					'headerHtmlOptions'=>array('style'=>'text-align:center;'),
+					'header'=>'Precio base',
+					'name'=>'costounitario',
+					'value'=>'number_format($data->costounitario, 2,",",".").\' Bs.\'',
+					'htmlOptions'=>array('style'=>'text-align:center;'),
+					),
+				array(
+					'headerHtmlOptions'=>array('style'=>'text-align:center;'),
+					'header'=>'IVA',
+					'value'=>'number_format($data->iva(), 2,",",".").\' Bs.\'',
+					'htmlOptions'=>array('style'=>'text-align:center;'),
+					),
+				/*array(
+					'headerHtmlOptions'=>array('style'=>'text-align:center;'),
+					'header'=>'Total',
+					'name'=>'costoTotal',
+					'value'=>'number_format($data->costoTotal+$data->iva(), 2,",",".").\' Bs.\'',
+					'htmlOptions'=>array('style'=>' text-align:center;'),
+					'footer'=>'<strong>Total: </strong>'.number_format($vehiculo->totalGastosCo($dataProvider->getData()), 2,",",".").' Bs.',
+					'footerHtmlOptions'=>array("style"=>"text-align:center;background: none repeat scroll 0% 0% rgba(5, 255, 0, 0.35)"),
+					//'footer'=>'',
+				),*/
 				array(
 					'type'=>"raw",
 					'headerHtmlOptions'=>array('style'=>'text-align:center;width:50px;'),

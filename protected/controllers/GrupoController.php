@@ -83,8 +83,23 @@ class GrupoController extends Controller
         /*else
             $this->render('create',array('model'=>$model,));*/
 }
+        public function RegistrarGrupo(){
+                $model=new Grupo;
+                if(isset($_POST['Grupo'])){
+                        $model->attributes=$_POST['Grupo'];
+                if($model->save()){
+                    echo "Grupo registrado correctamente\n";
+                    return true;
+                }
+                else{
+                    echo "No se pudo registrar el grupo, verifique los datos ingresados";
+                    return false;
+                }
+            }
+        }
+        
 	public function actionNuevoGrupo(){
-					$model=new Grupo;
+		$model=new Grupo;
 		  
 		if(isset($_POST['Grupo'])){
 				$model->attributes=$_POST['Grupo'];

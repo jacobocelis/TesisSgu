@@ -56,11 +56,17 @@ $this->widget('zii.widgets.grid.CGridView', array(
 					'htmlOptions'=>array('style'=>'text-align:center;width:50px;'),
 				),
 				array(
-					'header'=>'Fecha',
-					'name'=>'fecha',
-					'value'=>'date("d/m/Y", strtotime($data->fecha));',
+					'header'=>'Salida',
+					'name'=>'fechaSalida',
+					'value'=>'date("d/m/Y", strtotime($data->fechaSalida));',
 					//'value'=>'$data->idplan0->idplanGrupo0->CompiledColour->$data-id.\' \'.$data->CompiledColour',
 					'htmlOptions'=>array('style'=>'text-align:center;width:40px;'),
+				),
+				array(
+					'header'=>'Hora',
+					'name'=>'horaSalida',
+					'value'=>'date("g:i a", strtotime($data->horaSalida));',
+					'htmlOptions'=>array('style'=>'text-align:center;width:60px;'),
 				),
 				array(
 					'header'=>'Ruta realizada',
@@ -70,24 +76,14 @@ $this->widget('zii.widgets.grid.CGridView', array(
 					'htmlOptions'=>array('style'=>'text-align:center;width:100px;'),
 				),
 
-				array(
-					'header'=>'Salida',
-					'name'=>'horaSalida',
-					'value'=>'date("g:i a", strtotime($data->horaSalida));',
-					'htmlOptions'=>array('style'=>'text-align:center;width:60px;'),
-				),
-				array(
-					'header'=>'Llegada',
-					'name'=>'horaLlegada',
-					'value'=>'date("g:i a", strtotime($data->horaLlegada));',
-					'htmlOptions'=>array('style'=>'text-align:center;width:60px;'),
-				),
-				array(
+				
+				
+				/*array(
 					'header'=>'Distancia',
 					'value'=>'$data->idviaje0->distanciaKm.\' Km \'',
 					//'value'=>'date("g:i a", strtotime($data->horaLlegada));',
 					'htmlOptions'=>array('style'=>'text-align:center;width:50px;'),
-				),
+				),*/
 				array(
 					'header'=>'Pasajeros',
 					'name'=>'nroPersonas',
@@ -105,6 +101,19 @@ $this->widget('zii.widgets.grid.CGridView', array(
 					'value'=>'$data->idviaje0->idtipo0->tipo',
 					//'value'=>'date("g:i a", strtotime($data->horaLlegada));',
 					'htmlOptions'=>array('style'=>'text-align:center;width:30px;'),
+				),
+				array(
+					'header'=>'Llegada',
+					'name'=>'fechaLlegada',
+					'value'=>'date("d/m/Y", strtotime($data->fechaLlegada));',
+					//'value'=>'$data->idplan0->idplanGrupo0->CompiledColour->$data-id.\' \'.$data->CompiledColour',
+					'htmlOptions'=>array('style'=>'text-align:center;width:40px;'),
+				),
+				array(
+					'header'=>'Hora',
+					'name'=>'horaLlegada',
+					'value'=>'date("g:i a", strtotime($data->horaLlegada));',
+					'htmlOptions'=>array('style'=>'text-align:center;width:60px;'),
 				),
 				array(
 						'headerHtmlOptions'=>array('style'=>'text-align:center;width:10px;'),

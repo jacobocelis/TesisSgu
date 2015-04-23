@@ -1,35 +1,24 @@
 <?php
+class GrupoTest extends CTestCase {
+    public $modelo;
+    function setUp(){
+        parent::setUp();
+        $_POST["Grupo"]["grupo"] = 'Encava-ENT100';
+        $_POST["Grupo"]["descripcion"] = 'Autobuses grandes';
+        $_POST["Grupo"]["idtipo"] = 1;
+    }
+    public function testRegistrarGrupo(){
+        $grupo = new GrupoController('grupo');
+        $this->assertTrue($grupo->RegistrarGrupo());
+        $this->modelo = Grupo::model()->find();
+        $this->assertEquals('Encava-ENT100',$this->modelo->grupo);
+        $this->assertEquals('Autobuses grandes',$this->modelo->descripcion);
+        $this->assertEquals(1,$this->modelo->idtipo);
+    }
 
-/**
- * Description of vehiculoTest
- * Comprueba la correcta inserción de un registro de prueba en la base de datos
- * 
- */
-class GrupoTest extends CTestCase{
-    
-    private $grupo_id;
-    private $valores = array(
-            'grupo'=>"Chevrolet corsa S/AC",
-            'descripcion'=>"",
-            'idtipo'=>1,
-        );
-    
-    public function testRegistroGrupo(){
-        $grupo= new Grupo;
-        $grupo->setAttributes($this->valores);
-        
-        $this->assertTrue($grupo->save());
-        $this->grupo_id=$grupo->id;
-        //se verifica que los datos guardados del grupo fueron los ingresados
-        $this->assertEquals("Chevrolet corsa S/AC",$grupo->grupo);
-        $this->assertEquals("",$grupo->descripcion);
-        $this->assertEquals(1,$grupo->idtipo);
-         
-    }
-    function tearDown(){
-        if($this->grupo_id){
-           Grupo::model()->findByPk($this->grupo_id)->delete();
+    /*function tearDown(){
+        if($this->modelo->id){
+           Grupo::model()->findByPk($this->modelo->id)->delete();
         }
-    }
+    }*/
 }
-    

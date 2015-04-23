@@ -83,19 +83,6 @@ $this->widget('zii.widgets.grid.CGridView', array(
 					'htmlOptions'=>array('style'=>'text-align:center;'),
 				),
 				array(
-					'type'=>"raw",
-					'header'=>'Serial',
-					'value'=>'$data->idhistoricoCaucho0->serial=="0"?$data->porDefinir($data->idhistoricoCaucho0->serial):strtoupper($data->idhistoricoCaucho0->serial);',
-					'name'=>'serial',
-					'htmlOptions'=>array('style'=>'text-align:center'),
-				),
-				array(
-					'header'=>'Medida',
-					'value'=>'$data->idhistoricoCaucho0->idcaucho0->idmedidaCaucho0->medida.\' R\'.$data->idhistoricoCaucho0->idcaucho0->idrin0->rin.\' \'.$data->idhistoricoCaucho0->idcaucho0->idpiso0->piso',
-					'name'=>'idcaucho',
-					'htmlOptions'=>array('style'=>'text-align:center'),
-				),
-				array(
 					'header'=>'Eje',
 					'value'=>'$data->idhistoricoCaucho0->iddetalleRueda0->iddetalleEje0->idposicionEje0->posicionEje',
 					'name'=>'iddetalleRueda',
@@ -105,6 +92,20 @@ $this->widget('zii.widgets.grid.CGridView', array(
 					'header'=>'Posición',
 					'value'=>'$data->idhistoricoCaucho0->iddetalleRueda0->idposicionRueda0->posicionRueda',
 					'name'=>'iddetalleRueda',
+					'htmlOptions'=>array('style'=>'text-align:center'),
+				),
+
+				array(
+					'header'=>'Medida',
+					'value'=>'$data->idhistoricoCaucho0->idcaucho0->idmedidaCaucho0->medida.\' R\'.$data->idhistoricoCaucho0->idcaucho0->idrin0->rin.\' \'.$data->idhistoricoCaucho0->idcaucho0->idpiso0->piso',
+					'name'=>'idcaucho',
+					'htmlOptions'=>array('style'=>'text-align:center'),
+				),
+				array(
+					'type'=>"raw",
+					'header'=>'Serial',
+					'value'=>'$data->idhistoricoCaucho0->serial=="0"?$data->porDefinir($data->idhistoricoCaucho0->serial):strtoupper($data->idhistoricoCaucho0->serial);',
+					'name'=>'serial',
 					'htmlOptions'=>array('style'=>'text-align:center'),
 				),
 				/*array(

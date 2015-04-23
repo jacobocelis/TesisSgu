@@ -52,7 +52,7 @@
     padding: 5px;
     border: 1px solid #94A8FF;
     margin-top: 5px;
-    width: 300px;
+    
 	clear:both;
 }
 </style>

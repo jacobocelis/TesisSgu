@@ -54,11 +54,11 @@ class Detalleeventoca extends CActiveRecord
 		// will receive user inputs.
 		return array(
 			array('fechaFalla, fechaRealizada, idhistoricoCaucho, idaccionCaucho, idestatus', 'required'),
-			array('idhistoricoCaucho, idfallaCaucho, idaccionCaucho, idestatus,idempleado,posicionOrigen, cauchoOrigen, posicionDestino, cauchoDestino,idrotacionCauchos', 'numerical', 'integerOnly'=>true),
+			array('idhistoricoCaucho, idfallaCaucho, idaccionCaucho, idestatus,idempleado, idNuevoCaucho', 'numerical', 'integerOnly'=>true),
 			array('comentario', 'length', 'max'=>100),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, fechaFalla, fechaRealizada, comentario, idhistoricoCaucho, idfallaCaucho, idaccionCaucho, idestatus,idempleado,idrotacionCauchos', 'safe', 'on'=>'search'),
+			array('id, fechaFalla, fechaRealizada, comentario, idhistoricoCaucho, idfallaCaucho, idaccionCaucho, idestatus,idempleado', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -74,6 +74,7 @@ class Detalleeventoca extends CActiveRecord
 			'idestatus0' => array(self::BELONGS_TO, 'Estatus', 'idestatus'),
 			'idfallaCaucho0' => array(self::BELONGS_TO, 'Fallacaucho', 'idfallaCaucho'),
 			'idhistoricoCaucho0' => array(self::BELONGS_TO, 'Historicocaucho', 'idhistoricoCaucho'),
+			'idNuevoCaucho0' => array(self::BELONGS_TO, 'Historicocaucho', 'idNuevoCaucho'),
 			'detordneumaticos' => array(self::HAS_MANY, 'Detordneumatico', 'iddetalleEventoCa'),
 			'idempleado0' => array(self::BELONGS_TO, 'Empleado', 'idempleado'),
 			'cauchoOrigen0' => array(self::BELONGS_TO, 'Historicocaucho', 'cauchoOrigen'),
@@ -110,6 +111,7 @@ class Detalleeventoca extends CActiveRecord
 			'fechaRealizada' => 'Fecha de reparada',
 			'comentario' => 'Comentario',
 			'idhistoricoCaucho' => 'Neumático averiado',
+			'idNuevoCaucho' => 'Neumático nuevo',
 			'idfallaCaucho' => 'Avería',
 			'idaccionCaucho' => 'Acción a realizar',
 			'idestatus' => 'Estatus',

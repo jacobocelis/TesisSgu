@@ -63,13 +63,14 @@ class Historicoviajes extends CActiveRecord
 		return array(
 			'id' => 'ID',
 			'fechaSalida' => 'Fecha de salida',
-			'fechaLlegada' => 'Fecha de llegada',
+			'fechaLlegada' => 'Fecha de retorno',
 			'horaSalida' => 'Hora de salida',
-			'horaLlegada' => 'Hora de llegada',
+			'horaLlegada' => 'Hora de retorno',
 			'idviaje' => 'Ruta realizada',
 			'idvehiculo' => 'Unidad',
 			'nroPersonas' => 'Total pasajeros',
 			'idconductor' => 'Conductor',
+			
 		);
 	}
 

@@ -68,8 +68,7 @@
 	<div class="row buttons">
 		<?php echo CHtml::submitButton($model->isNewRecord ? 'Montar' : 'Actualizar'); ?>
 	</div>
-		<?php echo $form->error($model,'serial'); ?>
-		<?php echo $form->error($model,'idmarcaCaucho'); ?>
+	
 
 <?php $this->endWidget(); ?>
 

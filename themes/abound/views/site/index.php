@@ -74,5 +74,9 @@
 .span3 {
     width: 166px;
 }
+#content{
+	width: 900px;
 
+margin: 40px auto 0px;
+}
 </style>

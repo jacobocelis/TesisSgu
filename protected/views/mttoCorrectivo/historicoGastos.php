@@ -95,6 +95,13 @@ $this->menu=array(
 				),
 				array(
 					'headerHtmlOptions'=>array('style'=>'text-align:center;'),
+					'header'=>'Costo unitario',
+					'name'=>'costoUnitario',
+					'value'=>'number_format($data->costoUnitario, 2,",",".").\' Bs.\'',
+					'htmlOptions'=>array('style'=>'text-align:center;'),
+					),
+				array(
+					'headerHtmlOptions'=>array('style'=>'text-align:center;'),
 					'header'=>'Base',
 					'name'=>'costoTotal',
 					'value'=>'number_format($data->costoTotal, 2,",",".").\' Bs.\'',
