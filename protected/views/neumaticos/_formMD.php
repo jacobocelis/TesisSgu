@@ -43,9 +43,14 @@
 	
 <div class="row">
 		<?php echo $form->hiddenField($model,'idestatusCaucho'); ?>
+
 	</div>
 	<div class="row">
 		<?php echo $form->hiddenField($model,'idvehiculo'); ?>
+	</div>
+<div class="row">
+		<?php echo $form->hiddenField($model,'costounitario'); ?>
+	
 	</div>
 
 	<div class="row">

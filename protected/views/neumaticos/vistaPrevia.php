@@ -209,44 +209,44 @@ $this->widget('zii.widgets.grid.CGridView', array(
                 'dataProvider'=>$recursosAver[$i][$j],
 				'columns'=>array(
 					array(
-					'headerHtmlOptions'=>array('style'=>'text-align:left;'),
+					'headerHtmlOptions'=>array('style'=>'text-align:center;'),
 					'header'=>'<PRE>Recurso</PRE>',
 					'name'=>'idrecursoCaucho',
 					'value'=>'$data->idrecursoCaucho0->recurso',
-					'htmlOptions'=>array('style'=>'width:100px;'),
+					'htmlOptions'=>array('style'=>'text-align:center;'),
 					//'footer'=>'',
 				),
 				array(
-					'headerHtmlOptions'=>array('style'=>'text-align:left;'),
+					'headerHtmlOptions'=>array('style'=>'text-align:center;'),
 					'header'=>'<PRE>Cantidad</PRE>',
 					'name'=>'cantidad',
-					'htmlOptions'=>array('style'=>'width:50px;'),
+					'htmlOptions'=>array('style'=>'text-align:center;'),
 					
 					//'footer'=>'',
 				),
 				array(
-					'headerHtmlOptions'=>array('style'=>'text-align:left;'),
+					'headerHtmlOptions'=>array('style'=>'text-align:center;'),
 					'header'=>'<PRE>Unidad</PRE>',
 					'name'=>'idunidad',
 					'value'=>'$data->idunidad0->corto',
-					'htmlOptions'=>array('style'=>'width:50px;'),
+					'htmlOptions'=>array('style'=>'text-align:center;'),
 					//'footer'=>'',
 				),
 				array(
-					'headerHtmlOptions'=>array('style'=>'text-align:left;'),
+					'headerHtmlOptions'=>array('style'=>'text-align:center;'),
 					'header'=>'<PRE>Precio unitario</PRE>',
 					'value'=>'number_format($data->costoUnitario, 2,",",".").\' BsF.\'',
 					'name'=>'costoUnitario',
 					
-					'htmlOptions'=>array('style'=>'width:50px;'),
+					'htmlOptions'=>array('style'=>'text-align:center;'),
 					//'footer'=>'',
 				),
 				array(
-					'headerHtmlOptions'=>array('style'=>'text-align:left;'),
+					'headerHtmlOptions'=>array('style'=>'text-align:center;'),
 					'header'=>'<PRE>Total</PRE>',
 					'name'=>'costoTotal',
 					'value'=>'number_format($data->costoTotal, 2,",",".").\' Bs.\'',
-					'htmlOptions'=>array('style'=>'width:50px;'),
+					'htmlOptions'=>array('style'=>'text-align:center;'),
 					//'footer'=>'',
 				),
 			)
@@ -330,6 +330,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
 				),
 			)
     ));?>
+<?php if($mostrarNuevos){?>
 <i>*Neumáticos nuevos:</i><?php
 		$this->widget('zii.widgets.grid.CGridView', array(
                 'id'=>'nuevos',
@@ -384,8 +385,9 @@ $this->widget('zii.widgets.grid.CGridView', array(
 				),
 			)
     ));
+
 }
-?>
+?><?php }?>
 </div>
 <?php }?>
 
@@ -552,6 +554,7 @@ h1 {
 }
 </style>
 <script>
+
 $('#formulario').hide();
 function validar(){
 var idAct = $.fn.yiiGridView.getSelection('actividades');

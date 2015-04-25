@@ -86,8 +86,27 @@ class Vehiculo extends CActiveRecord
 			
 		return $total;
 	}
+	public function totalGastosMontajes($data){
+		$total=0;
+		
+		foreach($data as $dat){
+			$id=Detalleeventoca::model()->find('idhistoricoCaucho='.$dat['id'].' or idNuevoCaucho='.$dat['id'].'');
+			if($id['id']<>''){
+				$orden=Detordneumatico::model()->find('iddetalleEventoCa='.$id['id'].'');
+				$factura=Factura::model()->find('idordenMtto='.$orden->idordenMtto.'');
+				if($factura==null){
+					$iva=0;
+				}else{
+					$iva=$factura->iva/$factura->total;
+				}
+				$total=$total+($dat["costounitario"]+($dat["costounitario"]*($iva)));
+			}
+		}
+		return $total;
+	}
 	public function totalGastosNeumatico($data){
 		$total=0;
+
 		foreach($data as $dat){
 			$orden=Detordneumatico::model()->find('iddetalleEventoCa='.$dat['iddetalleEventoCa'].'');
 			$factura=Factura::model()->find('idordenMtto='.$orden->idordenMtto.'');

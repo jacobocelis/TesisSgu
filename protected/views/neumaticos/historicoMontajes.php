@@ -55,7 +55,7 @@ $this->menu=array(
 </div>
 <?php
 $this->widget('zii.widgets.grid.CGridView', array(
-				'id'=>'des',
+				'id'=>'historico',
 				'summaryText'=>'',
 				//se deben definir inicialmente los neumaticos que posee cada vehiculo
 			   // 'enableSorting' => false,
@@ -65,18 +65,18 @@ $this->widget('zii.widgets.grid.CGridView', array(
                 'dataProvider'=>$dataProvider,
 				'columns'=>array(
 				array(
+					'header'=>'Unidad',
+					'name'=>'idhistoricocaucho',
+					'value'=>'str_pad((int) $data->idvehiculo0->numeroUnidad,2,"0",STR_PAD_LEFT);',
+					//'value'=>'$data->idplan0->idplanGrupo0->CompiledColour->$data-id.\' \'.$data->CompiledColour',
+					'htmlOptions'=>array('style'=>'text-align:center;width:55px'),
+				),
+				array(
 					'type'=>"raw",
 					'header'=>'Fecha de montaje',
 					'value'=>'$data->fecha=="0000-01-01"?$data->porDefinir($data->fecha):date("d/m/Y",strtotime($data->fecha))',
 					'name'=>'fecha',
 					'htmlOptions'=>array('style'=>'text-align:center;'),
-				),
-				array(
-					'header'=>'Unidad',
-					'name'=>'idhistoricocaucho',
-					'value'=>'str_pad((int) $data->idvehiculo0->numeroUnidad,2,"0",STR_PAD_LEFT);',
-					//'value'=>'$data->idplan0->idplanGrupo0->CompiledColour->$data-id.\' \'.$data->CompiledColour',
-					'htmlOptions'=>array('style'=>'text-align:center;width:40px'),
 				),
 				/*array(
 					'type'=>"raw",
@@ -115,32 +115,32 @@ $this->widget('zii.widgets.grid.CGridView', array(
 					'headerHtmlOptions'=>array('style'=>'text-align:center;'),
 					'header'=>'Precio base',
 					'name'=>'costounitario',
-					'value'=>'number_format($data->costounitario, 2,",",".").\' Bs.\'',
+					'value'=>'$data->costounitario<>0?number_format($data->costounitario, 2,",",".").\' Bs.\':"-"',
 					'htmlOptions'=>array('style'=>'text-align:center;'),
 					),
 				array(
 					'headerHtmlOptions'=>array('style'=>'text-align:center;'),
 					'header'=>'IVA',
-					'value'=>'number_format($data->iva(), 2,",",".").\' Bs.\'',
+					'value'=>'$data->iva()<>0?number_format($data->iva(), 2,",",".").\' Bs.\':"-"',
 					'htmlOptions'=>array('style'=>'text-align:center;'),
 					),
-				/*array(
+				array(
 					'headerHtmlOptions'=>array('style'=>'text-align:center;'),
 					'header'=>'Total',
 					'name'=>'costoTotal',
-					'value'=>'number_format($data->costoTotal+$data->iva(), 2,",",".").\' Bs.\'',
+					'value'=>'$data->costounitario<>0?number_format($data->costounitario+$data->iva(), 2,",",".").\' Bs.\':"-"',
 					'htmlOptions'=>array('style'=>' text-align:center;'),
-					'footer'=>'<strong>Total: </strong>'.number_format($vehiculo->totalGastosCo($dataProvider->getData()), 2,",",".").' Bs.',
+					'footer'=>'<strong>Total: </strong>'.number_format($vehiculo->totalGastosMontajes($dataProvider->getData()), 2,",",".").' Bs.',
 					'footerHtmlOptions'=>array("style"=>"text-align:center;background: none repeat scroll 0% 0% rgba(5, 255, 0, 0.35)"),
-					//'footer'=>'',
-				),*/
+					
+				),
 				array(
 					'type'=>"raw",
-					'headerHtmlOptions'=>array('style'=>'text-align:center;width:50px;'),
+					'headerHtmlOptions'=>array('style'=>'text-align:center;'),
 					'header'=>'Estatus',
 					'value'=>'$data->coloresEstatus($data)',
 					'name'=>'idestatusCaucho',
-					'htmlOptions'=>array('style'=>'text-align:center;width:45px;font-weight: bold;'),
+					'htmlOptions'=>array('style'=>'text-align:center;font-weight: bold;'),
 				),
 				
 					

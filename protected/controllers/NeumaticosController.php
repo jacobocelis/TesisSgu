@@ -364,7 +364,13 @@ class NeumaticosController extends Controller
 		if(isset($_POST['Historicocaucho'])){
 			 $model->attributes=$_POST['Historicocaucho'];
 			 $model->fecha=date("Y-m-d", strtotime(str_replace('/', '-',$model->fecha)));
+
 			if($model->save()){
+				if($model->iddetalleRueda=="")
+					$model->idestatusCaucho=4;
+				else
+					$model->idestatusCaucho=1;
+				$model->update();
                 if (Yii::app()->request->isAjaxRequest){
                     echo CJSON::encode(array(
                         'status'=>'success', 
@@ -376,10 +382,10 @@ class NeumaticosController extends Controller
             }
 		}
 			if (Yii::app()->request->isAjaxRequest){	
-				if($model->iddetalleRueda=="")
+				/*if($model->iddetalleRueda=="")
 					$model->idestatusCaucho=4;
 				else
-					$model->idestatusCaucho=1;
+					$model->idestatusCaucho=1;*/
 			
             echo CJSON::encode(array(
                 'status'=>'failure', 
@@ -604,10 +610,11 @@ class NeumaticosController extends Controller
 	}
 	
 		public function actionVistaPrevia($id,$nom,$dir){
+		
 		$orden=new CActiveDataProvider('Ordenmtto',array('criteria' => array(
 			'condition' =>'id='.$id."")
 			,'pagination'=>array('pageSize'=>9999999)));
-			
+		
 		// and idfallaCaucho is not null (para solo fallas)
 		$idvehiculoAver=Yii::app()->db->createCommand("select distinct(h.idvehiculo), count(*) as totAct from sgu_detalleEventoCa de, sgu_detOrdNeumatico d, sgu_historicoCaucho h where de.idfallaCaucho is not null and de.idhistoricoCaucho=h.id and de.id=d.iddetalleEventoCa and d.idordenMtto=".$id." group by h.idvehiculo")->queryAll();
 		$totalVehAver=count($idvehiculoAver);
@@ -714,6 +721,7 @@ class NeumaticosController extends Controller
 			'totFactura'=>$totFactura,
 			'nom'=>$nom,
 			'dir'=>$dir,
+			'mostrarNuevos'=>$this->mostrarNuevosNeumaticos($id),
 		));
 	
 	}
@@ -789,26 +797,91 @@ class NeumaticosController extends Controller
 		));
 	}
 	public function actionHistoricoMontajes(){
-			
-			$des=new CActiveDataProvider('Historicocaucho',array("criteria"=>array("condition"=>"idestatusCaucho=3 or idestatusCaucho=1",'order'=>"idestatusCaucho asc")));
-			//$mi=Yii::app()->db->createCommand("select count(*) as total from sgu_reporteFalla where idestatus=8")->queryRow();
+		$vehiculo=new Vehiculo;
+		$dataProvider=new CActiveDataProvider('Historicocaucho',
+		array(
+			"criteria"=>array(
+			"condition"=>"idestatusCaucho=3 or idestatusCaucho=1",'order'=>"fecha,idestatusCaucho asc")));
+
+			if(isset($_GET["fechaIni"]) or isset($_GET["fechaFin"]) or isset($_GET["vehiculo"])){
+				if($_GET["fechaIni"]=="" and $_GET["fechaFin"]=="" and $_GET["vehiculo"]==""){
+					$dataProvider=new CActiveDataProvider('Historicocaucho',array('criteria' => array(
+						'condition' =>'idestatusCaucho=3 or idestatusCaucho=1',
+						'order'=>'fecha,idestatusCaucho desc',
+					)));	
+				}
+				if($_GET["fechaIni"]!="" and $_GET["vehiculo"]==""){
+					$fechaini=date("Y-m-d", strtotime(str_replace('/', '-',$_GET["fechaIni"])));
+					$fechafin=date("Y-m-d", strtotime(str_replace('/', '-',$_GET["fechaFin"])));
+					$dataProvider=new CActiveDataProvider('Historicocaucho',array('criteria' => array(
+						'condition' =>'(idestatusCaucho=3 or idestatusCaucho=1) and (fecha>="'.$fechaini.'" and fecha<="'.$fechafin.'")',
+						'order'=>'fecha,idestatusCaucho desc',
+					)));		
+				}
+				if($_GET["fechaIni"]=="" and $_GET["vehiculo"]!=""){
+					$dataProvider=new CActiveDataProvider('Historicocaucho',array('criteria' => array(
+						'condition' =>'(idestatusCaucho=3 or idestatusCaucho=1) and idvehiculo='.$_GET["vehiculo"].'',
+						'order'=>'fecha,idestatusCaucho desc',
+					)));	
+				}
+				if($_GET["fechaIni"]!="" and $_GET["vehiculo"]!=""){
+					$fechaini=date("Y-m-d", strtotime(str_replace('/', '-',$_GET["fechaIni"])));
+					$fechafin=date("Y-m-d", strtotime(str_replace('/', '-',$_GET["fechaFin"])));
+					$dataProvider=new CActiveDataProvider('Historicocaucho',array('criteria' => array(
+						'condition' =>'(idestatusCaucho=3 or idestatusCaucho=1) and (fecha>="'.$fechaini.'" and fecha<="'.$fechafin.'") and  idvehiculo='.$_GET["vehiculo"].'',
+						'order'=>'fecha,idestatusCaucho desc',
+					)));	
+				}
+		}
 		$this->render('historicoMontajes',array(
-				'dataProvider'=>$des,
+				'dataProvider'=>$dataProvider,
 				'iniciales'=>$this->getPorDefinir(),
-					'totalFalla'=>$this->getTotalFallas(),
-					'listas'=>$this->getOrdenesListas(),
-					'abiertas'=>$this->getOrdenesAbiertas(),
+				'totalFalla'=>$this->getTotalFallas(),
+				'listas'=>$this->getOrdenesListas(),
+				'abiertas'=>$this->getOrdenesAbiertas(),
+				'vehiculo'=>$vehiculo,
 			));
 	}
 	public function actionHistoricoGastos(){
 			$vehiculo = new Vehiculo;
-			$recursos=new CActiveDataProvider('Detreccaucho',array('criteria' => array(
+			$dataProvider =new CActiveDataProvider('Detreccaucho',array('criteria' => array(
 			'condition' =>'1',
-			//'order'=>'fechaFalla'
 			)));
+
+			if(isset($_GET["fechaIni"]) or isset($_GET["fechaFin"]) or isset($_GET["vehiculo"])){
+				if($_GET["fechaIni"]=="" and $_GET["fechaFin"]=="" and $_GET["vehiculo"]==""){
+					$dataProvider=new CActiveDataProvider('Detreccaucho',array('criteria' => array(
+						'condition' =>'1',
+						'order'=>'iddetalleEventoCa desc',
+					)));	
+				}
+				if($_GET["fechaIni"]!="" and $_GET["vehiculo"]==""){
+					$fechaini=date("Y-m-d", strtotime(str_replace('/', '-',$_GET["fechaIni"])));
+					$fechafin=date("Y-m-d", strtotime(str_replace('/', '-',$_GET["fechaFin"])));
+					$dataProvider=new CActiveDataProvider('Detreccaucho',array('criteria' => array(
+						'condition' =>'iddetalleEventoCa in (select id from sgu_detalleEventoCa where fechaRealizada>="'.$fechaini.'" and fechaRealizada<="'.$fechafin.'")',
+						'order'=>'iddetalleEventoCa desc',
+					)));		
+				}
+				if($_GET["fechaIni"]=="" and $_GET["vehiculo"]!=""){
+
+					$dataProvider=new CActiveDataProvider('Detreccaucho',array('criteria' => array(
+						'condition' =>'iddetalleEventoCa in (select id from sgu_detalleEventoCa where idhistoricoCaucho in ( select id from sgu_historicoCaucho where idvehiculo='.$_GET["vehiculo"].'))',
+						'order'=>'iddetalleEventoCa desc',
+					)));	
+				}
+				if($_GET["fechaIni"]!="" and $_GET["vehiculo"]!=""){
+					$fechaini=date("Y-m-d", strtotime(str_replace('/', '-',$_GET["fechaIni"])));
+					$fechafin=date("Y-m-d", strtotime(str_replace('/', '-',$_GET["fechaFin"])));
+					$dataProvider=new CActiveDataProvider('Detreccaucho',array('criteria' => array(
+						'condition' =>'iddetalleEventoCa in (select id from sgu_detalleEventoCa where fechaRealizada>="'.$fechaini.'" and fechaRealizada<="'.$fechafin.'" and idhistoricoCaucho in ( select id from sgu_historicoCaucho where idvehiculo='.$_GET["vehiculo"].'))',
+						'order'=>'iddetalleEventoCa desc',
+					)));	
+				}
+		}
 			
 		$this->render('historicoGastos',array(
-				'recursos'=>$recursos,
+				'recursos'=>$dataProvider,
 				'iniciales'=>$this->getPorDefinir(),
 				'totalFalla'=>$this->getTotalFallas(),
 				'listas'=>$this->getOrdenesListas(),
@@ -818,12 +891,42 @@ class NeumaticosController extends Controller
 	}
 	
 	public function actionHistoricoAverias(){
-	//idplan in (select id from sgu_plan) and ??
-			$dataProvider=new CActiveDataProvider('Detalleeventoca',array('criteria' => array(
+		$dataProvider=new CActiveDataProvider('Detalleeventoca',array('criteria' => array(
 			'condition' =>'idestatus=3 and idfallaCaucho is not null',
 			'order'=>'id'
 			)));
-			
+
+	if(isset($_GET["fechaIni"]) or isset($_GET["fechaFin"]) or isset($_GET["vehiculo"])){
+				if($_GET["fechaIni"]=="" and $_GET["fechaFin"]=="" and $_GET["vehiculo"]==""){
+					$dataProvider=new CActiveDataProvider('Detalleeventoca',array('criteria' => array(
+						'condition' =>'idestatus=3 and idfallaCaucho is not null',
+						'order'=>'id',
+					)));	
+				}
+				if($_GET["fechaIni"]!="" and $_GET["vehiculo"]==""){
+					$fechaini=date("Y-m-d", strtotime(str_replace('/', '-',$_GET["fechaIni"])));
+					$fechafin=date("Y-m-d", strtotime(str_replace('/', '-',$_GET["fechaFin"])));
+					$dataProvider=new CActiveDataProvider('Detalleeventoca',array('criteria' => array(
+						'condition' =>'idestatus=3 and idfallaCaucho is not null and (fechaFalla>="'.$fechaini.'" and fechaFalla<="'.$fechafin.'")',
+						'order'=>'id',
+					)));		
+				}
+				if($_GET["fechaIni"]=="" and $_GET["vehiculo"]!=""){
+					
+					$dataProvider=new CActiveDataProvider('Detalleeventoca',array('criteria' => array(
+						'condition' =>'idestatus=3 and idfallaCaucho is not null and idhistoricoCaucho in (select id from sgu_historicoCaucho where idvehiculo='.$_GET["vehiculo"].')',
+						'order'=>'id',
+					)));	
+				}
+				if($_GET["fechaIni"]!="" and $_GET["vehiculo"]!=""){
+					$fechaini=date("Y-m-d", strtotime(str_replace('/', '-',$_GET["fechaIni"])));
+					$fechafin=date("Y-m-d", strtotime(str_replace('/', '-',$_GET["fechaFin"])));
+					$dataProvider=new CActiveDataProvider('Detalleeventoca',array('criteria' => array(
+						'condition' =>'idestatus=3 and idfallaCaucho is not null and (fechaFalla>="'.$fechaini.'" and fechaFalla<="'.$fechafin.'") and idhistoricoCaucho in (select id from sgu_historicoCaucho where idvehiculo='.$_GET["vehiculo"].')',
+						'order'=>'id',
+					)));	
+				}
+		}
 		$this->render('historicoAverias',array(
 				'dataProvider'=>$dataProvider,
 				'iniciales'=>$this->getPorDefinir(),
@@ -835,9 +938,40 @@ class NeumaticosController extends Controller
 	}
 	public function actionHistoricoOrdenes(){
 	$dataProvider=new CActiveDataProvider('Ordenmtto',array('criteria' => array(
-			'condition' =>'id in (select id from sgu_ordenMtto where idestatus=7 and tipo =2)',
-			'order'=>'fecha'
+			'condition' =>'idestatus=7 and tipo =2',
+			'order'=>'id desc'
 			)));
+		if(isset($_GET["fechaIni"]) or isset($_GET["fechaFin"]) or isset($_GET["vehiculo"])){
+				if($_GET["fechaIni"]=="" and $_GET["fechaFin"]=="" and $_GET["vehiculo"]==""){
+					$dataProvider=new CActiveDataProvider('Ordenmtto',array('criteria' => array(
+						'condition' =>'idestatus=7 and tipo =2',
+						'order'=>'id desc',
+					)));	
+				}
+				if($_GET["fechaIni"]!="" and $_GET["vehiculo"]==""){
+					$fechaini=date("Y-m-d", strtotime(str_replace('/', '-',$_GET["fechaIni"])));
+					$fechafin=date("Y-m-d", strtotime(str_replace('/', '-',$_GET["fechaFin"])));
+					$dataProvider=new CActiveDataProvider('Ordenmtto',array('criteria' => array(
+						'condition' =>'idestatus=7 and tipo =2 and (date(fecha)>="'.$fechaini.'" and date(fecha)<="'.$fechafin.'")',
+						'order'=>'id desc',
+					)));		
+				}
+				if($_GET["fechaIni"]=="" and $_GET["vehiculo"]!=""){
+					
+					$dataProvider=new CActiveDataProvider('Ordenmtto',array('criteria' => array(
+						'condition' =>'idestatus=7 and tipo =2 and id in (select idordenMtto from sgu_detOrdNeumatico where iddetalleEventoCa in (select id from sgu_detalleEventoCa where idhistoricoCaucho in (select id from sgu_historicoCaucho where  idvehiculo='.$_GET["vehiculo"].')))',
+						'order'=>'id desc',
+					)));	
+				}
+				if($_GET["fechaIni"]!="" and $_GET["vehiculo"]!=""){
+					$fechaini=date("Y-m-d", strtotime(str_replace('/', '-',$_GET["fechaIni"])));
+					$fechafin=date("Y-m-d", strtotime(str_replace('/', '-',$_GET["fechaFin"])));
+					$dataProvider=new CActiveDataProvider('Ordenmtto',array('criteria' => array(
+						'condition' =>'idestatus=7 and tipo =2 and (date(fecha)>="'.$fechaini.'" and date(fecha)<="'.$fechafin.'") and id in (select idordenMtto from sgu_detOrdNeumatico where iddetalleEventoCa in (select id from sgu_detalleEventoCa where idhistoricoCaucho in (select id from sgu_historicoCaucho where  idvehiculo='.$_GET["vehiculo"].')))',
+						'order'=>'id desc',
+					)));	
+				}
+		}
 		$this->render('historicoOrdenes',array(
 			'dataProvider'=>$dataProvider,
 			'iniciales'=>$this->getPorDefinir(),
@@ -904,9 +1038,9 @@ class NeumaticosController extends Controller
 				$det->idestatus=3;
 				$det->fechaRealizada=$model->fecha;
 				$det->idNuevoCaucho=$model->id;
-				$det->save();
+				$det->update();
 				$viejo->idestatusCaucho=3;
-				$viejo->save();
+				$viejo->update();
 				
 				if(isset($_POST['idfac'])){
 						
@@ -1424,6 +1558,42 @@ class NeumaticosController extends Controller
 		foreach ($models as $mode){
 			echo CHtml::tag('option',array('type'=>'text','value'=>(($mode->id))),Chtml::encode(($mode->falla)),true);
 		}
+	}
+		public function mostrarNuevosNeumaticos($id){
+		$estado=-1;
+		$averias=new CActiveDataProvider('Detalleeventoca',array('criteria' => array(
+			'condition' =>'idfallaCaucho is not null and id in (select iddetalleEventoCa from sgu_detOrdNeumatico where idordenMtto="'.$id.'")',
+			'order'=>'fechaFalla DESC'
+			)));
+			
+		$renovaciones=new CActiveDataProvider('Detalleeventoca',array('criteria' => array(
+			'condition' =>'idaccionCaucho=1 and id in (select iddetalleEventoCa from sgu_detOrdNeumatico where idordenMtto="'.$id.'")',
+			'order'=>'fechaFalla DESC'
+			)));
+		 $fac=Yii::app()->db->createCommand('select total from sgu_factura where idordenMtto="'.$id.'"')->queryRow();
+        
+		$data1=$averias->getData();
+		if(count($data1)>0)
+		for($i=0;$i<count($data1);$i++){
+			
+			if($data1[$i]["idestatus"]<>3 or $fac["total"]==0){
+				$estado=0;
+				break;
+			}else	
+				$estado=1;
+		}
+		$data2=$renovaciones->getData();
+		if(count($data2)>0)
+		for($i=0;$i<count($data2);$i++){
+			
+			if($data2[$i]["idestatus"]<>3  or $fac["total"]==0){
+				$estado=0;
+				break;
+			}else	
+				$estado=1;
+		}
+		 
+		 return $estado;
 	}
 	public function actionActualizarCheck($id){
 		$estado=-1;

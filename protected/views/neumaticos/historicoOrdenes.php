@@ -55,7 +55,7 @@ $this->menu=array(
 </div>
 <?php
 $this->widget('zii.widgets.grid.CGridView', array(
-                'id'=>'ordenes',
+                'id'=>'historico',
 				//'selectionChanged'=>'validar',
 				'summaryText'=>'',
 			    'enableSorting' => true,
@@ -75,7 +75,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
 				),
 				
 				array(
-					'header'=>'Fecha y hora de creada',
+					'header'=>'Fecha apertura',
 					'name'=>'fecha',
 					'value'=>'date("d/m/Y h:i A",strtotime($data->fecha))',
 					'htmlOptions'=>array('style'=>'text-align:center;width:100px'),

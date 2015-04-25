@@ -60,6 +60,20 @@ class ActividadmttoController extends Controller
 	 * Creates a new model.
 	 * If creation is successful, the browser will be redirected to the 'view' page.
 	 */
+	public function RegistrarActividad(){
+	    $model=new Actividadmtto;
+	    if(isset($_POST['Actividadmtto'])){
+	        $model->attributes=$_POST['Actividadmtto'];
+	        if($model->save()){
+	            echo "Actividad registrada correctamente\n";
+	            return true;
+	        }
+	        else{
+	            echo "No se pudo registrar la actividad, verifique los datos ingresados";
+	            return false;
+	        }	
+	    }
+	}
 	public function actionCreate()
 	{
 		$model=new Actividadmtto;

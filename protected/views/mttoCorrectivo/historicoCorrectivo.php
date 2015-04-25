@@ -54,7 +54,7 @@ $this->menu=array(
 <?php
 $this->widget('zii.widgets.grid.CGridView', array(
                 'id'=>'historico',
-				'summaryText'=>'',
+				//'summaryText'=>'',
 			    'enableSorting' => true,
 				'emptyText'=>'No hay mantenimientos realizados',
                 'dataProvider'=>$dataProvider,

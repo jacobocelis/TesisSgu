@@ -63,13 +63,13 @@ class Historicocaucho extends CActiveRecord
 	}
 	public function iva(){
 
-		$evento=Detalleeventoca::model()->find('idhistoricoCaucho='.$this->id.' and idaccionCaucho=1');
-		if($evento["id"]<>null){
+		$evento=Detalleeventoca::model()->find('idhistoricoCaucho='.$this->id.' and idaccionCaucho=1 or idNuevoCaucho='.$this->id.'');
+		if($evento["id"]<>null and $evento['idestatus']==3){
 			$orden=Detordneumatico::model()->find('iddetalleEventoCa='.$evento["id"].'');
 			$factura=Factura::model()->find('idordenMtto='.$orden->idordenMtto.'');
 			return $this->costounitario*($factura->iva/$factura->total); 
 		}else
-			return -1;
+			return 0;
 		
 	}
 	public function porDefinir($data){
@@ -95,16 +95,21 @@ class Historicocaucho extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('idestatusCaucho, idcaucho, idvehiculo, idasigChasis,serial,costounitario', 'required'),
+			array('idestatusCaucho, idcaucho, idvehiculo, idasigChasis,serial,costounitario,fecha', 'required'),
 			array('idestatusCaucho, idcaucho, idmarcaCaucho, idvehiculo, iddetalleRueda, idasigChasis,costounitario', 'numerical', 'integerOnly'=>true),
 			array('serial', 'length', 'max'=>45),
+			array('costounitario', 'validarCosto'),
 			array('fecha', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
 			array('id, fecha, serial, idestatusCaucho, idcaucho, idmarcaCaucho, idvehiculo, iddetalleRueda, idasigChasis,costounitario', 'safe', 'on'=>'search'),
 		);
 	}
-	
+	   function validarCosto(){
+        if($this->costounitario<=0 and ($this->idestatusCaucho<5)){
+            $this->addError('costounitario', 'Costo debe ser mayor a cero');
+        }
+	}
 	
 	/**
 	 * @return array relational rules.

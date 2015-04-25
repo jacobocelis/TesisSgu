@@ -55,7 +55,7 @@ $this->menu=array(
 </div>
 <?php 
 			$this->widget('zii.widgets.grid.CGridView', array(
-			'id'=>'rec',
+			'id'=>'historico',
 			'selectableRows'=>0,
 			'dataProvider'=>$recursos,
 			'enablePagination' => false,
@@ -138,6 +138,18 @@ $this->menu=array(
 
 	?>
 </div>
+<?php
+/*ventana agregar actividad*/
+$this->beginWidget('zii.widgets.jui.CJuiDialog', array( // the dialog
+    'id'=>'nuevaPos',
+    'options'=>array(
+ 
+        'autoOpen'=>false,
+        'modal'=>true, 
+    ),
+));?>
+<?php $this->endWidget();?>
+
 <style>
 .grid-view table.items th {
     color: #000;

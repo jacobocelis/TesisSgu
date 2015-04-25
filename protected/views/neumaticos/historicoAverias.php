@@ -70,7 +70,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
 					'htmlOptions'=>array('style'=>'text-align:center;width:40px'),
 				),
 				array(
-					'header'=>'Fecha reporte',
+					'header'=>'Fecha avería',
 					'name'=>'fechaFalla',
 					'value'=>'date("d/m/Y",strtotime($data->fechaFalla))',
 					'htmlOptions'=>array('style'=>'text-align:center;'),
@@ -235,6 +235,6 @@ function FiltrarFecha(){
 	var hoy="<?php echo date("d/m/Y")?>";
 	if($("#fin").val().length==0 && $("#inicio").val().length>0)
 		$("#fin").val(hoy);
-	$.fn.yiiGridView.update('historico',{ data : "fechaIni="+$("#inicio").val()+"&fechaFin="+$("#fin").val()+"&vehiculo="+$("#vehiculo").val()});
+	$.fn.yiiGridView.update('head',{ data : "fechaIni="+$("#inicio").val()+"&fechaFin="+$("#fin").val()+"&vehiculo="+$("#vehiculo").val()});
 }
 </script>
