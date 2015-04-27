@@ -14,7 +14,7 @@
 	// See class documentation of CActiveForm for details on this.
 	'enableAjaxValidation'=>false,
 )); ?>
-<h1>Datos para la orden</h1>
+
 <div class="row">
 		<?php //echo $form->labelEx($model,'fecha'); ?>
 		<?php echo $form->hiddenField($model,'fecha',array('value'=>date("Y-m-d H:i"),'size'=>20,'maxlength'=>10,'style'=>'width:80px;')); ?>
@@ -28,7 +28,7 @@
 			$data[$mode->id] = $mode->nombre . ' '. $mode->apellido;  ?>
 			
 	<div class="row">
-		<?php echo $form->labelEx($model,'cOperativo'); ?>
+		<?php echo $form->labelEx($model,'cOperativo',array("style"=>"width:210px;")); ?>
 		<?php echo $form->dropDownList($model,'cOperativo',$data,array('style' => 'width:200px;')); ?>
 		<?php echo $form->error($model,'cOperativo'); ?>
 	</div>
@@ -39,20 +39,20 @@
 			$datac[$mode->id] = $mode->nombre . ' '. $mode->apellido;  ?>
 			
 	<div class="row">
-		<?php echo $form->labelEx($model,'cTaller'); ?>
+		<?php echo $form->labelEx($model,'cTaller',array("style"=>"width:210px;")); ?>
 		<?php echo $form->dropDownList($model,'cTaller',$datac,array('style' => 'width:200px;')); ?>
 		<?php echo $form->error($model,'cTaller'); ?>
 	</div>
 	
 		<div class="row">
 		<?php echo $form->labelEx($model,'taller'); ?>
-		<?php echo $form->dropDownList($model,'taller',CHtml::listData(Proveedor::model()->findAll(),'id','nombre'),array('style' => 'width:300px;')); ?>
+		<?php echo $form->dropDownList($model,'taller',CHtml::listData(Proveedor::model()->findAll(),'id','nombre'),array('style' => 'width:360px;')); ?>
 		<?php echo $form->error($model,'taller'); ?>
 	</div>
 	
         <?php echo $form->hiddenField($model,'idestatus',array('value'=>5)); ?>
 	
-		<?php echo CHtml::submitButton($model->isNewRecord ? 'Crear orden' : 'Save',array('style'=>'margin-left:20px;margin-bottom: 9px;')); ?>
+		<?php echo CHtml::submitButton($model->isNewRecord ? 'Crear orden' : 'Save',array('style'=>'margin-left:0px;margin-bottom: 9px;')); ?>
 	
 	</div>
 <?php $this->endWidget(); ?>

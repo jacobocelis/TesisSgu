@@ -32,7 +32,7 @@ class EmpleadosController extends Controller
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create','update','conductores','AgregarConductorRuta','RegistrarConductor','coordinadores','agregarCoordinador'),
+				'actions'=>array('create','update','conductores','AgregarConductorRuta','RegistrarConductor','coordinadores','agregarCoordinador','proveedores','agregarProveedor','actualizarCoordinador'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -69,7 +69,12 @@ class EmpleadosController extends Controller
 			'dataProvider'=>$dataProvider,
 		));
 	}
-	
+	public function actionProveedores(){
+		$dataProvider=new CActiveDataProvider('Proveedor');
+		$this->render('proveedores',array(
+			'dataProvider'=>$dataProvider,
+		));
+	}
 	public function actionRegistrarConductor(){
 			$id='id=1';
 		$model=new Empleado;
@@ -143,12 +148,35 @@ class EmpleadosController extends Controller
         /*else
             $this->render('create',array('model'=>$model,));*/
 	}
-	
+	public function actionActualizarCoordinador($id){
+			 
+		$model=Empleado::model()->findByPk($id);
+		 
+		if(isset($_POST['Empleado'])){
+            $model->attributes=$_POST['Empleado'];
+			if($model->save()){
+                if (Yii::app()->request->isAjaxRequest){
+                    echo CJSON::encode(array(
+                        'status'=>'success', 
+                        'div'=>"Información actualizada"
+                        ));
+					exit;
+                }
+            }
+        }
+		 if (Yii::app()->request->isAjaxRequest){	
+            echo CJSON::encode(array(
+                'status'=>'failure', 
+                'div'=>$this->renderPartial('_formCoordinador', array('model'=>$model,'tipo'=>$id), true)
+				));
+            exit;               
+        }
+	}
 	/**
 	 * Creates a new model.
 	 * If creation is successful, the browser will be redirected to the 'view' page.
 	 */
-	public function actionCreate()
+	public function actionCreate($id)
 	{
 		$model=new Historicoempleados;
 

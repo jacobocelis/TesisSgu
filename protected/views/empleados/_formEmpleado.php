@@ -14,9 +14,8 @@
 	// See class documentation of CActiveForm for details on this.
 	'enableAjaxValidation'=>false,
 )); ?>
-<div id="verde">
+ 
 	<p class="note">Campos con <span class="required">*</span> obligatorios.</p>
-
 
 	<div class="row">
 		<?php echo $form->labelEx($model,'nombre'); ?>
@@ -41,30 +40,12 @@
 		<?php echo $form->dropDownList($model,'idtipoEmpleado',CHtml::listData(Tipoempleado::model()->findAll($tipo),'id','tipo'),array('style' => 'display: none')); ?>
 		
 	</div>
-<?php
-		echo CHtml::link('Cancelar', "",array('title'=>'Cancelar',
-        'style'=>'cursor: pointer;font-size:10px;float:right;',
-        'onclick'=>"{cancelar()}"));?>
+ 
 	<div class="row buttons">
 		<?php echo CHtml::submitButton($model->isNewRecord ? 'Registrar' : 'Guardar'); ?>
 	</div>
-</div>
+ 
 <?php $this->endWidget(); ?>
 
 </div><!-- form -->
-<script>
-function cancelar(){
-	$('#registrar').hide();
-	$('#registrarRuta').show();
-	$('#unidad').show();
-	$('#boton').show();
-}
-</script>
-<style>
-#verde{
-	background: #D9EDFF;
-	width:320px;
-	padding: 5px;
-	border-radius: 2px;
-}
-</style>
+ 

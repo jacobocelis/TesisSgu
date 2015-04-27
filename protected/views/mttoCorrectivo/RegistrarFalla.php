@@ -1,20 +1,39 @@
 <?php 
 	$this->breadcrumbs=array(
 	'Mantenimiento correctivo'=>array('mttoCorrectivo/index'),
-	'Registro de fallas',
+	'Registro de incidentes',
 );
-	$this->menu=array(
+$this->menu=array(
 	array('label'=>'<div id="menu"><strong>Opciones de mantenimiento</strong></div>'),
+	array('label'=>'      Incidentes reportados', 'url'=>array('mttoCorrectivo/index')),
+	array('label'=>'      Registro de incidentes', 'url'=>array('mttoCorrectivo/registrarFalla')),
+	array('label'=>'      Registro de mejoras', 'url'=>array('registrarMejora')),
 	
-	array('label'=>'      Ajuste de fechas en calendario', 'url'=>array('calendario')),
+	array('label'=>'<div id="menu"><strong>Órdenes de mantenimiento</strong></div>'),
+	array('label'=>'      Crear orden de mantenimiento', 'url'=>array('crearOrdenCorrectiva')),
+	array('label'=>'      Ver órdenes abiertas <span class="badge badge-'.$Colorabi.' pull-right">'.$abiertas.'</span>', 'url'=>array('verOrdenes')),
+	array('label'=>'      Órdenes listas para cerrar <span class="badge badge-'.$Colorli.' pull-right">'.$listas.'</span>', 'url'=>array('cerrarOrdenes')),
+	
+	array('label'=>'<div id="menu"><strong>Gestión de coordinadores</strong></div>'),
+	array('label'=>'      Coordinador operativo y de transporte', 'url'=>array('empleados/coordinadores')),
+	
+	array('label'=>'<div id="menu"><strong>Historial</strong></div>'),
+	
+	array('label'=>'      Histórico de incidentes', 'url'=>array('mttoCorrectivo/historicoCorrectivo')),
+	array('label'=>'      Histórico de mejoras', 'url'=>array('mttoCorrectivo/historicoMejoras')),
+	array('label'=>'      Histórico de gastos', 'url'=>array('historicoGastos')),
+	array('label'=>'      Histórico de ordenes', 'url'=>array('historicoOrdenes')),
+
+	array('label'=>'<div id="menu"><strong>Administrar</strong></div>' , 'visible'=>'1'),
+	array('label'=>'      Parámetros y datos maestros', 'url'=>array('mttoCorrectivo/parametros')),
 );
 ?>
 <div class='crugepanel user-assignments-role-list'>
-<h1>Registro de fallas</h1>
-
 <div id="falla"></div>
-<HR>
-<h1>Últimas fallas registradas</h1>
+</div>
+<div class='crugepanel user-assignments-role-list'>
+<div id="resultado"></div>
+<h1>Incidentes por atender</h1>
 <?php
 $this->widget('zii.widgets.grid.CGridView', array(
                 'id'=>'fallas',
@@ -31,29 +50,61 @@ $this->widget('zii.widgets.grid.CGridView', array(
 					'htmlOptions'=>array('style'=>'text-align:center;width:40px'),
 				),
 				array(
+					//'headerHtmlOptions'=>array('style'=>'width:7%'),
+					'header'=>'Placa',
+					'name'=>'idplan',
+					'value'=>'$data->idvehiculo0->placa',
+					//'value'=>'$data->idplan0->idplanGrupo0->CompiledColour->$data-id.\' \'.$data->CompiledColour',
+					'htmlOptions'=>array('style'=>'text-align:center;'),
+				),
+				array(
+					//'headerHtmlOptions'=>array('style'=>'width:7%'),
+					'header'=>'Marca',
+					'name'=>'idplan',
+					'value'=>'$data->idvehiculo0->idmodelo0->idmarca0->marca',
+					//'value'=>'$data->idplan0->idplanGrupo0->CompiledColour->$data-id.\' \'.$data->CompiledColour',
+					'htmlOptions'=>array('style'=>'text-align:center;'),
+				),
+				array(
+					//'headerHtmlOptions'=>array('style'=>'width:7%'),
+					'header'=>'Modelo',
+					'name'=>'idplan',
+					'value'=>'$data->idvehiculo0->idmodelo0->modelo',
+					//'value'=>'$data->idplan0->idplanGrupo0->CompiledColour->$data-id.\' \'.$data->CompiledColour',
+					'htmlOptions'=>array('style'=>'text-align:center;'),
+				),
+
+				array(
 					'header'=>'Fecha',
 					'name'=>'fechaFalla',
 					'value'=>'date("d/m/Y",strtotime($data->fechaFalla))',
-					'htmlOptions'=>array('style'=>'text-align:center;width:50px'),
+					'htmlOptions'=>array('style'=>'text-align:center;'),
 				),
 			
 				array(
-					'header'=>'Falla reportada',
+					'header'=>'Incidente reportado',
 					'name'=>'idfalla',
 					'value'=>'$data->idfalla0->falla',
-					'htmlOptions'=>array('style'=>'text-align:center;width:250px'),
+					'htmlOptions'=>array('style'=>'text-align:center;'),
+				),
+				array(
+					'header'=>'Lugar',
+					'name'=>'lugar',
+					//'value'=>'$data->idfalla0->falla',
+					'htmlOptions'=>array('style'=>'text-align:center;'),
 				),
 				array(
 					'header'=>'Reportó',
 					'name'=>'idempleado',
 					'value'=>'$data->idempleado0->nombre.\' \'.$data->idempleado0->apellido',
-					'htmlOptions'=>array('style'=>'text-align:center;width:100px'),
+					'htmlOptions'=>array('style'=>'text-align:center;'),
 				),
 				array(
-					'header'=>'Estado',
+					'type'=>'raw',
+					'header'=>'Estatus',
 					'name'=>'idestatus',
-					'value'=>'$data->idestatus0->estatus',
-					'htmlOptions'=>array('style'=>'text-align:center;width:60px'),
+					'value'=>'$data->color($data->idestatus)',
+					'htmlOptions'=>array('style'=>'text-align:center;'),
 				),
 				array(
 					'header'=>'Eliminar',
@@ -68,7 +119,24 @@ $this->widget('zii.widgets.grid.CGridView', array(
 			)
         ));
 		?>
+
 </div>
+<?php
+$this->beginWidget('zii.widgets.jui.CJuiDialog', array( // the dialog
+    'id'=>'nuevo',
+    'options'=>array(
+        'title'=>'',
+        'autoOpen'=>false,
+		'position'=>array(null,100),
+        'modal'=>true,
+        'width'=>400,
+        //'height'=>255,
+		'resizable'=>false
+    ),
+));?>
+<div class="divForForm"></div>
+ 
+<?php $this->endWidget();?>
 <style>
 .badge {
     margin-left: 3px;
@@ -90,8 +158,6 @@ $this->widget('zii.widgets.grid.CGridView', array(
 	float: left;
     height: 35px;
 }
-</style>
-<style>
 .grid-view table.items th {
 	color: rgba(0, 0, 0, 1);
     text-align: center;
@@ -128,16 +194,18 @@ function agregarFalla(){
                                         $('#falla  form').submit(agregarFalla); // updatePaymentComment
                                 }
                                 else{
-                                        $('#falla').html(data.div);
+                                        $('#resultado').html(data.mensaje);
                                         //setTimeout("$('#dialog').dialog('close') ",1000);
-										 
+										$('body').scrollTo('#resultado',{duration:'slow', offsetTop : '0'});
                                         //window.setTimeout('agregarFalla()',1000);
-										window.setTimeout('location.reload()', 1000);
+										//window.setTimeout('location.reload()', 1000);
+										agregarFalla();
 										$.fn.yiiGridView.update('fallas');
                                 }
                         } ,
                 'cache':false});
     return false; 
 }
+
 </script>
 

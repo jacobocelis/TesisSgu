@@ -48,6 +48,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
 				'template'=>"{items}\n{summary}\n{pager}",
 				'selectableRows'=>2,
 				'emptyText'=>'No hay incidentes registrados',
+				'htmlOptions'=>array('style'=>'cursor:pointer;'),
                 'dataProvider'=>$dataProvider,
 				'columns'=>array(
 				array(
@@ -112,6 +113,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
 				'selectableRows'=>2,
 				'emptyText'=>'No hay mejoras por realizar',
                 'dataProvider'=>$mejoras,
+				'htmlOptions'=>array('style'=>'cursor:pointer;'),
 				'columns'=>array(
 				array(
 					//'header'=>'Seleccione las actividades a incluir',
@@ -167,7 +169,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
 $this->beginWidget('zii.widgets.jui.CJuiDialog', array( // the dialog
     'id'=>'formulario',
     'options'=>array(
-        'title'=>'Crear orden de neumáticos',
+        'title'=>'Crear orden de correctiva',
         'autoOpen'=>false,
         'modal'=>true,
         'width'=>490,

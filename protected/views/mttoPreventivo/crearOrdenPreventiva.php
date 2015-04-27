@@ -161,6 +161,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
                 'dataProvider'=>$dataProvider,
 				'rowCssClassExpression'=>'$this->dataProvider->data[$row]->diasRestantes($this->dataProvider->data[$row]->proximoFecha)<=5 || ($this->dataProvider->data[$row]->kmRestantes($this->dataProvider->data[$row]->idvehiculo,$this->dataProvider->data[$row]->proximoKm))<=50?"rojo":"even"',
 				'ajaxUpdate'=>false,
+				'htmlOptions'=>array('style'=>'cursor:pointer;'),
 				'columns'=>array(
 				array(
 					//'header'=>'Seleccione las actividades a incluir',
@@ -173,7 +174,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
 					'name'=>'idplan',
 					'value'=>'$data->idvehiculo0->numeroUnidad',
 					//'value'=>'$data->idplan0->idplanGrupo0->CompiledColour->$data-id.\' \'.$data->CompiledColour',
-					'htmlOptions'=>array('style'=>'text-align:center;width:10px'),
+					'htmlOptions'=>array('style'=>'text-align:center;width:65px'),
 				),
 				array(
 					//'headerHtmlOptions'=>array('style'=>'width:7%'),
@@ -181,7 +182,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
 					'name'=>'idplan',
 					'value'=>'$data->idvehiculo0->placa',
 					//'value'=>'$data->idplan0->idplanGrupo0->CompiledColour->$data-id.\' \'.$data->CompiledColour',
-					'htmlOptions'=>array('style'=>'text-align:center;width:50px'),
+					'htmlOptions'=>array('style'=>'text-align:center;'),
 				),
 				array(
 					//'headerHtmlOptions'=>array('style'=>'width:7%'),
@@ -189,7 +190,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
 					'name'=>'idplan',
 					'value'=>'$data->idvehiculo0->idmodelo0->idmarca0->marca',
 					//'value'=>'$data->idplan0->idplanGrupo0->CompiledColour->$data-id.\' \'.$data->CompiledColour',
-					'htmlOptions'=>array('style'=>'text-align:center;width:80px'),
+					'htmlOptions'=>array('style'=>'text-align:center;'),
 				),
 				array(
 					//'headerHtmlOptions'=>array('style'=>'width:7%'),
@@ -197,14 +198,14 @@ $this->widget('zii.widgets.grid.CGridView', array(
 					'name'=>'idplan',
 					'value'=>'$data->idvehiculo0->idmodelo0->modelo',
 					//'value'=>'$data->idplan0->idplanGrupo0->CompiledColour->$data-id.\' \'.$data->CompiledColour',
-					'htmlOptions'=>array('style'=>'text-align:center;width:80px'),
+					'htmlOptions'=>array('style'=>'text-align:center;'),
 				),
 
 				array(
 					'header'=>'Actividad',
 					'name'=>'idactividadMtto',
 					'value'=>'$data->idactividadMtto0->actividad',
-					'htmlOptions'=>array('style'=>'text-align:center;width:100px'),
+					'htmlOptions'=>array('style'=>'text-align:center;'),
 				),
 				/*array(
 					'header'=>'Fecha de próximo mantenimiento',
@@ -215,21 +216,21 @@ $this->widget('zii.widgets.grid.CGridView', array(
 					'header'=>'Prioridad',
 					'name'=>'idprioridad',
 					'value'=>'$data->idprioridad0->prioridad',
-					'htmlOptions'=>array('style'=>'width:70px;text-align:center;'),
+					'htmlOptions'=>array('style'=>'text-align:center;'),
 				),
 				array(
 					'type'=>'raw',
 					'header'=>'Atraso',
 					'name'=>'atraso',
 					'value'=>'\'<b><span style="color:red">\'.$data->atraso($data->proximoFecha).\'</span></b><br><b><span style="color:red">\'.$data->atrasoKm($data->idvehiculo,$data->proximoKm).\'</span></b>\'',
-					'htmlOptions'=>array('style'=>'width:60px;text-align:center;'),
+					'htmlOptions'=>array('style'=>'text-align:center;'),
 				),
 				array(
 					'type'=>'raw',
 					'header'=>'Kms restantes',
 					'name'=>'frecuenciaKm',
 					'value'=>'$data->kmRestantes($data->idvehiculo,$data->proximoKm)<=50?\'<strong><span style="color:red">\'.$data->kmRestantes($data->idvehiculo,$data->proximoKm).\'</span></strong>\':$data->kmRestantes($data->idvehiculo,$data->proximoKm)',
-					'htmlOptions'=>array('style'=>'width:110px;text-align:center;'),
+					'htmlOptions'=>array('style'=>'text-align:center;'),
 				),
 				array(
 					'type'=>'raw',
@@ -239,7 +240,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
 								"value"=>intval($data->porcentaje($data->ultimoFecha,$data->proximoFecha)),
 								"htmlOptions"=>array(
 								"style"=>"width:80%; height:20px; float:right;background:#".$data->obtColor($data->diasRestantes($data->proximoFecha)))))->run()',
-					'htmlOptions'=>array('style'=>'width:110px;text-align:center;'),
+					'htmlOptions'=>array('style'=>'text-align:center;'),
 				),
 			)
         ));
@@ -253,7 +254,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
 $this->beginWidget('zii.widgets.jui.CJuiDialog', array( // the dialog
     'id'=>'formulario',
     'options'=>array(
-        'title'=>'Crear orden de neumáticos',
+        'title'=>'Crear órden preventiva',
         'autoOpen'=>false,
         'modal'=>true,
         'width'=>490,

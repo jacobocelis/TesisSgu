@@ -41,15 +41,15 @@
 		<?php echo $form->error($model,'idempleado'); ?>
 	</div>
 	
-	<div id="registrarRuta">
+	 
 	<?php echo CHtml::link('Registrar conductor', "",array('title'=>'Registrar conductor',
         'style'=>'cursor: pointer;font-size:13px;margin-left:120px;',
-        'onclick'=>"{AgregarConductor(1);}"));?>
-	</div>
-	<div id="registrar"></div>
+        'onclick'=>"{AgregarConductor(); $('#conductor').dialog('open');}"));?>  
+	 
+	
 	
 	<div id="unidad"class="row">
-		<?php echo $form->labelEx($model,'idvehiculo'); ?>
+		<?php echo $form->labelEx($model,'idvehiculo',array("style"=>"width:70px")); ?>
 		<?php echo $form->dropDownList($model,'idvehiculo',CHtml::listData(Vehiculo::model()->findAll(),'id','numeroUnidad'),array('prompt'=>'Seleccione: ','style' => 'width:110px;')); ?>
 		<?php echo $form->error($model,'idvehiculo'); ?>
 	</div>
@@ -62,15 +62,10 @@
 
 </div><!-- form -->
 <script>
-$('#registrar').hide();
-AgregarConductor(0);
-function AgregarConductor(tip){
-if(tip){
-$('#registrarRuta').hide();
-$('#registrar').show();
-	$('#unidad').hide();
-	$('#boton').hide();
-}
+
+AgregarConductor();
+function AgregarConductor(){
+ 
 	var dir="<?php echo Yii::app()->baseUrl;?>"+"/empleados/registrarConductor";
 	jQuery.ajax({
                 url: dir,
@@ -81,17 +76,15 @@ $('#registrar').show();
 								
                                 if (data.status == 'failure'){
 										
-										$('#registrar').html(data.div);
-                                        $('#registrar  form').submit(AgregarConductor);
+										$('#conductor div.divForForm').html(data.div);
+                                        $('#conductor div.divForForm  form').submit(AgregarConductor);
                                 }
                                 else{
-                                        $('#registrar form').html(data.div);
+                                        $('#conductor div.divForForm form').html(data.div);
 										
-                                        setTimeout("$('#registrar').hide(); ",0);
+                                        setTimeout("$('#conductor').dialog('close'); ",1000);
 									
-										$('#unidad').show();
-										$('#boton').show();
-										$('#registrarRuta').show();
+									
 										//window.setTimeout('location.reload()');
 										actualizarListaConductor();
 										
@@ -110,5 +103,5 @@ var dir="<?php echo Yii::app()->baseUrl;?>"+"/viajes/actualizarListaConductor";
   	.done(function(result) {    	
     	     $('#Historicoempleados_idempleado').html(result);
   	});
-}
+} 
 </script>

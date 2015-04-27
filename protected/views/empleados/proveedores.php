@@ -3,29 +3,24 @@
 /* @var $dataProvider CActiveDataProvider */
 
 $this->breadcrumbs=array(
-	'Viajes'=>array('viajes/index'),
-	'Viajes rutinarios',
+	//'Viajes'=>array('viajes/index'),
+	'Proveedores',
 );
 
 $this->menu=array(
-	
-	array('label'=>'<div id="menu"><strong>Historial</strong></div>'),
-	array('label'=>'      Histórico de conductores', 'url'=>array('admin')),
-	array('label'=>'      Estadísticas de conductores', 'url'=>array('admin')),
+
 );
 ?>
 <div class='crugepanel user-assignments-detail'>
-<h1>Registro de coordinadores</h1>
-	
-<div id="viaje" style='width:500px'></div>
+<h1>Registro de proveedores</h1>
 <?php
 $this->widget('zii.widgets.grid.CGridView', array(
-                'id'=>'coordinadores',
+                'id'=>'proveedores',
 				'summaryText'=>'',
 				'selectableRows'=>1,
 				'template'=>"{items}\n{summary}\n{pager}",
 			    'enableSorting' => true,
-				'emptyText'=>'no hay coordinadores registrados',
+				'emptyText'=>'no hay proveedores',
                 'dataProvider'=>$dataProvider,
 				'htmlOptions'=>array('style'=>'font-size: 1.0em;'),
 				
@@ -33,24 +28,31 @@ $this->widget('zii.widgets.grid.CGridView', array(
 				array(
 					'header'=>'Nombre',
 					'name'=>'nombre',
-					'value'=>'$data->nombre.\' \'.$data->apellido',
+					'value'=>'$data->nombre',
 					//'value'=>'$data->idplan0->idplanGrupo0->CompiledColour->$data-id.\' \'.$data->CompiledColour',
 					'htmlOptions'=>array('style'=>'text-align:center;'),
 				),
 			
 
 				array(
-					'header'=>'Cédula',
-					'name'=>'cedula',
-					'value'=>'number_format($data->cedula, 0,",",".")',
+					'header'=>'RIF',
+					'name'=>'RIF',
+				 
 					'htmlOptions'=>array('style'=>'text-align:center;'),
 				),
 				array(
-					'header'=>'Cargo',
-					'name'=>'idtipoEmpleado',
-					'value'=>'$data->idtipoEmpleado0->tipo',
+					'header'=>'Dirección',
+					'name'=>'direccion',
+					//'value'=>'$data->idtipoEmpleado0->tipo',
 					'htmlOptions'=>array('style'=>'text-align:center;'),
 				),
+				array(
+					'header'=>'Teléfono',
+					'name'=>'telefono',
+					//'value'=>'$data->idtipoEmpleado0->tipo',
+					'htmlOptions'=>array('style'=>'text-align:center;'),
+				),
+				
 				array(
 						'headerHtmlOptions'=>array('style'=>'text-align:center;width:10px;'),
 						'htmlOptions'=>array('style'=>'text-align:center;width:30px;'),
@@ -62,7 +64,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
                         "",
                         array(
                                 \'style\'=>\'cursor: pointer;text-decoration: underline;text-align:center;\',
-                                \'onclick\'=>\'{editar("\'.Yii::app()->createUrl("empleados/actualizarCoordinador",array("id"=>$data["id"])).\'"); $("#coordinador").dialog("open");}\'
+                                \'onclick\'=>\'{editarProveedor("\'.Yii::app()->createUrl("proveedor/actualizar",array("id"=>$data["id"])).\'"); $("#proveedor").dialog("open");}\'
                         )
                 );',),
 				array(
@@ -71,22 +73,26 @@ $this->widget('zii.widgets.grid.CGridView', array(
 					 'template'=>'{delete}',
 					     'buttons'=>array(
 							'delete' => array(
-								'url'=>'Yii::app()->createUrl("empleado/delete", array("id"=>$data->id))',
+								'url'=>'Yii::app()->createUrl("proveedor/delete", array("id"=>$data->id))',
 						),
 					),
 				),
 			)
         ));
 ?>
-
+<?php echo CHtml::link('Registrar proveedor', "",  // the link for open the dialog
+    array(
+        'style'=>'cursor: pointer; text-decoration: underline;',
+        'onclick'=>"{agregarProveedor(); $('#proveedor').dialog('open');}"));
+		?>
 </div>
 
 <?php
 /*ventana agregar recurso*/
 $this->beginWidget('zii.widgets.jui.CJuiDialog', array( // the dialog
-    'id'=>'coordinador',
+    'id'=>'proveedor',
     'options'=>array(
-        'title'=>'modificar datos',
+        'title'=>'Datos del proveedor',
         'autoOpen'=>false,
         'modal'=>true,
         'width'=>390,
@@ -97,33 +103,40 @@ $this->beginWidget('zii.widgets.jui.CJuiDialog', array( // the dialog
 <div class="divForForm"></div>
  
 <?php $this->endWidget();?>
-
+ 
+ 
 <script>
-agregarChoferRuta();
-function agregarChoferRuta(){
-	var dir="<?php echo Yii::app()->baseUrl."/empleados/agregarCoordinador/"?>";
+var Uurl;
+function agregarProveedor(){
 	jQuery.ajax({
-                url: dir,
+                url: "<?php echo Yii::app()->baseUrl;?>"+"/Proveedor/agregar",
                 'data':$(this).serialize(),
                 'type':'post',
                 'dataType':'json',
                 'success':function(data){
-                                if (data.status == 'failure'){
-								
-                                        $('#viaje').html(data.div);
-                                        $('#viaje form').submit(agregarChoferRuta);
-                                }
-                                else{
-                                        //$('#viaje').html(data.div);
-                                        //setTimeout("$('#viaje').dialog('close') ",1000);
-                                        agregarChoferRuta();
-										$.fn.yiiGridView.update('viajes');
-                                }
-                        },
+                        if (data.status == 'failure'){
+                                //$('#dialog div.divForForm').html(data.div);
+								$('#proveedor div.divForForm').html(data.div);
+                                // Here is the trick: on submit-> once again this function!
+                                //$('#dialog div.divForForm form').submit(agregarActividad); // updatePaymentComment
+								$('#proveedor div.divForForm form').submit(agregarProveedor);
+								//$("#link").hide();
+								//$("#agreAct").show();
+								//$('body').scrollTo('#agreAct',{duration:'slow', offsetTop : '50'});
+								//$.scrollTo($('#agreAct').offset().top-100, { duration:300});
+                        }
+                        else{
+                                //$('#dialog div.divForForm').html(data.div);
+								$('#proveedor div.divForForm').html(data.div);
+                                //setTimeout("agregarActividad()",1000);
+                                $('#proveedor').dialog('close');
+								$.fn.yiiGridView.update('proveedores');
+                        }
+                    },
                 'cache':false});
     return false; 
 }
-function editar(id){
+function editarProveedor(id){
 
 	 if (typeof(id)=='string')
                 Uurl=id;
@@ -136,17 +149,17 @@ function editar(id){
                         {
                                 if (data.status == 'failure')
                                 {
-                                        $('#coordinador div.divForForm').html(data.div);
+                                        $('#proveedor div.divForForm').html(data.div);
                                         // Here is the trick: on submit-> once again this function!
                                         //$('#dialog div.divForForm form').submit(agregarActividad); // updatePaymentComment
-										$('#coordinador div.divForForm form').submit(editar);
+										$('#proveedor div.divForForm form').submit(editarProveedor);
                                 }
                                 else
                                 {
-                                        $('#coordinador div.divForForm').html(data.div);
+                                        $('#proveedor div.divForForm').html(data.div);
                                         //setTimeout("agregarActividad()",1000);
-                                        $('#coordinador').dialog('close');
-										$.fn.yiiGridView.update('coordinadores');
+                                        $('#proveedor').dialog('close');
+										$.fn.yiiGridView.update('proveedores');
                                 }
                         } ,
                 'cache':false});

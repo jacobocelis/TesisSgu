@@ -165,4 +165,4 @@ $("#Kilometraje_lectura").click(function(){
     cursor: help;
 	background-image: url("<?php echo Yii::app()->request->baseUrl;?>/imagenes/help.png");
 }
-<style>
+</style>
