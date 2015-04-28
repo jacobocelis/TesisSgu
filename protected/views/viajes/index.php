@@ -10,14 +10,16 @@ $this->menu=array(
 	array('label'=>'<div id="menu"><strong>Viajes</strong></div>'),
 	array('label'=>'      Registrar viajes rutinarios', 'url'=>array('rutinarios')),
 	array('label'=>'      Registrar viajes especiales', 'url'=>array('especiales')),
-	array('label'=>'<div id="menu"><strong>Conductores</strong></div>'),
-	array('label'=>'      Gestión de conductores', 'url'=>array('empleados/conductores')),
+
+	
 	array('label'=>'<div id="menu"><strong>Historial</strong></div>'),
 	array('label'=>'      Histórico de viajes rutinarios', 'url'=>array('viajes/historicoRutinarios')),
 	array('label'=>'      Histórico de viajes especiales', 'url'=>array('viajes/historicoEspeciales')),
+	array('label'=>'      Histórico de conductores', 'url'=>array('empleados/historicoConductores')),
 
 	array('label'=>'<div id="menu"><strong>Administrar</strong></div>' , 'visible'=>'1'),
 	array('label'=>'      Parámetros y datos maestros', 'url'=>array('mttoPreventivo/parametros')),
+	array('label'=>'      Gestión de conductores', 'url'=>array('empleados/conductores')),
 );
 ?>
 <div class='crugepanel user-assignments-detail'>

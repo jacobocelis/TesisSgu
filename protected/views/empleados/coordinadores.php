@@ -8,14 +8,23 @@ $this->breadcrumbs=array(
 );
 
 $this->menu=array(
+	array('label'=>'<div id="menu"><strong>Repuestos</strong></div>' , 'visible'=>'1'),
+	array('label'=>'      Repuestos y partes', 'url'=>array('repuesto/index')),
+	array('label'=>'      Registrar repuesto', 'url'=>array('repuesto/create')),
+	array('label'=>'      Asignación de repuestos', 'url'=>array('repuesto/AsignarPiezaGrupo')),
+	array('label'=>'      Registrar repuestos iniciales <span class="badge badge- pull-right">0</span>', 'url'=>array('repuesto/iniciales/')),
 	
-	array('label'=>'<div id="menu"><strong>Historial</strong></div>'),
-	array('label'=>'      Histórico de conductores', 'url'=>array('admin')),
-	array('label'=>'      Estadísticas de conductores', 'url'=>array('admin')),
+	array('label'=>'<div id="menu"><strong>Histórial</strong></div>' , 'visible'=>'1'),
+	array('label'=>'      Histórico de repuestos', 'url'=>array('repuesto/historico')),
+
+	array('label'=>'<div id="menu"><strong>Administrar</strong></div>' , 'visible'=>'1'),
+	array('label'=>'      Parámetros y datos maestros', 'url'=>array('repuesto/parametros')),
+	array('label'=>'      Coordinadores', 'url'=>array('empleados/coordinadores')),
+	array('label'=>'      Proveedores', 'url'=>array('empleados/proveedores')),
 );
 ?>
 <div class='crugepanel user-assignments-detail'>
-<h1>Registro de coordinadores</h1>
+<h1>Coordinadores</h1>
 	
 <div id="viaje" style='width:500px'></div>
 <?php
@@ -117,7 +126,7 @@ function agregarChoferRuta(){
                                         //$('#viaje').html(data.div);
                                         //setTimeout("$('#viaje').dialog('close') ",1000);
                                         agregarChoferRuta();
-										$.fn.yiiGridView.update('viajes');
+										$.fn.yiiGridView.update('coordinadores');
                                 }
                         },
                 'cache':false});
@@ -146,7 +155,8 @@ function editar(id){
                                         $('#coordinador div.divForForm').html(data.div);
                                         //setTimeout("agregarActividad()",1000);
                                         $('#coordinador').dialog('close');
-										$.fn.yiiGridView.update('coordinadores');
+                                        $.fn.yiiGridView.update('coordinadores');
+										
                                 }
                         } ,
                 'cache':false});

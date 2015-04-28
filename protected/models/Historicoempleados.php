@@ -35,6 +35,8 @@ class Historicoempleados extends CActiveRecord
 			array('fechaInicio, idempleado, idvehiculo', 'required'),
 			array('idempleado, idvehiculo', 'numerical', 'integerOnly'=>true),
 			array('fechaFin', 'safe'),
+
+			 
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
 			array('id, fechaInicio, fechaFin, idempleado, idvehiculo', 'safe', 'on'=>'search'),

@@ -3,15 +3,24 @@
 /* @var $dataProvider CActiveDataProvider */
 
 $this->breadcrumbs=array(
-	//'Viajes'=>array('viajes/index'),
+	'Viajes'=>array('viajes/index'),
 	'Conductores',
 );
 
 $this->menu=array(
 	
+	array('label'=>'<div id="menu"><strong>Viajes</strong></div>'),
+	array('label'=>'      Registrar viajes rutinarios', 'url'=>array('viajes/rutinarios')),
+	array('label'=>'      Registrar viajes especiales', 'url'=>array('viajes/especiales')),
+
+	
 	array('label'=>'<div id="menu"><strong>Historial</strong></div>'),
-	array('label'=>'      Histórico de conductores', 'url'=>array('admin')),
-	array('label'=>'      Estadísticas de conductores', 'url'=>array('admin')),
+	array('label'=>'      Histórico de viajes rutinarios', 'url'=>array('viajes/historicoRutinarios')),
+	array('label'=>'      Histórico de viajes especiales', 'url'=>array('viajes/historicoEspeciales')),
+	array('label'=>'      Histórico de conductores', 'url'=>array('empleados/historicoConductores')),
+	array('label'=>'<div id="menu"><strong>Administrar</strong></div>' , 'visible'=>'1'),
+	array('label'=>'      Parámetros y datos maestros', 'url'=>array('viajes/parametros')),
+	array('label'=>'      Gestión de conductores', 'url'=>array('empleados/conductores')),
 );
 ?>
 <div class='crugepanel user-assignments-detail'>
@@ -20,12 +29,12 @@ $this->menu=array(
 <div class='crugepanel user-assignments-detail'>
 <h1>Lista de conductores asignados a cada unidad</h1>
 <?php $this->widget('zii.widgets.grid.CGridView', array(
-                'id'=>'viajes',
+                'id'=>'conductores',
 				'summaryText'=>'',
 				'selectableRows'=>1,
 				'template'=>"{items}\n{summary}\n{pager}",
 			    'enableSorting' => true,
-				'emptyText'=>'no hay viajes registrados para ésta fecha',
+				'emptyText'=>'no hay conductores asignados',
                 'dataProvider'=>$dataProvider,
 				'htmlOptions'=>array('style'=>'font-size: 1.0em;'),
 				
@@ -64,7 +73,7 @@ $this->menu=array(
 					 'template'=>'{delete}',
 					     'buttons'=>array(
 							'delete' => array(
-								'url'=>'Yii::app()->createUrl("empleado/delete", array("id"=>$data->id))',
+								'url'=>'Yii::app()->createUrl("historicoempleados/delete", array("id"=>$data->id))',
 						),
 					),
 				),
@@ -107,10 +116,10 @@ function agregarChoferRuta(){
                                         $('#viaje form').submit(agregarChoferRuta);
                                 }
                                 else{
-                                        $('#viaje').html(data.div);
+                                        
                                         //setTimeout("$('#viaje').dialog('close') ",1000);
-                                        window.setTimeout('agregarChoferRuta()', 2000);
-										$.fn.yiiGridView.update('viajes');
+                                        agregarChoferRuta();
+										$.fn.yiiGridView.update('conductores');
                                 }
                         },
                 'cache':false});

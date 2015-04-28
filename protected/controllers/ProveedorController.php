@@ -1,6 +1,6 @@
 <?php
 
-class HistoricoempleadosController extends Controller
+class ProveedorController extends Controller
 {
 	/**
 	 * @var string the default layout for the views. Defaults to '//layouts/column2', meaning
@@ -32,7 +32,7 @@ class HistoricoempleadosController extends Controller
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create','update'),
+				'actions'=>array('create','update','actualizar','agregar','actualizar'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -60,16 +60,69 @@ class HistoricoempleadosController extends Controller
 	 * Creates a new model.
 	 * If creation is successful, the browser will be redirected to the 'view' page.
 	 */
+		public function actionAgregar(){
+                $model=new Proveedor;
+        // Uncomment the following line if AJAX validation is needed
+         //$this->performAjaxValidation($model);
+			
+		if(isset($_POST['Proveedor'])){
+            $model->attributes=$_POST['Proveedor'];
+            if($model->save()){
+                if (Yii::app()->request->isAjaxRequest){
+					echo CJSON::encode(array(
+                        'status'=>'success', 
+                        'div'=>"se registró el proveedor"
+                        ));
+                    exit;
+                }
+            }
+        }
+        if (Yii::app()->request->isAjaxRequest){
+            echo CJSON::encode(array(
+                'status'=>'failure', 
+                'div'=>$this->renderPartial('_formProveedor', array('model'=>$model), true)));
+            exit;               
+        }
+        /*else
+            $this->render('create',array('model'=>$model,));*/
+	}
+	public function actionActualizar($id){
+    	$model=$this->loadModel($id);        
+        // Uncomment the following line if AJAX validation is needed
+         //$this->performAjaxValidation($model);
+			
+		if(isset($_POST['Proveedor'])){
+            $model->attributes=$_POST['Proveedor'];
+            if($model->save()){
+                if (Yii::app()->request->isAjaxRequest){
+					echo CJSON::encode(array(
+                        'status'=>'success', 
+                        'div'=>"se registró el proveedor"
+                        ));
+                    exit;
+                }
+            }
+        }
+        if (Yii::app()->request->isAjaxRequest){
+            echo CJSON::encode(array(
+                'status'=>'failure', 
+                'div'=>$this->renderPartial('_formProveedor', array('model'=>$model), true)));
+            exit;               
+        }
+        /*else
+            $this->render('create',array('model'=>$model,));*/
+	}
+
 	public function actionCreate()
 	{
-		$model=new Historicoempleados;
+		$model=new Proveedor;
 
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
 
-		if(isset($_POST['Historicoempleados']))
+		if(isset($_POST['Proveedor']))
 		{
-			$model->attributes=$_POST['Historicoempleados'];
+			$model->attributes=$_POST['Proveedor'];
 			if($model->save())
 				$this->redirect(array('view','id'=>$model->id));
 		}
@@ -91,9 +144,9 @@ class HistoricoempleadosController extends Controller
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
 
-		if(isset($_POST['Historicoempleados']))
+		if(isset($_POST['Proveedor']))
 		{
-			$model->attributes=$_POST['Historicoempleados'];
+			$model->attributes=$_POST['Proveedor'];
 			if($model->save())
 				$this->redirect(array('view','id'=>$model->id));
 		}
@@ -122,7 +175,7 @@ class HistoricoempleadosController extends Controller
 	 */
 	public function actionIndex()
 	{
-		$dataProvider=new CActiveDataProvider('Historicoempleados');
+		$dataProvider=new CActiveDataProvider('Proveedor');
 		$this->render('index',array(
 			'dataProvider'=>$dataProvider,
 		));
@@ -133,10 +186,10 @@ class HistoricoempleadosController extends Controller
 	 */
 	public function actionAdmin()
 	{
-		$model=new Historicoempleados('search');
+		$model=new Proveedor('search');
 		$model->unsetAttributes();  // clear any default values
-		if(isset($_GET['Historicoempleados']))
-			$model->attributes=$_GET['Historicoempleados'];
+		if(isset($_GET['Proveedor']))
+			$model->attributes=$_GET['Proveedor'];
 
 		$this->render('admin',array(
 			'model'=>$model,
@@ -147,12 +200,12 @@ class HistoricoempleadosController extends Controller
 	 * Returns the data model based on the primary key given in the GET variable.
 	 * If the data model is not found, an HTTP exception will be raised.
 	 * @param integer $id the ID of the model to be loaded
-	 * @return Historicoempleados the loaded model
+	 * @return Proveedor the loaded model
 	 * @throws CHttpException
 	 */
 	public function loadModel($id)
 	{
-		$model=Historicoempleados::model()->findByPk($id);
+		$model=Proveedor::model()->findByPk($id);
 		if($model===null)
 			throw new CHttpException(404,'The requested page does not exist.');
 		return $model;
@@ -160,11 +213,11 @@ class HistoricoempleadosController extends Controller
 
 	/**
 	 * Performs the AJAX validation.
-	 * @param Historicoempleados $model the model to be validated
+	 * @param Proveedor $model the model to be validated
 	 */
 	protected function performAjaxValidation($model)
 	{
-		if(isset($_POST['ajax']) && $_POST['ajax']==='historicoempleados-form')
+		if(isset($_POST['ajax']) && $_POST['ajax']==='proveedor-form')
 		{
 			echo CActiveForm::validate($model);
 			Yii::app()->end();

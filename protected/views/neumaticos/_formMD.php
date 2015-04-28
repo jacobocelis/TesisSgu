@@ -120,4 +120,4 @@ function cancelar(){
 	margin-bottom:5px;
 }
 
-<style>
+</style>

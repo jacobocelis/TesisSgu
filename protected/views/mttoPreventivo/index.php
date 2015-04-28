@@ -19,10 +19,7 @@ $this->menu=array(
 	array('label'=>'      Ver órdenes abiertas <span class="badge badge-'.$Colorabi.' pull-right">'.$abiertas.'</span>', 'url'=>array('verOrdenes') ,'visible'=>Yii::app()->user->checkAccess('action_mttopreventivo_verOrdenes')),
 	array('label'=>'      Órdenes listas para cerrar <span class="badge badge-'.$Colorli.' pull-right">'.$listas.'</span>', 'url'=>array('cerrarOrdenes'),'visible'=>Yii::app()->user->checkAccess('action_mttopreventivo_cerrarOrdenes')),
 	
-	array('label'=>'<div id="menu"><strong>Gestión de coordinadores</strong></div>' , 'visible'=>Yii::app()->user->checkAccess('action_mttopreventivo_coordinadores')),
-	array('label'=>'      Coordinador operativo y de transporte', 'url'=>array('empleados/coordinadores') , 'visible'=>Yii::app()->user->checkAccess('action_mttopreventivo_coordinadores')),
-	
-	
+	 
 	array('label'=>'<div id="menu"><strong>Historial</strong></div>'),
 	array('label'=>'      Histórico de mantenimientos', 'url'=>array('historicoPreventivo') ,'visible'=>Yii::app()->user->checkAccess('action_mttopreventivo_historicoPreventivo')),
 	array('label'=>'      Histórico de gastos', 'url'=>array('historicoGastos'),'visible'=>Yii::app()->user->checkAccess('action_mttopreventivo_historicoGastos')),

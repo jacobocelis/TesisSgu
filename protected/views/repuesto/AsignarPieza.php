@@ -303,6 +303,9 @@ ul, ol {
 
 	array('label'=>'<div id="menu"><strong>Administrar</strong></div>' , 'visible'=>'1'),
 	array('label'=>'      Parámetros y datos maestros', 'url'=>array('repuesto/parametros')),
+	array('label'=>'      Coordinadores', 'url'=>array('empleados/coordinadores')),
+	array('label'=>'      Proveedores', 'url'=>array('empleados/proveedores')),
+	
 	);
 
 ?>

@@ -4,8 +4,9 @@
 
 $this->breadcrumbs=array(
 	'Viajes'=>array('viajes/index'),
-	'Viajes especiales',
+	'Histórico de conductores',
 );
+
 $this->menu=array(
 	array('label'=>'<div id="menu"><strong>Viajes</strong></div>'),
 	array('label'=>'      Registrar viajes rutinarios', 'url'=>array('rutinarios')),
@@ -15,14 +16,14 @@ $this->menu=array(
 	array('label'=>'<div id="menu"><strong>Historial</strong></div>'),
 	array('label'=>'      Histórico de viajes rutinarios', 'url'=>array('viajes/historicoRutinarios')),
 	array('label'=>'      Histórico de viajes especiales', 'url'=>array('viajes/historicoEspeciales')),
-	array('label'=>'      Histórico de conductores', 'url'=>array('empleados/historicoConductores')),
+
 	array('label'=>'<div id="menu"><strong>Administrar</strong></div>' , 'visible'=>'1'),
 	array('label'=>'      Parámetros y datos maestros', 'url'=>array('mttoPreventivo/parametros')),
 	array('label'=>'      Gestión de conductores', 'url'=>array('empleados/conductores')),
 );
 ?>
 <div class='crugepanel user-assignments-detail'>
-<h1>Histórico de viajes especiales</h1>
+<h1>Histórico de conductores</h1>
 <div id="filtro" style="width:20%">
 <i>Por # de unidad: </i>
 
@@ -37,18 +38,20 @@ $this->menu=array(
 		<?php echo CHtml::textField('Fechaini', '',array('style'=>'width:80px;cursor:pointer;','size'=>"10","readonly"=>'readonly','placeholder'=>"Inicio",'id'=>'inicio')); ?>
 		<?php echo CHtml::textField('Fechafin', '',array('style'=>'width:80px;cursor:pointer;',"readonly"=>'readonly','disabled'=>'disabled','id'=>'fin','placeholder'=>"Fin")); 
 		echo CHtml::submitButton('Buscar',array("id"=>"boton","onclick"=>"FiltrarFecha()","style"=>"float:right;margin-top:2px;margin-left:10px;")); ?>
-</div>
+</div>		
 <?php
 $this->widget('zii.widgets.grid.CGridView', array(
                 'id'=>'historico',
-				'summaryText'=>'',
+				//'summaryText'=>'',
 				'selectableRows'=>1,
-				'template'=>"{items}\n{summary}\n{pager}",
+				//'template'=>"{items}\n{summary}\n{pager}",
 			    'enableSorting' => true,
 				'emptyText'=>'no hay viajes registrados para ésta fecha',
                 'dataProvider'=>$dataProvider,
 				'htmlOptions'=>array('style'=>'font-size: 1.0em;'),
+				
 				'columns'=>array(
+				
 				array(
 					'header'=>'Unidad',
 					'name'=>'idvehiculo',
@@ -57,103 +60,56 @@ $this->widget('zii.widgets.grid.CGridView', array(
 					'htmlOptions'=>array('style'=>'text-align:center;width:50px;'),
 				),
 				array(
-					'header'=>'Salida',
-					'name'=>'fechaSalida',
-					'value'=>'date("d/m/Y", strtotime($data->fechaSalida));',
-					//'value'=>'$data->idplan0->idplanGrupo0->CompiledColour->$data-id.\' \'.$data->CompiledColour',
-					'htmlOptions'=>array('style'=>'text-align:center;width:40px;'),
+					'header'=>'Conductor',
+					'value'=>'$data->idempleado0->nombre.\'  \'.$data->idempleado0->apellido',
+					//'value'=>'date("g:i a", strtotime($data->horaLlegada));',
+					'htmlOptions'=>array('style'=>'text-align:center;'),
 				),
 				array(
-					'header'=>'Hora',
-					'name'=>'horaSalida',
-					'value'=>'date("g:i a", strtotime($data->horaSalida));',
-					'htmlOptions'=>array('style'=>'text-align:center;width:60px;'),
+					'header'=>'Fecha inicio',
+					'name'=>'fechaInicio',
+					'value'=>'date("d/m/Y", strtotime($data->fechaInicio));',
+					'htmlOptions'=>array('style'=>'text-align:center;'),
 				),
 				array(
-					'header'=>'Ruta realizada',
-					'name'=>'idviaje',
-					'value'=>'$data->idviaje0->idOrigen0->lugar.\' - \'.$data->idviaje0->idDestino0->lugar',
-					//'value'=>'$data->idplan0->idplanGrupo0->CompiledColour->$data-id.\' \'.$data->CompiledColour',
-					'htmlOptions'=>array('style'=>'text-align:center;width:100px;'),
+					'header'=>'Fecha fin',
+					'name'=>'fechaFin',
+					'value'=>'$data->fechaFin=="0000-01-01"?"Actual":date("d/m/Y", strtotime($data->fechaFin));',
+					'htmlOptions'=>array('style'=>'text-align:center;'),
 				),
 
-				
-				
+
 				/*array(
 					'header'=>'Distancia',
 					'value'=>'$data->idviaje0->distanciaKm.\' Km \'',
 					//'value'=>'date("g:i a", strtotime($data->horaLlegada));',
-					'htmlOptions'=>array('style'=>'text-align:center;width:50px;'),
-				),*/
-				array(
-					'header'=>'Pasajeros',
-					'name'=>'nroPersonas',
-					//'value'=>'date("g:i a", strtotime($data->horaLlegada));',
-					'htmlOptions'=>array('style'=>'text-align:center;width:60px;'),
-				),
-				array(
-					'header'=>'Conductor',
-					'value'=>'$data->idconductor0->nombre.\'  \'.$data->idconductor0->apellido',
-					//'value'=>'date("g:i a", strtotime($data->horaLlegada));',
 					'htmlOptions'=>array('style'=>'text-align:center;width:100px;'),
-				),
-				array(
-					'header'=>'Tipo',
-					'value'=>'$data->idviaje0->idtipo0->tipo',
-					//'value'=>'date("g:i a", strtotime($data->horaLlegada));',
-					'htmlOptions'=>array('style'=>'text-align:center;width:30px;'),
-				),
-				array(
-					'header'=>'Llegada',
-					'name'=>'fechaLlegada',
-					'value'=>'date("d/m/Y", strtotime($data->fechaLlegada));',
-					//'value'=>'$data->idplan0->idplanGrupo0->CompiledColour->$data-id.\' \'.$data->CompiledColour',
-					'htmlOptions'=>array('style'=>'text-align:center;width:40px;'),
-				),
-				array(
-					'header'=>'Hora',
-					'name'=>'horaLlegada',
-					'value'=>'date("g:i a", strtotime($data->horaLlegada));',
-					'htmlOptions'=>array('style'=>'text-align:center;width:60px;'),
-				),
-				array(
-						'headerHtmlOptions'=>array('style'=>'text-align:center;width:10px;'),
-						'htmlOptions'=>array('style'=>'text-align:center;width:30px;'),
-						'header'=>'Modificar',
-						'type'=>'raw',
-						'value'=>'CHtml::link(
-                        CHtml::image(Yii::app()->request->baseUrl."/imagenes/agregar.png",
-                                          "Agregar",array("title"=>"Editar")),
-                        "",
-                        array(
-                                \'style\'=>\'cursor: pointer;text-decoration: underline;text-align:center;\',
-                                \'onclick\'=>\'{editarViaje("\'.Yii::app()->createUrl("Viajes/update",array("id"=>$data["id"])).\'"); $("#modificar").dialog("open");}\'
-                        )
-                );',),
-				array(
-					'header'=>'Eliminar',
-					'class'=>'CButtonColumn',
-					 'template'=>'{delete}',
-					     'buttons'=>array(
-							'delete' => array(
-								'url'=>'Yii::app()->createUrl("viajes/delete", array("id"=>$data->id))',
-						),
-					),
-				),
+				),*/
+				
+
 			)
         ));
 ?>
 
-</div>	
+</div>
+				
 <?php
-/*ventana agregar actividad*/
+
 $this->beginWidget('zii.widgets.jui.CJuiDialog', array( // the dialog
+    'id'=>'nuevoDestino',
     'options'=>array(
+        'title'=>'Agregar destino',
         'autoOpen'=>false,
-        'modal'=>true, 
+        'modal'=>true,
+        'width'=>420,
+		'resizable'=>false,	
+		'position'=>array(null,130),
     ),
 ));?>
-<?php $this->endWidget();?>	
+<div class="divForForm"></div>
+
+<?php $this->endWidget();?>
+
 <style>
 .badge {
     margin-left: 3px;
@@ -175,7 +131,7 @@ $this->beginWidget('zii.widgets.jui.CJuiDialog', array( // the dialog
 	float: left;
     height: 35px;
 }
-#registro{
+#viaje{
 	width: 600px;
 }
 .grid-view table.items th {

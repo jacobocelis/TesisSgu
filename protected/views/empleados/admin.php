@@ -8,8 +8,19 @@ $this->breadcrumbs=array(
 );
 
 $this->menu=array(
-	array('label'=>'List Historicoempleados', 'url'=>array('index')),
-	array('label'=>'Create Historicoempleados', 'url'=>array('create')),
+	array('label'=>'<div id="menu"><strong>Repuestos</strong></div>' , 'visible'=>'1'),
+	array('label'=>'      Repuestos y partes', 'url'=>array('repuesto/index')),
+	array('label'=>'      Registrar repuesto', 'url'=>array('repuesto/create')),
+	array('label'=>'      Asignación de repuestos', 'url'=>array('repuesto/AsignarPiezaGrupo')),
+	array('label'=>'      Registrar repuestos iniciales <span class="badge badge- pull-right">0</span>', 'url'=>array('repuesto/iniciales/')),
+	
+	array('label'=>'<div id="menu"><strong>Histórial</strong></div>' , 'visible'=>'1'),
+	array('label'=>'      Histórico de repuestos', 'url'=>array('repuesto/historico')),
+
+	array('label'=>'<div id="menu"><strong>Administrar</strong></div>' , 'visible'=>'1'),
+	array('label'=>'      Parámetros y datos maestros', 'url'=>array('repuesto/parametros')),
+	array('label'=>'      Coordinadores', 'url'=>array('empleados/coordinadores')),
+	array('label'=>'      Proveedores', 'url'=>array('empleados/proveedores')),
 );
 
 Yii::app()->clientScript->registerScript('search', "
