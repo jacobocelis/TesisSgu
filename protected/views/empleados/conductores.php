@@ -23,11 +23,12 @@ $this->menu=array(
 	array('label'=>'      Gestión de conductores', 'url'=>array('empleados/conductores')),
 );
 ?>
-<div class='crugepanel user-assignments-detail'>
+<div class='crugepanel '>
 <div id="viaje" ></div>
 </div>
-<div class='crugepanel user-assignments-detail'>
-<h1>Lista de conductores asignados a cada unidad</h1>
+
+<div class='crugepanel'>
+<h1>Conductores asignados </h1>
 <?php $this->widget('zii.widgets.grid.CGridView', array(
                 'id'=>'conductores',
 				'summaryText'=>'',
@@ -55,7 +56,7 @@ $this->menu=array(
 				),
 
 				array(
-					'header'=>'Fecha de asignación',
+					'header'=>'Fecha inicio',
 					'name'=>'fechaInicio',
 					'value'=>'date("d/m/Y", strtotime($data->fechaInicio));',
 					'htmlOptions'=>array('style'=>'text-align:center;width:100px;'),
@@ -66,7 +67,100 @@ $this->menu=array(
 					'value'=>'$data->fechaFin=="0000-00-00"?\'  \':$date("d/m/Y", strtotime($data->fechaFin));',
 					'htmlOptions'=>array('style'=>'text-align:center;width:100px;'),
 				),*/
- 
+ 				array(
+					'headerHtmlOptions'=>array('style'=>'text-align:center;width:10px;'),
+					'htmlOptions'=>array('style'=>'text-align:center;width:30px;'),
+					'header'=>'Cambiar conductor',
+					'type'=>'raw',
+					'value'=>'CHtml::link(
+                    CHtml::image(Yii::app()->request->baseUrl."/imagenes/cambiar.png",
+                                      "Agregar",array("title"=>"Editar")),
+                    "",
+                    array(
+                            \'style\'=>\'cursor: pointer;text-decoration: underline;text-align:center;\',
+                            \'onclick\'=>\'{cambiar("\'.Yii::app()->createUrl("empleados/cambiar",array("id"=>$data["id"])).\'");}\'
+                    )
+                );',),
+				array(
+					'header'=>'Eliminar',
+					'class'=>'CButtonColumn',
+					'deleteConfirmation'=>'¿Desea dejar la unidad sin conductor?',
+					 'template'=>'{delete}',
+					     'buttons'=>array(
+							'delete' => array(
+								'url'=>'Yii::app()->createUrl("Empleados/deleteAsignados", array("id"=>$data->id))',
+								 
+						),
+					),
+				),
+			)
+        ));
+?>
+
+</div>
+<div class='crugepanel'>
+<h1>Conductores registrados</h1>
+<?php $this->widget('ext.selgridview.SelGridView', array(
+                'id'=>'listaConductores',
+				'summaryText'=>'',
+				'selectableRows'=>1,
+				'template'=>"{items}\n{summary}\n{pager}",
+			    'enableSorting' => true,
+				'emptyText'=>'no hay conductores asignados',
+                'dataProvider'=>$empleados,
+				'htmlOptions'=>array('style'=>'font-size: 1.0em;'),
+				
+				'columns'=>array(
+				array(
+					'header'=>'Nombre',
+					'name'=>'nombre',
+					//'value'=>'str_pad((int) $data->idvehiculo0->numeroUnidad,2,"0",STR_PAD_LEFT)',
+					//'value'=>'$data->idplan0->idplanGrupo0->CompiledColour->$data-id.\' \'.$data->CompiledColour',
+					'htmlOptions'=>array('style'=>'text-align:center; '),
+				),
+				array(
+					'header'=>'Apellido',
+					'name'=>'apellido',
+					//'value'=>'$data->idempleado0->nombre.\'  \'.$data->idempleado0->apellido',
+					//'value'=>'$data->idplan0->idplanGrupo0->CompiledColour->$data-id.\' \'.$data->CompiledColour',
+					'htmlOptions'=>array('style'=>'text-align:center; '),
+				),
+				array(
+					'header'=>'Cédula',
+					'name'=>'cedula',
+					//'value'=>'$data->idempleado0->nombre.\'  \'.$data->idempleado0->apellido',
+					//'value'=>'$data->idplan0->idplanGrupo0->CompiledColour->$data-id.\' \'.$data->CompiledColour',
+					'htmlOptions'=>array('style'=>'text-align:center; '),
+				),
+				 array(
+				 	'type'=>'raw',
+					'header'=>'Activo',
+					'name'=>'activo',
+					'value'=>'$data->activo?\'<b><div style="color:green">Sí</div></b>\':\'<b><div style="color:red">No</div></b>\'',
+					//'value'=>'$data->idempleado0->nombre.\'  \'.$data->idempleado0->apellido',
+					//'value'=>'$data->idplan0->idplanGrupo0->CompiledColour->$data-id.\' \'.$data->CompiledColour',
+					'htmlOptions'=>array('style'=>'text-align:center; '),
+				),
+				/*array(
+					'header'=>'Fecha de retiro',
+					'name'=>'fechaFin',
+					'value'=>'$data->fechaFin=="0000-00-00"?\'  \':$date("d/m/Y", strtotime($data->fechaFin));',
+					'htmlOptions'=>array('style'=>'text-align:center;width:100px;'),
+				),*/
+				array(
+					'headerHtmlOptions'=>array('style'=>'text-align:center;width:10px;'),
+					'htmlOptions'=>array('style'=>'text-align:center;width:30px;'),
+					'header'=>'Activo Si/No',
+					'type'=>'raw',
+					'value'=>'CHtml::link(
+                    CHtml::image(Yii::app()->request->baseUrl."/imagenes/cambiar1.png",
+                                      "Agregar",array("title"=>"Editar")),
+                    "",
+                    array(
+                            \'style\'=>\'cursor: pointer;text-decoration: underline;text-align:center;\',
+                            \'onclick\'=>\'{Activo("\'.Yii::app()->createUrl("empleados/activo",array("id"=>$data["id"])).\'");}\'
+                    )
+                );',),
 				array(
 					'header'=>'Eliminar',
 					'class'=>'CButtonColumn',
@@ -82,7 +176,6 @@ $this->menu=array(
 ?>
 
 </div>
-
 <?php
 /*ventana agregar recurso*/
 $this->beginWidget('zii.widgets.jui.CJuiDialog', array( // the dialog
@@ -100,6 +193,22 @@ $this->beginWidget('zii.widgets.jui.CJuiDialog', array( // the dialog
  
 <?php $this->endWidget();?>
  
+ <?php
+/*ventana agregar recurso*/
+$this->beginWidget('zii.widgets.jui.CJuiDialog', array( // the dialog
+    'id'=>'renovar',
+    'options'=>array(
+        'title'=>'Datos del conductor',
+        'autoOpen'=>false,
+        'modal'=>true,
+        'width'=>390,
+		'position'=>array(500,100),
+		'resizable'=>false
+    ),
+));?>
+<div class="divForForm"></div>
+ 
+<?php $this->endWidget();?>
 <script>
 agregarChoferRuta();
 function agregarChoferRuta(){
@@ -122,6 +231,57 @@ function agregarChoferRuta(){
 										$.fn.yiiGridView.update('conductores');
                                 }
                         },
+                'cache':false});
+    return false; 
+}
+function Activo(id){
+	if (typeof(id)=='string')
+        Uurl=id;
+	jQuery.ajax({
+                url: Uurl,
+                'data':$(this).serialize(),
+                'type':'post',
+                'dataType':'json',
+                'success':function(data){
+                                if (data.status == 'failure'){
+									alert(data.div);
+
+                                }
+                                else{
+                                        
+                                        //setTimeout("$('#viaje').dialog('close') ",1000);
+                                        agregarChoferRuta();
+										$.fn.yiiGridView.update('listaConductores');
+                                }
+                        },
+                'cache':false});
+    return false; 
+}
+var Uurl;
+function cambiar(id){
+	 $("#renovar").dialog("open");
+	 if (typeof(id)=='string')
+                Uurl=id;
+	jQuery.ajax({
+                url: Uurl,
+                'data':$(this).serialize(),
+                'type':'post',
+                'dataType':'json',
+                'success':function(data)
+                        {
+                                if (data.status == 'failure')
+                                {
+                                        $('#renovar div.divForForm').html(data.div);
+                                        // Here is the trick: on submit-> once again this function!
+                                        $('#renovar div.divForForm form').submit(cambiar); // updatePaymentComment
+                                }
+                                else
+                                {
+                                        $('#renovar div.divForForm').html(data.div);
+                                        setTimeout("$('#renovar').dialog('close') ",1500);
+                                        $.fn.yiiGridView.update('conductores');
+                                }
+                        } ,
                 'cache':false});
     return false; 
 }

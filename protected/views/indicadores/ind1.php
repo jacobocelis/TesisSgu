@@ -5,19 +5,61 @@ $this->breadcrumbs=array(
 );
 
 $this->menu=array(
-	array('label'=>'<div id="menu"><strong>Vehiculos</strong></div>' , 'visible'=>'1'),
-	array('label'=>'      Vehiculos registrados', 'url'=>array('vehiculo/index')),
-	array('label'=>'      Registrar vehiculo', 'url'=>array('vehiculo/create')),
-	array('label'=>'      Histórico de vehiculos', 'url'=>array('vehiculo/historico')),
-	//array('label'=>'Administrar vehiculos', 'url'=>array('admin')),
-	array('label'=>'<div id="menu"><strong>Grupos</strong></div>' , 'visible'=>'1'),
-	array('label'=>'      Ver grupos', 'url'=>array('grupo/index')),
-	array('label'=>'      Crear grupo', 'url'=>array('grupo/create')),
-
-	array('label'=>'<div id="menu"><strong>Administrar</strong></div>' , 'visible'=>'1'),
-	array('label'=>'      Parámetros y datos maestros', 'url'=>array('grupo/parametros')),
+	array('label'=>'<div id="menu"><strong>Indicadores</strong></div>' , 'visible'=>'1'),
+	array('label'=>'      % de incidentes por conductor', 'url'=>array('Indicadores/ind1')),
+ 
 );
 ?>
-
-<h1>Indicadores y reportes</h1>
+<div class="crugepanel">
+<?php
+$this->widget('ext.highcharts.HighchartsWidget', array(
+    'scripts' => array(
+        'modules/exporting',
+        'themes/grid-light',
+    ),
+    'options' => array(
+    	'chart'=>array(
+			'type'=>'pie',
+			 'options3d'=>array(
+                'enabled'=> true,
+                'alpha'=> 45,
+                'beta'=> 0
+			),
+		),
+        'title' => array(
+            'text' => 'Porcentaje de incidentes de acuerdo a los conductores involucrados',
+        ),
+ 		'tooltip'=> array(
+            'pointFormat'=> '{series.name}: <b>{point.percentage:.1f}%</b>'
+        ),
+ 		'plotOptions'=> array(
+            'pie'=> array(
+                'allowPointSelect'=> true,
+                'cursor'=> 'pointer',
+                'depth'=> 35,
+                'dataLabels'=> array(
+                    'enabled'=> true,
+                    'format'=> '{point.name}'
+                ),
+            ),
+        ),
+		   'series' => array (
+		        array (
+		          'type' => 'pie',
+		          'name' => 'Incidentes',
+		          'data' => array (
+		           array('J. Marcel', 44.2),
+		           array('A. Carrero', 26.6),
+		           array('L. Parra', 20),
+		           array('J. León', 3.1),
+		           array('G. mora', 5.4)
+		        ),
+		    ),
+		),
+    )
+));
+ 
+?>
+</div>
+ 
 

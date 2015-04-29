@@ -100,7 +100,7 @@ else{
                             'visible' => !Yii::app()->user->isGuest),
 							array('label' => 'Viajes', 'url' => array('/viajes'), 
                             'visible' => !Yii::app()->user->isGuest),
-							array('label' => 'Indicadores', 'url' => array('/indicadores'), 
+							array('label' => 'Indicadores', 'url' => array('/indicadores/ind1'), 
                             'visible' => !Yii::app()->user->isGuest),
 							
 							array('label' => 'Mi cuenta<span class="caret"></span>', 'url' => '#', 

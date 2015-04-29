@@ -33,8 +33,8 @@ class Empleado extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('nombre, apellido, cedula, idtipoEmpleado', 'required'),
-			array('cedula, idtipoEmpleado', 'numerical', 'integerOnly'=>true),
+			array('nombre, apellido, cedula, idtipoEmpleado, activo', 'required'),
+			array('cedula, idtipoEmpleado, activo', 'numerical', 'integerOnly'=>true),
 			array('nombre, apellido', 'length', 'max'=>45),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
@@ -67,6 +67,7 @@ class Empleado extends CActiveRecord
 			'apellido' => 'Apellido',
 			'cedula' => 'Cedula',
 			'idtipoEmpleado' => 'Cargo',
+			'activo' => 'Activo',
 		);
 	}
 

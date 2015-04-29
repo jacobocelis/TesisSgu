@@ -25,5 +25,9 @@
 	<?php echo CHtml::encode($data->idtipoEmpleado); ?>
 	<br />
 
+	<b><?php echo CHtml::encode($data->getAttributeLabel('activo')); ?>:</b>
+	<?php echo CHtml::encode($data->activo); ?>
+	<br />
+
 
 </div>

@@ -32,7 +32,7 @@ class EmpleadosController extends Controller
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create','update','conductores','AgregarConductorRuta','RegistrarConductor','coordinadores','agregarCoordinador','proveedores','agregarProveedor','actualizarCoordinador','HistoricoConductores'),
+				'actions'=>array('create','update','conductores','AgregarConductorRuta','RegistrarConductor','coordinadores','agregarCoordinador','proveedores','agregarProveedor','actualizarCoordinador','HistoricoConductores','activo','cambiar','DeleteAsignados'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -55,11 +55,76 @@ class EmpleadosController extends Controller
 			'model'=>$this->loadModel($id),
 		));
 	}
+	public function actionCambiar($id){
+		$model=$this->loadModel($id);
+		$validar=$this->loadModel($id);
+		if(isset($_POST['Historicoempleados'])){
+
+            $model->attributes=$_POST['Historicoempleados'];
+            if($model->idempleado==null)
+            	$model->addError('idempleado','Conductor no puede ser nulo');
+            if($model->idempleado==$validar->idempleado)
+            	$model->addError('idempleado','El conductor ya se encuentra asignado');
+            else
+			if($model->validate()){
+				$nuevoConductor = new Historicoempleados;
+				$nuevoConductor->fechaInicio=date('Y-m-d');
+				$nuevoConductor->idempleado=$model->idempleado;
+				$nuevoConductor->idvehiculo=$model->idvehiculo;
+				$nuevoConductor->fechaFin="0000-01-01";
+				$nuevoConductor->save();
+				$model->fechaFin=date('Y-m-d');
+				$model->idempleado=$validar->idempleado;
+				$model->update();
+                if (Yii::app()->request->isAjaxRequest){
+                    echo CJSON::encode(array(
+                        'status'=>'success', 
+                        'div'=>"Conductor reasignado"
+                        ));
+					exit;
+                }
+            }
+        }
+		 if (Yii::app()->request->isAjaxRequest){	
+            echo CJSON::encode(array(
+                'status'=>'failure', 
+                'div'=>$this->renderPartial('_formCambio', array('model'=>$model), true)
+				));
+            exit;               
+        }
+	}
+	public function actionActivo($id){
+		$model=Empleado::model()->findByPk($id);
+		$model->activo=!$model->activo;
+		$total=Historicoempleados::model()->find('idempleado="'.$model->id.'" and fechaFin="0000-01-01"');
+			if(count($total)==0){
+				$model->update();
+                if (Yii::app()->request->isAjaxRequest){
+                    echo CJSON::encode(array(
+                        'status'=>'success', 
+                        'div'=>"Activo"
+                        ));
+					exit;
+                }
+            }
+        else
+		if (Yii::app()->request->isAjaxRequest){	
+            echo CJSON::encode(array(
+                'status'=>'failure', 
+                'div'=>"Primero debe eliminar el conductor asociado a la unidad",
+				));
+            exit;               
+        }
+	}
 	public function actionConductores(){
-		$dataProvider=new CActiveDataProvider('Historicoempleados');
-		
+		$dataProvider=new CActiveDataProvider('Historicoempleados',array('criteria'=>array('condition'=>'fechaFin="0000-01-01"')));
+		$empleados=new CActiveDataProvider('Empleado',array('criteria'=>array("condition"=>"idtipoEmpleado=1"),
+			'sort'=>array(
+				'defaultOrder'=>'activo desc')
+			));
 		$this->render('conductores',array(
 			'dataProvider'=>$dataProvider,
+			'empleados'=>$empleados,
 		));
 	}
 	public function actionHistoricoConductores(){
@@ -273,7 +338,15 @@ class EmpleadosController extends Controller
 		if(!isset($_GET['ajax']))
 			$this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));
 	}
-
+	public function actionDeleteAsignados($id)
+	{
+		$model=$this->loadModel($id);
+		$model->fechaFin=date('Y-m-d');
+		$model->update();
+		// if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
+		if(!isset($_GET['ajax']))
+			$this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));
+	}
 	/**
 	 * Lists all models.
 	 */

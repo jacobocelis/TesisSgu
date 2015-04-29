@@ -30,7 +30,7 @@
 		
 	</div>
 	<?php 
-		$models = Empleado::model()->findAll('idtipoEmpleado=1');
+		$models = Empleado::model()->findAll('idtipoEmpleado=1 and activo=1');
 		$data = array();
 		foreach ($models as $mode)
 			$data[$mode->id] = $mode->nombre . ' '. $mode->apellido;  
@@ -50,7 +50,7 @@
 	
 	<div id="unidad"class="row">
 		<?php echo $form->labelEx($model,'idvehiculo',array("style"=>"width:70px")); ?>
-		<?php echo $form->dropDownList($model,'idvehiculo',CHtml::listData(Vehiculo::model()->findAll(),'id','numeroUnidad'),array('prompt'=>'Seleccione: ','style' => 'width:110px;')); ?>
+		<?php echo $form->dropDownList($model,'idvehiculo',CHtml::listData(Vehiculo::model()->findAll('id not in (select idvehiculo from sgu_historicoEmpleados where fechafin="0000-01-01")'),'id','numeroUnidad'),array('prompt'=>'Seleccione: ','style' => 'width:110px;')); ?>
 		<?php echo $form->error($model,'idvehiculo'); ?>
 	</div>
 

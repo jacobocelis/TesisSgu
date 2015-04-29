@@ -50,8 +50,17 @@ class IndicadoresController extends Controller
 	 * @param integer $id the ID of the model to be displayed
 	 */
 	public function actionInd1(){
+			$ind1 = Yii::app()->db->createCommand()
+                ->select('nombre, count(*)')
+                ->from('sgu_empleado')
+                ->where('activo=:id', array(':id'=>1))
+                ->group('nombre')
+                ->queryAll();
 
-	 		$this->render('ind1');
+                //$ind1=array_map('intVal', $ind1); 
+	 		$this->render('ind1',array(
+	 			'ind1'=>$ind1,
+	 			));
 		 
 	}
 	

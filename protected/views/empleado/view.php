@@ -26,5 +26,6 @@ $this->menu=array(
 		'apellido',
 		'cedula',
 		'idtipoEmpleado',
+		'activo',
 	),
 )); ?>

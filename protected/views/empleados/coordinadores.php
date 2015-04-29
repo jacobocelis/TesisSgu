@@ -61,6 +61,29 @@ $this->widget('zii.widgets.grid.CGridView', array(
 					'htmlOptions'=>array('style'=>'text-align:center;'),
 				),
 				array(
+				 	'type'=>'raw',
+					'header'=>'Activo',
+					'name'=>'activo',
+					'value'=>'$data->activo?\'<b><div style="color:green">Sí</div></b>\':\'<b><div style="color:red">No</div></b>\'',
+					//'value'=>'$data->idempleado0->nombre.\'  \'.$data->idempleado0->apellido',
+					//'value'=>'$data->idplan0->idplanGrupo0->CompiledColour->$data-id.\' \'.$data->CompiledColour',
+					'htmlOptions'=>array('style'=>'text-align:center; '),
+				),
+				array(
+					'headerHtmlOptions'=>array('style'=>'text-align:center;width:10px;'),
+					'htmlOptions'=>array('style'=>'text-align:center;width:30px;'),
+					'header'=>'Activo Si/No',
+					'type'=>'raw',
+					'value'=>'CHtml::link(
+                    CHtml::image(Yii::app()->request->baseUrl."/imagenes/cambiar1.png",
+                                      "Agregar",array("title"=>"Editar")),
+                    "",
+                    array(
+                            \'style\'=>\'cursor: pointer;text-decoration: underline;text-align:center;\',
+                            \'onclick\'=>\'{Activo("\'.Yii::app()->createUrl("empleados/activo",array("id"=>$data["id"])).\'");}\'
+                    )
+                );',),
+				array(
 						'headerHtmlOptions'=>array('style'=>'text-align:center;width:10px;'),
 						'htmlOptions'=>array('style'=>'text-align:center;width:30px;'),
 						'header'=>'Modificar',
@@ -159,6 +182,29 @@ function editar(id){
 										
                                 }
                         } ,
+                'cache':false});
+    return false; 
+}
+function Activo(id){
+	if (typeof(id)=='string')
+        Uurl=id;
+	jQuery.ajax({
+                url: Uurl,
+                'data':$(this).serialize(),
+                'type':'post',
+                'dataType':'json',
+                'success':function(data){
+                                if (data.status == 'failure'){
+									alert(data.div);
+
+                                }
+                                else{
+                                        
+                                        //setTimeout("$('#viaje').dialog('close') ",1000);
+                                        agregarChoferRuta();
+										$.fn.yiiGridView.update('coordinadores');
+                                }
+                        },
                 'cache':false});
     return false; 
 }
