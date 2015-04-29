@@ -49,9 +49,26 @@ class IndicadoresController extends Controller
 	 * Displays a particular model.
 	 * @param integer $id the ID of the model to be displayed
 	 */
+	public function convertir($sql){
+		$fila=array();
+		$todo=array();
+		$resultado=$sql;
+		foreach ($sql as $key) {
+			foreach ($key as $k => $value) {
+				if(is_numeric($value))	
+					array_push($fila,intval($value));
+				else
+					array_push($fila,$value);
+				
+			}
+			array_push($todo,$fila);
+			$fila=array();	
+		}
+		return $todo;
+	}
 	public function actionInd1(){
 			$ind1 = Yii::app()->db->createCommand()
-                ->select('nombre, count(*)')
+                ->select('nombre, count(*) as valor')
                 ->from('sgu_empleado')
                 ->where('activo=:id', array(':id'=>1))
                 ->group('nombre')
@@ -59,7 +76,7 @@ class IndicadoresController extends Controller
 
                 //$ind1=array_map('intVal', $ind1); 
 	 		$this->render('ind1',array(
-	 			'ind1'=>$ind1,
+	 			'ind1'=>$this->convertir($ind1),
 	 			));
 		 
 	}

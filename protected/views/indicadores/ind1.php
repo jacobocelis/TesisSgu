@@ -18,6 +18,9 @@ $this->widget('ext.highcharts.HighchartsWidget', array(
         'themes/grid-light',
     ),
     'options' => array(
+        'credits'=> array(
+            'enabled'=> false
+        ),
     	'chart'=>array(
 			'type'=>'pie',
 			 'options3d'=>array(
@@ -47,18 +50,11 @@ $this->widget('ext.highcharts.HighchartsWidget', array(
 		        array (
 		          'type' => 'pie',
 		          'name' => 'Incidentes',
-		          'data' => array (
-		           array('J. Marcel', 44.2),
-		           array('A. Carrero', 26.6),
-		           array('L. Parra', 20),
-		           array('J. León', 3.1),
-		           array('G. mora', 5.4)
-		        ),
+		          'data' => $ind1,
 		    ),
 		),
     )
 ));
- 
 ?>
 </div>
  
