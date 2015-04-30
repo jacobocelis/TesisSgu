@@ -196,7 +196,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
 					'header'=>'Estatus',
 					'name'=>'idestatus',
 					'value'=>'$data->color($data->idestatus,$data->idestatus0->estatus)',
-					'htmlOptions'=>array('style'=>'text-align:center;'),
+					'htmlOptions'=>array('style'=>'text-align:center;width:80px'),
 				),
 				
 			)

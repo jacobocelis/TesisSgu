@@ -72,7 +72,7 @@
 	<?php Yii::app()->clientScript->registerScriptFile($ruta.'/js/jquery.scrollTo.min.js'); ?>
 	<?php Yii::app()->clientScript->registerScriptFile($ruta.'/js/jquery.scrollTo.js'); ?>
     <?php Yii::app()->clientScript->registerScriptFile($ruta.'/js/highcharts-3d.js'); ?>
-	
+    
     </head>
 
     <body>

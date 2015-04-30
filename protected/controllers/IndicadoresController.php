@@ -32,7 +32,7 @@ class IndicadoresController extends Controller
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('Ind1'),
+				'actions'=>array('Ind1','Ind2','ind3','ind4','ind5','ind6','ind7'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -59,7 +59,6 @@ class IndicadoresController extends Controller
 					array_push($fila,intval($value));
 				else
 					array_push($fila,$value);
-				
 			}
 			array_push($todo,$fila);
 			$fila=array();	
@@ -67,21 +66,47 @@ class IndicadoresController extends Controller
 		return $todo;
 	}
 	public function actionInd1(){
-			$ind1 = Yii::app()->db->createCommand()
-                ->select('nombre, count(*) as valor')
-                ->from('sgu_empleado')
-                ->where('activo=:id', array(':id'=>1))
-                ->group('nombre')
+			$ind = Yii::app()->db->createCommand()
+                ->select('concat(left(e.nombre,1),". ",e.apellido) as nombre,(count(*)/(select count(*) from sgu_reporteFalla)*100) as total')
+                ->from('sgu_empleado e, sgu_reporteFalla rf')
+                ->where('rf.idempleado=e.id and e.activo=1')
+                ->group('e.nombre')
                 ->queryAll();
 
                 //$ind1=array_map('intVal', $ind1); 
 	 		$this->render('ind1',array(
-	 			'ind1'=>$this->convertir($ind1),
+	 			'ind'=>$this->convertir($ind),
 	 			));
 		 
 	}
-	
+	public function actionInd2(){
+			$ind = Yii::app()->db->createCommand()
+                ->select('concat("Unidad # ",v.numeroUnidad),(count(*)/(select count(*) from sgu_reporteFalla)*100) as total')
+                ->from('sgu_vehiculo v, sgu_reporteFalla rf')
+                ->where('rf.idvehiculo=v.id')
+                ->group('v.numeroUnidad')
+                ->queryAll();
 
+                //$ind1=array_map('intVal', $ind1); 
+	 		$this->render('ind2',array(
+	 			'ind'=>$this->convertir($ind),
+	 			));
+		 
+	}
+	public function actionInd3(){
+			$ind = Yii::app()->db->createCommand()
+                ->select('concat("Unidad # ",v.numeroUnidad),(count(*)/(select count(*) from sgu_reporteFalla)*100) as total')
+                ->from('sgu_vehiculo v, sgu_reporteFalla rf')
+                ->where('rf.idvehiculo=v.id')
+                ->group('v.numeroUnidad')
+                ->queryAll();
+            $dataProvider=new CActiveDataProvider('Historicocombustible');
+                //$ind1=array_map('intVal', $ind1); 
+	 		$this->render('ind3',array(
+	 			'dataProvider'=>$dataProvider,
+	 			));
+		 
+	}
 	/**
 	 * Creates a new model.
 	 * If creation is successful, the browser will be redirected to the 'view' page.

@@ -62,7 +62,7 @@
 			<div class="span3">
 			
 			<p>
-			<a href="<?php echo Yii::app()->request->baseUrl;?>/indicadores" style="background-image:url('<?php echo Yii::app()->request->baseUrl;?>/imagenes/indicadores.png');background-position:5px 5px;background-repeat:no-repeat;border: 1px dotted #EEE;display:block;height:110px;overflow:hidden;padding:5px;text-indent:-9999px;white-space:nowrap;width:150px;height:145px"></a>
+			<a href="<?php echo Yii::app()->request->baseUrl;?>/indicadores/ind1" style="background-image:url('<?php echo Yii::app()->request->baseUrl;?>/imagenes/indicadores.png');background-position:5px 5px;background-repeat:no-repeat;border: 1px dotted #EEE;display:block;height:110px;overflow:hidden;padding:5px;text-indent:-9999px;white-space:nowrap;width:150px;height:145px"></a>
 				
 			</p>
 			
