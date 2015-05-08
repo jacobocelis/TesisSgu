@@ -78,6 +78,7 @@ class Cantidad extends CActiveRecord
 		// class name for the relations automatically generated below.
 		return array(
 			'idCaracteristicaVeh0' => array(self::BELONGS_TO, 'Caracteristicaveh', 'idCaracteristicaVeh'),
+			'anterior'=>array(self::BELONGS_TO, 'Cantidad', 'anterior'),
 		);
 	}
 

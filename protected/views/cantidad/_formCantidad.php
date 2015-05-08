@@ -34,19 +34,20 @@ $repuesto=new Repuesto();
 		<?php echo $form->textField($model,'codigoPiezaEnUso',array('size'=>60,'maxlength'=>100)); ?>
 		<?php echo $form->error($model,'codigoPiezaEnUso'); ?>
 	</div>
-
-	<div class="row">
-		<?php echo $form->labelEx($model,'fechaIncorporacion'); ?>
-		<?php echo $form->textField($model,'fechaIncorporacion',array('value'=>$model->fechaIncorporacion=='0000-01-01'?date("d/m/Y"):date("d/m/Y", strtotime(str_replace('/', '-',$model->fechaIncorporacion))),'readonly'=>'readonly','style' => 'width:100px;cursor:pointer;')); ?>
-		<?php echo $form->error($model,'fechaIncorporacion'); ?>
-	</div>
-	<?php 
+<?php 
 	$data=array(1=>'Cambio',2=>'reparación') ?>
 	<div class="row">
 		<?php echo $form->labelEx($model,'evento'); ?>
 		<?php echo $form->dropDownList($model,'evento',$data,array('style' => 'width:200px;')); ?>
 		<?php echo $form->error($model,'evento'); ?>
 	</div>
+	
+	<div class="row">
+		<?php echo $form->labelEx($model,'fechaIncorporacion'); ?>
+		<?php echo $form->textField($model,'fechaIncorporacion',array('value'=>$model->fechaIncorporacion=='0000-01-01'?date("d/m/Y"):date("d/m/Y", strtotime(str_replace('/', '-',$model->fechaIncorporacion))),'readonly'=>'readonly','style' => 'width:100px;cursor:pointer;')); ?>
+		<?php echo $form->error($model,'fechaIncorporacion'); ?>
+	</div>
+	
 
 	<div class="row">
 	

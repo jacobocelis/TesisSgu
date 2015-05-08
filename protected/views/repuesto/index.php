@@ -171,7 +171,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
 					//'name'=>'codigoPiezaEnUso',
 					//'value'=>'str_pad((int) $data->idvehiculo0->numeroUnidad,2,"0",STR_PAD_LEFT);',
 					'value'=>'$data->idCaracteristicaVeh0->idrepuesto0->repuesto',
-					'htmlOptions'=>array('style'=>'text-align:center;width:20px'),
+					'htmlOptions'=>array('style'=>'text-align:center;'),
 				),
 				
 				array(
@@ -179,29 +179,29 @@ $this->widget('zii.widgets.grid.CGridView', array(
 					'name'=>'detallePieza',
 					//'value'=>'str_pad((int) $data->idvehiculo0->numeroUnidad,2,"0",STR_PAD_LEFT);',
 					//'value'=>'$data->idplan0->idplanGrupo0->CompiledColour->$data-id.\' \'.$data->CompiledColour',
-					'htmlOptions'=>array('style'=>'text-align:center;width:20px'),
+					'htmlOptions'=>array('style'=>'text-align:center;'),
 				),
 				array(
 					'header'=>'Número de serial',
 					'name'=>'codigoPiezaEnUso',
 					//'value'=>'str_pad((int) $data->idvehiculo0->numeroUnidad,2,"0",STR_PAD_LEFT);',
 					//'value'=>'$data->idplan0->idplanGrupo0->CompiledColour->$data-id.\' \'.$data->CompiledColour',
-					'htmlOptions'=>array('style'=>'text-align:center;width:20px'),
+					'htmlOptions'=>array('style'=>'text-align:center;'),
 				),
 				array(
-					'headerHtmlOptions'=>array('style'=>'text-align:center;width:50px;'),
+					'headerHtmlOptions'=>array('style'=>'text-align:center; '),
 					'header'=>'Evento',
 					'name'=>'evento',
 					'value'=>'$data->eventoRepuesto($data->evento)',
 					//'value'=>'$data->idplan0->idplanGrupo0->CompiledColour->$data-id.\' \'.$data->CompiledColour',
-					'htmlOptions'=>array('style'=>'text-align:center;width:20px'),
+					'htmlOptions'=>array('style'=>'text-align:center;'),
 				),
 				array(
 					'header'=>'Fecha de evento',
 					'name'=>'codigoPiezaEnUso',
 					//'value'=>'str_pad((int) $data->idvehiculo0->numeroUnidad,2,"0",STR_PAD_LEFT);',
 					'value'=>'$data->fechaIncorporacion=="0000-01-01"?"-":date("d/m/Y",strtotime($data->fechaIncorporacion))',
-					'htmlOptions'=>array('style'=>'text-align:center;width:20px'),
+					'htmlOptions'=>array('style'=>'text-align:center;'),
 				),
 				
 				/*array(

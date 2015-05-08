@@ -6,22 +6,21 @@ $this->breadcrumbs=array(
 	'Facturación',
 );
 	$this->menu=array(
-	array('label'=>'<div id="menu"><strong>Opciones de mantenimiento</strong></div>'),
-		array('label'=>'      Registrar actividades de mantenimiento', 'url'=>array('planes')),
-		
-	array('label'=>'      Crear orden de mantenimiento', 'url'=>array('crearOrdenPreventiva')),
-	array('label'=>'<div id="menu"><strong>Historial</strong></div>'),
-	array('label'=>'      Histórico de mantenimientos', 'url'=>array('historicoPreventivo')),
-	array('label'=>'      Histórico de gastos', 'url'=>array('historicoGastos')),
-	array('label'=>'      Histórico de ordenes', 'url'=>array('historicoOrdenes')),	
-	
-	array('label'=>'      Regresar', 'url'=>array('mttoPreventivo/mttopRealizados/','id'=>$id,'nom'=>$nom,'dir'=>$dir)),
+	array('label'=>'<div id="menu"><strong>Opciones de orden</strong></div>'),
+	array('label'=>'      Detalle de orden', 'url'=>array('mttoPreventivo/vistaPrevia/'.$id.'?nom='.$nom.'&dir='.$dir.'')),
+	array('label'=>'      Actualizar orden', 'url'=>array('mttoPreventivo/mttopRealizados/'.$id.'?nom='.$nom.'&dir='.$dir.'')),
+	array('label'=>'      Registrar facturación', 'url'=>array('mttoPreventivo/registrarFacturacion/'.$id.'?nom='.$nom.'&dir='.$dir.'')),
 
+	array('label'=>'<div id="menu"><strong>Órdenes de mantenimiento</strong></div>'),
+	array('label'=>'      Crear orden de mantenimiento', 'url'=>array('mttoPreventivo/crearOrdenPreventiva') ,'visible'=>Yii::app()->user->checkAccess('action_mttopreventivo_crearOrdenPreventiva')),
+	array('label'=>'      Ver ordenes abiertas <span class="badge badge-'.$Colorabi.' pull-right">'.$abiertas.'</span>', 'url'=>array('mttoPreventivo/verOrdenes') ,'visible'=>Yii::app()->user->checkAccess('action_mttopreventivo_verOrdenes')),
+	array('label'=>'      Ordenes listas para cerrar <span class="badge badge-'.$Colorli.' pull-right">'.$listas.'</span>', 'url'=>array('mttoPreventivo/cerrarOrdenes'),'visible'=>Yii::app()->user->checkAccess('action_mttopreventivo_cerrarOrdenes')),
+	
 );
 ?>
-<div id="factura" class='crugepanel user-assignments-role-list'>
+<div id="factura" class='crugepanel'>
 </div>
-<div id="detalle" class='crugepanel user-assignments-role-list'>
+<div id="detalle" class='crugepanel'>
 <h1>Información de facturación</h1>
 <?php
 $this->widget('zii.widgets.grid.CGridView', array(
@@ -100,7 +99,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
                 'id'=>'actividad',
 				//'selectionChanged'=>'mostrarRecursos',
 				'summaryText'=>'',
-				'selectableRows'=>0,
+				'selectableRows'=>1,
 			    'enableSorting' => true,
 				'emptyText'=>'no existen mantenimientos preventivos registrados',
                 'dataProvider'=>$dataProvider,
@@ -213,49 +212,49 @@ $this->beginWidget('zii.widgets.jui.CJuiDialog', array( // the dialog
 			'summaryText' => '',
 			'columns'=>array(	
 				array(
-					'headerHtmlOptions'=>array('style'=>'text-align:left;'),
+					'headerHtmlOptions'=>array('style'=>'text-align:center;'),
 					'header'=>'Recurso',
 					'name'=>'idservicio',
 					'value'=>'(($data->idinsumo == null?\'\':$data->idinsumo0->insumo).\'\'.($data->idrepuesto == null?\'\':$data->idrepuesto0->repuesto).\'\'.($data->idservicio == null?\'\':$data->idservicio0->servicio)).\' \'.$data->detalle',
-					'htmlOptions'=>array('style'=>'width:250px;'),
+					'htmlOptions'=>array('style'=>'text-align:center'),
 					//'footer'=>'',
 				),
 				array(
-					'headerHtmlOptions'=>array('style'=>'text-align:left;'),
+					'headerHtmlOptions'=>array('style'=>'text-align:center;'),
 					'header'=>'Cantidad',
 					'name'=>'cantidad',
-					'htmlOptions'=>array('style'=>'width:50px;'),
+					'htmlOptions'=>array('style'=>'text-align:center'),
 					
 					//'footer'=>'',
 				),
 				array(
-					'headerHtmlOptions'=>array('style'=>'text-align:left;'),
+					'headerHtmlOptions'=>array('style'=>'text-align:center;'),
 					'header'=>'Unidad',
 					'name'=>'idunidad',
 					'value'=>'$data->idunidad0->corto',
-					'htmlOptions'=>array('style'=>'width:50px;'),
+					'htmlOptions'=>array('style'=>'text-align:center'),
 					//'footer'=>'',
 				),
 				array(
-					'headerHtmlOptions'=>array('style'=>'text-align:left;'),
+					'headerHtmlOptions'=>array('style'=>'text-align:center;'),
 					'header'=>'Precio unitario',
 					'value'=>'number_format($data->costoUnitario, 2,",",".").\' BsF.\'',
 					'name'=>'costoUnitario',
 					
-					'htmlOptions'=>array('style'=>'width:50px;'),
+					'htmlOptions'=>array('style'=>'text-align:center'),
 					//'footer'=>'',
 				),
 				array(
-					'headerHtmlOptions'=>array('style'=>'text-align:left;'),
+					'headerHtmlOptions'=>array('style'=>'text-align:center;'),
 					'header'=>'Total',
 					'name'=>'costoTotal',
 
 					'value'=>'number_format($data->costoTotal, 2,",",".").\' Bs.\'',
-					'htmlOptions'=>array('style'=>'width:50px;'),
+					'htmlOptions'=>array('style'=>'text-align:center'),
 					//'footer'=>'',
 				),
 				array(
-						'headerHtmlOptions'=>array('style'=>'text-align:center;width:30px;'),
+						'headerHtmlOptions'=>array('style'=>'text-align:center;width:100px;'),
 						'htmlOptions'=>array('style'=>'text-align:center;'),
 						'header'=>'Agregar costo',
 						'type'=>'raw',
@@ -330,15 +329,18 @@ $this->beginWidget('zii.widgets.jui.CJuiDialog', array( // the dialog
         'title'=>'Agregar costo',
         'autoOpen'=>false,
         'modal'=>true,
-        'width'=>500,
+        'width'=>'40%',
+        'max-height'=>500,
 		'position'=>array(null,100),
         //'height'=>260,
-		'resizable'=>false
+		'resizable'=>false,
+		'close' => 'js:function(event, ui) { $("#gridSerial").hide(); }'
     ),
 ));?>
-<div class="divForForm"></div> 
-<div id="gridSerial" class='crugepanel user-assignments-role-list' style="display:none">
-	<i>Seleccione el repuesto para actualizar el nuevo serial</i>
+<div class="divForForm"> </div>
+
+<div id="gridSerial" class='crugepanel' style="max-height: 200px;">
+	<i>La lista inferior muestra el detalle del repuesto actual en el vehiculo, si está efectuando un cambio puede agregar el nuevo serial del repuesto.</i>
 <?php
 $this->widget('zii.widgets.grid.CGridView', array(
                 'id'=>'repdetalle',
@@ -355,14 +357,14 @@ $this->widget('zii.widgets.grid.CGridView', array(
 					'name'=>'idvehiculo',
 					'value'=>'str_pad((int) $data->idCaracteristicaVeh0->idvehiculo0->numeroUnidad,2,"0",STR_PAD_LEFT);',
 					//'value'=>'$data->idplan0->idplanGrupo0->CompiledColour->$data-id.\' \'.$data->CompiledColour',
-					'htmlOptions'=>array('style'=>'text-align:center;width:60px'),
+					'htmlOptions'=>array('style'=>'text-align:center;width:70px'),
 				),
 				array(
 					'header'=>'Repuesto',
 					//'name'=>'codigoPiezaEnUso',
 					//'value'=>'str_pad((int) $data->idvehiculo0->numeroUnidad,2,"0",STR_PAD_LEFT);',
 					'value'=>'$data->idCaracteristicaVeh0->idrepuesto0->repuesto',
-					'htmlOptions'=>array('style'=>'text-align:center;width:20px'),
+					'htmlOptions'=>array('style'=>'text-align:center;'),
 				),
 				
 				array(
@@ -370,14 +372,14 @@ $this->widget('zii.widgets.grid.CGridView', array(
 					'name'=>'detallePieza',
 					//'value'=>'str_pad((int) $data->idvehiculo0->numeroUnidad,2,"0",STR_PAD_LEFT);',
 					//'value'=>'$data->idplan0->idplanGrupo0->CompiledColour->$data-id.\' \'.$data->CompiledColour',
-					'htmlOptions'=>array('style'=>'text-align:center;width:20px'),
+					'htmlOptions'=>array('style'=>'text-align:center;'),
 				),
 				array(
 					'header'=>'Serial',
 					'name'=>'codigoPiezaEnUso',
 					//'value'=>'str_pad((int) $data->idvehiculo0->numeroUnidad,2,"0",STR_PAD_LEFT);',
 					//'value'=>'$data->idplan0->idplanGrupo0->CompiledColour->$data-id.\' \'.$data->CompiledColour',
-					'htmlOptions'=>array('style'=>'text-align:center;width:20px'),
+					'htmlOptions'=>array('style'=>'text-align:center;'),
 				),
 				/*array(
 					'headerHtmlOptions'=>array('style'=>'text-align:center;width:50px;'),
@@ -392,7 +394,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
 					//'name'=>'codigoPiezaEnUso',
 					//'value'=>'str_pad((int) $data->idvehiculo0->numeroUnidad,2,"0",STR_PAD_LEFT);',
 					'value'=>'$data->diasUltimoEvento()',
-					'htmlOptions'=>array('style'=>'text-align:center;width:20px'),
+					'htmlOptions'=>array('style'=>'text-align:center;'),
 				),
 				/*array(
 					'headerHtmlOptions'=>array('style'=>'text-align:center;width:50px;'),
@@ -420,6 +422,8 @@ $this->widget('zii.widgets.grid.CGridView', array(
 
 		?>
 </div>
+
+
 <?php $this->endWidget();?>
 
 <?php
@@ -456,41 +460,9 @@ $this->beginWidget('zii.widgets.jui.CJuiDialog', array( // the dialog
 <?php $this->endWidget();?>
 
 
-<style>
-.crugepanel {
-    background-color: #FFF;
-    border: 1px dotted #AAA;
-    border-radius: 1px;
-    box-shadow: 3px 3px 5px #EEE;
-    display: block;
-    margin-top: 10px;
-    padding: 10px;
-}
-.grid-view table.items th {
-	color: rgba(0, 0, 0, 1);
-    text-align: center;
-    background: none repeat scroll 0% 0% rgba(0, 138, 255, 0.15);
-}
-.grid-view table.items th a {
-    color: #000;
-    font-weight: bold;
-    text-decoration: none;
-}
-.grid-view table.items td {
-    font-size: 0.9em;
-    border: 1px solid #5877C3;
-    padding: 0.3em;
-}
-.grid-view table.items th, .grid-view table.items td {
-    font-size: 0.9em;
-    border: 1px solid #A8C5F0;
-    padding: 0.3em;
-}
-.grid-view {
-    padding: 10px 0;
-}
-</style>
+
 <script>
+ 
 var idAct;
 $('#recur').hide();
 cargar();
@@ -541,14 +513,13 @@ var Uurl;
 var idfac=<?php echo $idfac?>;
 var idRep;
 function editarActividad(id,rep){
-$("#gridSerial").show();
+//$("#gridSerial").show();
 
 if(rep!=undefined){
 	idRep=rep;	
 	$.fn.yiiGridView.update('repdetalle',{ data : "idRep="+rep});	
+
 }
-
-
 $('#dialog').dialog('open');
 	 if (typeof(id)=='string')
                 Uurl=id;
@@ -561,14 +532,19 @@ $('#dialog').dialog('open');
                         {
                                 if (data.status == 'failure')
                                 {
+                                		if(data.asignado)
+                                			$("#gridSerial").show();
+                                		else
+                                			$("#gridSerial").hide();
                                         $('#dialog div.divForForm').html(data.div);
                                         // Here is the trick: on submit-> once again this function!
                                         $('#dialog div.divForForm form').submit(editarActividad); // updatePaymentComment
                                 }
                                 else
                                 {
-                                        $('#dialog div.divForForm').html(data.div);
-                                        setTimeout("$('#dialog').dialog('close') ",1000);
+
+                                        //$('#dialog div.divForForm').html(data.div);
+                                        $('#dialog').dialog('close');
                                         $.fn.yiiGridView.update('rec');
 										$.fn.yiiGridView.update('factu');
                                 }
@@ -670,7 +646,6 @@ $('#recurso').dialog('open');
                                         setTimeout("$('#recurso').dialog('close') ",1000);
                                         $.fn.yiiGridView.update('rec');
                                         $.fn.yiiGridView.update('factu');
-										
                                 }
                         },
                 'cache':false});

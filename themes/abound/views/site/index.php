@@ -54,7 +54,7 @@
 			<div class="span3">
 			
 			<p>
-				<a href="<?php echo Yii::app()->request->baseUrl;?>/viajes" style="background-image:url('<?php echo Yii::app()->request->baseUrl;?>/imagenes/viajes.png');background-position:5px 5px;background-repeat:no-repeat;border: 1px dotted #EEE;display:block;height:110px;overflow:hidden;padding:5px;text-indent:-9999px;white-space:nowrap;width:150px;height:145px"></a>
+				<a href="<?php echo Yii::app()->request->baseUrl;?>/viajes/rutinarios" style="background-image:url('<?php echo Yii::app()->request->baseUrl;?>/imagenes/viajes.png');background-position:5px 5px;background-repeat:no-repeat;border: 1px dotted #EEE;display:block;height:110px;overflow:hidden;padding:5px;text-indent:-9999px;white-space:nowrap;width:150px;height:145px"></a>
 				
 			</p>
 			

@@ -28,11 +28,6 @@
 	
 	</div>
 	
-	<div class="row">
-		<?php echo $form->labelEx($model,'idunidad'); ?>
-		<?php echo $form->dropDownList($model,'idunidad',CHtml::listData(Unidad::model()->findAll(), 'id', 'unidad')); ?>
-		<?php echo $form->error($model,'idunidad'); ?>
-	</div>
 	<?php
 		echo CHtml::link('Cancelar', "",array('title'=>'Cancelar',
         'style'=>'cursor: pointer;font-size:10px;float:right;',

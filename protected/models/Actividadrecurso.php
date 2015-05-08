@@ -43,14 +43,14 @@ class Actividadrecurso extends CActiveRecord
 		// will receive user inputs.
 		return array(
 			array('cantidad, idactividades, idunidad,costoUnitario,serialGuardado', 'required'),
-			array('cantidad, serialGuardado, idactividades, idinsumo, idrepuesto, idservicio, idunidad, idactividadRecursoGrupo, garantia, idtiempoGarantia', 'numerical', 'integerOnly'=>true),
-			array('costoUnitario, costoTotal,serialGuardado', 'numerical'),
+			array('cantidad, serialGuardado, idactividades, idinsumo, idrepuesto, idservicio, idunidad, idactividadRecursoGrupo,', 'numerical', 'integerOnly'=>true),
+			array('costoUnitario, costoTotal,serialGuardado,iva', 'numerical'),
 			array('detalle', 'length', 'max'=>100),
 			array('costoUnitario', 'validarCosto'),
 			array('costoUnitario', 'validarCantidad'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, cantidad, idactividades, idinsumo, idrepuesto, idservicio, idunidad, detalle, idactividadRecursoGrupo, costoUnitario, costoTotal, garantia, idtiempoGarantia', 'safe', 'on'=>'search'),
+			array('id, cantidad, idactividades, idinsumo, idrepuesto, idservicio, idunidad, detalle, idactividadRecursoGrupo, costoUnitario, costoTotal', 'safe', 'on'=>'search'),
 		);
 	}
 	     public function validarCosto(){

@@ -5,17 +5,16 @@ $this->breadcrumbs=array(
 	'Actualizar órden de mantenimiento',
 );
 	$this->menu=array(
-	array('label'=>'<div id="menu"><strong>Opciones de mantenimiento</strong></div>'),
-		array('label'=>'      Registrar actividades de mantenimiento', 'url'=>array('planes')),
-		
-	array('label'=>'      Crear orden de mantenimiento', 'url'=>array('crearOrdenPreventiva')),
-	array('label'=>'<div id="menu"><strong>Historial</strong></div>'),
-	array('label'=>'      Histórico de mantenimientos', 'url'=>array('historicoPreventivo')),
-	array('label'=>'      Histórico de gastos', 'url'=>array('historicoGastos')),
-	array('label'=>'      Histórico de ordenes', 'url'=>array('historicoOrdenes')),	
-	
-	array('label'=>'      Regresar', 'url'=>array('mttoPreventivo/verOrdenes')),
+	array('label'=>'<div id="menu"><strong>Opciones de orden</strong></div>'),
+	array('label'=>'      Detalle de orden', 'url'=>array('mttoPreventivo/vistaPrevia/'.$id.'?nom='.$nom.'&dir='.$dir.'')),
+	array('label'=>'      Actualizar orden', 'url'=>array('mttoPreventivo/mttopRealizados/'.$id.'?nom='.$nom.'&dir='.$dir.'')),
+	array('label'=>'      Registrar facturación', 'url'=>array('mttoPreventivo/registrarFacturacion/'.$id.'?nom='.$nom.'&dir='.$dir.'')),
 
+	array('label'=>'<div id="menu"><strong>Órdenes de mantenimiento</strong></div>'),
+	array('label'=>'      Crear orden de mantenimiento', 'url'=>array('mttoPreventivo/crearOrdenPreventiva') ,'visible'=>Yii::app()->user->checkAccess('action_mttopreventivo_crearOrdenPreventiva')),
+	array('label'=>'      Ver ordenes abiertas <span class="badge badge-'.$Colorabi.' pull-right">'.$abiertas.'</span>', 'url'=>array('mttoPreventivo/verOrdenes') ,'visible'=>Yii::app()->user->checkAccess('action_mttopreventivo_verOrdenes')),
+	array('label'=>'      Ordenes listas para cerrar <span class="badge badge-'.$Colorli.' pull-right">'.$listas.'</span>', 'url'=>array('mttoPreventivo/cerrarOrdenes'),'visible'=>Yii::app()->user->checkAccess('action_mttopreventivo_cerrarOrdenes')),
+	
 );
 ?>
 <div class='crugepanel user-assignments-role-list'>
@@ -164,13 +163,13 @@ $this->widget('zii.widgets.grid.CGridView', array(
 					'value'=>'number_format($data->valores($data->kmRealizada))?number_format($data->kmRealizada).\' Km \':$data->noasignado()',
 					'htmlOptions'=>array('style'=>'width:80px;text-align:center;'),
 				),*/
-				array(
+				/*array(
 					'header'=>'Tiempo de paro',
 					'name'=>'duracion',
 					'type'=>'raw',
 					'value'=>'$data->duracion.\' \'.$data->idtiempod0->tiempo',
 					'htmlOptions'=>array('style'=>'width:80px;text-align:center;'),
-				),
+				),*/
 				array(
 					'headerHtmlOptions'=>array('style'=>'text-align:center;width:30px;'),
 					'htmlOptions'=>array('style'=>'text-align:center;'),
@@ -214,47 +213,7 @@ $this->beginWidget('zii.widgets.jui.CJuiDialog', array( // the dialog
  
 <?php $this->endWidget();?>
 
-<style>
-.grid-view table.items tr.selected {
-    background: none repeat scroll 0% 0% rgba(0, 249, 3, 0.3);
-}
-.grid-view {
-    padding: 0px 0px;
-}
-.crugepanel {
-    background-color: #FFF;
-    border: 1px dotted #AAA;
-    border-radius: 1px;
-    box-shadow: 3px 3px 5px #EEE;
-    display: block;
-    margin-top: 10px;
-    padding: 10px;
-}
-h1 {
-    font-size: 250%;
-    line-height: 40px;
-}
-.grid-view table.items th {
-	color: rgba(0, 0, 0, 1);
-    text-align: center;
-    background: none repeat scroll 0% 0% rgba(0, 138, 255, 0.15);
-}
-.grid-view table.items th a {
-    color: #000;
-    font-weight: bold;
-    text-decoration: none;
-}
-.grid-view table.items td {
-    font-size: 0.9em;
-    border: 1px solid #5877C3;
-    padding: 0.3em;
-}
-.grid-view table.items th, .grid-view table.items td {
-    font-size: 0.9em;
-    border: 1px solid #A8C5F0;
-    padding: 0.3em;
-}
-</style>
+ 
 <script>
 var idorden="<?php echo $id;?>";
 actualizarCheck(idorden);

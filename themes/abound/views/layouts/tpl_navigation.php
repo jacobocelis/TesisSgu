@@ -49,7 +49,7 @@ if($alertasPre["total"]>0){
 }
 else{
 	$spanPre='';
-	$diPre='/mttoPreventivo';
+	$diPre='/mttoPreventivo/index';
 }
 $alertasCor = Yii::app()->db->createCommand('SELECT count(*) as total from sgu_reporteFalla where idestatus=8 and idfalla in (select id from sgu_falla where tipo = 0)')->queryRow();
 
@@ -59,7 +59,7 @@ if($alertasCor["total"]>0){
 }
 else{
 	$spanCor='';
-	$diCor='/mttoCorrectivo';
+	$diCor='/mttoCorrectivo/index';
 }
 
 ?>
@@ -86,19 +86,19 @@ else{
                     'items' => array(
                         /*array('label' => 'Inicio', 'url' => array('/'), 
                             'visible' => !Yii::app()->user->isGuest),*/
-							array('label' => 'Vehiculos', 'url' => array('/Vehiculo'), 
+							array('label' => 'Vehiculos', 'url' => array('/vehiculo/index'), 
                             'visible' => !Yii::app()->user->isGuest),
-							array('label' => 'Repuestos', 'url' => array('/repuesto'), 
+							array('label' => 'Repuestos', 'url' => array('/repuesto/index'), 
                             'visible' => !Yii::app()->user->isGuest),
 							array('label' => 'Mtto. Preventivo'.$spanPre.'', 'url' => array($diPre), 
                             'visible' => !Yii::app()->user->isGuest),
 							array('label' => 'Mtto. Correctivo'.$spanCor.'', 'url' => array($diCor), 
                             'visible' => !Yii::app()->user->isGuest),
-							array('label' => 'Combustible', 'url' => array('/Combustible'), 
+							array('label' => 'Combustible', 'url' => array('/combustible/index'), 
                             'visible' => !Yii::app()->user->isGuest),
-							array('label' => 'Neumáticos', 'url' => array('/neumaticos'), 
+							array('label' => 'Neumáticos', 'url' => array('/neumaticos/index'), 
                             'visible' => !Yii::app()->user->isGuest),
-							array('label' => 'Viajes', 'url' => array('/viajes'), 
+							array('label' => 'Viajes', 'url' => array('/viajes/rutinarios'), 
                             'visible' => !Yii::app()->user->isGuest),
 							array('label' => 'Indicadores', 'url' => array('/indicadores/ind1'), 
                             'visible' => !Yii::app()->user->isGuest),

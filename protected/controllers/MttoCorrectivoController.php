@@ -28,7 +28,7 @@ class MttoCorrectivoController extends Controller
 	{
 		return array(
 			array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array('index','view','falla','registrarFalla','ajaxObtenerFallas','ajaxObtenerConductor','nuevaFalla','ajaxActualizarListaFallas','ajaxActualizarListaMejora','crearOrdenCorrectiva','obtenerActividad','agregarRecurso','iniciales','crearordenpreventiva','crearOrden','verOrdenes','cambiarFecha','mttocRealizados','registrarFacturacion','agregarFactura','estatusOrden','cerrarOrdenes','HistoricoCorrectivo','historicoOrdenes','historicoGastos','vistaPrevia','vistaPreviaPDF','generarPdf','correo','actualizarSpan','agregarRecursoAdicional','insumos','repuesto','ActualizarCheck','RegistrarMejora','Mejora','nuevaMejora','historicoMejoras','ActualizarSpanListas'),
+				'actions'=>array('RegistroIncidente','index','view','falla','registrarFalla','ajaxObtenerFallas','ajaxObtenerConductor','nuevaFalla','ajaxActualizarListaFallas','ajaxActualizarListaMejora','crearOrdenCorrectiva','obtenerActividad','agregarRecurso','iniciales','crearordenpreventiva','crearOrden','verOrdenes','cambiarFecha','mttocRealizados','registrarFacturacion','agregarFactura','estatusOrden','cerrarOrdenes','HistoricoCorrectivo','historicoOrdenes','historicoGastos','vistaPrevia','vistaPreviaPDF','generarPdf','correo','actualizarSpan','agregarRecursoAdicional','insumos','repuesto','ActualizarCheck','RegistrarMejora','Mejora','nuevaMejora','historicoMejoras','ActualizarSpanListas'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
@@ -49,6 +49,9 @@ class MttoCorrectivoController extends Controller
 	 * Displays a particular model.
 	 * @param integer $id the ID of the model to be displayed
 	 */
+	public function estatusOrden($id){
+		return Ordenmtto::model()->findByPk($id)->idestatus;
+	}
 	 public function actionActualizarSpan(){
 		$mi=Yii::app()->db->createCommand("select count(*) as total from sgu_actividades where idestatus=1")->queryRow();
 		
@@ -204,6 +207,12 @@ class MttoCorrectivoController extends Controller
 			'totFactura'=>$totFactura,
 			'nom'=>$nom,
 			'dir'=>$dir,
+			'idOrden'=>$id,
+	
+			'abiertas'=>$this->getOrdenesAbiertas(),
+			'Colorabi'=>$this->getColor($this->getOrdenesAbiertas()),
+			'Colorli'=>$this->getColor($this->getOrdenesListas()),
+			'listas'=>$this->getOrdenesListas(),
 		));
 	
 	}
@@ -370,6 +379,11 @@ class MttoCorrectivoController extends Controller
 			'dir'=>$dir,
 			'model'=> new Reportefalla,
 			'dias'=>$dias,
+
+			'abiertas'=>$this->getOrdenesAbiertas(),
+			'Colorabi'=>$this->getColor($this->getOrdenesAbiertas()),
+			'Colorli'=>$this->getColor($this->getOrdenesListas()),
+			'listas'=>$this->getOrdenesListas(),
 		));
 	}
 	public function actionCrearOrden(){
@@ -493,6 +507,12 @@ class MttoCorrectivoController extends Controller
 			'nom'=>$nom,
 			'dir'=>$dir,
 			'mejoras'=>$mejoras,
+			'idOrden'=>$id,
+	 
+			'abiertas'=>$this->getOrdenesAbiertas(),
+			'Colorabi'=>$this->getColor($this->getOrdenesAbiertas()),
+			'Colorli'=>$this->getColor($this->getOrdenesListas()),
+			'listas'=>$this->getOrdenesListas(),
 		));
 	}
 	public function actionActualizarCheck($id){
@@ -537,15 +557,15 @@ class MttoCorrectivoController extends Controller
 				$tipoRepuesto=new Subtiporepuesto();
         // Uncomment the following line if AJAX validation is needed
          //$this->performAjaxValidation($model);
- 
+	 
     if(isset($_POST['Recursofalla'])){
+            $iva=Parametro::model()->findByAttributes(array('nombre'=>'IVA'));
             $model->attributes=$_POST['Recursofalla'];
+            $model->iva=$iva["valor"]/100;
             if($model->save()){
             		if(isset($_POST['idfac'])){
-						
-						$iva=Parametro::model()->findByAttributes(array('nombre'=>'IVA'));
 						$factura=Factura::model()->findByPk($_POST['idfac']);
-						$actividades=DetalleordenCo::model()->findAll(array("condition"=>"idordenMtto = '".$factura->idordenMtto."'"));
+						$actividades=Detalleordenco::model()->findAll(array("condition"=>"idordenMtto = '".$factura->idordenMtto."'"));
 						$subTotal=0;
 						for($i=0;$i<count($actividades);$i++){
 							$recursos=Recursofalla::model()->findAll(array("condition"=>"idreporteFalla = '".$actividades[$i]["idreporteFalla"]."'"));
@@ -654,6 +674,32 @@ class MttoCorrectivoController extends Controller
 		$parte=Yii::app()->db->createCommand('select am.actividad from sgu_actividadMtto am, sgu_actividadesGrupo ag where ag.idactividadMtto=am.id and ag.id="'.$id.'"')->queryRow();
 		echo $parte["actividad"];
 	}
+
+public function actionRegistroIncidente2(){
+	$model=new Reportefalla;
+    if(isset($_POST['Reportefalla'])){
+        $model->attributes=$_POST['Reportefalla'];
+		$model->fechaFalla=date("Y-m-d", strtotime(str_replace('/', '-',$model->fechaFalla )));
+        if($model->save()){
+            if (Yii::app()->request->isAjaxRequest){
+				echo CJSON::encode(array(
+                    'status'=>'success', 
+                    'mensaje'=>'<div class="alert alert-success">
+						<button type="button" class="close" data-dismiss="alert">×</button>
+                        <b>El incidente se registró correctamente</b>
+                        </div>'
+                    ));
+                }
+                return true;
+            }else{
+                echo CJSON::encode(array(
+                'status'=>'failure', 
+                'mensaje'=>'Error, verifique la información'
+            ));
+                return false;
+        }
+    }
+}
 	public function actionFalla(){
 		
 		$model=new Reportefalla;
@@ -1060,7 +1106,7 @@ class MttoCorrectivoController extends Controller
                 if (Yii::app()->request->isAjaxRequest){
                     echo CJSON::encode(array(
                         'status'=>'success', 
-                        'div'=>"Falla agregada"
+                        'div'=>"registro agregado"
                         ));
 					exit;
                 }

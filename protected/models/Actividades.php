@@ -153,7 +153,7 @@ class Actividades extends CActiveRecord
 		// will receive user inputs.
 		return array(
 			array('idactividadMtto, frecuenciaKm, duracion, idprioridad, idvehiculo, idtiempod, idtiempof, idactividadesGrupo,ultimoKm,ultimoFecha,idestatus, fechaRealizada, kmRealizada', 'required'),
-			array('ultimoKm, frecuenciaKm, frecuenciaMes, proximoKm, duracion, atraso, idprioridad, idvehiculo, idtiempod, idtiempof, idactividadesGrupo,idestatus, kmRealizada,', 'numerical', 'integerOnly'=>true),
+			array('ultimoKm, frecuenciaKm, frecuenciaMes, proximoKm, duracion, atraso, idprioridad, idvehiculo, idtiempod, idtiempof, idactividadesGrupo,idestatus, kmRealizada,inicial,', 'numerical', 'integerOnly'=>true),
 			array('procedimiento', 'length', 'max'=>200),
 			array('ultimoFecha, proximoFecha, fechaRealizada, kmRealizada,', 'safe'),
 			// The following rule is used by search().

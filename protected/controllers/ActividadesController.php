@@ -148,7 +148,8 @@ class ActividadesController extends Controller
 			if($model->idestatus==3){
 				$ult=Yii::app()->db->createCommand("select id from sgu_actividades where idactividadesGrupo=".$model->idactividadesGrupo." and idvehiculo= ".$model->idvehiculo." and idactividadMtto=".$model->idactividadMtto." order by id desc limit 1")->queryRow();
 				
-				Yii::app()->db->createCommand("update `tsg`.`sgu_actividades` set ultimoKm=".$model->kmRealizada.",ultimoFecha='".$model->fechaRealizada."', frecuenciaKm=".$model->frecuenciaKm.",frecuenciaMes=".$model->frecuenciaMes.",proximoKm=".$proximoKm.",proximoFecha='".$proximoFecha."',duracion=".$model->duracion.",idprioridad=".$model->idprioridad.",idvehiculo=".$model->idvehiculo.",idestatus=2, procedimiento='".$model->procedimiento."',idtiempod=".$model->idtiempod.",idtiempof=".$model->idtiempof.",idactividadesGrupo=".$model->idactividadesGrupo.",idactividadMtto=".$model->idactividadMtto." where id = '".$ult["id"]."'")->query();	
+			
+				Yii::app()->db->createCommand("update `tsg`.`sgu_actividades` set ultimoKm=".$model->kmRealizada.",ultimoFecha='".$model->fechaRealizada."', frecuenciaKm=".$model->frecuenciaKm.",frecuenciaMes=".$model->frecuenciaMes.",proximoKm=".$proximoKm.",proximoFecha='".$proximoFecha."',duracion=0,idprioridad=".$model->idprioridad.",idvehiculo=".$model->idvehiculo.",idestatus=2, procedimiento='".$model->procedimiento."',idtiempod=".$model->idtiempod.",idtiempof=".$model->idtiempof.",idactividadesGrupo=".$model->idactividadesGrupo.",idactividadMtto=".$model->idactividadMtto." where id = '".$ult["id"]."'")->query();	
 				/*Registro en la bitácora*/
 				Bitacora::registrarEvento(Yii::app()->user->id,'UPDATE','sgu_actividades');
 			}
@@ -185,6 +186,12 @@ class ActividadesController extends Controller
             $model->attributes=$_POST['Actividades'];
 			$model->fechaRealizada=date("Y-m-d", strtotime(str_replace('/', '-',$model->fechaRealizada)));
             
+        	$idorden=Yii::app()->db->createCommand("select * from sgu_detalleOrden where idactividades=".$model->id." limit 1")->queryRow();
+			$orden=Ordenmtto::model()->findByPk($idorden["idordenMtto"]);
+			$fechaorden=date("Y-m-d",strtotime($orden->fecha));
+			$duracion=((strtotime($model->fechaRealizada)-strtotime($fechaorden))/86400)+1;
+
+			$model->duracion=$duracion;	
         	if($model->save()){
 				if (Yii::app()->request->isAjaxRequest){
 			

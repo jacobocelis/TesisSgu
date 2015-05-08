@@ -18,7 +18,7 @@ $this->menu=array(
 	array('label'=>'      Crear grupo', 'url'=>array('grupo/create')),
 
 	array('label'=>'<div id="menu"><strong>Administrar</strong></div>' , 'visible'=>'1'),
-	array('label'=>'      Parámetros y datos maestros', 'url'=>array('repuesto/parametros')),
+	array('label'=>'      Parámetros y datos maestros', 'url'=>array('vehiculo/parametros')),
 );
 if(!isset($grupo))
 	$grupo=0;

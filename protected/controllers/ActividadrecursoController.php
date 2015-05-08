@@ -89,12 +89,13 @@ class ActividadrecursoController extends Controller
 		$model=$this->loadModel($id);
 		
 		if(isset($_POST['Actividadrecurso'])){
+			$iva=Parametro::model()->findByAttributes(array('nombre'=>'IVA'));
             $model->attributes=$_POST['Actividadrecurso'];
+            $model->iva=$iva["valor"]/100;
             if($model->save()){
                 if (Yii::app()->request->isAjaxRequest){
 					if(isset($_POST['idfac'])){
 						
-						$iva=Parametro::model()->findByAttributes(array('nombre'=>'IVA'));
 						$factura=Factura::model()->findByPk($_POST['idfac']);
 						$actividades=Detalleorden::model()->findAll(array("condition"=>"idordenMtto = '".$factura->idordenMtto."'"));
 						$subTotal=0;
@@ -111,15 +112,27 @@ class ActividadrecursoController extends Controller
                     echo CJSON::encode(array(
                         'status'=>'success', 
                         'div'=>"se agregó el costo correctamente"
+
                         ));
                     exit;               
                 }
             }
         }
+			
+			
+			$Actividades = Actividades::model()->findByPk($model->idactividades);
+			$consulta=Yii::app()->db->createCommand("select * from sgu_CaracteristicaVeh where idvehiculo=".$Actividades->idvehiculo." and idrepuesto='".$model->idrepuesto."'")->queryRow();
+			if(!$consulta)
+				$tieneAsignado=0;
+			else
+				$tieneAsignado=1;
+
         if (Yii::app()->request->isAjaxRequest){
             echo CJSON::encode(array(
                 'status'=>'failure', 
-                'div'=>$this->renderPartial('_form', array('model'=>$model), true)));
+                'asignado'=>$tieneAsignado,
+                'consulta'=>$consulta,
+                'div'=>$this->renderPartial('_form', array('model2'=>$model), true)));
             exit;               
         }
 	}

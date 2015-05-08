@@ -9,7 +9,6 @@
         <meta name="author" content="Webapplicationthemes.com">
         <!-- Fuente Local del Sitio Web -->
          
-
         <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
         <!--[if lt IE 9]>
           <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
@@ -71,7 +70,13 @@
 	<?php Yii::app()->clientScript->registerScriptFile($ruta.'/js/jquery-ui-timepicker.js'); ?>
 	<?php Yii::app()->clientScript->registerScriptFile($ruta.'/js/jquery.scrollTo.min.js'); ?>
 	<?php Yii::app()->clientScript->registerScriptFile($ruta.'/js/jquery.scrollTo.js'); ?>
-    <?php Yii::app()->clientScript->registerScriptFile($ruta.'/js/highcharts-3d.js'); ?>
+    <?php 
+    if(Yii::app()->controller->id=="indicadores"){
+
+        Yii::app()->clientScript->registerScriptFile(Yii::app()->request->baseUrl.'/js/highcharts-3d.js'); 
+        
+    }
+        ?>    
     
     </head>
 

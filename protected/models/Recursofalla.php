@@ -44,7 +44,7 @@ class Recursofalla extends CActiveRecord
 		return array(
 			array('cantidad, idreporteFalla, idunidad, costoUnitario', 'required'),
 			array('cantidad, idinsumo, idservicio, idrepuesto, idreporteFalla, idunidad, garantia, idtiempo', 'numerical', 'integerOnly'=>true),
-			array('costoUnitario, costoTotal', 'numerical'),
+			array('costoUnitario, costoTotal, iva', 'numerical'),
 			array('costoUnitario', 'validarCosto'),
 			array('costoUnitario', 'validarCantidad'),
 			// The following rule is used by search().

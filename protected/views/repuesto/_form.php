@@ -44,12 +44,7 @@
 		<?php echo $form->dropDownList($model,'idsubTipoRepuesto',CHtml::listData(Subtiporepuesto::model()->findAll(), 'id', 'subTipo'),array('style'=>'width:180px')); ?>
 		<?php echo $form->error($model,'idsubTipoRepuesto'); ?>
 	</div>
-	
-	<div class="row">
-		<?php echo $form->labelEx($model,'idunidad'); ?>
-		<?php echo $form->dropDownList($model,'idunidad',CHtml::listData(Unidad::model()->findAll(), 'id', 'unidad'),array('style'=>'width:170px')); ?>
-		<?php echo $form->error($model,'idunidad'); ?>
-	</div>
+ 
 	
 	<div class="row buttons">
 		<?php echo CHtml::submitButton($model->isNewRecord ? 'Registrar' : 'Guardar'); ?>

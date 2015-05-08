@@ -1,3 +1,4 @@
+<?php Yii::app()->clientScript->registerScriptFile(Yii::app()->request->baseUrl."/js/highstock.js"); ?>
 <?php
 
 $this->breadcrumbs=array(
@@ -5,10 +6,15 @@ $this->breadcrumbs=array(
 );
 
 $this->menu=array(
-	array('label'=>'<div id="menu"><strong>Indicadores</strong></div>' , 'visible'=>'1'),
+	array('label'=>'<div id="menu"><strong>Indicadores y reportes</strong></div>' , 'visible'=>'1'),
 	array('label'=>'      % de incidentes por conductor', 'url'=>array('Indicadores/ind1')),
     array('label'=>'      % de incidentes por unidad', 'url'=>array('Indicadores/ind2')),
     array('label'=>'      Consumo de combustible por unidad', 'url'=>array('Indicadores/ind3')),
+    array('label'=>'      Gastos por mtto. preventivo', 'url'=>array('Indicadores/ind7')),
+    array('label'=>'      Gastos por mtto. correctivo', 'url'=>array('Indicadores/ind4')),
+    array('label'=>'      Gastos por neumáticos', 'url'=>array('Indicadores/ind8')),
+    //array('label'=>'      Tiempo de servicio', 'url'=>array('Indicadores/ind5')),
+    array('label'=>'      Viajes por unidad', 'url'=>array('Indicadores/ind6')),
 );
 ?>
 <div class="crugepanel">
@@ -21,9 +27,14 @@ $this->Widget('ext.highcharts.HighchartsWidget', array(
 
    'options'=>array(
            'chart'=> array(
-            
+          'options3d'=> array(
+                'enabled'=> true,
+                'alpha'=> 10,
+                'beta'=> 25,
+                'depth'=> 70
+            ),
             'defaultSeriesType'=> 'column',
-            'zoomType'=> 'xy',
+            //'zoomType'=> 'xyz',
         ),
             'lang'=>array(  
                 'loading'=> 'Cargando...',  
@@ -49,6 +60,7 @@ $this->Widget('ext.highcharts.HighchartsWidget', array(
         ),
         'yAxis'=> array(
         array( // Primary yAxis
+          'min'=>0,
             'labels'=> array(
                 'format'=> '{value}L',
  
@@ -58,6 +70,7 @@ $this->Widget('ext.highcharts.HighchartsWidget', array(
  
             )
         ), array( // Secondary yAxis
+            'min'=>0,
             'title'=> array(
                 'text'=> 'Costo',
  
@@ -70,15 +83,22 @@ $this->Widget('ext.highcharts.HighchartsWidget', array(
         )),
 
     'xAxis'=> array(
+
         array(
-            'categories'=> array('01', '02', '03', '04', '05', '06', '07', '08', '09'),
+          'title'=>array(
+                'text'=>'# Unidad',
+              ),
+            'categories'=> $unidad,
             'tickmarkPlacement'=> 'on',
+             'min'=> $filas, 
         ), array(
+
             'linkedTo'=> 0,
-            'categories'=> array('Ene 15', 'Feb 15', 'Mar 15', 'Abr 15', 'May 15', 'Jun 15', 'Jul 15', 'Ago 15', 'Sep 15'),
+            'categories'=> $mes,
             //tickPositions: [3, 5, 8],
             'opposite'=> true,
             'labels'=> array(
+
                     //y:20,
                 'style'=> array(
                     //fontWeight: 'bold'
@@ -86,22 +106,27 @@ $this->Widget('ext.highcharts.HighchartsWidget', array(
             ),
         )),
 
+    'scrollbar'=> array(
+        'enabled'=> true,
+    ),
     'series'=> array(
         array(
             'type'=> 'column',
-            'data'=> array( 29.9, 71.5, 106.4, 129.2, 144.0, 176.0, 135.6, 148.5, 216.4),
-
+            'data'=> array_map('floatVal', $litros),
+            'name'=>'Litros',
         ),
         array(
           'type'=> 'spline',
           'yAxis'=> 1,
-            'data'=> array(129.9, 171.5, 1106.4, 1129.2, 1144.0, 1176.0, 1135.6, 1148.5, 216.4),        
+          'name'=>'Costo',
+          'data'=> array_map('floatVal', $total),
         ),),
 
 
    ),
 ));
-
+ 
+//select  from sgu_historicocombustible group by idvehiculo,month(fecha)
      /* $this->widget('ext.highcharts.ActiveHighstockWidget', array(
       'options' => array(
             'lang'=>array(  

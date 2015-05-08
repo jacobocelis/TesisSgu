@@ -62,9 +62,9 @@ class EmpleadosController extends Controller
 
             $model->attributes=$_POST['Historicoempleados'];
             if($model->idempleado==null)
-            	$model->addError('idempleado','Conductor no puede ser nulo');
+            	$model->addErrors(array('idempleado','Conductor no puede ser nulo'));
             if($model->idempleado==$validar->idempleado)
-            	$model->addError('idempleado','El conductor ya se encuentra asignado');
+            	$model->addErrors(array('idempleado','El conductor ya se encuentra asignado'));
             else
 			if($model->validate()){
 				$nuevoConductor = new Historicoempleados;

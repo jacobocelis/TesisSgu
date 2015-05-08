@@ -195,9 +195,9 @@ class RepuestoController extends Controller
                )));
 
 		/*paso 1: en lista1 mostrar los repuestos al hacer click en el grupo*/
-		$consulta=Yii::app()->db->createCommand('select re.id, re.repuesto, cg.cantidad, st.subTipo, u.unidad, cg.id as idCaracteristicaVehGrupo from sgu_unidad u ,sgu_CaracteristicaVehGrupo cg, 
+		$consulta=Yii::app()->db->createCommand('select re.id, re.repuesto, cg.cantidad, st.subTipo, cg.id as idCaracteristicaVehGrupo from sgu_CaracteristicaVehGrupo cg, 
 		sgu_grupo gu, sgu_subTipoRepuesto st, sgu_repuesto re where cg.idgrupo=gu.id and gu.grupo="'.$authItemName.'" 
-		and re.idSubTipoRepuesto=st.id and re.idunidad=u.id
+		and re.idSubTipoRepuesto=st.id  
 		and re.id=cg.idrepuesto ORDER BY st.subTipo ASC')->queryAll(); 
 		$piezasGrupo=new CArrayDataProvider($consulta, array('keyField'=>'id','pagination'=>array('pageSize'=>$pieza_->count())));
         $this->render(
@@ -450,7 +450,7 @@ class RepuestoController extends Controller
 		if(isset($_GET["id"]))
 			$det=new CActiveDataProvider('Cantidad',array('criteria' => array(
 						'condition' =>"idCaracteristicaVeh = '".$_GET['id']."'",
-						'limit'=>1,
+						
 						'order'=>'id',
 						)));
 			$det->setPagination(false);

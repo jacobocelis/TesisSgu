@@ -17,7 +17,7 @@ $this->menu=array(
 	array('label'=>'      Crear grupo', 'url'=>array('grupo/create')),
 
 	array('label'=>'<div id="menu"><strong>Administrar</strong></div>' , 'visible'=>'1'),
-	array('label'=>'      Parámetros y datos maestros', 'url'=>array('repuesto/parametros')),
+	array('label'=>'      Parámetros y datos maestros', 'url'=>array('vehiculo/parametros')),
 );
 ?>
 	
@@ -121,17 +121,17 @@ $this->menu=array(
               'htmlOptions'=>array('style'=>'text-align: center;'),   
 			  
               'filter'=>CHtml::listData(Tipo::model()->findAll(), 'id', 'tipo'),   
-			  'filterHtmlOptions'=>array('style'=>'text-align: center;','width'=>'80px','empty'=>'da'),
+			  'filterHtmlOptions'=>array('style'=>'text-align: center;'),
 			),
         array( 
 			  'name'=>'estatus',
-			  'headerHtmlOptions'=>array('style'=>'text-align: center;width:100px'),
+			  'headerHtmlOptions'=>array('style'=>'text-align: center;'),
 			  'type'=>'raw',
 			  'header'=>'Estado',     
 			  'value' => '$data->getEstado($data->id)', 
-              'htmlOptions'=>array('style'=>'text-align: center;','width'=>'80px'),
+              'htmlOptions'=>array('style'=>'text-align: center;'),
               'filter'=>CHtml::listData(Estado::model()->findAll('id<>4'), 'id', 'estado'),   
-			  'filterHtmlOptions'=>array('style'=>'text-align: center;','width'=>'80px','empty'=>'da'),
+			  'filterHtmlOptions'=>array('style'=>'text-align: center;'),
 			),
 		//'fechaRegistro',
 		

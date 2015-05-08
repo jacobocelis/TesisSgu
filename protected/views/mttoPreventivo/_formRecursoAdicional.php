@@ -112,9 +112,20 @@
 /*$("#garantia").hide();
 if($("#Actividadrecurso_idrepuesto").val()!="")
 $("#garantia").show();*/
+$( document ).ready(function(){
+   var iden=$('#Actividadrecurso_idinsumo option:selected').val();
+	validarInsumo(iden);
+
+	var idrep=$('#Actividadrecurso_idrepuesto option:selected').val();
+	validarRepuesto(idrep); 
+
+});
+
+
 $("#actividadrecurso-form").submit(function(event){
 	event.preventDefault();
 	total();
+	validar();
 });
 function total(){
 	var cantidad=$("#Actividadrecurso_cantidad").val();
@@ -123,17 +134,6 @@ function total(){
 	$("#Actividadrecurso_costoTotal").val(total);
 
 }
-</script>
-
-<script>
-var iden=$('#Actividadrecurso_idinsumo option:selected').val();
-validarInsumo(iden);
-var idrep=$('#Actividadrecurso_idrepuesto option:selected').val();
-validarRepuesto(idrep);
-$("#actividadrecurso-form").submit(function(event){
-	event.preventDefault();
-	validar();
-});
 function validar(){
 	
 	if($("#lista").val()==1){
@@ -198,6 +198,7 @@ $.ajax({
 }
 $("#servicio").hide();
 $("#repuesto").hide();
+
 //$("#Actividadrecursogrupo_recurso").val($("#Actividadrecursogrupo_idinsumo option:selected").text());
 $("#lista").change(function() {
 	if($("#lista").val()==1){

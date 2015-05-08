@@ -64,6 +64,7 @@ class AsigchasisController extends Controller
 						$historico->iddetalleRueda=$rue["id"];
 						$historico->idcaucho=$rue["idcaucho"];
 						$historico->idestatusCaucho=5;
+						$historico->inicial=1;
 						$historico->save(false);	
 					}
 				  }
@@ -74,6 +75,7 @@ class AsigchasisController extends Controller
 						$historico->idvehiculo=$veh["id"];
 						$historico->idcaucho=$repuesto["idcaucho"];
 						$historico->idestatusCaucho=6;
+						$historico->inicial=1;
 						$historico->save(false);	
 					}
 				  }

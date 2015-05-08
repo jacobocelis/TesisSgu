@@ -54,7 +54,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
 					'name'=>'idvehiculo',
 					'value'=>'str_pad((int) $data->idvehiculo0->numeroUnidad,2,"0",STR_PAD_LEFT);',
 					//'value'=>'$data->idplan0->idplanGrupo0->CompiledColour->$data-id.\' \'.$data->CompiledColour',
-					'htmlOptions'=>array('style'=>'text-align:center;width:40px'),
+					'htmlOptions'=>array('style'=>'text-align:center;width:75px'),
 				),
 					array(
 					//'headerHtmlOptions'=>array('style'=>'width:7%'),
@@ -62,7 +62,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
 					'name'=>'idplan',
 					'value'=>'$data->idvehiculo0->placa',
 					//'value'=>'$data->idplan0->idplanGrupo0->CompiledColour->$data-id.\' \'.$data->CompiledColour',
-					'htmlOptions'=>array('style'=>'text-align:center;width:50px'),
+					'htmlOptions'=>array('style'=>'text-align:center;'),
 				),
 				array(
 					//'headerHtmlOptions'=>array('style'=>'width:7%'),
@@ -70,7 +70,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
 					'name'=>'idplan',
 					'value'=>'$data->idvehiculo0->idmodelo0->idmarca0->marca',
 					//'value'=>'$data->idplan0->idplanGrupo0->CompiledColour->$data-id.\' \'.$data->CompiledColour',
-					'htmlOptions'=>array('style'=>'text-align:center;width:80px'),
+					'htmlOptions'=>array('style'=>'text-align:center;'),
 				),
 				array(
 					//'headerHtmlOptions'=>array('style'=>'width:7%'),
@@ -78,13 +78,13 @@ $this->widget('zii.widgets.grid.CGridView', array(
 					'name'=>'idplan',
 					'value'=>'$data->idvehiculo0->idmodelo0->modelo',
 					//'value'=>'$data->idplan0->idplanGrupo0->CompiledColour->$data-id.\' \'.$data->CompiledColour',
-					'htmlOptions'=>array('style'=>'text-align:center;width:80px'),
+					'htmlOptions'=>array('style'=>'text-align:center;'),
 				),
 				array(
 					'header'=>'Conductor',
 					'name'=>'idempleado',
 					'value'=>'$data->idconductor0->nombre.\' \'.$data->idconductor0->apellido',
-					'htmlOptions'=>array('style'=>'text-align:center;width:100px'),
+					'htmlOptions'=>array('style'=>'text-align:center;'),
 				),
 				
 				array(
@@ -92,27 +92,27 @@ $this->widget('zii.widgets.grid.CGridView', array(
 					'header'=>'Combustible',
 					'name'=>'idcombust',
 					'value'=>'$data->idcombust0->tipo',
-					'htmlOptions'=>array('style'=>'text-align:center;width:50px'),
+					'htmlOptions'=>array('style'=>'text-align:center;'),
 				),
 				
 				array(
 					'header'=>'Estación',
 					'name'=>'idestacionServicio',
 					'value'=>'$data->idestacionServicio0->nombre',
-					'htmlOptions'=>array('style'=>'text-align:center;width:60px'),
+					'htmlOptions'=>array('style'=>'text-align:center;'),
 				),
 				array(
 					'header'=>'Litros',
 					'name'=>'litros',
 					//'value'=>'$data->idfalla0->falla',
-					'htmlOptions'=>array('style'=>'text-align:center;width:25px'),
+					'htmlOptions'=>array('style'=>'text-align:center;'),
 				),
 				array(
 					'type'=>'raw',
 					'header'=>'Fecha reposición',
 					'name'=>'fecha',
 					'value'=>'date("d/m/Y h:m A",strtotime($data->fecha))',
-					'htmlOptions'=>array('style'=>'text-align:center;width:50px'),
+					'htmlOptions'=>array('style'=>'text-align:center;'),
 				),
 			)
         ));

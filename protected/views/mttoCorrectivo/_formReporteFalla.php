@@ -157,7 +157,7 @@ function falla(){
                                         $('#nuevo div.divForForm').html(data.div);
 										$('#nuevaFalla').hide();
 										$('#registrarFalla').show();
-                                        //setTimeout("$('#nuevaFalla').hide(); ",0);
+                                        setTimeout("$('#nuevo').dialog('close') ",1000);
 										$('#detalle').show();
 										$('#boton').show();
 										actualizarListaFallas();

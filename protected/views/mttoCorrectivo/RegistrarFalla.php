@@ -13,10 +13,7 @@ $this->menu=array(
 	array('label'=>'      Crear orden de mantenimiento', 'url'=>array('crearOrdenCorrectiva')),
 	array('label'=>'      Ver órdenes abiertas <span class="badge badge-'.$Colorabi.' pull-right">'.$abiertas.'</span>', 'url'=>array('verOrdenes')),
 	array('label'=>'      Órdenes listas para cerrar <span class="badge badge-'.$Colorli.' pull-right">'.$listas.'</span>', 'url'=>array('cerrarOrdenes')),
-	
-	array('label'=>'<div id="menu"><strong>Gestión de coordinadores</strong></div>'),
-	array('label'=>'      Coordinador operativo y de transporte', 'url'=>array('empleados/coordinadores')),
-	
+ 
 	array('label'=>'<div id="menu"><strong>Historial</strong></div>'),
 	
 	array('label'=>'      Histórico de incidentes', 'url'=>array('mttoCorrectivo/historicoCorrectivo')),
@@ -195,7 +192,7 @@ function agregarFalla(){
                                 }
                                 else{
                                         $('#resultado').html(data.mensaje);
-                                        //setTimeout("$('#dialog').dialog('close') ",1000);
+                                        //setTimeout("$('#nuevo').dialog('close') ",1000);
 										$('body').scrollTo('#resultado',{duration:'slow', offsetTop : '0'});
                                         //window.setTimeout('agregarFalla()',1000);
 										//window.setTimeout('location.reload()', 1000);

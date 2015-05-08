@@ -144,8 +144,11 @@ class VehiculoController extends Controller
 		if(isset($_POST['Historicoedos']))
 		{
 			$model->attributes=$_POST['Historicoedos'];
-			if($model->save())
+			if($model->save()){
+				$vehiculo->activo=0;
+				$vehiculo->update();
 				$this->redirect(array('historico'));
+			}
 		}
 
 		$this->render('desincorporar',array(

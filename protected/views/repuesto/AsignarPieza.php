@@ -325,7 +325,7 @@ ul, ol {
 	</ul>
 	<i>*Seleccione un grupo para asignar los repuestos de froma general, luego puede agregar un detalle por cada repuesto agregado</i>
 </div>
-<div class='crugepanel user-assignments-detail'>
+<div class='crugepanel user-assignments-detail' id="listaRep">
 	<h6><div id='mostrarSeleccion'>Seleccione un grupo</div></h6>
 	
 	<div id='lista1' class='lista'>
@@ -367,12 +367,7 @@ ul, ol {
 					'name'=>'cantidad',
 					'htmlOptions'=>array('style'=>'text-align:center;width:20px'),
 				),
-				array(
-					'header'=>'Unidad',
-					'name'=>'unidad',
-					
-					//'footer'=>'',
-				),
+ 
 				array(
 						'headerHtmlOptions'=>array('style'=>'text-align:center;width:50px;'),
 						'htmlOptions'=>array('style'=>'text-align:center;'),
@@ -434,12 +429,7 @@ ul, ol {
 					'type'=>'raw',
 					'htmlOptions'=>array('style'=>'width: 50px;'),
 				),
-				array(
-					'header'=>'Unidad',
-					'value'=>'$data->idunidad0->unidad',
-					'type'=>'raw',
-					'htmlOptions'=>array('style'=>'width: 50px;'),
-				),
+ 
 				
 			),
 		));
@@ -511,7 +501,7 @@ $this->beginWidget('zii.widgets.jui.CJuiDialog', array( // the dialog
         'autoOpen'=>false,
         'modal'=>true,
         'width'=>280,
-        'height'=>140,
+        
         'position'=>array(null,200),
 		'resizable'=>false
     ),
@@ -519,6 +509,7 @@ $this->beginWidget('zii.widgets.jui.CJuiDialog', array( // the dialog
 <div class="divForForm2"></div>
 <?php $this->endWidget();?>
 <script>
+$("#listaRep").hide();
 	var i=0;
 	var itemName=""	;
 	var veces=0;
@@ -559,6 +550,7 @@ $this->beginWidget('zii.widgets.jui.CJuiDialog', array( // the dialog
 		var li = $(this);
 		li.css("cursor","pointer");
 		li.click(function(){
+			$("#listaRep").show(500);
 			itemName = $(this).attr('alt');
 			_setSelectedItemName("");
 			$('.user-assignments-role-list ul').find('li').each(function(){
@@ -678,9 +670,9 @@ function addDetalle(_url){
                                         $('#dialog2 div.divForForm2 form').submit(addDetalle); // updatePaymentComment
                                 }
                                 else
-                                {
-                                        $('#dialog2 div.divForForm2').html(data.div);
-                                        setTimeout("$('#dialog2').dialog('close') ",1000);
+                                {		setTimeout("$('#dialog2').dialog('close') ",000);
+                                        //$('#dialog2 div.divForForm2').html(data.div);
+                                        
                                         $.fn.yiiGridView.update('repdetalle');
                                 }
 

@@ -18,7 +18,7 @@ $this->menu=array(
 	array('label'=>'      Crear grupo', 'url'=>array('grupo/create')),
 
 	array('label'=>'<div id="menu"><strong>Administrar</strong></div>' , 'visible'=>'1'),
-	array('label'=>'      Parámetros y datos maestros', 'url'=>array('repuesto/parametros')),
+	array('label'=>'      Parámetros y datos maestros', 'url'=>array('vehiculo/parametros')),
 );
 ?>
 	
@@ -112,7 +112,7 @@ $this->menu=array(
 			array(
 						'headerHtmlOptions'=>array('style'=>'text-align:center;width:50px;'),
 						'htmlOptions'=>array('style'=>'text-align:center;'),
-						'header'=>'Detalle',
+						'header'=>'',
 						'type'=>'raw',
 						'value'=>'CHtml::link(
                         CHtml::image(Yii::app()->request->baseUrl."/imagenes/ver.png",

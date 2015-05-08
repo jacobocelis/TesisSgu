@@ -43,10 +43,10 @@
 
 		
 	<div class="row">
-		<?php echo $form->labelEx($model,'duracion'); ?>
-		<?php echo $form->textField($model,'duracion',array('style' => 'width:60px;')); ?>
-		<?php echo $form->dropDownList($model,'idtiempod',CHtml::listData(Tiempo::model()->findAll(array("condition"=>"id = 5 or id = 2 or id = 1 order by id ASC")),'id','tiempo'),array('style' => 'width:100px;')); ?>
-		<?php echo $form->error($model,'duracion'); ?><span class="tooltip" title="la duración comprende el tiempo total que el vehiculo estuvo fuera de operación"></span>
+		
+		
+		<?php echo $form->hiddenField($model,'idtiempod',CHtml::listData(Tiempo::model()->findAll(array("condition"=>"id = 5 or id = 2 or id = 1 order by id ASC")),'id','tiempo'),array('style' => 'width:100px;')); ?>
+		<?php echo $form->error($model,'duracion'); ?>
 	</div>
 	
 	

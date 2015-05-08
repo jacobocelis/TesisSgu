@@ -124,7 +124,7 @@ class Vehiculo extends CActiveRecord
 		// will receive user inputs.
 		return array(
 			array('numeroUnidad, nroPuestos,serialCarroceria,serialMotor, placa, anno , idmodelo, idgrupo, idcombustible, idcolor,idpropiedad,KmInicial', 'required'),
-			array('numeroUnidad, anno, nroPuestos, idmodelo, idgrupo, idcombustible,idcolor,idpropiedad,KmInicial', 'numerical', 'integerOnly'=>true),
+			array('numeroUnidad, anno, nroPuestos, idmodelo, idgrupo, idcombustible,idcolor,idpropiedad,KmInicial,activo', 'numerical', 'integerOnly'=>true),
 			array('serialCarroceria', 'length', 'max'=>45),
 			array('placa', 'length', 'max'=>7),
 			array('comentario', 'length', 'max'=>200),

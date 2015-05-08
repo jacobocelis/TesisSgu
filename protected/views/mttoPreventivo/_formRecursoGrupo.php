@@ -91,9 +91,11 @@
 </div><!-- form -->
 <script>
 var iden=$('#Actividadrecursogrupo_idinsumo option:selected').val();
-//validarInsumo(iden);
+validarInsumo(iden);
+
 var idrep=$('#Actividadrecursogrupo_idrepuesto option:selected').val();
 validarRepuesto(idrep);
+
 $("#actividadrecursogrupo-form").submit(function(event){
 	event.preventDefault();
 	validar();

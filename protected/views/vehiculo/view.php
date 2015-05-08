@@ -102,13 +102,15 @@ $this->menu=array(
 					'name'=>'descripcion',
 				),
 				array(
+					'header'=>'Agregar',
         'type'=>'raw',
+        'htmlOptions'=>array('style'=>'text-align:center;width:50px'),
         'value'=>'CHtml::link(
                         CHtml::image(Yii::app()->request->baseUrl."/imagenes/agregar.png",
                                           "Agregar",array("title"=>"Editar")),
                         "",
                         array(
-                                \'style\'=>\'cursor: pointer; width:50px;text-decoration: underline;\',
+                                \'style\'=>\'cursor: pointer; width:50px;text-decoration: underline;text-align:center\',
                                 \'onclick\'=>\'{addDetalle("\'.Yii::app()->createUrl("informacion/agregar",array("id"=>$data["id"]))
 
 .\'"); $("#dialog").dialog("open");}\'
@@ -124,8 +126,8 @@ $this->beginWidget('zii.widgets.jui.CJuiDialog', array( // the dialog
         'title'=>'Agregar detalle',
         'autoOpen'=>false,
         'modal'=>true,
-        'width'=>370,
-        'height'=>240,
+        'width'=>400,
+   		'position'=>array(null,100),
 		'resizable'=>false
     ),
 ));?>

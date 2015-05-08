@@ -4,7 +4,7 @@
 
 $this->breadcrumbs=array(
 		'Vehiculos'=>array('/vehiculo/index'),
-	'Unidad '.$vehiculo->numeroUnidad=>array('/vehiculo/view','id'=>$vehiculo->numeroUnidad),
+	'Unidad '.$vehiculo->numeroUnidad=>array('/vehiculo/view','id'=>$vehiculo->id),
 	'Desincorporar',
 );
 $this->menu=array(

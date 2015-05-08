@@ -30,9 +30,9 @@ ul, ol {
 	padding: 5px;
 	margin-bottom: 10px;
 	color: #000;
-	background: none repeat scroll 0% 0% #C6DDED;
+	background: none repeat scroll 0% 0% #BCF4CA;
 	text-align: center;
-	border: 1px solid #94A8FF;
+	border: 1px solid #32EA35;
 }
 #activi{
 	font-weight: bold;
@@ -564,7 +564,8 @@ $this->beginWidget('zii.widgets.jui.CJuiDialog', array( // the dialog
         'width'=>420,
         //'height'=>360,
 		'position'=>array(null,100),
-		'resizable'=>false
+		'resizable'=>false,
+		
     ),
 ));?>
 <div class="divForForm"></div>
@@ -768,7 +769,7 @@ $('#dialog').dialog('open');
 }
 function agregarRecurso(){
 $('#recurso').dialog('open');
-	var idAct = $.fn.yiiGridView.getSelection('act');
+
 	jQuery.ajax({
                 url: "agregarRecurso/"+ida,
                 'data':$(this).serialize(),
@@ -777,7 +778,7 @@ $('#recurso').dialog('open');
                 'success':function(data){
                                 if (data.status == 'failure'){
                                         $('#recurso div.divForForm').html(data.div);
-                                        $('#recurso div.divForForm form').submit(agregarRecurso); // updatePaymentComment
+                                        $('#recurso div.divForForm form').submit(agregarRecurso); 
                                 }
                                 else{
                                         $('#recurso div.divForForm').html(data.div);

@@ -7,13 +7,17 @@ $this->breadcrumbs=array(
 	'Facturación',
 );
 	$this->menu=array(
-	array('label'=>'<div id="menu"><strong>Historial</strong></div>'),
-	
-	array('label'=>'      Histórico de fallas', 'url'=>array('mttoCorrectivo/historicoCorrectivo')),
-	array('label'=>'      Histórico de mejoras', 'url'=>array('mttoCorrectivo/historicoMejoras')),
-	array('label'=>'      Histórico de gastos', 'url'=>array('historicoGastos')),
-	array('label'=>'      Histórico de ordenes', 'url'=>array('historicoOrdenes')),	
-);
+	array('label'=>'<div id="menu"><strong>Opciones de orden</strong></div>'),
+	array('label'=>'      Detalle de orden', 'url'=>array('mttoCorrectivo/vistaPrevia/'.$id.'?nom='.$nom.'&dir='.$dir.'')),
+	array('label'=>'      Actualizar orden', 'url'=>array('mttoCorrectivo/mttocRealizados/'.$id.'?nom='.$nom.'&dir='.$dir.''),'visible'=>Yii::app()->controller->estatusOrden($id)<>7),
+	array('label'=>'      Registrar facturación', 'url'=>array('mttoCorrectivo/registrarFacturacion/'.$id.'?nom='.$nom.'&dir='.$dir.''),'visible'=>Yii::app()->controller->estatusOrden($id)<>7),
+
+	array('label'=>'<div id="menu"><strong>Órdenes de mantenimiento</strong></div>'),
+	array('label'=>'      Crear orden de mantenimiento', 'url'=>array('mttoCorrectivo/crearOrdenCorrectiva') ,'visible'=>Yii::app()->user->checkAccess('action_mttocorrectivo_crearOrdenCorrectiva')),
+	array('label'=>'      Ver ordenes abiertas <span class="badge badge-'.$Colorabi.' pull-right">'.$abiertas.'</span>', 'url'=>array('mttoCorrectivo/verOrdenes') ,'visible'=>Yii::app()->user->checkAccess('action_mttocorrectivo_verOrdenes')),
+	array('label'=>'      Ordenes listas para cerrar <span class="badge badge-'.$Colorli.' pull-right">'.$listas.'</span>', 'url'=>array('mttoCorrectivo/cerrarOrdenes'),'visible'=>Yii::app()->user->checkAccess('action_mttocorrectivo_cerrarOrdenes')),
+
+ );
 ?>
 <div id="factura" class='crugepanel user-assignments-role-list'>
 
@@ -28,7 +32,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
 				'summaryText'=>'',
 				'selectableRows'=>0,
 			    //'enableSorting' => false,
-				'emptyText'=>'no existen mantenimientos preventivos registrados',
+				'emptyText'=>'',
                 'dataProvider'=>$factura,
 				'columns'=>array(
 					array(
@@ -36,47 +40,47 @@ $this->widget('zii.widgets.grid.CGridView', array(
 					'name'=>'fechaFactura',
 					'type'=>'raw',
 					'value'=>'date("d/m/Y",strtotime($data->fechaFactura))',
-					'htmlOptions'=>array('style'=>'width:80px;text-align:center;'),
+					'htmlOptions'=>array('style'=>'text-align:center;'),
 				),
 				array(
 					'name'=>'codigo',
 					'type'=>'raw',
 					'value'=>'str_pad((int) $data->codigo,8,"0",STR_PAD_LEFT);',
-					'htmlOptions'=>array('style'=>'width:80px;text-align:center;'),
+					'htmlOptions'=>array('style'=>'text-align:center;'),
 				),
 				array(
 					'header'=>'Proveedor',
 					'name'=>'idproveedor',
 					'type'=>'raw',
 					'value'=>'$data->idproveedor0->nombre',
-					'htmlOptions'=>array('style'=>'width:120px;text-align:center;'),
+					'htmlOptions'=>array('style'=>'text-align:center;'),
 				),
 				array(
-					'headerHtmlOptions'=>array('style'=>'width:10px;text-align:center;'),
+					'headerHtmlOptions'=>array('style'=>'text-align:center;'),
 					'header'=>'Sub-Total',
 					'name'=>'total',
 					'type'=>'raw',
 					'value'=>'number_format($data->total, 2,",",".").\' Bs.\'',
-					'htmlOptions'=>array('style'=>'width:10px;text-align:center;'),
+					'htmlOptions'=>array('style'=>'text-align:center;'),
 				),
 				array(
-					'headerHtmlOptions'=>array('style'=>'width:10px;text-align:center;'),
+					'headerHtmlOptions'=>array('style'=>'text-align:center;'),
 					'header'=>'IVA',
 					'name'=>'iva',
 					'type'=>'raw',
 					'value'=>'number_format($data->iva, 2,",",".").\' Bs.\'',
-					'htmlOptions'=>array('style'=>'width:10px;text-align:center;'),
+					'htmlOptions'=>array('style'=>'text-align:center;'),
 				),
 				array(
-					'headerHtmlOptions'=>array('style'=>'width:10px;text-align:center;'),
+					'headerHtmlOptions'=>array('style'=>'text-align:center;'),
 					'header'=>'Total Facturado',
 					'name'=>'totalFactura',
 					'type'=>'raw',
 					'value'=>'number_format($data->totalFactura, 2,",",".").\' Bs.\'',
-					'htmlOptions'=>array('style'=>'width:10px;text-align:center;'),
+					'htmlOptions'=>array('style'=>'text-align:center;'),
 				),
 					array(
-						'headerHtmlOptions'=>array('style'=>'text-align:center;width:30px;'),
+						'headerHtmlOptions'=>array('style'=>'text-align:center;'),
 						'htmlOptions'=>array('style'=>'text-align:center;'),
 						'header'=>'Modificar datos de factura',
 						'type'=>'raw',
@@ -154,7 +158,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
                         )
                 );',),*/
 				array(
-					'headerHtmlOptions'=>array('style'=>'text-align:center;width:100px;background:#B0E3FF'),
+					'headerHtmlOptions'=>array('style'=>'text-align:center;background:#B0E3FF'),
 					'header'=>'Fecha de reparación',
 					'name'=>'fechaRealizada',
 					'type'=>'raw',
@@ -178,7 +182,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
 					'htmlOptions'=>array('style'=>'text-align:center;'),
 				),
 				array(
-					'headerHtmlOptions'=>array('style'=>'text-align:center;width:30px;background:#B0E3FF'),
+					'headerHtmlOptions'=>array('style'=>'text-align:center;background:#B0E3FF'),
 					'htmlOptions'=>array('style'=>'text-align:center;'),
 					'header'=>'Registrar gastos',
 					'type'=>'raw',
@@ -196,7 +200,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
 					'header'=>'Estatus',
 					'name'=>'idestatus',
 					'value'=>'$data->color($data->idestatus,$data->idestatus0->estatus)',
-					'htmlOptions'=>array('style'=>'text-align:center;width:80px'),
+					'htmlOptions'=>array('style'=>'text-align:center;'),
 				),
 				
 			)
@@ -246,7 +250,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
 					'htmlOptions'=>array('style'=>'text-align:center;width:100px'),
 				),*/
 				array(
-					'headerHtmlOptions'=>array('style'=>'text-align:center;background:#B0E3FF;width:100px;'),
+					'headerHtmlOptions'=>array('style'=>'text-align:center;background:#B0E3FF;'),
 					'header'=>'Fecha de ejecución',
 					'name'=>'fechaRealizada',
 					'type'=>'raw',
@@ -270,7 +274,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
 					'htmlOptions'=>array('style'=>'text-align:center;'),
 				),
 				array(
-					'headerHtmlOptions'=>array('style'=>'text-align:center;background:#B0E3FF;width:80px;'),
+					'headerHtmlOptions'=>array('style'=>'text-align:center;background:#B0E3FF;'),
 					'htmlOptions'=>array('style'=>'text-align:center;'),
 					'header'=>'Registrar gastos',
 					'type'=>'raw',
@@ -284,7 +288,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
                         )
                 );',),
 				array(
-					'headerHtmlOptions'=>array('style'=>'text-align:center;width:100px;'),
+					'headerHtmlOptions'=>array('style'=>'text-align:center;'),
 					'type'=>'raw',
 					'header'=>'Estatus',
 					'name'=>'idestatus',

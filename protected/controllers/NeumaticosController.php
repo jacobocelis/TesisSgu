@@ -49,6 +49,9 @@ class NeumaticosController extends Controller
 	 * Displays a particular model.
 	 * @param integer $id the ID of the model to be displayed
 	 */
+	public function estatusOrden($id){
+		return Ordenmtto::model()->findByPk($id)->idestatus;
+	}
 	 public function actionActualizarSpanListas(){
 		$mi=Yii::app()->db->createCommand("select count(*) as total from sgu_ordenMtto where idestatus=6 and tipo=2")->queryRow();
 		
@@ -708,20 +711,21 @@ class NeumaticosController extends Controller
 			'actividadesAver'=>$actividadesAver,
 			'idvehiculoAver'=>$idvehiculoAver,
 			'recursosAver'=>$recursosAver,
-			
 			'vehiculosMont'=>$vehiculosMont,
 			'totalVehMont'=>$totalVehMont,
 			'actividadesMont'=>$actividadesMont,
 			'idvehiculoMont'=>$idvehiculoMont,
-			
-		 
-			
 			'orden'=>$orden,
 			'factura'=>$factura,
 			'totFactura'=>$totFactura,
 			'nom'=>$nom,
 			'dir'=>$dir,
 			'mostrarNuevos'=>$this->mostrarNuevosNeumaticos($id),
+			'id'=>$id,
+			'abiertas'=>$this->getOrdenesAbiertas(),
+			'Colorabi'=>$this->getColor($this->getOrdenesAbiertas()),
+			'Colorli'=>$this->getColor($this->getOrdenesListas()),
+			'listas'=>$this->getOrdenesListas(),
 		));
 	
 	}
@@ -731,12 +735,13 @@ class NeumaticosController extends Controller
          //$this->performAjaxValidation($model);
  
     if(isset($_POST['Detreccaucho'])){
+    		$iva=Parametro::model()->findByAttributes(array('nombre'=>'IVA'));
             $model->attributes=$_POST['Detreccaucho'];
+            $model->iva=$iva["valor"]/100;
             if($model->save()){
             	if(isset($_POST['idfac'])){
 						
-						$iva=Parametro::model()->findByAttributes(array('nombre'=>'IVA'));
-                        $total = Factura::model()->totalFacturaOrdenNeumaticos($_POST['idfac']);
+						$total = Factura::model()->totalFacturaOrdenNeumaticos($_POST['idfac']);
 						$factura=Factura::model()->findByPk($_POST['idfac']);
 						
 						Yii::app()->db->createCommand("update `tsg`.`sgu_factura` set `total`=".$total.",`iva`=".(($total)*($iva["valor"]/100)).",`totalFactura`=".(($total)+($total)*($iva["valor"]/100))."   where `sgu_factura`.`id` = ".$_POST['idfac']."")->query();
@@ -792,8 +797,11 @@ class NeumaticosController extends Controller
 			'id'=>$id,
 			'nom'=>$nom,
 			'dir'=>$dir,
-			//'totMov'=>$totMov['tot'],
-			//'movimientos'=>$movimientos
+ 
+			'abiertas'=>$this->getOrdenesAbiertas(),
+			'Colorabi'=>$this->getColor($this->getOrdenesAbiertas()),
+			'Colorli'=>$this->getColor($this->getOrdenesListas()),
+			'listas'=>$this->getOrdenesListas(),
 		));
 	}
 	public function actionHistoricoMontajes(){
@@ -1027,7 +1035,10 @@ class NeumaticosController extends Controller
 		$model=new Historicocaucho;
 
 		if(isset($_POST['Historicocaucho'])){
+			$iva=Parametro::model()->findByAttributes(array('nombre'=>'IVA'));
+                       
 			 $model->attributes=$_POST['Historicocaucho'];
+			 $model->iva=$iva["valor"]/100;
 			 $model->idvehiculo=$viejo->idvehiculo;
 			 $model->idcaucho=$viejo->idcaucho;
 			 $model->iddetalleRueda=$viejo->iddetalleRueda;
@@ -1044,8 +1055,7 @@ class NeumaticosController extends Controller
 				
 				if(isset($_POST['idfac'])){
 						
-						$iva=Parametro::model()->findByAttributes(array('nombre'=>'IVA'));
-                        $total = Factura::model()->totalFacturaOrdenNeumaticos($_POST['idfac']);
+						 $total = Factura::model()->totalFacturaOrdenNeumaticos($_POST['idfac']);
 						$factura=Factura::model()->findByPk($_POST['idfac']);
 				
 						Yii::app()->db->createCommand("update `tsg`.`sgu_factura` set `total`=".$total.",`iva`=".(($total)*($iva["valor"]/100)).",`totalFactura`=".(($total)+($total)*($iva["valor"]/100))."   where `sgu_factura`.`id` = ".$_POST['idfac']."")->query();
@@ -1134,6 +1144,10 @@ class NeumaticosController extends Controller
 			'nom'=>$nom,
 			'nuevomont'=>$nuevomont,
 			'dir'=>$dir,
+			'abiertas'=>$this->getOrdenesAbiertas(),
+			'Colorabi'=>$this->getColor($this->getOrdenesAbiertas()),
+			'Colorli'=>$this->getColor($this->getOrdenesListas()),
+			'listas'=>$this->getOrdenesListas(),
 			 
 		));
 	}
@@ -1327,19 +1341,19 @@ class NeumaticosController extends Controller
 		if(isset($_POST["Vehiculo"])){
 			if($_POST["Vehiculo"]["id"]==""){
 				foreach($idveh as $idv){
-					$montados[]=new CActiveDataProvider('Historicocaucho',array("criteria"=>array("condition"=>"(idestatusCaucho=5 or idestatusCaucho=1) and idvehiculo=".$idv["id"]."")));
-					$rep[]=new CActiveDataProvider('Historicocaucho',array("criteria"=>array("condition"=>"(idestatusCaucho=6 or idestatusCaucho=4) and idvehiculo=".$idv["id"]."")));
+					$montados[]=new CActiveDataProvider('Historicocaucho',array("criteria"=>array("condition"=>"(idestatusCaucho=5 or idestatusCaucho=1) and idvehiculo=".$idv["id"]." and inicial=1")));
+					$rep[]=new CActiveDataProvider('Historicocaucho',array("criteria"=>array("condition"=>"(idestatusCaucho=6 or idestatusCaucho=4) and idvehiculo=".$idv["id"]." and inicial=1")));
 					$veh[]=new CActiveDataProvider('Historicocaucho',array("criteria"=>array("condition"=>"idvehiculo=".$idv["id"]."","limit"=>"1"),'pagination' => false));
 				}
 			}else{
-				$montados[]=new CActiveDataProvider('Historicocaucho',array("criteria"=>array("condition"=>"(idestatusCaucho=5 or idestatusCaucho=1) and idvehiculo=".$_POST["Vehiculo"]["id"]."")));
-				$rep[]=new CActiveDataProvider('Historicocaucho',array("criteria"=>array("condition"=>"(idestatusCaucho=6 or idestatusCaucho=4) and idvehiculo=".$_POST["Vehiculo"]["id"]."")));
+				$montados[]=new CActiveDataProvider('Historicocaucho',array("criteria"=>array("condition"=>"(idestatusCaucho=5 or idestatusCaucho=1) and idvehiculo=".$_POST["Vehiculo"]["id"]." and inicial=1")));
+				$rep[]=new CActiveDataProvider('Historicocaucho',array("criteria"=>array("condition"=>"(idestatusCaucho=6 or idestatusCaucho=4) and idvehiculo=".$_POST["Vehiculo"]["id"]." and inicial=1")));
 				$veh[]=new CActiveDataProvider('Historicocaucho',array("criteria"=>array("condition"=>"idvehiculo=".$_POST["Vehiculo"]["id"]."","limit"=>"1"),'pagination' => false));
 			}
 		}else
 			foreach($idveh as $idv){
-				$montados[]=new CActiveDataProvider('Historicocaucho',array("criteria"=>array("condition"=>"(idestatusCaucho=5 or idestatusCaucho=1) and idvehiculo=".$idv["id"]."")));
-				$rep[]=new CActiveDataProvider('Historicocaucho',array("criteria"=>array("condition"=>"(idestatusCaucho=6 or idestatusCaucho=4) and idvehiculo=".$idv["id"]."")));
+				$montados[]=new CActiveDataProvider('Historicocaucho',array("criteria"=>array("condition"=>"(idestatusCaucho=5 or idestatusCaucho=1) and idvehiculo=".$idv["id"]." and inicial=1")));
+				$rep[]=new CActiveDataProvider('Historicocaucho',array("criteria"=>array("condition"=>"(idestatusCaucho=6 or idestatusCaucho=4) and idvehiculo=".$idv["id"]." and inicial=1")));
 				$veh[]=new CActiveDataProvider('Historicocaucho',array("criteria"=>array("condition"=>"idvehiculo=".$idv["id"]."","limit"=>"1"),'pagination' => false));
 		}
 		$this->render('montajeInicial',array(

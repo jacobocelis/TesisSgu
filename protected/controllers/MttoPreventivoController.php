@@ -53,6 +53,9 @@ class MttoPreventivoController extends Controller
 	 * Displays a particular model.
 	 * @param integer $id the ID of the model to be displayed
 	 */
+	public function estatusOrden($id){
+		return Ordenmtto::model()->findByPk($id)->idestatus;
+	}
 	 public function actionActualizarSpan(){
 		$mi=Yii::app()->db->createCommand("select count(*) as total from sgu_actividades where idestatus=1")->queryRow();
 		
@@ -250,6 +253,13 @@ class MttoPreventivoController extends Controller
 			'totFactura'=>$totFactura,
 			'nom'=>$nom,
 			'dir'=>$dir,
+			'idOrden'=>$id,
+			'mi'=>$this->getIniciales(),
+			'color'=>$this->getColor($this->getIniciales()),
+			'abiertas'=>$this->getOrdenesAbiertas(),
+			'Colorabi'=>$this->getColor($this->getOrdenesAbiertas()),
+			'Colorli'=>$this->getColor($this->getOrdenesListas()),
+			'listas'=>$this->getOrdenesListas(),
 		));
 	
 	}
@@ -440,7 +450,13 @@ class MttoPreventivoController extends Controller
 			'nom'=>$nom,
 			'dir'=>$dir,
 			'det'=>$det,
-			'tieneAsignado'=>$tieneAsignado,
+			'mi'=>$this->getIniciales(),
+			'color'=>$this->getColor($this->getIniciales()),
+			'abiertas'=>$this->getOrdenesAbiertas(),
+			'Colorabi'=>$this->getColor($this->getOrdenesAbiertas()),
+			'Colorli'=>$this->getColor($this->getOrdenesListas()),
+			'listas'=>$this->getOrdenesListas(),
+			
 		));
 	}
 	public function actionCrearOrden(){
@@ -526,7 +542,7 @@ class MttoPreventivoController extends Controller
 	public function actionIniciales(){
 		$dataProvider=new CActiveDataProvider('Actividades',array('criteria' => array(
 		'order'=>'proximoFecha asc',
-		'condition' =>'idestatus <>3'),
+		'condition' =>'idestatus <>3 and inicial=1'),
 		'pagination'=>array('pageSize'=>9999999)));
 			$this->render('iniciales',array(
 			'dataProvider'=>$dataProvider,
@@ -567,6 +583,13 @@ class MttoPreventivoController extends Controller
 			'nom'=>$nom,
 			'dir'=>$dir,
 			'dias'=>$dias,
+
+			'mi'=>$this->getIniciales(),
+			'color'=>$this->getColor($this->getIniciales()),
+			'abiertas'=>$this->getOrdenesAbiertas(),
+			'Colorabi'=>$this->getColor($this->getOrdenesAbiertas()),
+			'Colorli'=>$this->getColor($this->getOrdenesListas()),
+			'listas'=>$this->getOrdenesListas(),
 		));
 	}
 	public function actionActualizarCheck($id){
@@ -611,11 +634,12 @@ class MttoPreventivoController extends Controller
          //$this->performAjaxValidation($model);
  
     if(isset($_POST['Actividadrecurso'])){
+    	$iva=Parametro::model()->findByAttributes(array('nombre'=>'IVA'));
             $model->attributes=$_POST['Actividadrecurso'];
+            $model->iva=$iva["valor"]/100;
             if($model->save()){
     			if(isset($_POST['idfac'])){
     				
-				$iva=Parametro::model()->findByAttributes(array('nombre'=>'IVA'));
 				$factura=Factura::model()->findByPk($_POST['idfac']);
 				$actividades=Detalleorden::model()->findAll(array("condition"=>"idordenMtto = '".$factura->idordenMtto."'"));
 				$subTotal=0;
@@ -697,8 +721,8 @@ class MttoPreventivoController extends Controller
 				$totalVeh=Yii::app()->db->createCommand('select id from sgu_vehiculo where idgrupo="'.$id.'"')->queryAll();
 				$total=count($totalVeh);
 				for($i=0;$i<$total;$i++){
-					Yii::app()->db->createCommand("INSERT  INTO `tsg`.`sgu_actividades` (`idactividadMtto`,`frecuenciaKm`,`frecuenciaMes`,`duracion`,`idprioridad`,`idvehiculo`,`idtiempod`,`idtiempof`,`idactividadesGrupo`,`idestatus`,`procedimiento`)
-					VALUES (".$model->idactividadMtto.",".$model->frecuenciaKm.",".$model->frecuenciaMes.",".$model->duracion.",".$model->idprioridad.",".$totalVeh[$i]["id"].",".$model->idtiempod.",".$model->idtiempof.",".$model->id.",1,'".$model->procedimiento."')")->query();
+					Yii::app()->db->createCommand("INSERT  INTO `tsg`.`sgu_actividades` (`idactividadMtto`,`frecuenciaKm`,`frecuenciaMes`,`duracion`,`idprioridad`,`idvehiculo`,`idtiempod`,`idtiempof`,`idactividadesGrupo`,`idestatus`,`procedimiento`,`inicial`)
+					VALUES (".$model->idactividadMtto.",".$model->frecuenciaKm.",".$model->frecuenciaMes.",".$model->duracion.",".$model->idprioridad.",".$totalVeh[$i]["id"].",".$model->idtiempod.",".$model->idtiempof.",".$model->id.",1,'".$model->procedimiento."',1)")->query();
 				}
                     echo CJSON::encode(array(
                         'status'=>'success', 

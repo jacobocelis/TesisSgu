@@ -98,6 +98,7 @@ class Historicocaucho extends CActiveRecord
 			array('idestatusCaucho, idcaucho, idvehiculo, idasigChasis,serial,costounitario,fecha', 'required'),
 			array('idestatusCaucho, idcaucho, idmarcaCaucho, idvehiculo, iddetalleRueda, idasigChasis,costounitario', 'numerical', 'integerOnly'=>true),
 			array('serial', 'length', 'max'=>45),
+			array('iva,inicial','numerical'),
 			array('costounitario', 'validarCosto'),
 			array('fecha', 'safe'),
 			// The following rule is used by search().

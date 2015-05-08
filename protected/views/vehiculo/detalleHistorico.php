@@ -11,31 +11,7 @@ $this->breadcrumbs=array(
 $this->menu=array(
 	array('label'=>'<div id="menu"><strong>Información</strong></div>' , 'visible'=>'1'),
 	array('label'=>'Ficha técnica', 'url'=>array('vehiculo/detalleHistorico', 'id'=>$model->id)),
-	array('label'=>'<div id="menu"><strong>Mantenimiento Preventivo</strong></div>' , 'visible'=>'1'),
-	array('label'=>'      Histórico de mantenimientos', 'url'=>array('historicoPreventivo')),
-	array('label'=>'      Histórico de gastos', 'url'=>array('historicoGastos')),
-	array('label'=>'      Histórico de ordenes', 'url'=>array('historicoOrdenes')),
 	
-	array('label'=>'<div id="menu"><strong>Mantenimiento Correctivo</strong></div>' , 'visible'=>'1'),
-	array('label'=>'      Histórico de fallas', 'url'=>array('mttoCorrectivo/historicoCorrectivo')),
-	array('label'=>'      Histórico de mejoras', 'url'=>array('mttoCorrectivo/historicoMejoras')),
-	array('label'=>'      Histórico de gastos', 'url'=>array('historicoGastos')),
-	array('label'=>'      Histórico de ordenes', 'url'=>array('historicoOrdenes')),
-
-	array('label'=>'<div id="menu"><strong>Combustible</strong></div>'),
-	array('label'=>'      Histórico de reposiciónes', 'url'=>array('historicoReposicion')),
-	array('label'=>'      Histórico de gastos', 'url'=>array('historicoGastos')),
-	
-	array('label'=>'<div id="menu"><strong>Viajes</strong></div>'),
-	array('label'=>'      Histórico de viajes rutinarios', 'url'=>array('viajes/historicoRutinarios')),
-	array('label'=>'      Histórico de viajes especiales', 'url'=>array('viajes/historicoEspeciales')),
-	
-	array('label'=>'<div id="menu"><strong>Neumáticos</strong></div>'),
-	array('label'=>'      Histórico de averías', 'url'=>array('historicoAverias')),
-	array('label'=>'      Histórico de montajes', 'url'=>array('historicoMontajes')),
-	array('label'=>'      Histórico de rotaciones', 'url'=>array('historicoRotaciones')),
-	//array('label'=>'      Histórico de gastos', 'url'=>array('historicoGastos')),
-	array('label'=>'      Histórico de ordenes', 'url'=>array('historicoOrdenes')),
 );
 ?>
 <div class='crugepanel user-assignments-role-list' style="max-width:800px">

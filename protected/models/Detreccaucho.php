@@ -37,7 +37,7 @@ class Detreccaucho extends CActiveRecord
 		return array(
 			array('cantidad, costoUnitario, costoTotal, idrecursoCaucho, iddetalleEventoCa, idunidad', 'required'),
 			array('cantidad, idrecursoCaucho, iddetalleEventoCa, idunidad', 'numerical', 'integerOnly'=>true),
-			array('costoUnitario, costoTotal', 'numerical'),
+			array('costoUnitario, costoTotal, iva', 'numerical'),
 			array('costoUnitario', 'validarCosto'),
 			array('cantidad', 'validarCantidad'),
 			// The following rule is used by search().
