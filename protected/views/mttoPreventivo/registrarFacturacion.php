@@ -339,7 +339,7 @@ $this->beginWidget('zii.widgets.jui.CJuiDialog', array( // the dialog
 ));?>
 <div class="divForForm"> </div>
 
-<div id="gridSerial" class='crugepanel' style="max-height: 200px;">
+<div id="gridSerial" class='crugepanel' style="display:none;max-height: 200px;">
 	<i>La lista inferior muestra el detalle del repuesto actual en el vehiculo, si está efectuando un cambio puede agregar el nuevo serial del repuesto.</i>
 <?php
 $this->widget('zii.widgets.grid.CGridView', array(
@@ -434,7 +434,7 @@ $this->beginWidget('zii.widgets.jui.CJuiDialog', array( // the dialog
         'title'=>'Agregar recurso adicional',
         'autoOpen'=>false,
         'modal'=>true,
-        'width'=>410,
+        'width'=>510,
 		'position'=>array(null,100),
 		'resizable'=>false
     ),

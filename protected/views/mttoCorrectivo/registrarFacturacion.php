@@ -158,7 +158,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
                         )
                 );',),*/
 				array(
-					'headerHtmlOptions'=>array('style'=>'text-align:center;background:#B0E3FF'),
+					'headerHtmlOptions'=>array('style'=>'text-align:center;background:#B0E3FF;width:90px'),
 					'header'=>'Fecha de reparación',
 					'name'=>'fechaRealizada',
 					'type'=>'raw',
@@ -182,7 +182,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
 					'htmlOptions'=>array('style'=>'text-align:center;'),
 				),
 				array(
-					'headerHtmlOptions'=>array('style'=>'text-align:center;background:#B0E3FF'),
+					'headerHtmlOptions'=>array('style'=>'text-align:center;background:#B0E3FF;width:90px'),
 					'htmlOptions'=>array('style'=>'text-align:center;'),
 					'header'=>'Registrar gastos',
 					'type'=>'raw',
@@ -250,7 +250,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
 					'htmlOptions'=>array('style'=>'text-align:center;width:100px'),
 				),*/
 				array(
-					'headerHtmlOptions'=>array('style'=>'text-align:center;background:#B0E3FF;'),
+					'headerHtmlOptions'=>array('style'=>'text-align:center;background:#B0E3FF;width:90px'),
 					'header'=>'Fecha de ejecución',
 					'name'=>'fechaRealizada',
 					'type'=>'raw',
@@ -274,7 +274,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
 					'htmlOptions'=>array('style'=>'text-align:center;'),
 				),
 				array(
-					'headerHtmlOptions'=>array('style'=>'text-align:center;background:#B0E3FF;'),
+					'headerHtmlOptions'=>array('style'=>'text-align:center;background:#B0E3FF;width:90px'),
 					'htmlOptions'=>array('style'=>'text-align:center;'),
 					'header'=>'Registrar gastos',
 					'type'=>'raw',

@@ -542,7 +542,7 @@ class MttoPreventivoController extends Controller
 	public function actionIniciales(){
 		$dataProvider=new CActiveDataProvider('Actividades',array('criteria' => array(
 		'order'=>'proximoFecha asc',
-		'condition' =>'idestatus <>3 and inicial=1'),
+		'condition' =>'idestatus=1 or idestatus=2  and inicial=1'),
 		'pagination'=>array('pageSize'=>9999999)));
 			$this->render('iniciales',array(
 			'dataProvider'=>$dataProvider,
@@ -628,8 +628,8 @@ class MttoPreventivoController extends Controller
 	 */
 	 	public function actionAgregarRecursoAdicional($id){
                 $model=new Actividadrecurso;
-				$tipoInsumo=new Tipoinsumo();
-				$tipoRepuesto=new Subtiporepuesto();
+				$tipoInsumo=new Tipoinsumo;
+				$tipoRepuesto=new Subtiporepuesto;
         // Uncomment the following line if AJAX validation is needed
          //$this->performAjaxValidation($model);
  

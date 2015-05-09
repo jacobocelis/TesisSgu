@@ -7,7 +7,7 @@
 <div class="form">
 
 <?php $form=$this->beginWidget('CActiveForm', array(
-	'id'=>'detreccaucho-form',
+	'id'=>'detreccaucho-form2',
 	// Please note: When you enable ajax validation, make sure the corresponding
 	// controller action is handling ajax validation correctly.
 	// There is a call to performAjaxValidation() commented in generated controller code.
@@ -19,7 +19,7 @@
 
 	<div class="row">
 		<?php echo $form->labelEx($model,'idrecursoCaucho'); ?>
-		<?php echo $form->dropDownList($model,'idrecursoCaucho',CHtml::listData(Recursocaucho::model()->findAll(),'id','recurso'),array('style' => 'width:250px;')); echo CHtml::link('(+)', "", array('id'=>'regis','title'=>'Agregar un nuevo recurso','style'=>'cursor: pointer; text-decoration: underline;','onclick'=>"{nuevoRecurso(); }"));?>
+		<?php echo $form->dropDownList($model,'idrecursoCaucho',CHtml::listData(Recursocaucho::model()->findAll(),'id','recurso'),array('id'=>"_idrecursoCaucho",'style' => 'width:250px;')); echo CHtml::link('(+)', "", array('id'=>'regis','title'=>'Agregar un nuevo recurso','style'=>'cursor: pointer; text-decoration: underline;','onclick'=>"{nuevoRecurso(); }"));?>
 		<?php echo $form->error($model,'idrecursoCaucho'); ?>
 	</div>
 	
@@ -27,7 +27,7 @@
 	
 	<div id="cantidad"class="row">
 		<?php echo $form->labelEx($model,'cantidad'); ?>
-		<?php echo $form->textField($model,'cantidad',array('style' => 'width:50px;')); ?>
+		<?php echo $form->textField($model,'cantidad',array("id"=>"_cantidad",'style' => 'width:50px;')); ?>
 		<?php echo $form->dropDownList($model,'idunidad',CHtml::listData(Unidad::model()->findAll(),'id','corto'),array('style' => 'width:100px;'));
 		?>
 		<?php echo $form->error($model,'cantidad'); ?>
@@ -35,12 +35,12 @@
 	
 	<div class="row">
 		<?php echo $form->labelEx($model,'costoUnitario'); ?>
-		<?php echo $form->textField($model,'costoUnitario',array('style' => 'width:100px;','value'=>$model->costoUnitario<=0?'':$model->costoUnitario)); ?> Bs. 
+		<?php echo $form->textField($model,'costoUnitario',array("id"=>"_costoUnitario",'style' => 'width:100px;','value'=>$model->costoUnitario<=0?'':$model->costoUnitario)); ?> Bs. 
 		<?php echo $form->error($model,'costoUnitario'); ?>
 	</div>
 	<div class="row">
 		
-		<?php echo $form->hiddenField($model,'costoTotal'); ?>
+		<?php echo $form->hiddenField($model,'costoTotal',array('id'=>'_costoTotal')); ?>
 		
 	</div>
 
@@ -57,28 +57,16 @@
 <?php $this->endWidget(); ?>
 
 </div><!-- form -->
-<style>
-
-#titulo{
-	font-family: "Carrois Gothic",sans-serif;
-    font-size: 26px;
-	font-weight: bold;
-	color: inherit;
-	text-rendering: optimizelegibility;
-	margin: 10px 0px;
-}
-</style>
 <script>
-$("#detreccaucho-form").submit(function(event){
+$("#detreccaucho-form2").submit(function(event){
 	event.preventDefault();
 	total();
 });
 function total(){
-	var cantidad=$("#Detreccaucho_cantidad").val();
-	var costo=$("#Detreccaucho_costoUnitario").val();
+	var cantidad=$("#_cantidad").val();
+	var costo=$("#_costoUnitario").val();
 	var total=(parseFloat(cantidad) * parseFloat(costo));
-	$("#Detreccaucho_costoTotal").val(total);
-
+	$("#_costoTotal").val(total);
 }
 </script>
 <script>
@@ -117,7 +105,7 @@ var dir="<?php echo Yii::app()->baseUrl;?>"+"/neumaticos/actualizarListaRecursos
           url: dir,
         })
   	.done(function(result) {    	
-    	     $('#Detreccaucho_idrecursoCaucho').html(result);
+    	     $('#_idrecursoCaucho').html(result);
   	});
 }
 </script>

@@ -34,7 +34,7 @@
 		<?php //echo $form->error($tipoInsumo,'idOrigen'); ?>
 		
 		<?php echo $form->labelEx($model,'idinsumo'); ?>
-		<?php echo $form->dropDownList($model,'idinsumo',CHtml::listData(Insumo::model()->findAll('1 order by insumo asc'),'id','insumo'),array('style' => 'width:300px;')); echo CHtml::link('(+)', "", array('title'=>'Agregar un nuevo insumo','style'=>'cursor: pointer; text-decoration: underline;','onclick'=>"{nuevoInsumo(); }"));?>
+		<?php echo $form->dropDownList($model,'idinsumo',CHtml::listData(Insumo::model()->findAll('1'),'id','insumo'),array('style' => 'width:300px;')); echo CHtml::link('(+)', "", array('title'=>'Agregar un nuevo insumo','style'=>'cursor: pointer; text-decoration: underline;','onclick'=>"{nuevoInsumo(); }"));?>
 		<?php echo $form->error($model,'idinsumo'); ?>
 		
 	</div>
@@ -90,10 +90,10 @@
 
 </div><!-- form -->
 <script>
-var iden=$('#Actividadrecursogrupo_idinsumo option:selected').val();
-validarInsumo(iden);
+var iden=$('#Tipoinsumo_tipo option:selected').val();
+	validarInsumo(iden);
 
-var idrep=$('#Actividadrecursogrupo_idrepuesto option:selected').val();
+var idrep=$('#Subtiporepuesto_subTipo option:selected').val();
 validarRepuesto(idrep);
 
 $("#actividadrecursogrupo-form").submit(function(event){

@@ -106,7 +106,7 @@ $this->beginWidget('zii.widgets.jui.CJuiDialog', array( // the dialog
         'title'=>'Registrar mantenimiento inicial',
         'autoOpen'=>false,
         'modal'=>true,
-        'width'=>400,
+        'width'=>500,
         //'height'=>255,
 		'position'=>array(null,100),
 		'resizable'=>false
@@ -116,41 +116,7 @@ $this->beginWidget('zii.widgets.jui.CJuiDialog', array( // the dialog
 
 </div>
 <?php $this->endWidget();?>
-<style>
-.crugepanel {
-    background-color: #FFF;
-    border: 1px dotted #AAA;
-    border-radius: 1px;
-    box-shadow: 3px 3px 5px #EEE;
-    display: block;
-    margin-top: 10px;
-    padding: 10px;
-}
-.grid-view table.items th {
-	color: rgba(0, 0, 0, 1);
-    text-align: center;
-    background: none repeat scroll 0% 0% rgba(0, 138, 255, 0.15);
-}
-.grid-view table.items th a {
-    color: #000;
-    font-weight: bold;
-    text-decoration: none;
-}
-.grid-view table.items td {
-    font-size: 0.9em;
-    border: 1px solid #5877C3;
-    padding: 0.3em;
-}
-.grid-view table.items th, .grid-view table.items td {
-    font-size: 0.9em;
-    border: 1px solid #A8C5F0;
-    padding: 0.3em;
-}
-#menu{
-	font-size:15px;
 
-}
-</style>
 <script>
 var Uurl;
 function registrarMi(id){
@@ -173,8 +139,8 @@ function registrarMi(id){
                                 {
                                         $('#dialog div.divForForm').html(data.div);
                                         setTimeout("$('#dialog').dialog('close') ",1000);
-                                        //$.fn.yiiGridView.update('inicial');
-										window.setTimeout('location.reload()');
+                                        $.fn.yiiGridView.update('inicial');
+										//window.setTimeout('location.reload()');
                                 }
                         } ,
                 'cache':false});

@@ -22,7 +22,7 @@
 	<div class="row">
 		<?php echo $form->labelEx($model,'idactividadMtto'); ?>
 		<?php echo $form->dropDownList($model,'idactividadMtto',CHtml::listData(Actividadmtto::model()->findAll(array('order'=>'actividad asc')),'id','actividad'),array('id'=>'actividad','style' => 'width:345px;')); 
-  echo CHtml::link('<img src='.Yii::app()->baseUrl.'/imagenes/agregar.png alt="algo"/>', "", array('title'=>'Agregar una nueva actividad','style'=>'cursor: pointer; text-decoration: underline;','onclick'=>"{nuevaActividad(); }"));?>	
+  echo CHtml::link('<img src='.Yii::app()->baseUrl.'/imagenes/agregar.png alt="Agregar"/>', "", array('title'=>'Agregar una nueva actividad','style'=>'cursor: pointer; text-decoration: underline;','onclick'=>"{nuevaActividad(); }"));?>	
 		<?php echo $form->error($model,'idactividadMtto'); ?>
 	</div>
 	

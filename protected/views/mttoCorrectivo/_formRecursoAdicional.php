@@ -32,7 +32,7 @@
 		<?php //echo $form->error($tipoInsumo,'idOrigen'); ?>
 		
 		<?php echo $form->labelEx($model,'idinsumo'); ?>
-		<?php echo $form->dropDownList($model,'idinsumo',CHtml::listData(Insumo::model()->findAll(),'id','insumo'),array('style' => 'width:300px;'));
+		<?php echo $form->dropDownList($model,'idinsumo',CHtml::listData(Insumo::model()->findAll(),'id','insumo'),array('id'=>"_idinsumo",'style' => 'width:300px;'));
 				echo CHtml::link('(+)', "", array('title'=>'Agregar un nuevo insumo','style'=>'cursor: pointer; text-decoration: underline;','onclick'=>"{nuevoInsumo(); }"));		?>
 		<?php echo $form->error($model,'idinsumo'); ?>
 	</div>
@@ -41,7 +41,7 @@
 	
 	<div id="servicio"class="row">
 		<?php echo $form->labelEx($model,'idservicio'); ?>
-		<?php echo $form->dropDownList($model,'idservicio',CHtml::listData(Servicio::model()->findAll(),'id','servicio'),array('style' => 'width:300px;'));
+		<?php echo $form->dropDownList($model,'idservicio',CHtml::listData(Servicio::model()->findAll(),'id','servicio'),array('id'=>"_idservicio",'style' => 'width:300px;'));
 			echo CHtml::link('(+)', "", array('title'=>'Agregar un nuevo servicio','style'=>'cursor: pointer; text-decoration: underline;','onclick'=>"{nuevoServicio(); }"));		?>
 		<?php echo $form->error($model,'idservicio'); ?>
 	</div>
@@ -56,7 +56,7 @@
 		<?php //echo $form->error($tipoRepuesto,'idOrigen'); ?>
 		
 		<?php echo $form->labelEx($model,'idrepuesto'); ?>
-		<?php echo $form->dropDownList($model,'idrepuesto',CHtml::listData(Repuesto::model()->findAll(),'id','repuesto'),array('style' => 'width:200px;')); 
+		<?php echo $form->dropDownList($model,'idrepuesto',CHtml::listData(Repuesto::model()->findAll(),'id','repuesto'),array('id'=>"_idrepuesto",'style' => 'width:200px;')); 
 		echo CHtml::link('(+)', "", array('title'=>'Agregar un nuevo repuesto','style'=>'cursor: pointer; text-decoration: underline;','onclick'=>"{nuevoRepuesto(); }"));?>
 		<?php echo $form->error($model,'idrepuesto'); ?>
 	</div>
@@ -66,13 +66,13 @@
 	<div id="restoFormRecurso">
 	<div class="row">
 		<?php echo $form->labelEx($model,'cantidad'); ?>
-		<?php echo $form->textField($model,'cantidad',array('style' => 'width:50px;')); ?>
+		<?php echo $form->textField($model,'cantidad',array("id"=>"_cantidad",'style' => 'width:50px;')); ?>
 		<?php echo $form->dropDownList($model,'idunidad',CHtml::listData(Unidad::model()->findAll(),'id','corto'),array('style' => 'width:100px;')); ?>
 		<?php echo $form->error($model,'cantidad'); ?>
 	</div>
 	<div class="row">
 		<?php echo $form->labelEx($model,'costoUnitario'); ?>
-		<?php echo $form->textField($model,'costoUnitario',array('style' => 'width:100px;','value'=>$model->costoUnitario<=0?'':$model->costoUnitario)); ?> Bs. 
+		<?php echo $form->textField($model,'costoUnitario',array("id"=>"_costoUnitario",'style' => 'width:100px;','value'=>$model->costoUnitario<=0?'':$model->costoUnitario)); ?> Bs. 
 		<?php echo $form->error($model,'costoUnitario'); ?>
 	</div>
 	<div class="row">
@@ -85,7 +85,7 @@
 
 	<div class="row">
 		
-		<?php echo $form->hiddenField($model,'costoTotal'); ?>
+		<?php echo $form->hiddenField($model,'costoTotal',array('id'=>'_costoTotal')); ?>
 		
 	</div>
 
@@ -102,17 +102,17 @@ $("#recursofalla-form").submit(function(event){
 	total();
 });
 function total(){
-	var cantidad=$("#Recursofalla_cantidad").val();
-	var costo=$("#Recursofalla_costoUnitario").val();
+	var cantidad=$("#_cantidad").val();
+	var costo=$("#_costoUnitario").val();
 	var total=(parseFloat(cantidad) * parseFloat(costo));
-	$("#Recursofalla_costoTotal").val(total);
+	$("#_costoTotal").val(total);
 
 }
 </script>
 <script>
-var iden=$('#Recursofalla_idinsumo option:selected').val();
+var iden=$('#Tipoinsumo_tipo option:selected').val();
 validarInsumo(iden);
-var idrep=$('#Recursofalla_idrepuesto option:selected').val();
+var idrep=$('#Subtiporepuesto_subTipo option:selected').val();
 validarRepuesto(idrep);
 $("#recursofalla-form").submit(function(event){
 	event.preventDefault();
@@ -120,16 +120,16 @@ $("#recursofalla-form").submit(function(event){
 });
 function validar(){
 	if($("#lista").val()==1){
-		$("#Recursofalla_idservicio option:selected").val('');
-		$("#Recursofalla_idrepuesto option:selected").val('');
+		$("#_idservicio option:selected").val('');
+		$("#_idrepuesto option:selected").val('');
 	}
 		if($("#lista").val()==2){
-		$("#Recursofalla_idservicio option:selected").val('');
-		$("#Recursofalla_idinsumo option:selected").val('');
+		$("#_idservicio option:selected").val('');
+		$("#_idinsumo option:selected").val('');
 	}
 		if($("#lista").val()==3){
-		$("#Recursofalla_idinsumo option:selected").val('');
-		$("#Recursofalla_idrepuesto option:selected").val('');
+		$("#_idinsumo option:selected").val('');
+		$("#_idrepuesto option:selected").val('');
 	}
 	return true;
 }
@@ -139,7 +139,7 @@ $.ajax({
           url: dir,
         })
   	.done(function( result ) {    	
-    	     $('#Recursofalla_idinsumo').html(result);
+    	     $('#_idinsumo').html(result);
   	});
 }
 function validarRepuesto(id){
@@ -148,7 +148,7 @@ $.ajax({
           url: dir,
         })
   	.done(function( result ) {    	
-    	     $('#Recursofalla_idrepuesto').html(result);
+    	     $('#_idrepuesto').html(result);
   	});
 }
 function validarInsumoNuevo(id){
@@ -157,7 +157,7 @@ $.ajax({
           url: dir,
         })
   	.done(function( result ) {    	
-    	     $('#Recursofalla_idinsumo').html(result);
+    	     $('#_idinsumo').html(result);
   	});
 }
 function validarRepuestoNuevo(id){
@@ -166,7 +166,7 @@ $.ajax({
           url: dir,
         })
   	.done(function( result ) {    	
-    	     $('#Recursofalla_idrepuesto').html(result);
+    	     $('#_idrepuesto').html(result);
   	});
 }
 function validarServicioNuevo(){
@@ -175,7 +175,7 @@ $.ajax({
           url: dir,
         })
   	.done(function( result ) {    	
-    	     $('#Recursofalla_idservicio').html(result);
+    	     $('#_idservicio').html(result);
   	});
 }
 

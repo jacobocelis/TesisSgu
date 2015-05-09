@@ -93,18 +93,22 @@ class ActividadesController extends Controller
 			$var=0;
 		if(isset($_POST['Actividades'])){
             $model->attributes=$_POST['Actividades'];
-			$model->ultimoFecha=date("Y-m-d", strtotime(str_replace('/', '-',$model->ultimoFecha)));
+			
+            $model->proximoFecha=date("Y-m-d", strtotime(str_replace('/', '-',$model->proximoFecha)));
             if($model->save()){
 			//calculo del proximo mantenimiento a realizarse en base al ultimo ingresado
 				//$proximoFecha = new DateTime($model->ultimoFecha);
-				$proximoKm=$model->ultimoKm+$model->frecuenciaKm;
+				if($model->noConfirmo==0){
+					$model->ultimoFecha=date("Y-m-d", strtotime(str_replace('/', '-',$model->ultimoFecha)));
+					$proximoKm=$model->ultimoKm+$model->frecuenciaKm;
 				//$proximoFecha->add(new DateInterval('P'.$model->frecuenciaMes.$model->idtiempof0->sqlTimevalues));
 				
-                $proximoFecha=date("Y-m-d",strtotime($model->ultimoFecha . "+".$model->frecuenciaMes.$model->idtiempof0->palabraUnidad));
+                	$proximoFecha=date("Y-m-d",strtotime($model->ultimoFecha . "+".$model->frecuenciaMes.$model->idtiempof0->palabraUnidad));
                                 
-				Yii::app()->db->createCommand("update `tsg`.`sgu_actividades` set proximoKm='".$proximoKm."', proximoFecha='".$proximoFecha."', idestatus='".$model->idestatus."'
-				where id = '".$id."'")->query();
-				
+					Yii::app()->db->createCommand("update `tsg`.`sgu_actividades` set ultimoFecha='".$model->ultimoFecha."',proximoKm='".$proximoKm."', proximoFecha='".$proximoFecha."', idestatus='".$model->idestatus."'
+					where id = '".$id."'")->query();
+				}
+
                 if (Yii::app()->request->isAjaxRequest){
                     echo CJSON::encode(array(
                         'status'=>'success', 

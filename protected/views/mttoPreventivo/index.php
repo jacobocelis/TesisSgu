@@ -66,7 +66,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
 					'type'=>'raw',
 					'header'=>'Último<br>mantenimiento realizado ',
 					'name'=>'ultimoFecha',
-					'value'=>'number_format($data->ultimoKm).\' Km<br> \'.date("d/m/Y",strtotime($data->ultimoFecha))',
+					'value'=>'$data->noConfirmo==1?"Desconocido":number_format($data->ultimoKm).\' Km<br> \'.date("d/m/Y",strtotime($data->ultimoFecha))',
 					'htmlOptions'=>array('style'=>'width:100px;text-align:center;'),
 					'headerHtmlOptions'=>array('style'=>'width:100px;font-size: 5px;line-height: 15px;'),
 				),

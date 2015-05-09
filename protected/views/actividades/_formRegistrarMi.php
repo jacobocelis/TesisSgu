@@ -14,19 +14,26 @@
 	// See class documentation of CActiveForm for details on this.
 	'enableAjaxValidation'=>false,
 )); ?>
-
-	<p class="note">Campos con <span class="required">*</span> obligatorios.</p>
-	
+	<div class="crugepanel">
+		<i>*marque la casilla si desconoce ésta información, Entonces podrá indicar cuando desea realizar el próximo mantenimiento</i>
+	<div class="row">
+		<br><?php echo $form->labelEx($model,'noConfirmo'); ?> 
+		<?php echo $form->checkBox($model,'noConfirmo'); ?>
+		<?php echo $form->error($model,'noConfirmo'); ?>
+	</div>
+	</div>
+	<br>
 	<?php 
 		$km=Kilometraje::model()->findAll(array(
-			'condition'=>'t.idvehiculo ='.$model->idvehiculo.' order by t.id desc limit 1',
+			'select'=>'max(lectura) as lectura',
+			'condition'=>'t.idvehiculo ='.$model->idvehiculo.'  order by t.id desc limit 1',
 		));
 		$modelo=new Kilometraje();
 	?>
+	<div id="confirmado">
+
 	<div class="row">
-		
 		<label>Última lectura del odómetro: </label><?php echo $form->textField($modelo,'lectura',array('value'=>number_format($km[0]["lectura"], 0,",","") ,'readonly'=>'readonly','style' => 'width:100px;cursor:default;text-align:right')); ?> Km 
-		
 	</div>
 	
 	<div class="row">
@@ -35,30 +42,37 @@
 		<?php echo $form->error($model,'ultimoKm'); ?>
 	</div>
 
-<div id="slider-range-min"><div id="uno" style="float:left;margin-top:10px;"></div><div id="dos" style="float:right;margin-top:10px;">hoy</div></div>
+<div id="slider-range-min"><div id="uno" style="float:left;margin-top:10px;"></div><div id="dos" style="float:right;margin-top:10px;">Hoy</div></div>
 
 	<div class="row">
 		<?php echo $form->labelEx($model,'ultimoFecha'); ?>
 		<?php echo $form->textField($model,'ultimoFecha',array('value'=>$id?date("d/m/Y"):date("d/m/Y", strtotime(str_replace('/', '-',$model->ultimoFecha))),'readonly'=>'readonly','style' => 'width:100px;cursor:pointer;')); ?>
 		<?php echo $form->error($model,'ultimoFecha'); ?>
 	</div>
-	
+	</div>
+
 	<div class="row">
 		<?php echo $form->hiddenField($model,'frecuenciaKm'); ?>
 	</div>
 	<div class="row">
 		<?php echo $form->hiddenField($model,'frecuenciaMes'); ?>
 	</div>
+
+	<div id="noconfirmado" style="display:none">
 	<div class="row">
-		
-		<?php echo $form->hiddenField($model,'proximoKm'); ?>
-		
+		<?php echo $form->labelEx($model,'proximoKm'); ?>
+		<?php echo $form->textField($model,'proximoKm',array('value'=>$id?'':$model->proximoKm ,'readonly'=>'readonly','style' => 'width:100px;cursor:pointer;text-align:right')); ?>  Km
+		<?php echo $form->error($model,'proximoKm'); ?>
 	</div>
 
+<div id="slider-range-max"><div id="tres" style="float:left;margin-top:10px;">Hoy</div><div id="cuatro" style="float:right;margin-top:10px;">hoy</div></div>
+	
 	<div class="row">
-		<?php echo $form->hiddenField($model,'proximoFecha'); ?>
+		<?php echo $form->labelEx($model,'proximoFecha'); ?>
+		<?php echo $form->textField($model,'proximoFecha',array('value'=>$id?date("d/m/Y"):date("d/m/Y", strtotime(str_replace('/', '-',$model->ultimoFecha))),'readonly'=>'readonly','style' => 'width:100px;cursor:pointer;')); ?>
+		<?php echo $form->error($model,'proximoFecha'); ?>
 	</div>
-
+</div>
 	<div class="row">
 		
 		<?php echo $form->hiddenField($model,'duracion'); ?>
@@ -101,6 +115,17 @@
 
 </div><!-- form -->
 <script>
+$("#actividades-form").submit(function(event){
+	event.preventDefault();
+	if($("#Actividades_noConfirmo").is(':checked')){
+			$( "#Actividades_ultimoKm" ).val('-1');
+			$( "#Actividades_ultimoFecha").val('0000-01-01');
+ 	}else{
+ 		$("#Actividades_proximoKm").val('');
+ 		$("#Actividades_proximoFecha").val('');
+ 	}
+});
+
 <?php $data=Tiempo::model()->findByPk($model->idtiempof);?>
 var tiempo="<?php echo $model->frecuenciaMes;?>";
 var unidad="<?php echo $data->sqlTimevalues;?>";
@@ -129,16 +154,28 @@ var unidad="<?php echo $data->sqlTimevalues;?>";
 	    };
 	    $.datepicker.setDefaults($.datepicker.regional['es']);
 	});      		
-
-	$("#Actividades_ultimoFecha").datepicker();
+	$("#Actividades_ultimoFecha").datepicker({
+		maxDate: '0d',
+		minDate: '-'+tiempo+unidad,
+	});
+	$("#Actividades_proximoFecha").datepicker({
+		minDate: '0d',
+	    maxDate: '+'+tiempo+unidad,
+	});
+	
 </script>
 
  <script>
 $("#uno").html("hace: "+$("#Actividades_frecuenciaKm").val()+"Km");
 $("#dos").html();
-var medio=$("#Kilometraje_lectura").val()-($("#Actividades_frecuenciaKm").val()/2);
 
+$("#cuatro").html("Dentro de: "+$("#Actividades_frecuenciaKm").val()+"Km");
+$("#tres").html();
+var medio=$("#Kilometraje_lectura").val()-($("#Actividades_frecuenciaKm").val()/2);
+ 
+var mini=$("#Kilometraje_lectura").val();
 var min=$("#Kilometraje_lectura").val()-$("#Actividades_frecuenciaKm").val();
+var maxi=parseInt($("#Kilometraje_lectura").val())+parseInt($("#Actividades_frecuenciaKm").val());
 if(min<0)
 	min=0;
 $(function() {
@@ -150,6 +187,32 @@ $( "#slider-range-min" ).slider({
 max: $("#Kilometraje_lectura").val(),
 slide: function( event, ui ) {
 $( "#Actividades_ultimoKm" ).val( ui.value );}});
-$( "#Actividades_ultimoKm" ).val($( "#slider-range-min" ).slider( "value" ) );});
-
+$( "#Actividades_ultimoKm" ).val($( "#slider-range-min" ).slider( "value" ) );
+});
+$(function() {
+ 
+$( "#slider-range-max" ).slider({
+	range: "min",
+	min: parseInt(mini),
+	step: 1,
+max: maxi,
+slide: function( event, ui ) {
+$( "#Actividades_proximoKm" ).val(ui.value );}});
+$( "#Actividades_proximoKm" ).val($( "#slider-range-max" ).slider( "value" ) );
+});
+</script>
+<script>
+validar_check();
+function validar_check(){
+	 if($("#Actividades_noConfirmo").is(':checked')){
+ 		$("#confirmado").hide(100);
+ 		$("#noconfirmado").show(100);
+ 	}else{
+ 		$("#confirmado").show(100);
+ 		$("#noconfirmado").hide(100);
+ 	}
+}
+$( "#Actividades_noConfirmo" ).change(function() {
+	validar_check();
+});
 </script>
