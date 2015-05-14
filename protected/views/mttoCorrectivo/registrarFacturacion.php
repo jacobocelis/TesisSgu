@@ -387,7 +387,7 @@ $this->beginWidget('zii.widgets.jui.CJuiDialog', array( // the dialog
                         "",
                         array(
                                 \'style\'=>\'cursor: pointer;text-decoration: underline;text-align:center;\',
-                                \'onclick\'=>\'{editarActividad("\'.Yii::app()->createUrl("Recursofalla/update",array("id"=>$data["id"])).\'"); $("#dialog").dialog("open");}\'
+                                \'onclick\'=>\'{editarActividad("\'.Yii::app()->createUrl("Recursofalla/update",array("id"=>$data["id"])).\'","\'.$data["id"].\'"); $("#dialog").dialog("open");}\'
                         )
                 );',),
 				array(
@@ -453,13 +453,175 @@ $this->beginWidget('zii.widgets.jui.CJuiDialog', array( // the dialog
         'title'=>'Agregar costo',
         'autoOpen'=>false,
         'modal'=>true,
-        'width'=>390,
+       	'width'=>'40%',
+       	'max-height'=>500,
 		'position'=>array(null,100),
         //'height'=>260,
-		'resizable'=>false
+		'resizable'=>false,
+		'close' => 'js:function(event, ui) { $("#gridSerial").hide(); }'
     ),
 ));?>
-<div class="divForForm"></div> 
+<div class="divForForm"></div>
+<div id="gridSerial" class='crugepanel' style="display:none;max-height: 200px;">
+<i>La lista inferior muestra el detalle del repuesto actual en el vehiculo, si está efectuando un cambio puede agregar la información del nuevo repuesto.</i>
+<?php
+$this->widget('zii.widgets.grid.CGridView', array(
+                'id'=>'repdetalle',
+				'summaryText'=>'',
+				//'selectionChanged'=>'nuevoSerial',
+				'template'=>"{items}\n{summary}\n{pager}",
+				'selectableRows'=>0,
+				'emptyText'=>'No hay repuestos asignados',
+                'dataProvider'=>$det,
+				'htmlOptions'=>array('style'=>'cursor:pointer;'),
+				'columns'=>array(
+				array(
+					'header'=>'Unidad',
+					'name'=>'idvehiculo',
+					'value'=>'str_pad((int) $data->idCaracteristicaVeh0->idvehiculo0->numeroUnidad,2,"0",STR_PAD_LEFT);',
+					//'value'=>'$data->idplan0->idplanGrupo0->CompiledColour->$data-id.\' \'.$data->CompiledColour',
+					'htmlOptions'=>array('style'=>'text-align:center;width:60px'),
+				),
+				array(
+					'header'=>'Repuesto',
+					//'name'=>'codigoPiezaEnUso',
+					//'value'=>'str_pad((int) $data->idvehiculo0->numeroUnidad,2,"0",STR_PAD_LEFT);',
+					'value'=>'$data->idCaracteristicaVeh0->idrepuesto0->repuesto',
+					'htmlOptions'=>array('style'=>'text-align:center;'),
+				),
+				
+				array(
+					'header'=>'Detalle',
+					'name'=>'detallePieza',
+					//'value'=>'str_pad((int) $data->idvehiculo0->numeroUnidad,2,"0",STR_PAD_LEFT);',
+					//'value'=>'$data->idplan0->idplanGrupo0->CompiledColour->$data-id.\' \'.$data->CompiledColour',
+					'htmlOptions'=>array('style'=>'text-align:center;'),
+				),
+				array(
+					'header'=>'Serial',
+					'name'=>'codigoPiezaEnUso',
+					//'value'=>'str_pad((int) $data->idvehiculo0->numeroUnidad,2,"0",STR_PAD_LEFT);',
+					//'value'=>'$data->idplan0->idplanGrupo0->CompiledColour->$data-id.\' \'.$data->CompiledColour',
+					'htmlOptions'=>array('style'=>'text-align:center;'),
+				),
+
+				array(
+					'header'=>'Último evento',
+					//'name'=>'codigoPiezaEnUso',
+					//'value'=>'str_pad((int) $data->idvehiculo0->numeroUnidad,2,"0",STR_PAD_LEFT);',
+					'value'=>'$data->diasUltimoEvento()',
+					'htmlOptions'=>array('style'=>'text-align:center;'),
+				),
+
+				array(
+					'header'=>'Nuevo',
+					'type'=>'raw',
+					'value'=>'$data->estado==3?CHtml::link(
+                        CHtml::image(Yii::app()->request->baseUrl."/imagenes/ver.png",
+                                          "Agregar",array("title"=>"Ver anterior")),
+                        "",
+                        array(
+                                \'style\'=>\'cursor: pointer;text-decoration: underline;text-align:center;\',
+                                \'onclick\'=>\'{detalleAnterior("\'.$data["anterior"].\'");}\'
+                        )
+                )." ".CHtml::link(CHtml::image(Yii::app()->request->baseUrl."/imagenes/agregar.png","Agregar",array("title"=>$data->estado<>3?"Agregar":"Editar")),"",
+                    array(
+                            \'style\'=>\'cursor: pointer; width:50px;text-decoration: underline;\',
+                            \'onclick\'=>\'{addDetalle("\'.Yii::app()->createUrl("cantidad/actualizarSerial",array("id"=>$data["id"])
+							).\'"); $("#dialog4").dialog("open");}\'
+                    )
+                )." ".CHtml::link(CHtml::image(Yii::app()->request->baseUrl."/imagenes/deshacer.png","Agregar",array("title"=>"Deshacer acción")),"",
+                    array(
+                            \'style\'=>\'cursor: pointer; width:50px;text-decoration: underline;\',
+                            \'onclick\'=>\'{deshacer("\'.Yii::app()->createUrl("cantidad/deshacer",array("id"=>$data["id"])
+							).\'");}\'
+                    )
+                ):CHtml::link(CHtml::image(Yii::app()->request->baseUrl."/imagenes/agregar.png","Agregar",array("title"=>$data->estado<>3?"Agregar":"Editar")),"",
+                    array(
+                            \'style\'=>\'cursor: pointer; width:50px;text-decoration: underline;\',
+                            \'onclick\'=>\'{addDetalle("\'.Yii::app()->createUrl("cantidad/actualizarSerial",array("id"=>$data["id"])
+							).\'"); $("#dialog4").dialog("open");}\'
+                    )
+                );',
+				'htmlOptions'=>array('style'=>'width:70px;text-align:center;'),
+				),
+			)
+        ));
+
+		?>
+</div> 
+<?php $this->endWidget();?>
+
+<?php
+/*ventana detalle anterior*/
+$this->beginWidget('zii.widgets.jui.CJuiDialog', array( // the dialog
+    'id'=>'anterior',
+    'options'=>array(
+        'title'=>'Repuesto anterior',
+        'autoOpen'=>false,
+        'modal'=>true,
+        'width'=>'40%',
+		'position'=>array(null,150),
+        //'height'=>260,
+		'resizable'=>false,
+		'close' => 'js:function(event, ui) { $("#serialAnterior").hide(); }'
+    ),
+));?>
+<div class="divForForm"></div>
+<div id="serialAnterior" class='crugepanel' style="display:none">
+<?php
+$this->widget('zii.widgets.grid.CGridView', array(
+                'id'=>'repdetalleAnterior',
+				'summaryText'=>'',
+				//'selectionChanged'=>'nuevoSerial',
+				'template'=>"{items}\n{summary}\n{pager}",
+				'selectableRows'=>0,
+				'emptyText'=>'No existe un repuesto anterior',
+                'dataProvider'=>$detAnterior,
+				'htmlOptions'=>array('style'=>'cursor:pointer;'),
+				'columns'=>array(
+				array(
+					'header'=>'Unidad',
+					'name'=>'idvehiculo',
+					'value'=>'str_pad((int) $data->idCaracteristicaVeh0->idvehiculo0->numeroUnidad,2,"0",STR_PAD_LEFT);',
+					//'value'=>'$data->idplan0->idplanGrupo0->CompiledColour->$data-id.\' \'.$data->CompiledColour',
+					'htmlOptions'=>array('style'=>'text-align:center;width:60px'),
+				),
+				array(
+					'header'=>'Repuesto',
+					//'name'=>'codigoPiezaEnUso',
+					//'value'=>'str_pad((int) $data->idvehiculo0->numeroUnidad,2,"0",STR_PAD_LEFT);',
+					'value'=>'$data->idCaracteristicaVeh0->idrepuesto0->repuesto',
+					'htmlOptions'=>array('style'=>'text-align:center;'),
+				),
+				
+				array(
+					'header'=>'Detalle',
+					'name'=>'detallePieza',
+					//'value'=>'str_pad((int) $data->idvehiculo0->numeroUnidad,2,"0",STR_PAD_LEFT);',
+					//'value'=>'$data->idplan0->idplanGrupo0->CompiledColour->$data-id.\' \'.$data->CompiledColour',
+					'htmlOptions'=>array('style'=>'text-align:center;'),
+				),
+				array(
+					'header'=>'Serial',
+					'name'=>'codigoPiezaEnUso',
+					//'value'=>'str_pad((int) $data->idvehiculo0->numeroUnidad,2,"0",STR_PAD_LEFT);',
+					//'value'=>'$data->idplan0->idplanGrupo0->CompiledColour->$data-id.\' \'.$data->CompiledColour',
+					'htmlOptions'=>array('style'=>'text-align:center;'),
+				),
+
+				array(
+					'header'=>'Último evento',
+					//'name'=>'codigoPiezaEnUso',
+					//'value'=>'str_pad((int) $data->idvehiculo0->numeroUnidad,2,"0",STR_PAD_LEFT);',
+					'value'=>'$data->diasUltimoEvento()',
+					'htmlOptions'=>array('style'=>'text-align:center;'),
+				),
+			)
+        ));
+
+		?>
+</div>
 <?php $this->endWidget();?>
 
 <?php
@@ -479,40 +641,21 @@ $this->beginWidget('zii.widgets.jui.CJuiDialog', array( // the dialog
  
 <?php $this->endWidget();?>
 
-<style>
-.crugepanel {
-    background-color: #FFF;
-    border: 1px dotted #AAA;
-    border-radius: 1px;
-    box-shadow: 3px 3px 5px #EEE;
-    display: block;
-    margin-top: 10px;
-    padding: 10px;
-}
-.grid-view table.items th {
-	color: rgba(0, 0, 0, 1);
-    text-align: center;
-    background: none repeat scroll 0% 0% rgba(0, 138, 255, 0.15);
-}
-.grid-view table.items th a {
-    color: #000;
-    font-weight: bold;
-    text-decoration: none;
-}
-.grid-view table.items td {
-    font-size: 0.9em;
-    border: 1px solid #5877C3;
-    padding: 0.3em;
-}
-.grid-view table.items th, .grid-view table.items td {
-    font-size: 0.9em;
-    border: 1px solid #A8C5F0;
-    padding: 0.3em;
-}
-.grid-view {
-    padding: 10px 0;
-}
-</style>
+<?php 
+$this->beginWidget('zii.widgets.jui.CJuiDialog', array( // the dialog
+    'id'=>'dialog4',
+    'options'=>array(
+        'title'=>'Registro de serial nuevo',
+        'autoOpen'=>false,
+        'modal'=>true,
+        'width'=>320,
+       // 'height'=>270,
+        'position'=>array(null,200),
+		'resizable'=>false
+    ),
+));?>
+<div class="divForForm"></div>
+<?php $this->endWidget();?>
 <script>
 cargar();
 var Uurl;
@@ -546,7 +689,11 @@ var dias="<?php echo $dias;?>";
                 'cache':false});
     return false; 
 }
-
+function detalleAnterior(id){
+	$("#serialAnterior").show();
+	$('#anterior').dialog('open');
+	$.fn.yiiGridView.update('repdetalleAnterior',{ data : "idRepAnt="+id});	
+}
 function cargar(){
 var data=<?php echo $total?>;
 if(data==0){
@@ -577,6 +724,28 @@ jQuery.ajax({
                 'cache':false});
 	return false; 
 }
+var dirurl;
+function deshacer(_url){
+
+        if (typeof(_url)=='string')
+                dirurl=_url;
+
+        jQuery.ajax({
+                url: dirurl,
+                'data':$(this).serialize(),
+                'type':'post',
+                'dataType':'json',
+                'success':function(data){			
+                        if (data.status == 'failure'){   
+							
+                        }
+                        else{		
+                            $.fn.yiiGridView.update('repdetalle');
+                        }
+                } ,
+                'cache':false});
+        return false;
+}
 function mostrarRecursos(id){
 idAct=id;
 //var altura = $(document).height();
@@ -592,9 +761,13 @@ idAct=id;
 
 
 var idfac=<?php echo $idfac?>;
-
-function editarActividad(id){
-
+var idRep;
+var Uurl;
+function editarActividad(id,rep){
+if(rep!=undefined){
+	idRep=rep;	
+	$.fn.yiiGridView.update('repdetalle',{ data : "idRep="+rep});	
+}
 
 $('#dialog').dialog('open');
 	 if (typeof(id)=='string')
@@ -605,24 +778,59 @@ $('#dialog').dialog('open');
                 'type':'post',
                 'dataType':'json',
                 'success':function(data)
+                {
+                        if (data.status == 'failure')
                         {
-                                if (data.status == 'failure')
-                                {
-                                        $('#dialog div.divForForm').html(data.div);
-                                        // Here is the trick: on submit-> once again this function!
-                                        $('#dialog div.divForForm form').submit(editarActividad); // updatePaymentComment
-                                }
-                                else
-                                {
-                                        $('#dialog div.divForForm').html(data.div);
-                                        setTimeout("$('#dialog').dialog('close') ",1000);
-                                        $.fn.yiiGridView.update('rec');
-										$.fn.yiiGridView.update('factu');
-                                }
-                        } ,
+                                if(data.asignado)
+                        			$("#gridSerial").show();
+                        		else
+                        			$("#gridSerial").hide();
+
+                                $('#dialog div.divForForm').html(data.div);
+                                $('#dialog div.divForForm form').submit(editarActividad); 
+                        }
+                        else
+                        {
+                                //$('#dialog div.divForForm').html(data.div);
+                                setTimeout("$('#dialog').dialog('close') ",0000);
+                                $.fn.yiiGridView.update('rec');
+								$.fn.yiiGridView.update('factu');
+                        }
+                } ,
                 'cache':false});
     return false; 
 }
+function addDetalle(_url){
+
+//$.fn.yiiGridView.update('detalle');
+        // If its a string then set the global variable, if its an object then don't set
+        if (typeof(_url)=='string')
+                dirurl=_url;
+
+        jQuery.ajax({
+                url: dirurl,
+                'data':$(this).serialize()+'&idrep='+idRep,
+                'type':'post',
+                'dataType':'json',
+                'success':function(data){
+				
+                                if (data.status == 'failure')
+                                {   
+										$('#dialog4 div.divForForm').html(data.div);
+                                        // Here is the trick: on submit-> once again this function!
+                                        $('#dialog4 div.divForForm form').submit(addDetalle); // updatePaymentComment
+                                }
+                                else
+                                {		
+                                        $('#dialog4 div.divForForm').html(data.div);
+                                        setTimeout("$('#dialog4').dialog('close') ",1000);
+                                        $.fn.yiiGridView.update('repdetalle');
+                                }
+                        } ,
+                'cache':false});
+        return false;
+}
+
 function editarFactura(id){
 $('#ModFactura').dialog('open');
 	 if (typeof(id)=='string')

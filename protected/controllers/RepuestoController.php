@@ -419,7 +419,7 @@ class RepuestoController extends Controller
 			'condition' =>"id=0")));
 		if(isset($_GET["id"]))
 			$det=new CActiveDataProvider('Cantidad',array('criteria' => array(
-						'condition' =>"(estado=0 or estado=1) and idCaracteristicaVeh = '".$_GET['id']."'",
+						'condition' =>"(estado=0 or estado=1 or estado=3) and idCaracteristicaVeh = '".$_GET['id']."'",
 						'order'=>'id')));
 		$this->render('index',array(
 			'dataProvider'=>$dataProvider,
@@ -449,7 +449,7 @@ class RepuestoController extends Controller
 						'condition' =>"id=0")));
 		if(isset($_GET["id"]))
 			$det=new CActiveDataProvider('Cantidad',array('criteria' => array(
-						'condition' =>"idCaracteristicaVeh = '".$_GET['id']."'",
+						'condition' =>"idCaracteristicaVeh = '".$_GET['id']."' and estado=0",
 						
 						'order'=>'id',
 						)));

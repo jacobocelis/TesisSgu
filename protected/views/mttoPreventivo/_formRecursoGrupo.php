@@ -34,7 +34,7 @@
 		<?php //echo $form->error($tipoInsumo,'idOrigen'); ?>
 		
 		<?php echo $form->labelEx($model,'idinsumo'); ?>
-		<?php echo $form->dropDownList($model,'idinsumo',CHtml::listData(Insumo::model()->findAll('1'),'id','insumo'),array('style' => 'width:300px;')); echo CHtml::link('(+)', "", array('title'=>'Agregar un nuevo insumo','style'=>'cursor: pointer; text-decoration: underline;','onclick'=>"{nuevoInsumo(); }"));?>
+		<?php echo $form->dropDownList($model,'idinsumo',CHtml::listData(Insumo::model()->findAll('1'),'id','insumo'),array('style' => 'width:300px;')); echo CHtml::link('<img src='.Yii::app()->baseUrl.'/imagenes/agregar.png alt="Agregar"/>', "", array('title'=>'Agregar un nuevo insumo','style'=>'cursor: pointer; text-decoration: underline;','onclick'=>"{nuevoInsumo(); }"));?>
 		<?php echo $form->error($model,'idinsumo'); ?>
 		
 	</div>
@@ -44,7 +44,7 @@
 	<div id="servicio"class="row">
 	
 		<?php echo $form->labelEx($model,'idservicio'); ?>
-		<?php echo $form->dropDownList($model,'idservicio',CHtml::listData(Servicio::model()->findAll('1 order by servicio asc'),'id','servicio'),array('style' => 'width:300px;')); echo CHtml::link('(+)', "", array('title'=>'Agregar un nuevo servicio','style'=>'cursor: pointer; text-decoration: underline;','onclick'=>"{nuevoServicio(); }"));?>
+		<?php echo $form->dropDownList($model,'idservicio',CHtml::listData(Servicio::model()->findAll('1 order by servicio asc'),'id','servicio'),array('style' => 'width:300px;')); echo CHtml::link('<img src='.Yii::app()->baseUrl.'/imagenes/agregar.png alt="Agregar"/>', "", array('title'=>'Agregar un nuevo servicio','style'=>'cursor: pointer; text-decoration: underline;','onclick'=>"{nuevoServicio(); }"));?>
 		<?php echo $form->error($model,'idservicio'); ?>
 		
 	</div>
@@ -59,7 +59,7 @@
 		<?php //echo $form->error($tipoRepuesto,'idOrigen'); ?>
 		
 		<?php echo $form->labelEx($model,'idrepuesto'); ?>
-		<?php echo $form->dropDownList($model,'idrepuesto',CHtml::listData(Repuesto::model()->findAll(),'id','repuesto'),array('style' => 'width:200px;')); echo CHtml::link('(+)', "", array('title'=>'Agregar un nuevo repuesto','style'=>'cursor: pointer; text-decoration: underline;','onclick'=>"{nuevoRepuesto(); }"));?>
+		<?php echo $form->dropDownList($model,'idrepuesto',CHtml::listData(Repuesto::model()->findAll(),'id','repuesto'),array('style' => 'width:200px;')); echo CHtml::link('<img src='.Yii::app()->baseUrl.'/imagenes/agregar.png alt="Agregar"/>', "", array('title'=>'Agregar un nuevo repuesto','style'=>'cursor: pointer; text-decoration: underline;','onclick'=>"{nuevoRepuesto(); }"));?>
 		<?php echo $form->error($model,'idrepuesto'); ?>
 	</div>
 	

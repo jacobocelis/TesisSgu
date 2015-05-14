@@ -33,6 +33,10 @@ class Cantidad extends CActiveRecord
 	public function diasUltimoEvento(){
 
 		$dias=((strtotime(date("Y-m-d"))-strtotime($this->fechaIncorporacion))/86400);
+		if($this->estado==0)
+			return $this->eventoRepuesto();
+		if($this->estado==3)
+			return $this->eventoRepuesto().': Efectuandose';
 		if($dias==0)
 			return $this->eventoRepuesto().': Hoy';
 		if($dias==1)
@@ -41,6 +45,7 @@ class Cantidad extends CActiveRecord
 			return $this->eventoRepuesto().': hace '.$dias.' día';
 		if($dias>=3)
 			return $this->eventoRepuesto().': hace '.$dias.' días';
+
 		
 	}
 	public function eventoRepuesto(){

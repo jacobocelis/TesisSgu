@@ -103,6 +103,19 @@ class Actividadesgrupo extends CActiveRecord
 	 * @return CActiveDataProvider the data provider that can return the models
 	 * based on the search/filter conditions.
 	 */
+	public function beforeValidate() {
+        if($this->idactividadMtto==""){
+            $this->addErrors(array(
+            	'idactividadMtto'=>'Seleccione almenos una actividad',
+            ));
+        }
+        if($this->frecuenciaMes==""){
+            $this->addErrors(array(
+            	'frecuenciaMes'=>'Periodo no puede ser nulo',
+            ));
+        }
+        return parent::beforeValidate();
+    }	
 	public function search()
 	{
 		// @todo Please modify the following code to remove attributes that should not be searched.

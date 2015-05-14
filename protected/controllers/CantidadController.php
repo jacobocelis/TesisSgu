@@ -29,10 +29,10 @@ class CantidadController extends Controller
 		return array(
 			array('allow',  // allow all users to perform 'index' and 'view' actions
 				'actions'=>array('index','view','Agregardetalle','ActualizarSerial'),
-				'users'=>array('*'),
+				'users'=>array('@'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create','update'),
+				'actions'=>array('create','update','deshacer'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -49,37 +49,25 @@ class CantidadController extends Controller
 	 * Displays a particular model.
 	 * @param integer $id the ID of the model to be displayed
 	 */
-	public function actionActualizarSerial($id,$rep){
+	public function actionActualizarSerial($id){
 	 
-	 if(isset($_POST['idrep'])){
-	 	$Actividadrecurso = Actividadrecurso::model()->findByPk($_POST['idrep']);
-	 }
-	 if($Actividadrecurso->serialGuardado==0){
-	 	$actual=$this->loadModel($id);
-	 	$model = new Cantidad;
-	 	$model->detallePieza=$actual->detallePieza;
-	 	$model->idCaracteristicaVeh=$actual->idCaracteristicaVeh;
-	 	$model->estado=1;
-	 }
-	 	
-	 else{
-	 	$model=$this->loadModel($id);
-	 	$actual=$model;
-	 }
-	 	
-	 		
+	 $anterior=$this->loadModel($id);	
+	 $model=$this->loadModel($id);	
+	 if($model->estado==1)
+	 	$model=new Cantidad;
+
 	 if(isset($_POST['Cantidad'])){
-            $model->attributes=$_POST['Cantidad'];
-           	$model->fechaIncorporacion=date("Y-m-d", strtotime(str_replace('/', '-',$_POST['Cantidad']['fechaIncorporacion'])));
-
+        $model->attributes=$_POST['Cantidad'];
+       	$model->fechaIncorporacion=date("Y-m-d", strtotime(str_replace('/', '-',$_POST['Cantidad']['fechaIncorporacion'])));
+       	$model->idCaracteristicaVeh=$anterior->idCaracteristicaVeh;
+       	$model->detallePieza=$anterior->detallePieza;
+       	$model->estado=3;
+	       	if($model->isNewRecord){
+	       		$model->anterior=$anterior->id;      	
+	       		$anterior->estado=2;
+	       		$anterior->update();
+	       	}
 			if($model->save()){
-
-				if(isset($actual) and $Actividadrecurso->serialGuardado==0){
-					$actual->estado=2;
-					$actual->update();
-				}
-				$Actividadrecurso->serialGuardado=1;
-				$Actividadrecurso->update();
 				if (Yii::app()->request->isAjaxRequest){
                     echo CJSON::encode(array(
                         'status'=>'success', 
@@ -91,18 +79,49 @@ class CantidadController extends Controller
         }
 
 	 if (Yii::app()->request->isAjaxRequest){
-				
 			//$model=$this->loadModel($id);
             echo CJSON::encode(array(
                 'status'=>'failure', 
-                'div'=>$this->renderPartial('_formNuevoSerial', array('model'=>$model,'actual'=>$actual), true)));
+                'div'=>$this->renderPartial('_formNuevoSerial', array('model'=>$model,'codigo'=>$anterior->codigoPiezaEnUso), true)));
             exit;               
         }
 	}
+	public function actionDeshacer($id){
 
-	 public function actionAgregardetalle($id,$rep){
-	 $model=$this->loadModel($id);
-	 if(isset($_POST['Cantidad'])){
+	 $nuevo=$this->loadModel($id);
+	 if($nuevo->anterior==null and $nuevo->estado==3){
+	 	$nuevo->codigoPiezaEnUso=null;
+	 	$nuevo->fechaIncorporacion='0000-01-01';
+	 	$nuevo->estado=0;
+	 	$nuevo->evento=0;
+	 	$nuevo->update();
+	 }else{
+	 	$anterior=$this->loadModel($nuevo->anterior);
+	 	$anterior->estado=1;
+	 	$anterior->update();
+	 	$nuevo->delete();	
+	 }
+		
+		if (Yii::app()->request->isAjaxRequest){
+	        echo CJSON::encode(array(
+	            'status'=>'success', 
+	            
+	            ));
+	        exit;               
+	    }
+
+        
+	/* if (Yii::app()->request->isAjaxRequest){
+				
+            echo CJSON::encode(array(
+                'status'=>'failure', 
+                ));
+            exit;               
+        }*/
+	}
+	public function actionAgregardetalle($id,$rep){
+	 	$model=$this->loadModel($id);
+	 	if(isset($_POST['Cantidad'])){
             $model->attributes=$_POST['Cantidad'];
            	$model->fechaIncorporacion=date("Y-m-d", strtotime(str_replace('/', '-',$_POST['Cantidad']['fechaIncorporacion'])));
 			if($model->estado==0)

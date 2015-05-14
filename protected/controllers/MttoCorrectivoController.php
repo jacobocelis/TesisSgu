@@ -152,6 +152,11 @@ class MttoCorrectivoController extends Controller
 	}	 
 	public function actionVistaPrevia($id,$nom,$dir){
 		$tipo=-1;
+		$detAnt=0;
+		if(isset($_GET["idRepAnt"])){
+			$detAnt=$_GET["idRepAnt"];
+		}
+
 		$orden=new CActiveDataProvider('Ordenmtto',array('criteria' => array(
 			'condition' =>'id='.$id."")
 			,'pagination'=>array('pageSize'=>9999999)));
@@ -183,9 +188,26 @@ class MttoCorrectivoController extends Controller
 		$factura=new CActiveDataProvider('Factura',array('criteria' => array(
 			'condition'=>'idordenMtto="'.$id.'"'),
 			'pagination'=>array('pageSize'=>9999999)));
+		
 		$det=new CActiveDataProvider('Reportefalla',array('criteria' => array(
-				'condition' =>'id="0"',
-				)));
+				'condition' =>'id="0"')));
+		
+		$detRepuesto=new CActiveDataProvider('Cantidad',array('criteria' => array(
+			'condition' =>"id=0",
+			'order'=>'id')));
+		if(isset($_GET["idRep"])){
+			$recursofalla = Recursofalla::model()->findByPk($_GET["idRep"]);
+			
+			$Actividades = Reportefalla::model()->findByPk($recursofalla->idreporteFalla);
+			$consulta=Yii::app()->db->createCommand("select * from sgu_CaracteristicaVeh where idvehiculo=".$Actividades->idvehiculo." and idrepuesto='".$recursofalla->idrepuesto."'")->queryRow();
+			if(count($consulta)==0)
+				$tieneAsignado=0;
+			else
+			$detRepuesto=new CActiveDataProvider('Cantidad',array('criteria' => array(
+			'condition' =>"idCaracteristicaVeh = '".$consulta['id']."' and (estado=0 or estado=1 or estado=3)",
+			'order'=>'id')));
+
+		}
 		if(isset($_GET["idAct"])){
 			$det=new CActiveDataProvider('Reportefalla',array('criteria' => array(
 				'condition' =>'id='.$_GET["idAct"].'',
@@ -194,6 +216,10 @@ class MttoCorrectivoController extends Controller
 		if(isset($_GET["idTipo"])){
 			$tipo=$_GET["idTipo"];
 		}
+		$detAnterior=new CActiveDataProvider('Cantidad',array('criteria' => array(
+		'condition' =>"id = '".$detAnt."'",
+		'order'=>'id')));
+
 		$this->render('vistaPrevia',array(
 			'tipo'=>$tipo,
 			'vehiculos'=>$vehiculos,
@@ -205,10 +231,11 @@ class MttoCorrectivoController extends Controller
 			'orden'=>$orden,
 			'factura'=>$factura,
 			'totFactura'=>$totFactura,
+			'detAnterior'=>$detAnterior,
+			'detRepuesto'=>$detRepuesto,
 			'nom'=>$nom,
 			'dir'=>$dir,
 			'idOrden'=>$id,
-	
 			'abiertas'=>$this->getOrdenesAbiertas(),
 			'Colorabi'=>$this->getColor($this->getOrdenesAbiertas()),
 			'Colorli'=>$this->getColor($this->getOrdenesListas()),
@@ -338,6 +365,7 @@ class MttoCorrectivoController extends Controller
 	public function actionRegistrarFacturacion($id,$nom,$dir){
 		$model = new Factura;
 		$idrecurso=0;
+		$detAnt=0;
 		if(isset($_GET['idAct'])){	
 			$idrecurso=$_GET['idAct'];
 		}
@@ -367,6 +395,29 @@ class MttoCorrectivoController extends Controller
 		$fechaOrden=date("Y-m-d", strtotime($fechaOrden[0]["fecha"]));		
 		$dias=((strtotime(date("Y-m-d"))-strtotime($fechaOrden))/86400);
 		
+		$det=new CActiveDataProvider('Cantidad',array('criteria' => array(
+			'condition' =>"id=0")));
+		
+		if(isset($_GET["idRep"])){
+			$recursofalla = Recursofalla::model()->findByPk($_GET["idRep"]);
+			
+			$Actividades = Reportefalla::model()->findByPk($recursofalla->idreporteFalla);
+			$consulta=Yii::app()->db->createCommand("select * from sgu_CaracteristicaVeh where idvehiculo=".$Actividades->idvehiculo." and idrepuesto='".$recursofalla->idrepuesto."'")->queryRow();
+			if(count($consulta)==0)
+				$tieneAsignado=0;
+			else
+			$det=new CActiveDataProvider('Cantidad',array('criteria' => array(
+			'condition' =>"idCaracteristicaVeh = '".$consulta['id']."' and (estado=0 or estado=1 or estado=3)",
+			'order'=>'id')));
+
+		}
+		if(isset($_GET["idRepAnt"])){
+			$detAnt=$_GET["idRepAnt"];
+		}
+		$detAnterior=new CActiveDataProvider('Cantidad',array('criteria' => array(
+		'condition' =>"id = '".$detAnt."'",
+		'order'=>'id')));
+
 		$this->render('registrarFacturacion',array(
 			'dataProvider'=>$dataProvider,
 			'mejoras'=>$mejoras,
@@ -379,7 +430,8 @@ class MttoCorrectivoController extends Controller
 			'dir'=>$dir,
 			'model'=> new Reportefalla,
 			'dias'=>$dias,
-
+			'det'=>$det,
+			'detAnterior'=>$detAnterior,
 			'abiertas'=>$this->getOrdenesAbiertas(),
 			'Colorabi'=>$this->getColor($this->getOrdenesAbiertas()),
 			'Colorli'=>$this->getColor($this->getOrdenesListas()),
@@ -472,8 +524,24 @@ class MttoCorrectivoController extends Controller
 			Yii::app()->db->createCommand("update `tsg`.`sgu_ordenMtto` set `idestatus` = '6' where `sgu_ordenMtto`.`id` = ".$_POST['id']."")->query();
 		if($id==0)	
 			Yii::app()->db->createCommand("update `tsg`.`sgu_ordenMtto` set `idestatus` = '5' where `sgu_ordenMtto`.`id` = ".$_POST['id']."")->query();
-		if($id==7)	
+		if($id==7){
+			$actividades=Detalleordenco::model()->findAll(array("condition"=>"idordenMtto = '".$_POST['id']."'"));
+			for($i=0;$i<count($actividades);$i++){
+				$vehiculo=Reportefalla::model()->find(array("condition"=>"id = '".$actividades[$i]["idreporteFalla"]."'"));
+				$recursos=Recursofalla::model()->findAll(array("condition"=>"idreporteFalla = '".$actividades[$i]["idreporteFalla"]."'"));
+				for($j=0;$j<count($recursos);$j++){
+					if($recursos[$j]["idrepuesto"]<>null){
+						$repuestos=Cantidad::model()->findAll(array("condition"=>"estado=3 and idCaracteristicaVeh in (select id from sgu_CaracteristicaVeh where idrepuesto= '".$recursos[$j]["idrepuesto"]."' and idvehiculo = '".$vehiculo["idvehiculo"]."')"));						
+						foreach ($repuestos as $rep) {
+							$rep->estado=1;
+							$rep->update();
+						}
+					}
+				}
+			}
+
 			Yii::app()->db->createCommand("update `tsg`.`sgu_ordenMtto` set `idestatus` = '7' where `sgu_ordenMtto`.`id` = ".$_POST['id']."")->query();
+		}	
 	}
 	public function actionIniciales(){
 		$dataProvider=new CActiveDataProvider('Actividades',array('criteria' => array(

@@ -129,9 +129,17 @@ class RecursofallaController extends Controller
                 }
             }
 		}
+			$Actividades = Reportefalla::model()->findByPk($model->idreporteFalla);
+			$consulta=Yii::app()->db->createCommand("select * from sgu_CaracteristicaVeh where idvehiculo=".$Actividades->idvehiculo." and idrepuesto='".$model->idrepuesto."'")->queryRow();
+			if(!$consulta)
+				$tieneAsignado=0;
+			else
+				$tieneAsignado=1;
+
 		 if (Yii::app()->request->isAjaxRequest){
             echo CJSON::encode(array(
-                'status'=>'failure', 
+                'status'=>'failure',
+                'asignado'=>$tieneAsignado,
                 'div'=>$this->renderPartial('_form', array('model'=>$model,'id'=>$id), true)));
             exit;               
         }

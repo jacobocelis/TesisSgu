@@ -152,7 +152,15 @@ $this->widget('zii.widgets.grid.CGridView', array(
 					'header'=>'Fecha de realizada',
 					'name'=>'fechaRealizada',
 					'type'=>'raw',
-					'value'=>'$data->valores($data->fechaRealizada)?date("d/m/Y",strtotime($data->fechaRealizada)):$data->noasignado()',
+					'value'=>'($data->valores($data->fechaRealizada)?date("d/m/Y",strtotime($data->fechaRealizada)):$data->noasignado()).CHtml::link(
+                     CHtml::image(Yii::app()->request->baseUrl."/imagenes/agregar.png",
+                                          "Agregar",array("title"=>"Editar")),
+                        "",
+                        array(
+                                \'style\'=>\'cursor: pointer;text-decoration: underline;text-align:center;\',
+                                \'onclick\'=>\'{registrarMR("\'.Yii::app()->createUrl("actividades/actualizarMR",array("id"=>$data["id"])).\'"); $("#dialog").dialog("open");}\'
+                        )
+                )',
 					'htmlOptions'=>array('style'=>'width:80px;text-align:center;'),
 				),
 				/*array(
@@ -170,10 +178,10 @@ $this->widget('zii.widgets.grid.CGridView', array(
 					'value'=>'$data->duracion.\' \'.$data->idtiempod0->tiempo',
 					'htmlOptions'=>array('style'=>'width:80px;text-align:center;'),
 				),*/
-				array(
+				/*array(
 					'headerHtmlOptions'=>array('style'=>'text-align:center;width:30px;'),
 					'htmlOptions'=>array('style'=>'text-align:center;'),
-					'header'=>'Registrar mantenimiento realizado',
+					'header'=>'Registrar mantenimiento',
 					'type'=>'raw',
 					'value'=>'CHtml::link(
                      CHtml::image(Yii::app()->request->baseUrl."/imagenes/agregar.png",
@@ -183,7 +191,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
                                 \'style\'=>\'cursor: pointer;text-decoration: underline;text-align:center;\',
                                 \'onclick\'=>\'{registrarMR("\'.Yii::app()->createUrl("actividades/actualizarMR",array("id"=>$data["id"])).\'"); $("#dialog").dialog("open");}\'
                         )
-                );',),
+                );',),*/
 				array(
 					'header'=>'Estado',
 					'name'=>'idestatus',
@@ -254,7 +262,7 @@ var dias="<?php echo $dias;?>";
                                 else
                                 {
                                         $('#dialog div.divForForm').html(data.div);
-                                        setTimeout("$('#dialog').dialog('close') ",1000);
+                                        setTimeout("$('#dialog').dialog('close') ",000);
                                         $.fn.yiiGridView.update('final');
 										actualizarCheck(idorden);
                                 }

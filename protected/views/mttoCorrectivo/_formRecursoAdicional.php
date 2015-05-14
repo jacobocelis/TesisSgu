@@ -33,7 +33,7 @@
 		
 		<?php echo $form->labelEx($model,'idinsumo'); ?>
 		<?php echo $form->dropDownList($model,'idinsumo',CHtml::listData(Insumo::model()->findAll(),'id','insumo'),array('id'=>"_idinsumo",'style' => 'width:300px;'));
-				echo CHtml::link('(+)', "", array('title'=>'Agregar un nuevo insumo','style'=>'cursor: pointer; text-decoration: underline;','onclick'=>"{nuevoInsumo(); }"));		?>
+				echo CHtml::link('<img src='.Yii::app()->baseUrl.'/imagenes/agregar.png alt="Agregar"/>', "", array('title'=>'Agregar un nuevo insumo','style'=>'cursor: pointer; text-decoration: underline;','onclick'=>"{nuevoInsumo(); }"));		?>
 		<?php echo $form->error($model,'idinsumo'); ?>
 	</div>
 	
@@ -42,7 +42,7 @@
 	<div id="servicio"class="row">
 		<?php echo $form->labelEx($model,'idservicio'); ?>
 		<?php echo $form->dropDownList($model,'idservicio',CHtml::listData(Servicio::model()->findAll(),'id','servicio'),array('id'=>"_idservicio",'style' => 'width:300px;'));
-			echo CHtml::link('(+)', "", array('title'=>'Agregar un nuevo servicio','style'=>'cursor: pointer; text-decoration: underline;','onclick'=>"{nuevoServicio(); }"));		?>
+			echo CHtml::link('<img src='.Yii::app()->baseUrl.'/imagenes/agregar.png alt="Agregar"/>', "", array('title'=>'Agregar un nuevo servicio','style'=>'cursor: pointer; text-decoration: underline;','onclick'=>"{nuevoServicio(); }"));		?>
 		<?php echo $form->error($model,'idservicio'); ?>
 	</div>
 
@@ -57,7 +57,7 @@
 		
 		<?php echo $form->labelEx($model,'idrepuesto'); ?>
 		<?php echo $form->dropDownList($model,'idrepuesto',CHtml::listData(Repuesto::model()->findAll(),'id','repuesto'),array('id'=>"_idrepuesto",'style' => 'width:200px;')); 
-		echo CHtml::link('(+)', "", array('title'=>'Agregar un nuevo repuesto','style'=>'cursor: pointer; text-decoration: underline;','onclick'=>"{nuevoRepuesto(); }"));?>
+		echo CHtml::link('<img src='.Yii::app()->baseUrl.'/imagenes/agregar.png alt="Agregar"/>', "", array('title'=>'Agregar un nuevo repuesto','style'=>'cursor: pointer; text-decoration: underline;','onclick'=>"{nuevoRepuesto(); }"));?>
 		<?php echo $form->error($model,'idrepuesto'); ?>
 	</div>
 	

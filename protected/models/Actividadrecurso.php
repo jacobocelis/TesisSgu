@@ -53,12 +53,12 @@ class Actividadrecurso extends CActiveRecord
 			array('id, cantidad, idactividades, idinsumo, idrepuesto, idservicio, idunidad, detalle, idactividadRecursoGrupo, costoUnitario, costoTotal', 'safe', 'on'=>'search'),
 		);
 	}
-	     public function validarCosto(){
+	public function validarCosto(){
                 if($this->costoUnitario<=0){
                     $this->addError('costoUnitario', 'Costo unitario debe ser mayor a cero');
                 }
 			}
-		public function validarCantidad(){
+	public function validarCantidad(){
                 if($this->cantidad<=0){
                     $this->addError('cantidad', 'Cantidad debe ser mayor a cero');
                 }
@@ -66,6 +66,14 @@ class Actividadrecurso extends CActiveRecord
 	/**
 	 * @return array relational rules.
 	 */
+	public function tieneAsignado(){
+		$Actividades = Actividades::model()->findByPk($this->idactividades);
+			$consulta=Yii::app()->db->createCommand("select * from sgu_CaracteristicaVeh where idvehiculo=".$Actividades->idvehiculo." and idrepuesto='".$this->idrepuesto."'")->queryRow();
+			if($consulta==0)
+				return 0;
+			else
+				return 1;
+	}
 	public function iva(){
 		
 		$orden=Detalleorden::model()->find('idactividades='.$this->idactividades.'');

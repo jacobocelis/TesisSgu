@@ -338,9 +338,8 @@ $this->beginWidget('zii.widgets.jui.CJuiDialog', array( // the dialog
     ),
 ));?>
 <div class="divForForm"> </div>
-
 <div id="gridSerial" class='crugepanel' style="display:none;max-height: 200px;">
-	<i>La lista inferior muestra el detalle del repuesto actual en el vehiculo, si está efectuando un cambio puede agregar el nuevo serial del repuesto.</i>
+<i>La lista inferior muestra el detalle del repuesto actual en el vehiculo, si está efectuando un cambio puede agregar la información del nuevo repuesto.</i>
 <?php
 $this->widget('zii.widgets.grid.CGridView', array(
                 'id'=>'repdetalle',
@@ -357,7 +356,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
 					'name'=>'idvehiculo',
 					'value'=>'str_pad((int) $data->idCaracteristicaVeh0->idvehiculo0->numeroUnidad,2,"0",STR_PAD_LEFT);',
 					//'value'=>'$data->idplan0->idplanGrupo0->CompiledColour->$data-id.\' \'.$data->CompiledColour',
-					'htmlOptions'=>array('style'=>'text-align:center;width:70px'),
+					'htmlOptions'=>array('style'=>'text-align:center;width:60px'),
 				),
 				array(
 					'header'=>'Repuesto',
@@ -397,6 +396,20 @@ $this->widget('zii.widgets.grid.CGridView', array(
 					'htmlOptions'=>array('style'=>'text-align:center;'),
 				),
 				/*array(
+						'headerHtmlOptions'=>array('style'=>'text-align:center;width:50px;'),
+						'htmlOptions'=>array('style'=>'text-align:center;'),
+						'header'=>'anterior',
+						'type'=>'raw',
+						'value'=>'CHtml::link(
+                        CHtml::image(Yii::app()->request->baseUrl."/imagenes/ver.png",
+                                          "Agregar",array("title"=>"ver")),
+                        "",
+                        array(
+                                \'style\'=>\'cursor: pointer;text-decoration: underline;text-align:center;\',
+                                \'onclick\'=>\'{editarActividad("\'.Yii::app()->createUrl("actividadrecurso/update",array("id"=>$data["id"])).\'","\'.$data["id"].\'");}\'
+                        )
+                );',),*/
+				/*array(
 					'headerHtmlOptions'=>array('style'=>'text-align:center;width:50px;'),
 					'header'=>'Estado',
 					'name'=>'estado',
@@ -404,26 +417,115 @@ $this->widget('zii.widgets.grid.CGridView', array(
 					//'value'=>'$data->idplan0->idplanGrupo0->CompiledColour->$data-id.\' \'.$data->CompiledColour',
 					'htmlOptions'=>array('style'=>'text-align:center;width:20px'),
 				),*/
-
 				array(
-						'header'=>'Nuevo serial',
-						'type'=>'raw',
-						'value'=>'CHtml::link(CHtml::image(Yii::app()->request->baseUrl."/imagenes/agregar.png","Agregar",array("title"=>"Agregar")),"",
+					'header'=>'Nuevo',
+					'type'=>'raw',
+					'value'=>'$data->estado==3?CHtml::link(
+                        CHtml::image(Yii::app()->request->baseUrl."/imagenes/ver.png",
+                                          "Agregar",array("title"=>"Ver anterior")),
+                        "",
                         array(
-                                \'style\'=>\'cursor: pointer; width:50px;text-decoration: underline;\',
-                                \'onclick\'=>\'{addDetalle("\'.Yii::app()->createUrl("cantidad/actualizarSerial",array("id"=>$data["id"],"fila"=>$row+1,"rep"=>$data->idCaracteristicaVeh0->idrepuesto0->repuesto)
-								).\'"); $("#dialog2").dialog("open");}\'
+                                \'style\'=>\'cursor: pointer;text-decoration: underline;text-align:center;\',
+                                \'onclick\'=>\'{detalleAnterior("\'.$data["anterior"].\'");}\'
                         )
+                )." ".CHtml::link(CHtml::image(Yii::app()->request->baseUrl."/imagenes/agregar.png","Agregar",array("title"=>$data->estado<>3?"Agregar":"Editar")),"",
+                    array(
+                            \'style\'=>\'cursor: pointer; width:50px;text-decoration: underline;\',
+                            \'onclick\'=>\'{addDetalle("\'.Yii::app()->createUrl("cantidad/actualizarSerial",array("id"=>$data["id"])
+							).\'"); $("#dialog2").dialog("open");}\'
+                    )
+                )." ".CHtml::link(CHtml::image(Yii::app()->request->baseUrl."/imagenes/deshacer.png","Agregar",array("title"=>"Deshacer acción")),"",
+                    array(
+                            \'style\'=>\'cursor: pointer; width:50px;text-decoration: underline;\',
+                            \'onclick\'=>\'{deshacer("\'.Yii::app()->createUrl("cantidad/deshacer",array("id"=>$data["id"])
+							).\'");}\'
+                    )
+                ):CHtml::link(CHtml::image(Yii::app()->request->baseUrl."/imagenes/agregar.png","Agregar",array("title"=>$data->estado<>3?"Agregar":"Editar")),"",
+                    array(
+                            \'style\'=>\'cursor: pointer; width:50px;text-decoration: underline;\',
+                            \'onclick\'=>\'{addDetalle("\'.Yii::app()->createUrl("cantidad/actualizarSerial",array("id"=>$data["id"])
+							).\'"); $("#dialog2").dialog("open");}\'
+                    )
                 );',
-				'htmlOptions'=>array('style'=>'width:50px;text-align:center;'),
+				'htmlOptions'=>array('style'=>'width:70px;text-align:center;'),
 				),
 			)
         ));
 
 		?>
 </div>
+<?php $this->endWidget();?>
 
+<?php
+/*ventana detalle anterior*/
+$this->beginWidget('zii.widgets.jui.CJuiDialog', array( // the dialog
+    'id'=>'anterior',
+    'options'=>array(
+        'title'=>'Repuesto anterior',
+        'autoOpen'=>false,
+        'modal'=>true,
+        'width'=>'40%',
+		'position'=>array(null,150),
+        //'height'=>260,
+		'resizable'=>false,
+		'close' => 'js:function(event, ui) { $("#serialAnterior").hide(); }'
+    ),
+));?>
+<div class="divForForm"></div>
+<div id="serialAnterior" class='crugepanel' style="display:none">
+<?php
+$this->widget('zii.widgets.grid.CGridView', array(
+                'id'=>'repdetalleAnterior',
+				'summaryText'=>'',
+				//'selectionChanged'=>'nuevoSerial',
+				'template'=>"{items}\n{summary}\n{pager}",
+				'selectableRows'=>0,
+				'emptyText'=>'No existe un repuesto anterior',
+                'dataProvider'=>$detAnterior,
+				'htmlOptions'=>array('style'=>'cursor:pointer;'),
+				'columns'=>array(
+				array(
+					'header'=>'Unidad',
+					'name'=>'idvehiculo',
+					'value'=>'str_pad((int) $data->idCaracteristicaVeh0->idvehiculo0->numeroUnidad,2,"0",STR_PAD_LEFT);',
+					//'value'=>'$data->idplan0->idplanGrupo0->CompiledColour->$data-id.\' \'.$data->CompiledColour',
+					'htmlOptions'=>array('style'=>'text-align:center;width:60px'),
+				),
+				array(
+					'header'=>'Repuesto',
+					//'name'=>'codigoPiezaEnUso',
+					//'value'=>'str_pad((int) $data->idvehiculo0->numeroUnidad,2,"0",STR_PAD_LEFT);',
+					'value'=>'$data->idCaracteristicaVeh0->idrepuesto0->repuesto',
+					'htmlOptions'=>array('style'=>'text-align:center;'),
+				),
+				
+				array(
+					'header'=>'Detalle',
+					'name'=>'detallePieza',
+					//'value'=>'str_pad((int) $data->idvehiculo0->numeroUnidad,2,"0",STR_PAD_LEFT);',
+					//'value'=>'$data->idplan0->idplanGrupo0->CompiledColour->$data-id.\' \'.$data->CompiledColour',
+					'htmlOptions'=>array('style'=>'text-align:center;'),
+				),
+				array(
+					'header'=>'Serial',
+					'name'=>'codigoPiezaEnUso',
+					//'value'=>'str_pad((int) $data->idvehiculo0->numeroUnidad,2,"0",STR_PAD_LEFT);',
+					//'value'=>'$data->idplan0->idplanGrupo0->CompiledColour->$data-id.\' \'.$data->CompiledColour',
+					'htmlOptions'=>array('style'=>'text-align:center;'),
+				),
 
+				array(
+					'header'=>'Último evento',
+					//'name'=>'codigoPiezaEnUso',
+					//'value'=>'str_pad((int) $data->idvehiculo0->numeroUnidad,2,"0",STR_PAD_LEFT);',
+					'value'=>'$data->diasUltimoEvento()',
+					'htmlOptions'=>array('style'=>'text-align:center;'),
+				),
+			)
+        ));
+
+		?>
+</div>
 <?php $this->endWidget();?>
 
 <?php
@@ -458,8 +560,6 @@ $this->beginWidget('zii.widgets.jui.CJuiDialog', array( // the dialog
 ));?>
 <div class="divForForm2"></div>
 <?php $this->endWidget();?>
-
-
 
 <script>
  
@@ -497,6 +597,11 @@ jQuery.ajax({
                 'cache':false});
 	return false; 
 }
+function detalleAnterior(id){
+	$("#serialAnterior").show();
+	$('#anterior').dialog('open');
+	$.fn.yiiGridView.update('repdetalleAnterior',{ data : "idRepAnt="+id});	
+}
 function mostrarRecursos(id){
 idAct=id;
 //var altura = $(document).height();
@@ -518,8 +623,8 @@ function editarActividad(id,rep){
 if(rep!=undefined){
 	idRep=rep;	
 	$.fn.yiiGridView.update('repdetalle',{ data : "idRep="+rep});	
-
 }
+
 $('#dialog').dialog('open');
 	 if (typeof(id)=='string')
                 Uurl=id;
@@ -571,6 +676,30 @@ function nuevoSerial(){
 	});
 }
 var dirurl;
+function deshacer(_url){
+
+//$.fn.yiiGridView.update('detalle');
+        // If its a string then set the global variable, if its an object then don't set
+        if (typeof(_url)=='string')
+                dirurl=_url;
+
+        jQuery.ajax({
+                url: dirurl,
+                'data':$(this).serialize(),
+                'type':'post',
+                'dataType':'json',
+                'success':function(data){			
+                        if (data.status == 'failure'){   
+							
+                        }
+                        else{		
+                            $.fn.yiiGridView.update('repdetalle');
+                        }
+                } ,
+                'cache':false});
+        return false;
+}
+
 function addDetalle(_url){
 
 //$.fn.yiiGridView.update('detalle');

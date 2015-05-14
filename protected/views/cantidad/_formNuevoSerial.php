@@ -23,11 +23,8 @@ $repuesto=new Repuesto();
 		<?php echo $form->error($model,'evento'); ?>
 	</div>
 
-	
 	<div class="row">
-		
 		<?php echo $form->hiddenField($model,'detallePieza',array('size'=>60,'maxlength'=>100,'readonly'=>true)); ?>
-	
 	</div>
 	
 	<div class="row">
@@ -59,19 +56,22 @@ $repuesto=new Repuesto();
 
 </div><!-- form -->
 <script type="text/javascript">
-var codigo="<?php echo $actual->codigoPiezaEnUso;?>";
-evaluar();
+var cod="<?php echo $codigo;?>";
 function evaluar(){
  if($("#Cantidad_evento").val()==1){
         $("#Cantidad_codigoPiezaEnUso").removeAttr('readonly');
-        $("#Cantidad_codigoPiezaEnUso").val('');
+        //$("#Cantidad_codigoPiezaEnUso").val('');
   }
             	
  if($("#Cantidad_evento").val()==2){
-        $("#Cantidad_codigoPiezaEnUso").attr('readonly', 'readonly');
-        $("#Cantidad_codigoPiezaEnUso").val(codigo);
-    }	
+
+ 	$("#Cantidad_codigoPiezaEnUso").val(cod);
+ 		if($("#Cantidad_codigoPiezaEnUso").val()!=""){
+			$("#Cantidad_codigoPiezaEnUso").attr('readonly', 'readonly');
+		}
+	}
 }
+
  	
 
 

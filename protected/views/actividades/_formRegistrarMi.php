@@ -149,14 +149,14 @@ var unidad="<?php echo $data->sqlTimevalues;?>";
             changeYear: true,
 	        showMonthAfterYear: false,
 	        yearSuffix: '',
-	        maxDate: '0d',
-	        minDate: '-'+tiempo+unidad,
+	        //maxDate: '0d',
+	        //minDate: '-'+tiempo+unidad,
 	    };
 	    $.datepicker.setDefaults($.datepicker.regional['es']);
 	});      		
 	$("#Actividades_ultimoFecha").datepicker({
 		maxDate: '0d',
-		minDate: '-'+tiempo+unidad,
+		//minDate: '-'+tiempo+unidad,
 	});
 	$("#Actividades_proximoFecha").datepicker({
 		minDate: '0d',
@@ -165,8 +165,9 @@ var unidad="<?php echo $data->sqlTimevalues;?>";
 	
 </script>
 
- <script>
-$("#uno").html("hace: "+$("#Actividades_frecuenciaKm").val()+"Km");
+<script>
+//$("#uno").html("hace: "+$("#Actividades_frecuenciaKm").val()+"Km");
+$("#uno").html("0 Km");
 $("#dos").html();
 
 $("#cuatro").html("Dentro de: "+$("#Actividades_frecuenciaKm").val()+"Km");
@@ -182,7 +183,8 @@ $(function() {
 $( "#slider-range-min" ).slider({
 	range: "min",
 	value: medio,
-	min: min,
+	//min: min,
+	min: 0,
 	step: 1,
 max: $("#Kilometraje_lectura").val(),
 slide: function( event, ui ) {

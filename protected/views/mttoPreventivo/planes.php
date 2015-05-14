@@ -44,185 +44,6 @@ ul, ol {
 	border: 1px solid #F2B3B3;
 	background-color: #EFEFEF;
 }
-.grid-view {
-    padding: 10px 0px;
-    overflow-x: auto;
-    
-}
-.grid-view table.items th, .grid-view table.items td {
-	color: #000;
-    font-size: 0.9em;
-    border: 1px solid #94A8FF;
-    padding: 0.3em;
-}
-#menu{
-	font-size:15px;
-
-}
-.grid-view table.items th a {
-    color: rgba(0, 0, 0, 1);
-    font-weight: bold;
-    text-decoration: none;
-}
-.grid-view table.items th {
-    color: #000;
-    background: none repeat scroll 0% 0% #C6DDED;
-    text-align: center;
-}
-.code {
-    color: #666;
-    font-family: monospace;
-    font-style: italic;
-}
-.is-superadmin-note {
-    background-color: rgb(255, 255, 100);
-    border-radius: 5px;
-    box-shadow: 3px 3px 5px #eee;
-    color: black;
-    left: 45%;
-    padding: 3px;
-    position: absolute;
-    text-align: center;
-    top: 0;
-}
-.crugepanel {
-    background-color: white;
-    border: 1px dotted #aaa;
-    box-shadow: 3px 3px 5px #eee;
-    display: block;
-    margin-top: 10px;
-    padding: 10px;	
-}
-.auth-item-error-msg {
-    background-color: rgb(255, 200, 200);
-    border: 2px solid white;
-    color: red;
-    font-weight: bold;
-    padding: 5px;
-    text-align: center;
-    width: 50%;
-}
-img.iconhelp {
-    background-color: white;
-    border: 2px solid white;
-    border-radius: 5px;
-    box-shadow: 3px 3px 5px #eee;
-    margin: 3px;
-    width: 24px;
-}
-.auth-item-create-button {
-    background-color: rgb(255, 255, 240);
-    border: 1px dotted #aaa;
-    border-radius: 5px;
-    box-shadow: 3px 3px 5px #eee;
-    margin: 10px 10px 10px 0;
-    padding: 5px;
-    text-align: center;
-    width: 120px;
-}
-div.form .form-group {
-    border: 1px dotted #aaa;
-    border-radius: 5px;
-    box-shadow: 3px 3px 5px #eee;
-    margin-bottom: 10px;
-    overflow: auto;
-    padding: 10px;
-}
-div.form .form-group .col {
-    float: left;
-    margin-right: 10px;
-}
-div.form h6 {
-    background-color: #efefef;
-    border-radius: 0px;
-    margin-bottom: 10px;
-    padding: 5px 5px 5px 10px;
-}
-div.form .textfield-readonly input {
-    background-color: #eee;
-    border: medium none;
-    color: #333;
-}
-div.form .item {
-    overflow: auto;
-}
-div.form .item input {
-    float: left;
-}
-div.form .item .hint {
-    float: left;
-    margin-left: 10px;
-}
-div.form .hint {
-}
-div.form .field-group {
-    border: 1px dotted #eee;
-    border-radius: 5px;
-    clear: both;
-    margin-bottom: 10px;
-    overflow: auto;
-    padding: 5px;
-	
-}
-div.form .form-group-vert {
-    border: 1px dotted #aaa;
-    border-radius: 5px;
-    box-shadow: 3px 3px 5px #eee;
-    margin-bottom: 10px;
-    overflow: auto;
-    padding: 10px;
-}
-div.form .form-group-vert .col {
-    float: none;
-    margin-right: 10px;
-}
-#list-auth-items {
-    border: 1px solid #efefef;
-    border-radius: 5px;
-    box-shadow: 3px 3px 5px #eee;
-    padding: 10px;
-}
-#list-auth-items .row {
-    background-color: #efefef;
-    border-radius: 5px;
-    display: block;
-    margin-bottom: 10px;
-    overflow: auto;
-    padding: 5px;
-    width: 70%;
-}
-#list-auth-items .col {
-    margin-bottom: 3px;
-    min-width: 100px;
-    text-align: left;
-}
-#list-auth-items hr {
-    margin: 0;
-}
-#list-auth-items .authname {
-    background-color: #ddd;
-    border-radius: 5px;
-    font-weight: bold;
-    padding: 3px;
-}
-#list-auth-items .operacion {
-    float: left;
-}
-#list-auth-items .operacion-eliminar {
-    float: right;
-    min-width: 0;
-    text-align: right;
-    width: auto;
-}
-#list-auth-items .descr {
-    clear: both;
-    color: #666;
-    display: block;
-    font-style: italic;
-    margin-top: 5px;
-}
-#list-auth-items .referencias {
-}
 #list-auth-items ul.detallar-referencias {
     display: none;
     list-style: none outside none;
@@ -255,20 +76,7 @@ ul.auth-item li {
 ul.auth-item li .loader {
     float: right;
 }
-.grid-view table.items tbody tr:hover {
-    background: none repeat scroll 0 0 #b6fcbb;
-}
 
-.grid-view table.items tr.selected:hover {
-    background: none repeat scroll 0 0 #b6fcbb;
-}
-.grid-view table.items tr.selected {
-    background: none repeat scroll 0 0 #b6fcbb;
-}
-table.treetable tr.selected {
-    background-color: #b6fcbb;
-    color: #111;
-}
 ul.auth-item li.checked {
     background-color: rgb(200, 255, 240);
 }
@@ -292,43 +100,7 @@ ul.auth-item li.loop {
 #auth-item-tree ul ul ul .checked {
     color: blue;
 }
-#auth-item-tree .loop {
-    color: red;
-    font-style: italic;
-}
-div.user-assignments-role-list {
-}
-div.user-assignments-detail {
-    overflow: auto;
-}
-div.user-assignments-detail .lista {
-    border: 1px solid #eee;
-    border-radius: 5px;
-    float: left;
-    margin-right: 10px;
-    padding: 10px;
-    width: 46%;
-	min-width: 200px;
-}
-div.user-assignments-detail .boton {
-    background-image: url("hand.png");
-    background-repeat: no-repeat;
-    color: rgb(0, 100, 255);
-    font-weight: bold;
-    height: 32px;
-    padding: 5px 5px 5px 34px;
-    text-decoration: underline;
-    text-transform: capitalize;
-}
-div.user-assignments-detail .boton:hover {
-    background-color: rgb(200, 255, 200);
-}
-div.user-assignments-detail #lista1 .boton {
-    background-image: url("<?php echo Yii::app()->request->baseUrl;?>/imagenes/hand-off.png");
-}
-div.user-assignments-detail #lista2 .boton {
-    background-image: url("<?php echo Yii::app()->request->baseUrl;?>/imagenes/hand.png");
-}
+
 </style>
 <?php 
 	$this->breadcrumbs=array(
@@ -463,7 +235,7 @@ $this->menu=array(
 			),
 		));?>
 		<div id="link">
-<?php echo CHtml::link('Registrar actividad(+)', "",  // the link for open the dialog
+<?php echo CHtml::link('Registrar actividad<img src='.Yii::app()->baseUrl.'/imagenes/agregar.png alt="Agregar"/>', "",  // the link for open the dialog
     array(
         'style'=>'cursor: pointer; text-decoration: underline;',
         'onclick'=>"{agregarActividad(); $('#agregarAct').dialog('open');}"));
@@ -529,7 +301,7 @@ $this->menu=array(
 				),
 			),
 	));?>		
-<?php echo CHtml::link('agregar recurso(+)', "",  // the link for open the dialog
+<?php echo CHtml::link('agregar recurso<img src='.Yii::app()->baseUrl.'/imagenes/agregar.png alt="Agregar"/>', "",  // the link for open the dialog
     array(
         'style'=>'cursor: pointer; text-decoration: underline;',
         'onclick'=>"{agregarRecurso(); }"));
@@ -541,17 +313,46 @@ $this->menu=array(
 $this->beginWidget('zii.widgets.jui.CJuiDialog', array( // the dialog
     'id'=>'agregarAct',
     'options'=>array(
-        'title'=>'',
+        'title'=>'Registro de actividades preventivas',
         'autoOpen'=>false,
         'modal'=>true,
-        'width'=>540,
+        'width'=>600,
         //'height'=>480,
 		'resizable'=>false,	
 		'position'=>array(null,100),
     ),
 ));?>
+<div id="ConListaActividades" style="display:none;">
+<p class="note">Campos con <span class="required">*</span> obligatorios.</p>
+	<?php 
+			$this->widget('ext.selgridview.SelGridView', array(
+			'id'=>'ListaActividades',
+			'selectableRows'=>2,
+			'dataProvider'=>$listaAct,
+			'enablePagination' => true,
+			'template'=>"{items}{summary}{pager}",
+			'emptyText' => 'no hay actividades agregadas',
+			'summaryText' => '',
+			'htmlOptions'=>array('style'=>'cursor:pointer;padding: 0px 0;text-align:center;width:100%'),
+			'columns'=>array(	
+
+				array(
+					'class'=>'CCheckBoxColumn',
+					'htmlOptions'=>array('style'=>'text-align:center;'),
+				),
+				array(
+					'headerHtmlOptions'=>array('style'=>'text-align:center;'),
+					'header'=>'Actividad *',
+					'name'=>'actividad',
+					'value'=>'$data->actividad',
+					'htmlOptions'=>array('style'=>'text-align:center;'),
+					//'footer'=>'',
+				),
+			),
+		));
+?>
+</div>
 <div class="divForForm"></div>
- 
 <?php $this->endWidget();?>
 <?php
 /*ventana agregar recurso*/
@@ -565,15 +366,11 @@ $this->beginWidget('zii.widgets.jui.CJuiDialog', array( // the dialog
         //'height'=>360,
 		'position'=>array(null,100),
 		'resizable'=>false,
-		
     ),
 ));?>
 <div class="divForForm"></div>
- 
 <?php $this->endWidget();?>
-
 </div>
-
 <script>
 var idGrupo;
 	<?php /* a cada LI del div de roles le anexa un evento click y le pone un cursor */ ?>
@@ -610,7 +407,9 @@ var idGrupo;
 			var id = $(this).attr('id');
 			idGrupo=id;
 			$('#activ').show(400);
+
 			$.fn.yiiGridView.update('act',{ data : "idGrupo="+id});
+			$("#ListaActividades").selGridView("clearAllSelection");
 			$("#agreAct").hide();
 			$("#link").show();
 		});
@@ -652,7 +451,10 @@ function nuevaActividad(){
                                 }
                                 else{
                                         $('#nuevaAct').html(data.div);
-                                        actualizarListaActividades();
+                                        //actualizarListaActividades();
+                                        $.fn.yiiGridView.update('ListaActividades',{ data : "nuevaAct="+idGrupo});
+										 
+
 										$("#restante").show(500);
                                 }
                 },
@@ -710,9 +512,14 @@ function editarActividad(id){
     return false; 
 }
 function agregarActividad(){
+	$('#ConListaActividades').show();
+	//$.fn.yiiGridView.update('ListaActividades');
+	var actividades =$("#ListaActividades").selGridView("getAllSelection");
+ 	$.fn.yiiGridView.update('ListaActividades',{ data : "actualizar="+idGrupo});
+ 	//$.fn.yiiGridView.update('ListaActividades',{ data : "activida="+actividades});
 	jQuery.ajax({
                 url: "agregarActividad/"+idGrupo,
-                'data':$(this).serialize(),
+                'data':$(this).serialize()+"&activi="+actividades,
                 'type':'post',
                 'dataType':'json',
                 'success':function(data){
@@ -885,4 +692,5 @@ function nuevoServicio(){
                 'cache':false});
     return false; 
 }
+
 </script>

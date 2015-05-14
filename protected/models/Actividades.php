@@ -44,7 +44,7 @@ class Actividades extends CActiveRecord
 	}
 	public function noasignado(){
 		if($this->noConfirmo==1)
-			return '<span style="color:red">Desconocido</span>';
+			return '<span style="color:orange">Desconocido</span>';
 		else
 			return '<span style="color:red">no registrado</span>';
     }
@@ -108,7 +108,8 @@ class Actividades extends CActiveRecord
 		//$retraso=$interval->format('%R%a');
 		
         $retraso =((strtotime($fin)-strtotime(date("Y-m-d")))/86400);
-		
+		if($this->idestatus==3)
+			$retraso = $this->atraso;
 		if($retraso==-1)
 			return (int)(abs($retraso)).' Día';
 		if($retraso<-1)

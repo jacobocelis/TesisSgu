@@ -57,10 +57,18 @@ class Recursofalla extends CActiveRecord
                     $this->addError('costoUnitario', 'Costo unitario debe ser mayor a cero');
                 }
 			}
-			public function validarCantidad(){
+	public function validarCantidad(){
                 if($this->cantidad<=0){
                     $this->addError('cantidad', 'Cantidad debe ser mayor a cero');
-                }
+        }
+	}
+	public function tieneAsignado(){
+		$Actividades = Reportefalla::model()->findByPk($this->idreporteFalla);
+			$consulta=Yii::app()->db->createCommand("select * from sgu_CaracteristicaVeh where idvehiculo=".$Actividades->idvehiculo." and idrepuesto='".$this->idrepuesto."'")->queryRow();
+			if($consulta==0)
+				return 0;
+			else
+				return 1;
 	}
 	public function iva(){
 		

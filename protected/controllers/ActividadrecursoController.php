@@ -24,6 +24,7 @@ class ActividadrecursoController extends Controller
 	 * This method is used by the 'accessControl' filter.
 	 * @return array access control rules
 	 */
+
 	public function accessRules()
 	{
 		return array(
@@ -131,7 +132,7 @@ class ActividadrecursoController extends Controller
             echo CJSON::encode(array(
                 'status'=>'failure', 
                 'asignado'=>$tieneAsignado,
-                'consulta'=>$consulta,
+                //'consulta'=>$consulta,
                 'div'=>$this->renderPartial('_form', array('model2'=>$model), true)));
             exit;               
         }

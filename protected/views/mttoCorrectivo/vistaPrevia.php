@@ -167,9 +167,18 @@ $this->widget('zii.widgets.grid.CGridView', array(
                 'dataProvider'=>$recursos[$i][$j],
 				'columns'=>array(
 					array(
+						'type'=>'raw',
 						'headerHtmlOptions'=>array('style'=>'width:35%;text-align:left;'),
 						'header'=>'<PRE>Recursos</PRE>',
-						'value'=>'\'\'.(($data->idinsumo == null?\'\':$data->idinsumo0->insumo).\'\'.($data->idrepuesto == null?\'\':$data->idrepuesto0->repuesto).\'\'.($data->idservicio == null?\'\':$data->idservicio0->servicio)).\'\'',
+						'value'=>'\'\'.(($data->idinsumo == null?\' \':$data->idinsumo0->insumo).\' \'.($data->idrepuesto == null?\' \':$data->idrepuesto0->repuesto.\' \'.($data->tieneAsignado()?CHtml::link(
+                        CHtml::image(Yii::app()->request->baseUrl."/imagenes/ver.png",
+                                          "Agregar",array("title"=>"Ver detalle de nuevo repuesto cambiado")),
+                        "",
+                        array(
+                                \'style\'=>\'cursor: pointer;text-decoration: underline;text-align:center;\',
+                                \'onclick\'=>\'{detalleRepuesto("\'.$data["id"].\'");}\'
+                        )
+                ):\' \')).\' \'.($data->idservicio == null?\' \':$data->idservicio0->servicio.\' \')).\' \'',
 						'htmlOptions'=>array('style'=>'text-align:left;width:150px'),
 					),
 					array(
@@ -280,7 +289,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
 <?php
 
 $this->beginWidget('zii.widgets.jui.CJuiDialog', array( // the dialog
-    'id'=>'dialog',
+    'id'=>'incident',
     'options'=>array(
         'title'=>'',
         'autoOpen'=>false,
@@ -346,98 +355,187 @@ $this->widget('zii.widgets.grid.CGridView', array(
 		?>
  
 <?php $this->endWidget();?>
-<style>
-strong {
-    font-weight: bold;
-  
-}
-pre {
-    display: block;
-    padding: 5.5px;
-    margin: 0px 0px 10px;
-    font-size: 13px;
-    line-height: 20px;
-    word-break: break-all;
-    word-wrap: break-word;
-    white-space: pre-wrap;
-    background-color: #F5F5F5;
-    border: 1px solid rgba(0, 0, 0, 0.15);
-    border-radius: 4px;
-}
+
+<?php
+/*ventana agregar costo*/
+$this->beginWidget('zii.widgets.jui.CJuiDialog', array( // the dialog
+    'id'=>'dialog',
+    'options'=>array(
+        'title'=>'',
+        'autoOpen'=>false,
+        'modal'=>true,
+        'width'=>'40%',
+        'max-height'=>500,
+		'position'=>array(null,100),
+        //'height'=>260,
+		'resizable'=>false,
+		'close' => 'js:function(event, ui) { $("#gridSerial").hide(); }'
+    ),
+));?>
+<div class="divForForm"> </div>
+<div id="gridSerial" class='crugepanel' style="display:none;max-height: 200px;">
+<?php
+$this->widget('zii.widgets.grid.CGridView', array(
+                'id'=>'repdetalle',
+				'summaryText'=>'',
+				//'selectionChanged'=>'nuevoSerial',
+				'template'=>"{items}\n{summary}\n{pager}",
+				'selectableRows'=>0,
+				'emptyText'=>'No se ha registrado ningun cambio de éste repueso en progeso',
+                'dataProvider'=>$detRepuesto,
+				'htmlOptions'=>array('style'=>'cursor:pointer;'),
+				'columns'=>array(
+				array(
+					'header'=>'Unidad',
+					'name'=>'idvehiculo',
+					'value'=>'str_pad((int) $data->idCaracteristicaVeh0->idvehiculo0->numeroUnidad,2,"0",STR_PAD_LEFT);',
+					//'value'=>'$data->idplan0->idplanGrupo0->CompiledColour->$data-id.\' \'.$data->CompiledColour',
+					'htmlOptions'=>array('style'=>'text-align:center;width:60px'),
+				),
+				array(
+					'header'=>'Repuesto',
+					//'name'=>'codigoPiezaEnUso',
+					//'value'=>'str_pad((int) $data->idvehiculo0->numeroUnidad,2,"0",STR_PAD_LEFT);',
+					'value'=>'$data->idCaracteristicaVeh0->idrepuesto0->repuesto',
+					'htmlOptions'=>array('style'=>'text-align:center;'),
+				),
+				
+				array(
+					'header'=>'Detalle',
+					'name'=>'detallePieza',
+					//'value'=>'str_pad((int) $data->idvehiculo0->numeroUnidad,2,"0",STR_PAD_LEFT);',
+					//'value'=>'$data->idplan0->idplanGrupo0->CompiledColour->$data-id.\' \'.$data->CompiledColour',
+					'htmlOptions'=>array('style'=>'text-align:center;'),
+				),
+				array(
+					'header'=>'Serial',
+					'name'=>'codigoPiezaEnUso',
+					//'value'=>'str_pad((int) $data->idvehiculo0->numeroUnidad,2,"0",STR_PAD_LEFT);',
+					//'value'=>'$data->idplan0->idplanGrupo0->CompiledColour->$data-id.\' \'.$data->CompiledColour',
+					'htmlOptions'=>array('style'=>'text-align:center;'),
+				),
+				array(
+					'header'=>'Evento',
+					//'name'=>'codigoPiezaEnUso',
+					//'value'=>'str_pad((int) $data->idvehiculo0->numeroUnidad,2,"0",STR_PAD_LEFT);',
+					'value'=>'$data->diasUltimoEvento()',
+					'htmlOptions'=>array('style'=>'text-align:center;'),
+				),
+				array(
+					'header'=>'Anterior',
+					'type'=>'raw',
+					'value'=>'CHtml::link(
+                        CHtml::image(Yii::app()->request->baseUrl."/imagenes/ver.png",
+                                          "Agregar",array("title"=>"Ver anterior")),
+                        "",
+                        array(
+                                \'style\'=>\'cursor: pointer;text-decoration: underline;text-align:center;\',
+                                \'onclick\'=>\'{detalleAnterior("\'.$data["anterior"].\'");}\'
+                        )
+                )',
+				'htmlOptions'=>array('style'=>'width:70px;text-align:center;'),
+				),
+			)
+        ));
+
+		?>
+</div>
+<?php $this->endWidget();?>
+
+<?php
+/*ventana detalle anterior*/
+$this->beginWidget('zii.widgets.jui.CJuiDialog', array( // the dialog
+    'id'=>'anterior',
+    'options'=>array(
+        'title'=>'Repuesto anterior',
+        'autoOpen'=>false,
+        'modal'=>true,
+        'width'=>300,
+		'position'=>array(null,150),
+        //'height'=>260,
+		'resizable'=>false,
+		'close' => 'js:function(event, ui) { $("#serialAnterior").hide(); }'
+    ),
+));?>
+<div class="divForForm"></div>
+<div id="serialAnterior" class='crugepanel' style="display:none">
+<?php
+$this->widget('zii.widgets.grid.CGridView', array(
+                'id'=>'repdetalleAnterior',
+				'summaryText'=>'',
+				//'selectionChanged'=>'nuevoSerial',
+				'template'=>"{items}\n{summary}\n{pager}",
+				'selectableRows'=>0,
+				'emptyText'=>'No existe un repuesto anterior',
+                'dataProvider'=>$detAnterior,
+				'htmlOptions'=>array('style'=>'padding: 10px 0px 0px;'),
+				'columns'=>array(
+				/*array(
+					'header'=>'Unidad',
+					'name'=>'idvehiculo',
+					'value'=>'str_pad((int) $data->idCaracteristicaVeh0->idvehiculo0->numeroUnidad,2,"0",STR_PAD_LEFT);',
+					//'value'=>'$data->idplan0->idplanGrupo0->CompiledColour->$data-id.\' \'.$data->CompiledColour',
+					'htmlOptions'=>array('style'=>'text-align:center;width:60px'),
+				),
+				array(
+					'header'=>'Repuesto',
+					//'name'=>'codigoPiezaEnUso',
+					//'value'=>'str_pad((int) $data->idvehiculo0->numeroUnidad,2,"0",STR_PAD_LEFT);',
+					'value'=>'$data->idCaracteristicaVeh0->idrepuesto0->repuesto',
+					'htmlOptions'=>array('style'=>'text-align:center;'),
+				),
+				
+				array(
+					'header'=>'Detalle',
+					'name'=>'detallePieza',
+					//'value'=>'str_pad((int) $data->idvehiculo0->numeroUnidad,2,"0",STR_PAD_LEFT);',
+					//'value'=>'$data->idplan0->idplanGrupo0->CompiledColour->$data-id.\' \'.$data->CompiledColour',
+					'htmlOptions'=>array('style'=>'text-align:center;'),
+				),*/
+				array(
+					'header'=>'Serial',
+					'name'=>'codigoPiezaEnUso',
+					//'value'=>'str_pad((int) $data->idvehiculo0->numeroUnidad,2,"0",STR_PAD_LEFT);',
+					//'value'=>'$data->idplan0->idplanGrupo0->CompiledColour->$data-id.\' \'.$data->CompiledColour',
+					'htmlOptions'=>array('style'=>'text-align:center;'),
+				),
+
+				array(
+					'header'=>'Último evento',
+					//'name'=>'codigoPiezaEnUso',
+					//'value'=>'str_pad((int) $data->idvehiculo0->numeroUnidad,2,"0",STR_PAD_LEFT);',
+					'value'=>'$data->diasUltimoEvento()',
+					'htmlOptions'=>array('style'=>'text-align:center;'),
+				),
+			)
+        ));
+
+		?>
+</div>
+<?php $this->endWidget();?>
+
+<style> 
 .grid-view {
     padding: 0px 0px;
 }
-#menu{
-	font-size:15px;
-}
-.grid-view table.items tr.selected {
-    background: none repeat scroll 0% 0% rgba(0, 249, 3, 0.3);
-}
-.crugepanel {
-    background-color: #FFF;
-    border: 1px dotted #AAA;
-    border-radius: 1px;
-    box-shadow: 3px 3px 5px #EEE;
-    display: block;
-    margin-top: 10px;
-    padding: 10px;
-}
-h1 {
-    font-size: 250%;
-    line-height: 40px;
-}
-.grid-view .summary {
-    margin: 2px 0px 0px;
-    text-align: right;
-}
-.grid-view table.items th {
-	color: rgba(0, 0, 0, 1);
-    text-align: center;
-    background: none repeat scroll 0% 0% rgba(0, 138, 255, 0.15);
-}
-.grid-view table.items th a {
-    color: #000;
-    font-weight: bold;
-    text-decoration: none;
-}
-.grid-view table.items td {
-    font-size: 0.9em;
-    border: 1px solid #5877C3;
-    padding: 0.3em;
-}
-.grid-view table.items th, .grid-view table.items td {
-    font-size: 0.9em;
-    border: 1px solid #A8C5F0;
-    padding: 0.3em;
-}
-.ui-progressbar {
-    border: 0px none;
-    border-radius: 0px;
-    clear: both;
-	margin-bottom: 0px;
-}
-.progress, .ui-progressbar {
-    height: 10px;
-}
-.ui-corner-all, .ui-corner-bottom, .ui-corner-right, .ui-corner-br {
-    border-bottom-right-radius: 0px;
-}
-.ui-corner-all, .ui-corner-bottom, .ui-corner-left, .ui-corner-bl {
-    border-bottom-left-radius: 0px;
-}
-.ui-corner-all, .ui-corner-top, .ui-corner-right, .ui-corner-tr {
-    border-top-right-radius: 0px;
-}
-.ui-corner-all, .ui-corner-top, .ui-corner-left, .ui-corner-tl {
-    border-top-left-radius: 0px;
-}
 </style>
 <script>
+function detalleRepuesto(rep){
+	$("#gridSerial").show();
+	$.fn.yiiGridView.update('repdetalle',{ data : "idRep="+rep});	
+	$('#dialog').dialog('open');
+}
+function detalleAnterior(id){
+	$("#serialAnterior").show();
+	$('#anterior').dialog('open');
+	$.fn.yiiGridView.update('repdetalleAnterior',{ data : "idRepAnt="+id});	
+}
+
+
 $('#formulario').hide();
 function mostrarDetalle(id,tipo){
-
 	$.fn.yiiGridView.update('detalle',{ data : "idAct="+id+"&idTipo="+tipo});
-	$("#dialog").dialog("open");
+	$("#incident").dialog("open");
 }
 function validar(){
 var idAct = $.fn.yiiGridView.getSelection('actividades');

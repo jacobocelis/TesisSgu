@@ -28,7 +28,7 @@ class VehiculoController extends Controller
 	{
 		return array(
 			array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array('index','view','detallePieza','fotos','Selectdos','Getdatos','buscarRepuesto'),
+				'actions'=>array('index','view','detallePieza','fotos','Selectdos','Getdatos','buscarRepuesto','parametros'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
@@ -308,12 +308,27 @@ class VehiculoController extends Controller
 				if(!isset($_GET['ajax']))
 			$this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('index'));
 		}catch(CDbException $e){
-                   
 			echo CHtml::decode(" No se pudo eliminar el vehiculo porque tiene iniformación asociada");
-			
 		}
 	}
+	public function actionParametros(){
+		$idmarca=0;
+		$gridMarca=new CActiveDataProvider('Marca',array('criteria' => array(
+		'condition' =>"1",
+		'order'=>'id')));
 
+		if(isset($_GET["idmarca"]))
+			$idmarca=$_GET["idmarca"];
+
+		$gridModelo=new CActiveDataProvider('Modelo',array('criteria' => array(
+		'condition' =>"idMarca='".$idmarca."'",
+		'order'=>'id')));
+
+		$this->render('parametros',array(
+			'gridMarca'=>$gridMarca,
+			'gridModelo'=>$gridModelo
+		));
+	}
 	/**
 	 * Lists all models.
 	 */
