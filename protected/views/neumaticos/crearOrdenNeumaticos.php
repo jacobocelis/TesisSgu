@@ -28,30 +28,14 @@
 #menu{
 	font-size:15px;
 }
-.crugepanel {
-    background-color: #FFF;
-    border: 1px dotted #AAA;
-    border-radius: 1px;
-    box-shadow: 3px 3px 5px #EEE;
-    display: block;
-    margin-top: 10px;
-    padding: 10px;
-	overflow:auto;
-}
+
 .grid-view {
     padding: 15px 0px 0px;
 }
 form {
     margin: 0px 0px 0px;
 }
-h1 {
-    font-size: 270%;
-    line-height: 40px;
-}
-h2{
-	font-size: 200%;
-    line-height: 40px;
-}
+
 #scrollingDiv{
 	
 	position: fixed;

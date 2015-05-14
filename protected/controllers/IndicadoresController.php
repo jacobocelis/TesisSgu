@@ -82,7 +82,11 @@ class IndicadoresController extends Controller
 		}
 		return $col;
 	}
+	public function local(){
+		Yii::app()->db->createCommand("SET lc_time_names = 'es_VE';")->execute();
+	}
 	public function actionInd1(){
+		$this->local();
 			$ind = Yii::app()->db->createCommand()
                 ->select('concat(left(e.nombre,1),". ",e.apellido) as nombre,(count(*)/(select count(*) from sgu_reporteFalla)*100) as total')
                 ->from('sgu_empleado e, sgu_reporteFalla rf')
@@ -97,6 +101,7 @@ class IndicadoresController extends Controller
 		 
 	}
 	public function actionInd2(){
+		$this->local();
 			$ind = Yii::app()->db->createCommand()
                 ->select('concat("Unidad # ",v.numeroUnidad),(count(*)/(select count(*) from sgu_reporteFalla)*100) as total')
                 ->from('sgu_vehiculo v, sgu_reporteFalla rf')
@@ -111,7 +116,7 @@ class IndicadoresController extends Controller
 		 
 	}
 	public function actionInd3(){
-		Yii::app()->db->createCommand("SET lc_time_names = 'es_VE';")->execute();
+		$this->local();
 			$ind = Yii::app()->db->createCommand()
                 ->select('v.numeroUnidad as unidad,DATE_FORMAT(fecha,"%b %y") as mes, round(sum(costoTotal),2) as total, sum(litros) as litros')
                 ->from('sgu_historicoCombustible hc, sgu_vehiculo v')
@@ -130,11 +135,11 @@ class IndicadoresController extends Controller
 	 	));
 	}
 	public function actionInd4(){
-		
+		$this->local();
 		$ind = Yii::app()->db->createCommand('select v.numeroUnidad as unidad, count(case rf.tipo when "0" then 1 else null end) as total_Incidentes , count(case rf.tipo when "1" then 1 else null end) as total_Mejoras, IfNULL(round(sum(case when rf.tipo = "0" then re.costoTotal+(re.costoTotal*re.iva) else 0 end),2),0) as costoIncidentes , IfNULL(round(sum(case when rf.tipo = "1" then re.costoTotal+(re.costoTotal*re.iva) else 0 end),2),0) as costoMejoras, IfNULL(round(sum(re.costoTotal+(re.costoTotal*re.iva)),2),0) as costoTotal, DATE_FORMAT(fechaFalla,"%b %y") as fecha  
 			FROM sgu_vehiculo v
 			LEFT JOIN sgu_reporteFalla rf ON (v.id=rf.idvehiculo)
-			LEFT JOIN sgu_recursofalla re ON (rf.id=re.idreporteFalla)
+			LEFT JOIN sgu_recursoFalla re ON (rf.id=re.idreporteFalla)
 			where year(rf.fechaFalla)
 			group by v.id,DATE_FORMAT(fechaFalla,"%b %y")
 			order by rf.fechaFalla,v.numeroUnidad asc;')
@@ -153,7 +158,7 @@ class IndicadoresController extends Controller
 	 	));
 	}
 	public function actionInd5(){
-		
+		$this->local();
 			$ind = Yii::app()->db->createCommand()
                 ->select('v.numeroUnidad as unidad, count(*) as reparaciones,round(sum(costoTotal+(costoTotal*iva)),2) as total, DATE_FORMAT(fechaFalla,"%Y") as fecha ')
                 ->from('sgu_vehiculo v, sgu_reporteFalla rf, sgu_recursoFalla f')
@@ -173,12 +178,13 @@ class IndicadoresController extends Controller
 	 	));
 	}
 	public function actionInd6(){	
+		$this->local();
 		$ind = Yii::app()->db->createCommand()
-            ->select('v.numeroUnidad as unidad, year(fechaSalida) as fecha, count(*) as total, sum(nroPersonas) as personas ')
+            ->select('v.numeroUnidad as unidad, DATE_FORMAT(fechaSalida,"%b %y") as fecha, count(*) as total, sum(nroPersonas) as personas ')
             ->from('sgu_vehiculo v,sgu_historicoViajes hv')
             ->where('hv.idvehiculo=v.id')
-            ->group(' v.id, year(fechaSalida)')
-            ->order('year(fechaSalida),v.numeroUnidad asc')
+            ->group(' v.id, DATE_FORMAT(fechaSalida,"%b %y")')
+            ->order('DATE_FORMAT(fechaSalida,"%b %y"),v.numeroUnidad asc')
             ->queryAll();
                 //$ind1=array_map('intVal', $ind1); 
 	 	$this->render('ind6',array(
@@ -190,7 +196,7 @@ class IndicadoresController extends Controller
 	 	));
 	}
 	public function actionInd7(){
-		
+		$this->local();
 		$ind = Yii::app()->db->createCommand()
                 ->select('v.numeroUnidad as unidad, count(*) as reparaciones,round(sum(costoTotal+(costoTotal)),2) as total, DATE_FORMAT(fechaRealizada,"%b %y") as fecha ')
                 ->from('sgu_vehiculo v, sgu_actividades a, sgu_actividadRecurso ar')
@@ -208,12 +214,12 @@ class IndicadoresController extends Controller
 	 	));
 	}
 	public function actionInd8(){
-		
+		$this->local();
 		$ind = Yii::app()->db->createCommand('select v.numeroUnidad as unidad, count(case hc.inicial when "0" then 1 else null end) as total_montajes, IfNULL(round(sum(case when hc.inicial = "0" then hc.costounitario+(hc.costounitario*hc.iva) else 0 end),2),0) as costoMontajes, count(case de.idaccionCaucho when "3" then 1 else null end) as total_averias, DATE_FORMAT(hc.fecha,"%b %y") as fecha, IfNULL(round(sum(case de.idaccionCaucho when "3" then drc.costoTotal+(drc.costoTotal*drc.iva) else 0 end),2),0) as costoAverias, IfNULL(round(sum(case de.idaccionCaucho when "3" then drc.costoTotal+(drc.costoTotal*drc.iva) else 0 end)+sum(case when hc.inicial = "0" then hc.costounitario+(hc.costounitario*hc.iva) else 0 end),2),0) as total
 				from sgu_vehiculo v
 				left join sgu_historicoCaucho hc on(hc.idvehiculo=v.id)
 				left join sgu_detalleEventoCa de on(de.idhistoricoCaucho=hc.id)
-				left join sgu_detrecCaucho drc on(drc.iddetalleEventoCa=de.id)
+				left join sgu_detRecCaucho drc on(drc.iddetalleEventoCa=de.id)
 				where year(hc.fecha)
 				group by v.id, DATE_FORMAT(fecha,"%b %y") 
 				order by hc.fecha,v.numeroUnidad asc;')

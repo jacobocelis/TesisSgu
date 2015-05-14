@@ -30,7 +30,7 @@ $this->menu=array(
 );
 ?>
 <div class='crugepanel user-assignments-role-list'>
-<h1>Próximas actividades de mantenimiento a realizarse</h1>
+<h1> Actividades programadas</h1>
 <div id="filtro">
 <select id="lista" >
 			<option value="1">Éste mes</option>

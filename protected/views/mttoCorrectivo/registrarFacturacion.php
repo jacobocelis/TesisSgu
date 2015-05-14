@@ -3,7 +3,7 @@
 $this->breadcrumbs=array(
 	'Mantenimiento correctivo'=>array('mttoCorrectivo/index'),
 	$nom=>array($dir),
-	'Actualizar órden'=>array('mttoCorrectivo/mttocRealizados/','id'=>$id,'nom'=>$nom,'dir'=>$dir),
+	'Actualizar orden'=>array('mttoCorrectivo/mttocRealizados/','id'=>$id,'nom'=>$nom,'dir'=>$dir),
 	'Facturación',
 );
 	$this->menu=array(
@@ -12,7 +12,7 @@ $this->breadcrumbs=array(
 	array('label'=>'      Actualizar orden', 'url'=>array('mttoCorrectivo/mttocRealizados/'.$id.'?nom='.$nom.'&dir='.$dir.''),'visible'=>Yii::app()->controller->estatusOrden($id)<>7),
 	array('label'=>'      Registrar facturación', 'url'=>array('mttoCorrectivo/registrarFacturacion/'.$id.'?nom='.$nom.'&dir='.$dir.''),'visible'=>Yii::app()->controller->estatusOrden($id)<>7),
 
-	array('label'=>'<div id="menu"><strong>Órdenes de mantenimiento</strong></div>'),
+	array('label'=>'<div id="menu"><strong>Ordenes de mantenimiento</strong></div>'),
 	array('label'=>'      Crear orden de mantenimiento', 'url'=>array('mttoCorrectivo/crearOrdenCorrectiva') ,'visible'=>Yii::app()->user->checkAccess('action_mttocorrectivo_crearOrdenCorrectiva')),
 	array('label'=>'      Ver ordenes abiertas <span class="badge badge-'.$Colorabi.' pull-right">'.$abiertas.'</span>', 'url'=>array('mttoCorrectivo/verOrdenes') ,'visible'=>Yii::app()->user->checkAccess('action_mttocorrectivo_verOrdenes')),
 	array('label'=>'      Ordenes listas para cerrar <span class="badge badge-'.$Colorli.' pull-right">'.$listas.'</span>', 'url'=>array('mttoCorrectivo/cerrarOrdenes'),'visible'=>Yii::app()->user->checkAccess('action_mttocorrectivo_cerrarOrdenes')),

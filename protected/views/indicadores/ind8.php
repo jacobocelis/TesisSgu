@@ -2,11 +2,11 @@
 <?php
 
 $this->breadcrumbs=array(
-	'Indicadores y reportes',
+	'Reportes y estadísticas',
 );
 
 $this->menu=array(
-	array('label'=>'<div id="menu"><strong>Indicadores y reportes</strong></div>' , 'visible'=>'1'),
+	array('label'=>'<div id="menu"><strong>Reportes y estadísticas</strong></div>' , 'visible'=>'1'),
 	array('label'=>'      % de incidentes por conductor', 'url'=>array('Indicadores/ind1')),
   array('label'=>'      % de incidentes por unidad', 'url'=>array('Indicadores/ind2')),
   array('label'=>'      Consumo de combustible por unidad', 'url'=>array('Indicadores/ind3')),
@@ -28,12 +28,12 @@ $this->Widget('ext.highcharts.HighchartsWidget', array(
            'chart'=> array(
             'defaultSeriesType'=> 'column',
             //'zoomType'=> 'xz',
-            'options3d'=> array(
+            /*'options3d'=> array(
                 'enabled'=> true,
                 'alpha'=> 10,
                 'beta'=> 25,
                 'depth'=> 70
-            )
+            )*/
         ),
             'lang'=>array(  
                 'loading'=> 'Cargando...',  

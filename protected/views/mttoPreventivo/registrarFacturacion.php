@@ -2,7 +2,7 @@
 $this->breadcrumbs=array(
 	'Mantenimiento preventivo'=>array('mttoPreventivo/index'),
 	$nom=>array($dir),
-	'Actualizar órden'=>array('mttoPreventivo/mttopRealizados/','id'=>$id,'nom'=>$nom,'dir'=>$dir),
+	'Actualizar orden'=>array('mttoPreventivo/mttopRealizados/','id'=>$id,'nom'=>$nom,'dir'=>$dir),
 	'Facturación',
 );
 	$this->menu=array(
@@ -13,9 +13,8 @@ $this->breadcrumbs=array(
 
 	array('label'=>'<div id="menu"><strong>Órdenes de mantenimiento</strong></div>'),
 	array('label'=>'      Crear orden de mantenimiento', 'url'=>array('mttoPreventivo/crearOrdenPreventiva') ,'visible'=>Yii::app()->user->checkAccess('action_mttopreventivo_crearOrdenPreventiva')),
-	array('label'=>'      Ver ordenes abiertas <span class="badge badge-'.$Colorabi.' pull-right">'.$abiertas.'</span>', 'url'=>array('mttoPreventivo/verOrdenes') ,'visible'=>Yii::app()->user->checkAccess('action_mttopreventivo_verOrdenes')),
-	array('label'=>'      Ordenes listas para cerrar <span class="badge badge-'.$Colorli.' pull-right">'.$listas.'</span>', 'url'=>array('mttoPreventivo/cerrarOrdenes'),'visible'=>Yii::app()->user->checkAccess('action_mttopreventivo_cerrarOrdenes')),
-	
+	array('label'=>'      Ver órdenes abiertas <span class="badge badge-'.$Colorabi.' pull-right">'.$abiertas.'</span>', 'url'=>array('mttoPreventivo/verOrdenes') ,'visible'=>Yii::app()->user->checkAccess('action_mttopreventivo_verOrdenes')),
+	array('label'=>'      Órdenes listas para cerrar <span class="badge badge-'.$Colorli.' pull-right">'.$listas.'</span>', 'url'=>array('mttoPreventivo/cerrarOrdenes'),'visible'=>Yii::app()->user->checkAccess('action_mttopreventivo_cerrarOrdenes')),
 );
 ?>
 <div id="factura" class='crugepanel'>

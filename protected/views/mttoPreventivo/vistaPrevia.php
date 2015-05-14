@@ -15,7 +15,7 @@ $this->menu=array(
 	array('label'=>'      Actualizar orden', 'url'=>array('mttoPreventivo/mttopRealizados/'.$idOrden.'?nom='.$nom.'&dir='.$dir.''),'visible'=>Yii::app()->controller->estatusOrden($idOrden)<>7),
 	array('label'=>'      Registrar facturación', 'url'=>array('mttoPreventivo/registrarFacturacion/'.$idOrden.'?nom='.$nom.'&dir='.$dir.''),'visible'=>Yii::app()->controller->estatusOrden($idOrden)<>7),
 
-	array('label'=>'<div id="menu"><strong>Órdenes de mantenimiento</strong></div>'),
+	array('label'=>'<div id="menu"><strong>Ordenes de mantenimiento</strong></div>'),
 	array('label'=>'      Crear orden de mantenimiento', 'url'=>array('mttoPreventivo/crearOrdenPreventiva') ,'visible'=>Yii::app()->user->checkAccess('action_mttopreventivo_crearOrdenPreventiva')),
 	array('label'=>'      Ver ordenes abiertas <span class="badge badge-'.$Colorabi.' pull-right">'.$abiertas.'</span>', 'url'=>array('mttoPreventivo/verOrdenes') ,'visible'=>Yii::app()->user->checkAccess('action_mttopreventivo_verOrdenes')),
 	array('label'=>'      Ordenes listas para cerrar <span class="badge badge-'.$Colorli.' pull-right">'.$listas.'</span>', 'url'=>array('mttoPreventivo/cerrarOrdenes'),'visible'=>Yii::app()->user->checkAccess('action_mttopreventivo_cerrarOrdenes')),
@@ -75,10 +75,10 @@ $this->widget('zii.widgets.grid.CGridView', array(
 					'htmlOptions'=>array('style'=>'text-align:center;'),
 				),
 				array(
-					'header'=>'Cerrar órden',
+					'header'=>'Cerrar orden',
 					'value'=>'CHTML::checkBox("campo",0,array(\'id\'=>"campo$data->id",\'width\'=>4,\'maxlength\'=>2,\'onchange\'=>"return cerrar($data->id)"))',
 					'type'=>'raw',
-					'visible'=>$nom=='Cerrar órdenes'?true:false,
+					'visible'=>$nom=='Cerrar ordenes'?true:false,
 					'htmlOptions'=>array('style'=>'text-align: center'),
 				),
 			)
