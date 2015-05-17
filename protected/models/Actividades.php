@@ -159,7 +159,7 @@ class Actividades extends CActiveRecord
 			array('idactividadMtto, frecuenciaKm, duracion, idprioridad, idvehiculo, idtiempod, idtiempof, idactividadesGrupo,ultimoKm,ultimoFecha,idestatus, fechaRealizada, kmRealizada', 'required'),
 			array('ultimoKm, frecuenciaKm, frecuenciaMes, proximoKm, duracion, atraso, idprioridad, idvehiculo, idtiempod, idtiempof, idactividadesGrupo,idestatus, kmRealizada,inicial,noConfirmo', 'numerical', 'integerOnly'=>true),
 			array('procedimiento', 'length', 'max'=>200),
-			array('ultimoFecha, proximoFecha, fechaRealizada, kmRealizada,', 'safe'),
+			array('ultimoFecha, proximoFecha,fechaComenzada, fechaRealizada, kmRealizada,', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
 			array('id, idactividadMtto, ultimoKm, ultimoFecha, frecuenciaKm, frecuenciaMes, proximoKm, proximoFecha, duracion, atraso, idprioridad, idvehiculo, idtiempod, idtiempof, idactividadesGrupo,idestatus,procedimiento, fechaRealizada, kmRealizada,', 'safe', 'on'=>'search'),

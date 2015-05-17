@@ -2,32 +2,39 @@
 <?php
 
 $this->breadcrumbs=array(
-	'Reportes y estadísticas',
+	'Indicadores y reportes',
 );
 
 $this->menu=array(
-	array('label'=>'<div id="menu"><strong>Reportes y estadísticas</strong></div>' , 'visible'=>'1'),
-	array('label'=>'      % de incidentes por conductor', 'url'=>array('Indicadores/ind1')),
+	array('label'=>'<div id="menu"><strong>Indicadores y reportes</strong></div>' , 'visible'=>'1'),
+	array('label'=>'      Tiempo medio entre fallas', 'url'=>array('Indicadores/ind9')),
+  array('label'=>'      Tiempo medio para reparaciones', 'url'=>array('Indicadores/ind10')),
+  array('label'=>'      Disponibilidad de unidades', 'url'=>array('Indicadores/ind11')),
+  array('label'=>'      Costo de mtto por valor de reposición', 'url'=>array('Indicadores/ind12')),
+  array('label'=>'      % de incidentes por conductor', 'url'=>array('Indicadores/ind1')),
   array('label'=>'      % de incidentes por unidad', 'url'=>array('Indicadores/ind2')),
   array('label'=>'      Consumo de combustible por unidad', 'url'=>array('Indicadores/ind3')),
   array('label'=>'      Gastos por mtto. preventivo', 'url'=>array('Indicadores/ind7')),
   array('label'=>'      Gastos por mtto. correctivo', 'url'=>array('Indicadores/ind4')),
   array('label'=>'      Gastos por neumáticos', 'url'=>array('Indicadores/ind8')),
-  //array('label'=>'      Tiempo de servicio', 'url'=>array('Indicadores/ind5')),
+    //array('label'=>'      Tiempo de servicio', 'url'=>array('Indicadores/ind5')),
   array('label'=>'      Viajes por unidad', 'url'=>array('Indicadores/ind6')),
 );
 ?>
 <div class="crugepanel">
 <?php
+
 $this->Widget('ext.highcharts.HighchartsWidget', array(
         'scripts' => array(
         'modules/exporting',
         'themes/grid-light',
     ),
+
    'options'=>array(
            'chart'=> array(
+ 
             'defaultSeriesType'=> 'column',
-            'zoomType'=> 'xy',
+            //'zoomType'=> 'xyz',
         ),
             'lang'=>array(  
                 'loading'=> 'Cargando...',  
@@ -47,39 +54,34 @@ $this->Widget('ext.highcharts.HighchartsWidget', array(
                 'thousandsSep'=> ",",  
                 'decimalPoint'=> '.'  
             ),
-        'title' => array('text' => 'Días disponibles vs días fuera de servicio mensual por unidad'),
+        'title' => array('text' => 'Tiempo medio para reparaciones'),
         'credits'=> array(
             'enabled'=> false
         ),
         'yAxis'=> array(
-
+           //'endOnTick'=>false,
+           //'tickInterval'=>1,
         array( // Primary yAxis
           'min'=>0,
+          //'max'=>31,
             'labels'=> array(
-                'format'=> '{value}',
- 
+                'format'=> '{value}días',
             ),
             'title'=> array(
-                'text'=> 'Reparaciones',
- 
+                'text'=> 'Días',
             )
-        ),),
+        )),
 
     'xAxis'=> array(
-        array(
-          
-            'title'=>array(
-                'text'=>'# Unidad',
+          array(
+              'title'=>array(
+                'text'=>'Año',
               ),
-            'categories'=> array('01'),
-            'tickmarkPlacement'=> 'on',
-             'min'=> $filas, 
-        ), array(
-            'linkedTo'=> 0,
-            'categories'=> array('2015'),
+    
+            'categories'=> $mes,
             //tickPositions: [3, 5, 8],
-            'opposite'=> true,
             'labels'=> array(
+
                     //y:20,
                 'style'=> array(
                     //fontWeight: 'bold'
@@ -87,34 +89,17 @@ $this->Widget('ext.highcharts.HighchartsWidget', array(
             ),
         )),
 
-    'scrollbar'=> array(
-        'enabled'=> true,
-    ),
-    'plotOptions'=> array(
-            'column'=> array(
-                'stacking'=> 'percent'
-            )
-        ),
+
     'series'=> array(
-
         array(
-             
-            'data'=> array_map('floatVal', array('0.1')),
-            'name'=>'# Reparaciones',
-            'color'=>'green',
-        ),
-        array(
-          
-          //'yAxis'=> 1,
-          'name'=>'Costo',
-          'color'=>'yellow',
-          'data'=> array_map('floatVal', array('0.9')),
-        ),),
+            'type'=> 'column',
+            'data'=> array_map('floatVal', $TMPR),
+            'name'=>'días',
 
-
+        )),
    ),
 ));
-
+ 
 //select  from sgu_historicocombustible group by idvehiculo,month(fecha)
      /* $this->widget('ext.highcharts.ActiveHighstockWidget', array(
       'options' => array(

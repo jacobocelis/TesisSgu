@@ -1,12 +1,16 @@
 <?php
 
 $this->breadcrumbs=array(
-	'Reportes y estadísticas',
+	'Indicadores y reportes',
 );
 
 $this->menu=array(
-	array('label'=>'<div id="menu"><strong>Reportes y estadísticas</strong></div>' , 'visible'=>'1'),
-	array('label'=>'      % de incidentes por conductor', 'url'=>array('Indicadores/ind1')),
+	array('label'=>'<div id="menu"><strong>Indicadores y reportes</strong></div>' , 'visible'=>'1'),
+	array('label'=>'      Tiempo medio entre fallas', 'url'=>array('Indicadores/ind9')),
+  array('label'=>'      Tiempo medio para reparaciones', 'url'=>array('Indicadores/ind10')),
+    array('label'=>'      Disponibilidad de unidades', 'url'=>array('Indicadores/ind11')),
+  array('label'=>'      Costo de mtto por valor de reposición', 'url'=>array('Indicadores/ind12')),
+    array('label'=>'      % de incidentes por conductor', 'url'=>array('Indicadores/ind1')),
     array('label'=>'      % de incidentes por unidad', 'url'=>array('Indicadores/ind2')),
     array('label'=>'      Consumo de combustible por unidad', 'url'=>array('Indicadores/ind3')),
     array('label'=>'      Gastos por mtto. preventivo', 'url'=>array('Indicadores/ind7')),
@@ -18,7 +22,6 @@ $this->menu=array(
 ?>
 <div class="crugepanel">
 <?php
-
 $this->widget('ext.highcharts.HighchartsWidget', array(
     'scripts' => array(
         'modules/exporting',

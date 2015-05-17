@@ -503,7 +503,7 @@ class MttoPreventivoController extends Controller
 				$act = explode(",", $_POST['idAct']);
 				foreach($act as $idact){
 					Yii::app()->db->createCommand("INSERT INTO `tsg`.`sgu_detalleOrden` (`idactividades`,`idordenMtto`) VALUES (".$idact.",".$model->id.")")->query();
-					Yii::app()->db->createCommand("update `tsg`.`sgu_actividades` set `idestatus` = '4' where `sgu_actividades`.`id` = ".$idact."")->query();
+					Yii::app()->db->createCommand("update `tsg`.`sgu_actividades` set `idestatus` = '4',`fechaComenzada` = '".date("Y-m-d")."' where `sgu_actividades`.`id` = ".$idact."")->query();
 				}
 			}
                 if (Yii::app()->request->isAjaxRequest){
