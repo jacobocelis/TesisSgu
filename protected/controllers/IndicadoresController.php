@@ -109,11 +109,11 @@ class IndicadoresController extends Controller
 		else
 			return array($unidad,0,0,0);
 	}
-	public function filas($ind){
+	public function filas($ind,$mostrar){
     	if(count($ind)<=10)
     		$filas=0;
     	else
-    		$filas=count($ind)-6;
+    		$filas=count($ind)-$mostrar;
     	return $filas;
 	}
 	public function convertir($sql){
@@ -191,7 +191,7 @@ class IndicadoresController extends Controller
 	 		'mes'=>$this->separar($ind,"mes"),
 	 		'total'=>$this->separar($ind,"total"),
 	 		'litros'=>$this->separar($ind,"litros"),
-	 		'filas'=>$this->filas($ind),
+	 		'filas'=>$this->filas($ind,6),
 	 	));
 	}
 	public function actionInd4(){
@@ -202,7 +202,7 @@ class IndicadoresController extends Controller
 			LEFT JOIN sgu_recursoFalla re ON (rf.id=re.idreporteFalla)
 			where year(rf.fechaFalla)
 			group by v.id,DATE_FORMAT(fechaFalla,"%b %y")
-			order by rf.fechaFalla,v.numeroUnidad asc;')
+			order by DATE_FORMAT(fechaFalla,"%b %y"),v.numeroUnidad asc;')
                 ->queryAll();
 
         //$ind1=array_map('intVal', $ind1); 
@@ -214,7 +214,7 @@ class IndicadoresController extends Controller
 	 		'costoIncidentes'=>$this->separar($ind,"costoIncidentes"),
 	 		'costoMejoras'=>$this->separar($ind,"costoMejoras"),
 	 		'costoTotal'=>$this->separar($ind,"costoTotal"),
-	 		'filas'=>$this->filas($ind),
+	 		'filas'=>$this->filas($ind,6),
 	 	));
 	}
 
@@ -233,13 +233,13 @@ class IndicadoresController extends Controller
 	 		'fecha'=>$this->separar($ind,"fecha"),
 	 		'total'=>$this->separar($ind,"total"),
 	 		'personas'=>$this->separar($ind,"personas"),
-	 		'filas'=>$this->filas($ind),
+	 		'filas'=>$this->filas($ind,6),
 	 	));
 	}
 	public function actionInd7(){
 		$this->local();
 		$ind = Yii::app()->db->createCommand()
-                ->select('v.numeroUnidad as unidad, count(*) as reparaciones,round(sum(costoTotal+(costoTotal)),2) as total, DATE_FORMAT(fechaRealizada,"%b %y") as fecha ')
+                ->select('v.numeroUnidad as unidad, count(*) as reparaciones,round(sum(costoTotal+(costoTotal*iva)),2) as total, DATE_FORMAT(fechaRealizada,"%b %y") as fecha ')
                 ->from('sgu_vehiculo v, sgu_actividades a, sgu_actividadRecurso ar')
                 ->where('a.idvehiculo=v.id and a.id=ar.idactividades and a.idestatus=3')
                 ->group('v.id,DATE_FORMAT(fechaRealizada,"%b %y")')
@@ -251,7 +251,7 @@ class IndicadoresController extends Controller
 	 		'fecha'=>$this->separar($ind,"fecha"),
 	 		'total'=>$this->separar($ind,"total"),
 	 		'reparaciones'=>$this->separar($ind,"reparaciones"),
-	 		'filas'=>$this->filas($ind),
+	 		'filas'=>$this->filas($ind,6),
 	 	));
 	}
 	public function actionInd8(){
@@ -275,7 +275,7 @@ class IndicadoresController extends Controller
 	 		
 	 		'costoAverias'=>$this->separar($ind,"costoAverias"),
 	 		'total'=>$this->separar($ind,"total"),
-	 		'filas'=>$this->filas($ind),
+	 		'filas'=>$this->filas($ind,6),
 	 	));
 	}
 	public function actionInd9(){
@@ -300,7 +300,7 @@ class IndicadoresController extends Controller
 			if($NTMC["NTMC"]<=0)
 				$NTMC["NTMC"]=1;
 			$TME=(count($vehiculos)*$diasOperacion)/$NTMC["NTMC"];
-			array_push($TMEF,$TME);
+			array_push($TMEF,round($TME,1));
 			//array_push($prueba, $diasOperacion);
 		}
 	 	$this->render('ind9',array(
@@ -324,7 +324,7 @@ class IndicadoresController extends Controller
 			if($TMP["NTMC"]<=0)
 				$TMP["NTMC"]=1;
 			$TMP=($TMP["HTMC"])/$TMP["NTMC"];
-			array_push($TMPR,$TMP);
+			array_push($TMPR,round($TMP,1));
 		}
 	 	$this->render('ind10',array(
 	 		'TMPR'=>$TMPR,
@@ -352,77 +352,57 @@ class IndicadoresController extends Controller
 		            if($i>intval(date('m')) and $anno==$hasta)
 		            	break; 
 					$fecha=$anno.'-'.$i.'-01';
-					$fecha_letra = Yii::app()->db->createCommand('select DATE_FORMAT("'.$fecha.'","%Y-%m") as fecha, DATE_FORMAT("'.$fecha.'","%M %y") as mes from dual;')->queryRow();
+					$fecha_letra = Yii::app()->db->createCommand('select DATE_FORMAT("'.$fecha.'","%Y-%m") as fecha, DATE_FORMAT("'.$fecha.'","%b %y") as mes from dual;')->queryRow();
+					$preven=$this->diasMtto($veh["id"],$fecha_letra["fecha"],0);
+					$correc=$this->diasMtto($veh["id"],$fecha_letra["fecha"],1);
 					
-					$datos=$this->diasMtto($veh["id"],$fecha_letra["fecha"],0);
-					$disp=(($datos[3]-$datos[1])/$datos[3])*100;
-					array_push($dispTot,$disp);
+					if($preven[3]==0 and $correc[3]==0)
+						array_push($dispTot,null);	
+					else{
+						$datos=array($preven[0],$preven[1]+$correc[1],abs($preven[2]-$correc[2]),$preven[3]);
+						$disp=(($datos[3]-$datos[1])/$datos[3])*100;
+						array_push($dispTot,floatval($disp));
+					}					
 					array_push($mes,$fecha_letra["mes"]);
 				}
 			}
-			array_push($disponibilidad, array('type'=> 'spline','data'=> array_map('floatVal', $dispTot),'name'=>'#'.str_pad((int) $veh["numeroUnidad"],2,"0",STR_PAD_LEFT)));
+			array_push($disponibilidad, array('type'=> 'spline','data'=>$dispTot,'name'=>'#'.str_pad((int) $veh["numeroUnidad"],2,"0",STR_PAD_LEFT)));
 			$dispTot=array();
 		}
-		file_put_contents ("borrar.txt",print_r($mes,true)); 
 	 	$this->render('ind11',array(
 	 		'mes'=>$mes,
 	 		'var'=>$disponibilidad,
+	 		'filas'=>$this->filas(isset($disponibilidad[0]["data"])?$disponibilidad[0]["data"]:0,12),
 	 	));
-		
 	}
 	public function actionInd5(){
 		$this->local();
-		$hasta=date('Y');
-		$desde=Yii::app()->db->createCommand('select DATE_FORMAT(fechaRegistro,"%Y-%m-%d") as fechaCompleta,DATE_FORMAT(min(fechaRegistro),"%Y-%m") as fecha, DATE_FORMAT(min(fechaRegistro),"%Y") as anno from sgu_vehiculo where activo=1')->queryRow();
-		$mes=array();
-		$TMEF=array();
-		$prueba=array();
-		$vehiculos=Yii::app()->db->createCommand('select * from sgu_vehiculo where activo=1')->queryAll();
-		for($j=0;$j<(intval($hasta)-intval($desde["anno"]))+1;$j++){
-			$diasOperacion=0;
-			$anno=intval($desde["anno"]+$j);
-			$TME=0;
-			$diasOperacion=365;
-			if($anno==$hasta)
-				$diasOperacion=(strtotime(date("Y-m-d"))-strtotime($hasta."-01-01"))/86400;
-			if($desde["anno"]==$anno)
-				$diasOperacion=(strtotime($anno."-12-31")-strtotime($desde["fechaCompleta"]))/86400;
-			array_push($mes,$anno);
-			$NTMC=Yii::app()->db->createCommand('select count(*) as NTMC from sgu_reportefalla where idvehiculo in (select id from sgu_vehiculo where activo=1) and idestatus=3 and year(fechaFalla)="'.$anno.'"')->queryRow();
-			if($NTMC["NTMC"]<=0)
-				$NTMC["NTMC"]=1;
-			$TME=(count($vehiculos)*$diasOperacion)/$NTMC["NTMC"];
-			array_push($TMEF,$TME);
-			//array_push($prueba, $diasOperacion);
+		$idvehiculo=0;
+		if(isset($_POST["id"]) and isset($_POST["valor"]) and $_POST["valor"]<>""){
+			$idvehiculo=$_POST["id"];
 		}
-	 	$this->render('ind9',array(
-	 		'TMEF'=>$TMEF,
-	 		'mes'=>$mes,
+		if(isset($_GET["idveh"]) and $_GET["idveh"]<>"")
+			$idvehiculo=$_GET["idveh"];
 
-	 		//'var'=>$this->diasMtto(1,"2015-11"),
-	 		//'filas'=>$this->filas($ind),
+		$veh=new CActiveDataProvider('Vehiculo',array("criteria"=>array("condition"=>"id='".$idvehiculo."' and activo=1","limit"=>"1"),'pagination' => false));
+		$preventivo=Yii::app()->db->createCommand('select ifnull(round(sum(costoTotal+(costoTotal*iva)),2),0)  as total from sgu_actividades a, sgu_actividadRecurso ar where a.idvehiculo="'.$idvehiculo.'" and a.id=ar.idactividades and a.idestatus=3')->queryRow();
+		$correctivo=Yii::app()->db->createCommand('select ifnull(round(sum(re.costoTotal+(re.costoTotal*re.iva)),2),0) as total FROM sgu_vehiculo v LEFT JOIN sgu_reporteFalla rf ON (v.id=rf.idvehiculo) LEFT JOIN sgu_recursoFalla re ON (rf.id=re.idreporteFalla) where v.id="'.$idvehiculo.'"')->queryRow();
+		$neumaticos=Yii::app()->db->createCommand('select ifnull(round(sum(case de.idaccionCaucho when "3" then drc.costoTotal+(drc.costoTotal*drc.iva) else 0 end)+sum(case when hc.inicial = "0" then hc.costounitario+(hc.costounitario*hc.iva) else 0 end),2),0) as total from sgu_vehiculo v left join sgu_historicoCaucho hc on(hc.idvehiculo=v.id) left join sgu_detalleEventoCa de on(de.idhistoricoCaucho=hc.id) left join sgu_detRecCaucho drc on(drc.iddetalleEventoCa=de.id) where v.id="'.$idvehiculo.'"')->queryRow();
+		$combustible=Yii::app()->db->createCommand('select ifnull(round(sum(costoTotal),2),0) as total from sgu_historicoCombustible hc where hc.idvehiculo="'.$idvehiculo.'"')->queryRow();
+		
+		$data=array(
+			array('id'=>1,'Preventivo'=>$preventivo["total"],'Correctivo'=>$correctivo["total"],'Neumaticos'=>$neumaticos["total"],'Combustible'=>$combustible["total"],'Total'=>$preventivo["total"]+$correctivo["total"]+$neumaticos["total"]+$combustible["total"]));
+
+		if(isset($_POST["id"]) and isset($_POST["valor"]) and $_POST["valor"]<>""){
+			echo CJSON::encode(array(
+                'valor'=>round((($data[0]["Total"]/$_POST["valor"])*100),2),
+				));
+			exit;
+		}
+	 	$this->render('ind5',array(
+	 		'rawData'=>new CArrayDataProvider($data),
+	 		'veh'=>$veh,
 	 	));
-		/*for($j=0;$j<(intval($hasta)-intval($desde["anno"]))+1;$j++){
-			$totalMtto=0;
-			$anno=intval($desde["anno"]+$j);
-			$TME=0;
-			for($i=1;$i<=12;$i++){
-	            if($i>intval(date('m')))
-	            	break; 
-				$fecha=$anno.'-'.$i.'-01';
-				$ind = Yii::app()->db->createCommand('select DATE_FORMAT("'.$fecha.'","%Y-%m") as fecha, DATE_FORMAT("'.$fecha.'","%M %y") as mes from dual;')->queryRow();
-				
-				foreach ($vehiculos as $veh){
-					 $datos=$this->diasMtto($veh["id"],$ind["mes"]);
-					 array_push($prueba,$datos[3]);
-					 $totalMtto=$totalMtto+=$datos[2];
-				}
-			}
-			array_push($mes,$anno);
-			$NTMC=Yii::app()->db->createCommand('select count(*) as NTMC from sgu_reportefalla where idvehiculo in (select id from sgu_vehiculo where activo=1) and idestatus=3 and year(fechaFalla)="'.$anno.'"')->queryRow();
-			$TME=(count($vehiculos)*$totalMtto)/$NTMC["NTMC"];
-			array_push($TMEF,$TME);
-		}*/
 	}
 	public function actionIndex()
 	{

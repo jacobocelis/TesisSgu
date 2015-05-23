@@ -28,7 +28,7 @@ class MttoCorrectivoController extends Controller
 	{
 		return array(
 			array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array('RegistroIncidente','index','view','falla','registrarFalla','ajaxObtenerFallas','ajaxObtenerConductor','nuevaFalla','ajaxActualizarListaFallas','ajaxActualizarListaMejora','crearOrdenCorrectiva','obtenerActividad','agregarRecurso','iniciales','crearordenpreventiva','crearOrden','verOrdenes','cambiarFecha','mttocRealizados','registrarFacturacion','agregarFactura','estatusOrden','cerrarOrdenes','HistoricoCorrectivo','historicoOrdenes','historicoGastos','vistaPrevia','vistaPreviaPDF','generarPdf','correo','actualizarSpan','agregarRecursoAdicional','insumos','repuesto','ActualizarCheck','RegistrarMejora','Mejora','nuevaMejora','historicoMejoras','ActualizarSpanListas'),
+				'actions'=>array('RegistroIncidente','index','view','falla','registrarFalla','ajaxObtenerFallas','ajaxObtenerConductor','nuevaFalla','ajaxActualizarListaFallas','ajaxActualizarListaMejora','crearOrdenCorrectiva','obtenerActividad','agregarRecurso','iniciales','crearordenpreventiva','crearOrden','verOrdenes','cambiarFecha','mttocRealizados','registrarFacturacion','agregarFactura','estatusOrden','cerrarOrdenes','HistoricoCorrectivo','historicoOrdenes','historicoGastos','vistaPrevia','vistaPreviaPDF','generarPdf','correo','actualizarSpan','agregarRecursoAdicional','insumos','repuesto','ActualizarCheck','RegistrarMejora','Mejora','nuevaMejora','historicoMejoras','ActualizarSpanListas','parametros'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
@@ -68,6 +68,25 @@ class MttoCorrectivoController extends Controller
 			'color'=>$this->getColor($mi["total"]),
 		));
 	 }
+	public function actionParametros(){
+
+	$gridFallas=new CActiveDataProvider('Falla',array('criteria' => array(
+		'condition' =>"tipo=0",
+		'order'=>'id')));
+
+	$gridMejoras=new CActiveDataProvider('Falla',array('criteria' => array(
+		'condition' =>"tipo=1",
+		'order'=>'id')));
+
+		$this->render('parametros',array(
+			'gridFallas'=>$gridFallas,
+			'gridMejoras'=>$gridMejoras,
+			'abiertas'=>$this->getOrdenesAbiertas(),
+			'Colorabi'=>$this->getColor($this->getOrdenesAbiertas()),
+			'Colorli'=>$this->getColor($this->getOrdenesListas()),
+			'listas'=>$this->getOrdenesListas(),
+		));
+	}
 	 public function actionGenerarPdf($id){
 	 
   //Consulta para buscar todos los registros
@@ -128,8 +147,6 @@ class MttoCorrectivoController extends Controller
 				)));
 			}
 		}
-		
-		
 		 $mPDF1 = Yii::app()->ePdf->mpdf(); //Esto lo pueden configurar como quieren, para eso deben de entrar en la web de MPDF para ver todo lo que permite.
 		 //$mPDF1->useOnlyCoreFonts = true;
 		 $mPDF1->SetTitle("Solicitud de servicio SIRCA");

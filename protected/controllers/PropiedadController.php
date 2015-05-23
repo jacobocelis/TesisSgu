@@ -32,7 +32,7 @@ class PropiedadController extends Controller
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create','update','nuevaPropiedad','actualizarListaPropiedad'),
+				'actions'=>array('create','update','nuevaPropiedad','actualizarListaPropiedad','actualizar'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -44,7 +44,7 @@ class PropiedadController extends Controller
 			),
 		);
 	}
-			 public function actionNuevaPropiedad(){
+	public function actionNuevaPropiedad(){
 					$model=new Propiedad;
 		  
 		if(isset($_POST['Propiedad'])){
@@ -54,6 +54,29 @@ class PropiedadController extends Controller
 						echo CJSON::encode(array(
 							'status'=>'success', 
 							'div'=>""
+							));
+						exit;               
+					}
+				}
+			}
+			if (Yii::app()->request->isAjaxRequest){
+				echo CJSON::encode(array(
+					'status'=>'failure', 
+					'div'=>$this->renderPartial('_form', array('model'=>$model), true)));
+				exit;               
+			}
+		 
+	}
+	public function actionActualizar($id){
+		$model=$this->loadModel($id);
+		  
+		if(isset($_POST['Propiedad'])){
+				$model->attributes=$_POST['Propiedad'];
+				if($model->save()){
+					if (Yii::app()->request->isAjaxRequest){
+						echo CJSON::encode(array(
+							'status'=>'success', 
+							'div'=>"se actualizó la propiedad"
 							));
 						exit;               
 					}

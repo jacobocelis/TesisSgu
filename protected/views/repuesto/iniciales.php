@@ -12,7 +12,7 @@ $this->menu=array(
 	array('label'=>'      Repuestos y partes', 'url'=>array('repuesto/index')),
 	array('label'=>'      Registrar repuesto', 'url'=>array('repuesto/create')),
 	array('label'=>'      Asignación de repuestos', 'url'=>array('repuesto/AsignarPiezaGrupo')),
-	array('label'=>'      Registrar repuestos iniciales <span class="badge badge- pull-right">0</span>', 'url'=>array('repuesto/iniciales/')),
+	array('label'=>'      Registrar repuestos iniciales '.$total.'', 'url'=>array('repuesto/iniciales/')),
 	
 	array('label'=>'<div id="menu"><strong>Histórial</strong></div>' , 'visible'=>'1'),
 	array('label'=>'      Histórico de repuestos', 'url'=>array('repuesto/historico')),
@@ -61,8 +61,9 @@ $this->widget('zii.widgets.jui.CJuiAutoComplete',array(
 $this->widget('zii.widgets.grid.CGridView', array(
                 'id'=>'piezas',
 				'summaryText'=>'',
+				'rowCssClassExpression'=>'$this->dataProvider->data[$row]->tieneIniciales()?"rojo":"odd"',
 				'template'=>"{items}\n{summary}\n{pager}",
-				'selectableRows'=>1,
+				'selectableRows'=>0,
 				'emptyText'=>'No hay repuestos asignados',
                 'dataProvider'=>$dataProvider,
 				'htmlOptions'=>array('style'=>'cursor:pointer'),
@@ -253,14 +254,8 @@ $this->beginWidget('zii.widgets.jui.CJuiDialog', array( // the dialog
 <?php $this->endWidget();?>
 
 <style>
-.crugepanel {
-    background-color: #FFF;
-    border: 1px dotted #AAA;
-    border-radius: 1px;
-    box-shadow: 3px 3px 5px #EEE;
-    display: block;
-    margin-top: 10px;
-    padding: 10px;
+.rojo{
+background: none repeat scroll 0% 0% #FFD6D6;
 }
 </style>
 <script>
@@ -300,9 +295,22 @@ function addDetalle(_url){
                                         $('#dialog2 div.divForForm2').html(data.div);
                                         setTimeout("$('#dialog2').dialog('close') ",1000);
                                         $.fn.yiiGridView.update('repdetalle');
+                                        $.fn.yiiGridView.update('piezas');
+                                        actualizarSpan();
                                 }
                         } ,
                 'cache':false});
         return false;
+}
+function actualizarSpan(){
+	var dir="<?php echo Yii::app()->baseUrl;?>"+"/repuesto/actualizarSpan";
+	$.ajax({
+		url: dir,
+		'data':$(this).serialize(),
+        'dataType':'json',
+         'success':function( result ) {
+    	     $('#ini').removeClass($('#ini').attr('class')).addClass('badge badge-'+result.color+' pull-right');
+			 $('#ini').text(result.total);
+		},});
 }
 </script>

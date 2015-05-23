@@ -24,7 +24,6 @@ $this->breadcrumbs=array(
 		$idfac=0;
 ?>
 <div id="factura" class='crugepanel'></div>
-
 <div id="detalle" class='crugepanel'>
 <h1>Información de facturación</h1>
 <?php
@@ -33,7 +32,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
 				'summaryText'=>'',
 				'selectableRows'=>0,
 			    //'enableSorting' => false,
-				'emptyText'=>'no existen mantenimientos preventivos registrados',
+				'emptyText'=>'no hay registros',
                 'dataProvider'=>$factura,
 				'columns'=>array(
 					array(
@@ -41,47 +40,47 @@ $this->widget('zii.widgets.grid.CGridView', array(
 					'name'=>'fechaFactura',
 					'type'=>'raw',
 					'value'=>'date("d/m/Y",strtotime($data->fechaFactura))',
-					'htmlOptions'=>array('style'=>'width:80px;text-align:center;'),
+					'htmlOptions'=>array('style'=>'text-align:center;'),
 				),
 				array(
 					'name'=>'codigo',
 					'type'=>'raw',
 					'value'=>'str_pad((int) $data->codigo,8,"0",STR_PAD_LEFT);',
-					'htmlOptions'=>array('style'=>'width:80px;text-align:center;'),
+					'htmlOptions'=>array('style'=>'text-align:center;'),
 				),
 				array(
 					'header'=>'Proveedor',
 					'name'=>'idproveedor',
 					'type'=>'raw',
 					'value'=>'$data->idproveedor0->nombre',
-					'htmlOptions'=>array('style'=>'width:120px;text-align:center;'),
+					'htmlOptions'=>array('style'=>'text-align:center;'),
 				),
 				array(
-					'headerHtmlOptions'=>array('style'=>'width:10px;text-align:center;'),
+					'headerHtmlOptions'=>array('style'=>'text-align:center;'),
 					'header'=>'Sub-Total',
 					'name'=>'total',
 					'type'=>'raw',
 					'value'=>'number_format($data->total, 2,",",".").\' Bs.\'',
-					'htmlOptions'=>array('style'=>'width:10px;text-align:center;'),
+					'htmlOptions'=>array('style'=>'text-align:center;'),
 				),
 				array(
-					'headerHtmlOptions'=>array('style'=>'width:10px;text-align:center;'),
+					'headerHtmlOptions'=>array('style'=>'text-align:center;'),
 					'header'=>'IVA',
 					'name'=>'iva',
 					'type'=>'raw',
 					'value'=>'number_format($data->iva, 2,",",".").\' Bs.\'',
-					'htmlOptions'=>array('style'=>'width:10px;text-align:center;'),
+					'htmlOptions'=>array('style'=>'text-align:center;'),
 				),
 				array(
-					'headerHtmlOptions'=>array('style'=>'width:10px;text-align:center;'),
+					'headerHtmlOptions'=>array('style'=>'text-align:center;'),
 					'header'=>'Total Facturado',
 					'name'=>'totalFactura',
 					'type'=>'raw',
 					'value'=>'number_format($data->totalFactura, 2,",",".").\' Bs.\'',
-					'htmlOptions'=>array('style'=>'width:10px;text-align:center;'),
+					'htmlOptions'=>array('style'=>'text-align:center;'),
 				),
 					array(
-						'headerHtmlOptions'=>array('style'=>'text-align:center;width:30px;'),
+						'headerHtmlOptions'=>array('style'=>'text-align:center;'),
 						'htmlOptions'=>array('style'=>'text-align:center;'),
 						'header'=>'Modificar datos de factura',
 						'type'=>'raw',
@@ -100,7 +99,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
 <?php if(count($averias->getData())>0){?>
 <div id="mostrarAverias" class='crugepanel'>
 <h1>Averías</h1>
-<p><i>Selecciona una avería para asignar los gastos individuales por vehiculo</p></i>
+<p><i>*Puede registrar gastos por avería reparada ó renovar el neumático en caso de no haber podido realizarse la reparación</p></i>
 <strong><p></p></strong>
 	<?php
 	$this->widget('zii.widgets.grid.CGridView', array(
@@ -111,7 +110,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
 			    //'enableSorting' => true,
 				'emptyText'=>'no existen averias registradas en ésta orden',
                 'dataProvider'=>$averias,
-				'htmlOptions'=>array('style'=>'cursor:pointer'),
+				//'htmlOptions'=>array('style'=>'cursor:pointer'),
 				'columns'=>array(
 				array(
 					'header'=>'Unidad',
@@ -146,11 +145,17 @@ $this->widget('zii.widgets.grid.CGridView', array(
 					'htmlOptions'=>array('style'=>'text-align:center;'),
 				),
 				array(
+					'header'=>'Marca',
+					'value'=>'$data->idhistoricoCaucho0->idmarcaCaucho0->nombre',
+					'name'=>'idcaucho',
+					'htmlOptions'=>array('style'=>'text-align:center;'),
+				),
+				/*array(
 					'header'=>'Medida',
 					'value'=>'$data->idhistoricoCaucho0->idcaucho0->idmedidaCaucho0->medida.\' R\'.$data->idhistoricoCaucho0->idcaucho0->idrin0->rin.\' \'.$data->idhistoricoCaucho0->idcaucho0->idpiso0->piso',
 					'name'=>'idcaucho',
 					'htmlOptions'=>array('style'=>'text-align:center;'),
-				),
+				),*/
 				array(
 					'header'=>'Serial',
 					'value'=>'$data->idhistoricoCaucho==null?\' \':$data->idhistoricoCaucho0->serial',
@@ -165,35 +170,19 @@ $this->widget('zii.widgets.grid.CGridView', array(
 					'htmlOptions'=>array('style'=>'text-align:center;'),
 				),
 				array(
-					'headerHtmlOptions'=>array('style'=>'text-align:center;width:30px;background:#B0E3FF'),
-					'header'=>'Fecha de reparación',
+					'headerHtmlOptions'=>array('style'=>'text-align:center;width:30px;'),
+					'header'=>'Fecha ejecución',
 					'name'=>'fechaRealizada',
 					'type'=>'raw',
-					'value'=>'$data->valores($data->fechaRealizada)?date("d/m/Y",strtotime($data->fechaRealizada)).CHtml::link(
-                     CHtml::image(Yii::app()->request->baseUrl."/imagenes/agregar.png",
-                                          "Agregar",array("title"=>"Editar")),
-                        "",
-                        array(
-                                \'style\'=>\'cursor: pointer;text-decoration: underline;text-align:center;\',
-                                \'onclick\'=>\'{registrarMR("\'.Yii::app()->createUrl("Detalleeventoca/actualizar",array("id"=>$data["id"])).\'"); $("#dialog").dialog("open");}\'
-                        )
-                ):$data->noasignado().CHtml::link(
-                     CHtml::image(Yii::app()->request->baseUrl."/imagenes/agregar.png",
-                                          "Agregar",array("title"=>"Editar")),
-                        "",
-                        array(
-                                \'style\'=>\'cursor: pointer;text-decoration: underline;text-align:center;\',
-                                \'onclick\'=>\'{registrarMR("\'.Yii::app()->createUrl("Detalleeventoca/actualizar",array("id"=>$data["id"])).\'"); $("#dialog").dialog("open");}\'
-                        )
-                )',
+					'value'=>'$data->opcionesFecha()',
 					'htmlOptions'=>array('style'=>'width:80px;text-align:center;'),
 				),
-					array(
-					'headerHtmlOptions'=>array('style'=>'text-align:center;width:30px;background:#B0E3FF'),
+				array(
+					'headerHtmlOptions'=>array('style'=>'text-align:center;width:30px;'),
 					'htmlOptions'=>array('style'=>'text-align:center;'),
-					'header'=>'Registrar gastos',
+					'header'=>'Gastos',
 					'type'=>'raw',
-					'value'=>'CHtml::link(
+					'value'=>'$data->idaccionCaucho==3?CHtml::link(
                      CHtml::image(Yii::app()->request->baseUrl."/imagenes/agregar.png",
                                           "Agregar",array("title"=>"Registrar")),
                         "",
@@ -201,7 +190,14 @@ $this->widget('zii.widgets.grid.CGridView', array(
                                 \'style\'=>\'cursor: pointer;text-decoration: underline;text-align:center;\',
                                 \'onclick\'=>\'{ mostrarRecursos("\'.$data->id.\'")}\'
                         )
-                );',),
+                ):\'-\';',),
+                array(
+					'headerHtmlOptions'=>array('style'=>'text-align:center;width:30px;'),
+					'htmlOptions'=>array('style'=>'text-align:center;'),
+					'header'=>'Renovar',
+					'type'=>'raw',
+					'value'=>'$data->opcionesRenovar()'
+				),
 				array(
 					'header'=>'Estado',
 					'name'=>'idestatus',
@@ -209,6 +205,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
 					'value'=>'$data->color($data->idestatus,$data->idestatus0->estatus)',
 					'htmlOptions'=>array('style'=>'width:80px;text-align:center;'),
 				),
+
 				
 			)
         ));
@@ -248,36 +245,36 @@ $this->beginWidget('zii.widgets.jui.CJuiDialog', array( // the dialog
 					//'footer'=>'',
 				),
 				array(
-					'headerHtmlOptions'=>array('style'=>'text-align:left;'),
+					'headerHtmlOptions'=>array('style'=>'text-align:center;'),
 					'header'=>'Cantidad',
 					'name'=>'cantidad',
-					'htmlOptions'=>array('style'=>'width:50px;'),
+					'htmlOptions'=>array('style'=>'width:50px;text-align:center;'),
 					
 					//'footer'=>'',
 				),
 				array(
-					'headerHtmlOptions'=>array('style'=>'text-align:left;'),
+					'headerHtmlOptions'=>array('style'=>'text-align:center;'),
 					'header'=>'Unidad',
 					'name'=>'idunidad',
 					'value'=>'$data->idunidad0->corto',
-					'htmlOptions'=>array('style'=>'width:50px;'),
+					'htmlOptions'=>array('style'=>'width:50px;text-align:center;'),
 					//'footer'=>'',
 				),
 				array(
-					'headerHtmlOptions'=>array('style'=>'text-align:left;'),
+					'headerHtmlOptions'=>array('style'=>'text-align:center;'),
 					'header'=>'Precio unitario',
 					'value'=>'number_format($data->costoUnitario, 2,",",".").\' BsF.\'',
 					'name'=>'costoUnitario',
 					
-					'htmlOptions'=>array('style'=>'width:50px;'),
+					'htmlOptions'=>array('style'=>'width:50px;text-align:center;'),
 					//'footer'=>'',
 				),
 				array(
-					'headerHtmlOptions'=>array('style'=>'text-align:left;'),
+					'headerHtmlOptions'=>array('style'=>'text-align:center;'),
 					'header'=>'Total',
 					'name'=>'costoTotal',
 					'value'=>'number_format($data->costoTotal, 2,",",".").\' Bs.\'',
-					'htmlOptions'=>array('style'=>'width:50px;'),
+					'htmlOptions'=>array('style'=>'width:50px;text-align:center;'),
 					//'footer'=>'',
 				),
 				array(
@@ -300,6 +297,7 @@ $this->beginWidget('zii.widgets.jui.CJuiDialog', array( // the dialog
 					 'template'=>'{delete}',
 					 'afterDelete'=>'function(link,success,data){
 	                               $.fn.yiiGridView.update("factu");
+	                               $.fn.yiiGridView.update("averias");
 	                        }',
 					     'buttons'=>array(
 							'delete' => array(
@@ -324,7 +322,7 @@ $this->beginWidget('zii.widgets.jui.CJuiDialog', array( // the dialog
 <?php if(count($renovaciones->getData())>0){?>
 <div id="mostrarRenovaciones" class='crugepanel'> 
 <h1>Renovaciones</h1>
-<i>Seleccione un neumático para registrar la renovación del mismo</i>
+<i>*Seleccione un neumático para registrar la renovación del mismo</i>
 	<?php
 	$this->widget('ext.selgridview.SelGridView', array(
                 'id'=>'renovaciones',
@@ -344,26 +342,6 @@ $this->beginWidget('zii.widgets.jui.CJuiDialog', array( // the dialog
 					'htmlOptions'=>array('style'=>'text-align:center;width:40px'),
 				),
 				array(
-					'type'=>"raw",
-					'header'=>'Serial',
-					'value'=>'$data->idhistoricoCaucho0->serial=="0"?$data->porDefinir($data->idhistoricoCaucho0->serial):strtoupper($data->idhistoricoCaucho0->serial);',
-					//'name'=>'serial',
-					'htmlOptions'=>array('style'=>'text-align:center;width:65px'),
-				),
-				array(
-					'type'=>'raw',
-					'header'=>'Marca',
-					'value'=>'$data->idhistoricoCaucho0->idmarcaCaucho==""?$data->porDefinir(""):$data->idhistoricoCaucho0->idmarcaCaucho0->nombre',
-					'name'=>'idmarcaCaucho',
-					'htmlOptions'=>array('style'=>'text-align:center;width:85px'),
-				),
-				array(
-					'header'=>'Detalle',
-					'value'=>'$data->idhistoricoCaucho0->idcaucho0->idmedidaCaucho0->medida.\' R\'.$data->idhistoricoCaucho0->idcaucho0->idrin0->rin.\' \'.$data->idhistoricoCaucho0->idcaucho0->idpiso0->piso',
-					'name'=>'idcaucho',
-					'htmlOptions'=>array('style'=>'text-align:center;width:85px'),
-				),
-				array(
 					'header'=>'Eje',
 					'value'=>'$data->idhistoricoCaucho0->iddetalleRueda0->iddetalleEje0->idposicionEje0->posicionEje',
 					'name'=>'iddetalleRueda',
@@ -375,6 +353,27 @@ $this->beginWidget('zii.widgets.jui.CJuiDialog', array( // the dialog
 					'name'=>'iddetalleRueda',
 					'htmlOptions'=>array('style'=>'text-align:center;width:85px'),
 				),
+				array(
+					'type'=>'raw',
+					'header'=>'Marca',
+					'value'=>'$data->idhistoricoCaucho0->idmarcaCaucho==""?$data->porDefinir(""):$data->idhistoricoCaucho0->idmarcaCaucho0->nombre',
+					'name'=>'idmarcaCaucho',
+					'htmlOptions'=>array('style'=>'text-align:center;width:85px'),
+				),
+				array(
+					'header'=>'Medida',
+					'value'=>'$data->idhistoricoCaucho0->idcaucho0->idmedidaCaucho0->medida.\' R\'.$data->idhistoricoCaucho0->idcaucho0->idrin0->rin.\' \'.$data->idhistoricoCaucho0->idcaucho0->idpiso0->piso',
+					'name'=>'idcaucho',
+					'htmlOptions'=>array('style'=>'text-align:center;width:85px'),
+				),
+				array(
+					'type'=>"raw",
+					'header'=>'Serial',
+					'value'=>'$data->idhistoricoCaucho0->serial=="0"?$data->porDefinir($data->idhistoricoCaucho0->serial):strtoupper($data->idhistoricoCaucho0->serial);',
+					//'name'=>'serial',
+					'htmlOptions'=>array('style'=>'text-align:center;width:65px'),
+				),
+
 				/*array(
 					'header'=>'Fecha de renovación',
 					'name'=>'fechaRealizada',
@@ -427,57 +426,57 @@ $this->beginWidget('zii.widgets.jui.CJuiDialog', array( // the dialog
 					'header'=>'Fecha de montaje',
 					'value'=>'$data->fecha=="0000-01-01"?$data->porDefinir($data->fecha):date("d/m/Y",strtotime($data->fecha))',
 					'name'=>'fecha',
-					'htmlOptions'=>array('style'=>'text-align:center;width:5px'),
+					'htmlOptions'=>array('style'=>'text-align:center;'),
 				),
 				array(
 					'type'=>"raw",
 					'header'=>'Serial',
 					'value'=>'$data->serial=="0"?$data->porDefinir($data->serial):strtoupper($data->serial);',
 					'name'=>'serial',
-					'htmlOptions'=>array('style'=>'text-align:center;width:65px'),
+					'htmlOptions'=>array('style'=>'text-align:center;'),
 				),
 				array(
 					'type'=>'raw',
 					'header'=>'Marca',
 					'value'=>'$data->idmarcaCaucho==""?$data->porDefinir(""):$data->idmarcaCaucho0->nombre',
 					'name'=>'idmarcaCaucho',
-					'htmlOptions'=>array('style'=>'text-align:center;width:85px'),
+					'htmlOptions'=>array('style'=>'text-align:center;'),
 				),
 				
 				array(
 					'header'=>'Detalle',
 					'value'=>'$data->idcaucho0->idmedidaCaucho0->medida.\' R\'.$data->idcaucho0->idrin0->rin.\' \'.$data->idcaucho0->idpiso0->piso',
 					'name'=>'idcaucho',
-					'htmlOptions'=>array('style'=>'text-align:center;width:85px'),
+					'htmlOptions'=>array('style'=>'text-align:center;'),
 				),
 				array(
 					'header'=>'Eje',
 					'value'=>'$data->iddetalleRueda0->iddetalleEje0->idposicionEje0->posicionEje',
 					'name'=>'iddetalleRueda',
-					'htmlOptions'=>array('style'=>'text-align:center;width:85px'),
+					'htmlOptions'=>array('style'=>'text-align:center;'),
 				),
 				array(
 					'header'=>'Posición',
 					'value'=>'$data->iddetalleRueda0->idposicionRueda0->posicionRueda',
 					'name'=>'iddetalleRueda',
-					'htmlOptions'=>array('style'=>'text-align:center;width:85px'),
+					'htmlOptions'=>array('style'=>'text-align:center;'),
 				),
 				array(
 					'header'=>'Costo',
 					'value'=>'number_format($data->costounitario, 2,",",".").\' Bs.\'',
 					'name'=>'costounitario',
-					'htmlOptions'=>array('style'=>'text-align:center;width:85px'),
+					'htmlOptions'=>array('style'=>'text-align:center;'),
 				),
 				array(
 					'type'=>"raw",
-					'headerHtmlOptions'=>array('style'=>'text-align:center;width:50px;'),
+					'headerHtmlOptions'=>array('style'=>'text-align:center;'),
 					'header'=>'Estatus',
 					'value'=>'$data->coloresEstatus($data)',
 					'name'=>'idestatusCaucho',
-					'htmlOptions'=>array('style'=>'text-align:center;width:45px;font-weight: bold;'),
+					'htmlOptions'=>array('style'=>'text-align:center;font-weight: bold;'),
 				),
 				array(
-						'headerHtmlOptions'=>array('style'=>'text-align:center;width:30px;'),
+						'headerHtmlOptions'=>array('style'=>'text-align:center;'),
 						'htmlOptions'=>array('style'=>'text-align:center;'),
 						'header'=>'Editar',
 						'type'=>'raw',
@@ -528,7 +527,7 @@ $this->beginWidget('zii.widgets.jui.CJuiDialog', array( // the dialog
 $this->beginWidget('zii.widgets.jui.CJuiDialog', array( // the dialog
     'id'=>'dialog',
     'options'=>array(
-        'title'=>'Agregar costo',
+        'title'=>'Registrar fecha de reparación del neumático',
         'autoOpen'=>false,
         'modal'=>true,
         'width'=>390,
@@ -672,12 +671,18 @@ function mostrarMovimientos(id){
 }
 
 function mostrarNuevoCaucho(){
+	
 	$('#divRenovacion').show(500);
 	var idrenov = $.fn.yiiGridView.getSelection('renovaciones');
 	if(idrenov==""){
 		$('#divRenovacion').hide();	
 		idrenov=0;
 	}
+	 $('html, body').animate({
+        scrollTop: $("#divRenovacion").offset().top
+    }, 1000);
+
+	//$('#divRenovacion').scrollTo();
 	$.fn.yiiGridView.update('nuevoMontaje',{ data : {idrenov:idrenov.toString()},
 			complete: function(jqXHR, status) {
             if (status=='success'){
@@ -725,6 +730,7 @@ function montarNeumatico(id){
 										 setTimeout("$('#montaje').dialog('close') ",1000);
 										mostrarNuevoCaucho();
 										$.fn.yiiGridView.update('renovaciones');
+										$.fn.yiiGridView.update('averias');
 										
                                 }
                         } ,
@@ -827,6 +833,7 @@ $('#ModFactura').dialog('open');
                 'cache':false});
     return false; 
 }
+
 function agregarRecurso(){
 $('#recurso').dialog('open');
 	
@@ -846,12 +853,13 @@ $('#recurso').dialog('open');
                                         setTimeout("$('#recurso').dialog('close') ",1000);
                                         $.fn.yiiGridView.update('rec');
 										$.fn.yiiGridView.update('factu');
+										$.fn.yiiGridView.update('averias');
                                 }
                         },
                 'cache':false});
     return false; 
 }
-var Uurl;
+
 function registrarMR(id){
 
 	 if (typeof(id)=='string')
@@ -880,5 +888,37 @@ function registrarMR(id){
                         } ,
                 'cache':false});
     return false; 
+}
+function recargar(){
+	window.location.replace("<?php echo Yii::app()->getRequest()->getUrl();?>");	
+}
+function renovarAveria(id,tipo){
+	var mensaje;
+	 if (typeof(id)=='string')
+                Uurl=id;
+    if(tipo==3)
+    	mensaje='¿Confirma que la avería dió lugar a una renovación?';
+    else
+    	mensaje='¿Desea cancelar la renovación?';
+    if(confirm(mensaje)){
+		jQuery.ajax({
+	                url: Uurl,
+	                'data':$(this).serialize(),
+	                'type':'post',
+	                'dataType':'json',
+	                'success':function(data)
+                        {
+                            if (data.status == 'failure')
+                            {
+
+                            }
+                            else
+                            {
+								recargar();
+                            }
+                        } ,
+	                'cache':false});
+		return false; 
+	}
 }
 </script>

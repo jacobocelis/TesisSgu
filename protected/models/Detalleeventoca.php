@@ -25,7 +25,60 @@ class Detalleeventoca extends CActiveRecord
 	/**
 	 * @return string the associated database table name
 	 */
-	
+	public function opcionesRenovar(){
+		$recursos=Detreccaucho::model()->findAll('iddetalleEventoCa="'.$this->id.'"');
+		if(count($recursos)>0)
+			return "";
+		if($this->idaccionCaucho==3 and $this->idestatus==4)
+			return CHtml::link(
+                     CHtml::image(Yii::app()->request->baseUrl."/imagenes/cambiar1.png",
+                                          "Agregar",array("title"=>"Renovar neumático por avería no reparable")),
+                        "",
+                        array(
+                                'style'=>'cursor: pointer;text-decoration: underline;text-align:center;',
+                                'onclick'=>'{renovarAveria("'.Yii::app()->createUrl("Detalleeventoca/renovarAveria",array("id"=>$this->id)).'","'.$this->idaccionCaucho.'");}'
+                        )
+                );
+		if($this->idaccionCaucho==1 and $this->idestatus==4)
+			return CHtml::link(
+                     CHtml::image(Yii::app()->request->baseUrl."/imagenes/revertir.png",
+                                          "Agregar",array("title"=>"Cancelar renovación")),
+                        "",
+                        array(
+                                'style'=>'cursor: pointer;text-decoration: underline;text-align:center;',
+                                'onclick'=>'{renovarAveria("'.Yii::app()->createUrl("Detalleeventoca/renovarAveria",array("id"=>$this->id)).'","'.$this->idaccionCaucho.'");}'
+                        )
+                );
+		if($this->idaccionCaucho==3 and $this->idestatus==3)
+			return "<span style='color:blue'>-</span>";
+	}
+	public function opcionesFecha(){
+		if($this->valores($this->fechaRealizada)==0 and $this->idaccionCaucho==3)
+			return $this->noasignado().CHtml::link(
+                     CHtml::image(Yii::app()->request->baseUrl."/imagenes/calendario.png",
+                                          "Agregar",array("title"=>"Registrar fecha de reaparación")),
+                        "",
+                        array(
+                                'style'=>'cursor: pointer;text-decoration: underline;text-align:center;',
+                                'onclick'=>'{registrarMR("'.Yii::app()->createUrl("Detalleeventoca/actualizar",array("id"=>$this->id)).'"); $("#dialog").dialog("open");}'
+                        )
+                );
+		if($this->valores($this->fechaRealizada)==1 and $this->idaccionCaucho==3)
+			return date("d/m/Y",strtotime($this->fechaRealizada)).CHtml::link(
+                     CHtml::image(Yii::app()->request->baseUrl."/imagenes/calendario.png",
+                                          "Agregar",array("title"=>"Registrar fecha de reaparación")),
+                        "",
+                        array(
+                                'style'=>'cursor: pointer;text-decoration: underline;text-align:center;',
+                                'onclick'=>'{registrarMR("'.Yii::app()->createUrl("Detalleeventoca/actualizar",array("id"=>$this->id)).'"); $("#dialog").dialog("open");}'
+                        )
+                );
+		if($this->valores($this->fechaRealizada)==0 and $this->idaccionCaucho==1)
+			return $this->noasignado();
+		if($this->valores($this->fechaRealizada)==1 and $this->idaccionCaucho==1)
+			return date("d/m/Y",strtotime($this->fechaRealizada));
+
+	}
 	public function noasignado(){
 			return '<span style="color:red">no registrado</span>';
     }

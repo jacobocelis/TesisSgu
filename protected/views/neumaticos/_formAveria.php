@@ -44,7 +44,7 @@
 	<div class="row">
 		<?php echo $form->labelEx($model,'idfallaCaucho'); ?>
 		<?php echo $form->dropDownList($model,'idfallaCaucho',CHtml::listData(Fallacaucho::model()->findAll(),'id','falla')); echo CHtml::link(CHtml::image(Yii::app()->request->baseUrl."/imagenes/agregar.png",
-                                          "Agregar",array("title"=>"Nueva mejora")), "",array('title'=>'Registrar avería',
+                                          "Agregar",array("title"=>"Nueva avería")), "",array('title'=>'Registrar avería',
 		 //'class'=>'botonAgregar',
         'style'=>'cursor: pointer;font-size:15px',
         'onclick'=>"{

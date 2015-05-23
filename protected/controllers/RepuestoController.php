@@ -32,7 +32,7 @@ class RepuestoController extends Controller
 				'users'=>array('@'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create','update','crear','Selectdos','buscarRepuesto','DetalleRepuestoVehiculo','AsignarPiezaGrupo','DetallePiezaGrupo','iniciales','historico','ActualizarSerial','parametros','actualizar'),
+				'actions'=>array('create','update','crear','Selectdos','buscarRepuesto','DetalleRepuestoVehiculo','AsignarPiezaGrupo','DetallePiezaGrupo','iniciales','historico','ActualizarSerial','parametros','actualizar','ActualizarSpan'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -48,7 +48,22 @@ class RepuestoController extends Controller
 	/**
 	 * Displays a particular model.
 	 * @param integer $id the ID of the model to be displayed
-	 */
+	 */	 
+
+	public function actionActualizarSpan(){
+		$ri=Yii::app()->db->createCommand("select count(*) as total from sgu_Cantidad where estado=0")->queryRow();
+		if($ri["total"]>0)
+			$color="important";
+		else
+			$color="";
+		if (Yii::app()->request->isAjaxRequest){
+			echo CJSON::encode(array(
+				'total'=>$ri["total"],
+				'color'=>$color,
+			));
+		}else	
+			return '<span id="ini" class="badge badge-'.$color.' pull-right">'.$ri["total"].'</span>';	
+	 }
         public function RegistrarRepuesto(){
             $model=new Repuesto;
             if(isset($_POST['Repuesto'])){
@@ -63,20 +78,7 @@ class RepuestoController extends Controller
                 }	
             }
 	}
-        public function AsignarRepuestoGrupo(){
-            $model=new CaracteristicaVehGrupo;
-            if(isset($_POST['CaracteristicaVehGrupo'])){
-                $model->attributes=$_POST['CaracteristicaVehGrupo'];
-                if($model->save()){
-                    echo "Repuesto asignado al grupo correctamente\n";
-                    return true;
-                }
-                else{
-                    echo "No se pudo asignar el repuesto, verifique los datos ingresados";
-                    return false;
-                }	
-            }
-	}
+
 		public function actionAsignarPiezaGrupo(){
 	
 		$actualizar=0;
@@ -209,7 +211,7 @@ class RepuestoController extends Controller
 				'model'=>$pieza_,
 				'actualizar'=>$actualizar,
 				'detalle'=>$detalle,
-				
+				'total'=>$this->actionActualizarSpan(),
             )
         );
 	
@@ -449,14 +451,15 @@ class RepuestoController extends Controller
 						'condition' =>"id=0")));
 		if(isset($_GET["id"]))
 			$det=new CActiveDataProvider('Cantidad',array('criteria' => array(
-						'condition' =>"idCaracteristicaVeh = '".$_GET['id']."' and estado=0",
-						
-						'order'=>'id',
-						)));
-			$det->setPagination(false);
+				'condition' =>"idCaracteristicaVeh = '".$_GET['id']."'",
+				
+				'order'=>'id',
+				)));
+		$det->setPagination(false);
 		$this->render('iniciales',array(
 			'dataProvider'=>$dataProvider,
 			'det'=>$det,
+			'total'=>$this->actionActualizarSpan(),
 		));
 	}
 

@@ -32,7 +32,7 @@ class ModeloController extends Controller
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create','update','nuevoModelo','ActualizarListaModelo'),
+				'actions'=>array('create','update','nuevoModelo','ActualizarListaModelo','actualizar'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -49,7 +49,30 @@ class ModeloController extends Controller
 	 * Displays a particular model.
 	 * @param integer $id the ID of the model to be displayed
 	 */
-		 public function actionNuevoModelo($id){
+		public function actionActualizar($id){
+		$model=$this->loadModel($id);
+		  
+		if(isset($_POST['Modelo'])){
+				$model->attributes=$_POST['Modelo'];
+				if($model->save()){
+					if (Yii::app()->request->isAjaxRequest){
+						echo CJSON::encode(array(
+							'status'=>'success', 
+							'div'=>"se actualizó el modelo"
+							));
+						exit;               
+					}
+				}
+			}
+		if (Yii::app()->request->isAjaxRequest){
+			echo CJSON::encode(array(
+				'status'=>'failure', 
+				'div'=>$this->renderPartial('_form', array('model'=>$model,'idmarca'=>$model->idmarca), true)));
+			exit;               
+		}
+		 
+	}
+		public function actionNuevoModelo($id){
 					$model=new Modelo;
 		  
 		if(isset($_POST['Modelo'])){

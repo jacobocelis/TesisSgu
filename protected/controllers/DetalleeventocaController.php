@@ -32,7 +32,7 @@ class DetalleeventocaController extends Controller
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create','update','actualizar'),
+				'actions'=>array('create','update','actualizar','renovarAveria'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -49,6 +49,27 @@ class DetalleeventocaController extends Controller
 	 * Displays a particular model.
 	 * @param integer $id the ID of the model to be displayed
 	 */
+	public function actionRenovarAveria($id){
+		if (Yii::app()->request->isAjaxRequest){
+			$modelo=$this->loadModel($id);
+			if($modelo->idaccionCaucho==3)
+				$modelo->idaccionCaucho=1;
+			else
+				$modelo->idaccionCaucho=3;
+			if($modelo->update()){
+	            echo CJSON::encode(array(
+	                'status'=>'success', 
+	                ));
+	            exit;
+	        }
+	        else{
+	            echo CJSON::encode(array(
+	                'status'=>'failure', 
+	                ));
+	            exit;  
+	        }         
+        }
+	}
 	public function actionView($id)
 	{
 		$this->render('view',array(

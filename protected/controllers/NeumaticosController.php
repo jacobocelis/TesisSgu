@@ -32,7 +32,7 @@ class NeumaticosController extends Controller
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create','EditarMontado','plantilla','ActualizarListaPlantillas','MostrarLinkEje','actualizarListaPosicionesEje','MostrarLinkCaucho','actualizarEstado','MostrarLinkRep','MostrarDivRep','TieneGrupo','montajeInicial','montar','alertaCambioCauchos','ActualizarSpan','averiaNeumatico','RegistrarAveriaNeumatico','AgregarAveriaNueva','ajaxActualizarAverias','CrearOrdenNeumaticos','crearOrden','agregarNeumaticosRenovar','agregarNeumaticosRotar','verOrdenes','vistaPrevia','AgregarRotacionNueva','MttonRealizados','agregarFactura','registrarFacturacion','actualizarCheck','agregarRecursoAveria','estatusOrden','vistaPreviaPDF','nuevoRec','actualizarListaRecursos','montarNuevo','verificarEstadoRenovacion','cerrarOrdenes','HistoricoOrdenes','HistoricoAverias','historicoMontajes','historicoRotaciones','ActualizarSpanListas','ListaAveriaNeumatico','ActualizarSpanAverias','ActualizarListaPosCaucho','ActualizarListaMedCaucho','HistoricoGastos'),
+				'actions'=>array('create','EditarMontado','plantilla','ActualizarListaPlantillas','MostrarLinkEje','actualizarListaPosicionesEje','MostrarLinkCaucho','actualizarEstado','MostrarLinkRep','MostrarDivRep','TieneGrupo','montajeInicial','montar','alertaCambioCauchos','ActualizarSpan','averiaNeumatico','RegistrarAveriaNeumatico','AgregarAveriaNueva','ajaxActualizarAverias','CrearOrdenNeumaticos','crearOrden','agregarNeumaticosRenovar','agregarNeumaticosRotar','verOrdenes','vistaPrevia','AgregarRotacionNueva','MttonRealizados','agregarFactura','registrarFacturacion','actualizarCheck','agregarRecursoAveria','estatusOrden','vistaPreviaPDF','nuevoRec','actualizarListaRecursos','montarNuevo','verificarEstadoRenovacion','cerrarOrdenes','HistoricoOrdenes','HistoricoAverias','historicoMontajes','historicoRotaciones','ActualizarSpanListas','ListaAveriaNeumatico','ActualizarSpanAverias','ActualizarListaPosCaucho','ActualizarListaMedCaucho','HistoricoGastos','parametros'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -49,6 +49,71 @@ class NeumaticosController extends Controller
 	 * Displays a particular model.
 	 * @param integer $id the ID of the model to be displayed
 	 */
+	public function actionParametros(){
+		$idmarca=0;
+		
+		$gridChasis=new CActiveDataProvider('Chasis',array('criteria' => array(
+		'condition' =>"1",
+		'order'=>'id')));
+
+		if(isset($_GET["idmarca"]))
+			$idmarca=$_GET["idmarca"];
+
+		$gridPosEje=new CActiveDataProvider('Posicioneje',array('criteria' => array(
+		'condition' =>"1",
+		'order'=>'id')));
+
+		$gridPosRueda=new CActiveDataProvider('Posicionrueda',array('criteria' => array(
+		'condition' =>"1",
+		'order'=>'id')));
+
+		$gridNeumaticos=new CActiveDataProvider('Caucho',array('criteria' => array(
+		'condition' =>"1",
+		'order'=>'id')));
+
+		$gridMedidas=new CActiveDataProvider('Medidacaucho',array('criteria' => array(
+		'condition' =>"1",
+		'order'=>'id')));
+
+		$gridRin=new CActiveDataProvider('Rin',array('criteria' => array(
+		'condition' =>"1",
+		'order'=>'id'),
+		'pagination'=>array('pageSize'=>5),
+		));
+
+		$gridPiso=new CActiveDataProvider('Piso',array('criteria' => array(
+		'condition' =>"1",
+		'order'=>'id')));
+		
+		$gridMarca=new CActiveDataProvider('Marcacaucho',array('criteria' => array(
+		'condition' =>"1",
+		'order'=>'id')));
+
+		$gridAveria=new CActiveDataProvider('Fallacaucho',array('criteria' => array(
+		'condition' =>"1",
+		'order'=>'id')));
+
+		$gridRecurso=new CActiveDataProvider('Recursocaucho',array('criteria' => array(
+		'condition' =>"1",
+		'order'=>'id')));
+
+		$this->render('parametros',array(
+			'gridChasis'=>$gridChasis,
+			'gridPosEje'=>$gridPosEje,
+			'gridPosRueda'=>$gridPosRueda,
+			'gridNeumaticos'=>$gridNeumaticos,
+			'gridMedidas'=>$gridMedidas,
+			'gridRin'=>$gridRin,
+			'gridPiso'=>$gridPiso,
+			'gridMarca'=>$gridMarca,
+			'gridAveria'=>$gridAveria,
+			'gridRecurso'=>$gridRecurso,
+			'iniciales'=>$this->getPorDefinir(),
+			'totalFalla'=>$this->getTotalFallas(),
+			'listas'=>$this->getOrdenesListas(),
+			'abiertas'=>$this->getOrdenesAbiertas(),
+		));
+	}
 	public function estatusOrden($id){
 		return Ordenmtto::model()->findByPk($id)->idestatus;
 	}
@@ -444,7 +509,6 @@ class NeumaticosController extends Controller
 			$rep[]=new CActiveDataProvider('Historicocaucho',array("criteria"=>array("condition"=>"idestatusCaucho=4 and idvehiculo=".$idv["id"]."")));
 		    $veh[]=new CActiveDataProvider('Historicocaucho',array("criteria"=>array("condition"=>"idvehiculo=".$idv["id"]."","limit"=>"1"),'pagination' => false));
 		}
-			
 		$this->render('index',array(
 			'montados'=>$montados,
 			'rep'=>$rep,

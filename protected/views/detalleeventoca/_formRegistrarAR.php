@@ -14,7 +14,6 @@
 	// See class documentation of CActiveForm for details on this.
 	'enableAjaxValidation'=>false,
 )); ?>
-
 	<div class="row">
 	
 		<?php echo $form->hiddenField($model,'fechaFalla'); ?>
@@ -65,7 +64,7 @@
 	</div>
 
 	<div class="row buttons">
-		<?php echo CHtml::submitButton($model->isNewRecord ? 'Registrar' : 'Actualizar'); ?>
+		<?php echo CHtml::submitButton($model->isNewRecord ? 'Registrar' : 'Registrar'); ?>
 	</div>
 
 <?php $this->endWidget(); ?>

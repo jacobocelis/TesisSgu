@@ -18,8 +18,6 @@ $this->menu=array(
 	array('label'=>'      Registro de averías', 'url'=>array('averiaNeumatico')),
 	
 	array('label'=>'      Averías por atender <span title="hay '.$totalFalla.' averías en neumaticos por atender" class="badge badge-'.$this->Color($totalFalla).' pull-right">'.$totalFalla.'</span>', 'url'=>array('neumaticos/listaAveriaNeumatico')),
-	
-	
 	array('label'=>'<div id="menu"><strong>Órdenes de neumaticos</strong></div>'),
 	
 	array('label'=>'      Crear órden de neumaticos', 'url'=>array('crearOrdenNeumaticos')),
@@ -203,14 +201,13 @@ $this->widget('zii.widgets.grid.CGridView', array(
 if($total==0)
 	echo "<i><strong>no hay neumáticos registrados</strong></i>";
 ?>
+
 </div>
 <style>
 .rojo{
 background: none repeat scroll 0% 0% #FFD6D6;
 }
-.verde{
-background: none repeat scroll 0px 0px #EFFEF0;
-}
+ 
 .agregar{
 	float: left;
 }

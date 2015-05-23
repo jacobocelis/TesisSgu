@@ -15,26 +15,28 @@
 	'enableAjaxValidation'=>false,
 )); ?>
 
-	<p class="note">Fields with <span class="required">*</span> are required.</p>
-
-	<?php echo $form->errorSummary($model); ?>
-
 	<div class="row">
-		<?php echo $form->labelEx($model,'falla'); ?>
-		<?php echo $form->textField($model,'falla',array('size'=>60,'maxlength'=>120)); ?>
+		<?php echo $form->labelEx($model,'Incidente*'); ?>
+		<?php echo $form->textArea($model,'falla',array('size'=>60,'maxlength'=>120,'style'=>"width:350px")); ?>
 		<?php echo $form->error($model,'falla'); ?>
 	</div>
-
 	<div class="row">
-		<?php echo $form->labelEx($model,'idtipoFalla'); ?>
-		<?php echo $form->textField($model,'idtipoFalla'); ?>
-		<?php echo $form->error($model,'idtipoFalla'); ?>
+		
+		<?php echo $form->hiddenField($model,'tipo',array('value'=>0)); ?>
+		
 	</div>
 
 	<div class="row buttons">
-		<?php echo CHtml::submitButton($model->isNewRecord ? 'Create' : 'Save'); ?>
+		<?php echo CHtml::submitButton($model->isNewRecord ? 'Agregar' : 'Guardar'); ?>
 	</div>
 
 <?php $this->endWidget(); ?>
-
 </div><!-- form -->
+<script>
+function cancelar(){
+	$('#nuevaFalla').hide();
+	$('#detalle').show();
+	$('#boton').show();
+	$('#registrarFalla').show();
+}
+</script>

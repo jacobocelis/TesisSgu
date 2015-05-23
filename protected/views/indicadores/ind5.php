@@ -1,3 +1,8 @@
+<style>
+.label, .badge {
+  font-size: 40px;
+}
+</style>
 <?php Yii::app()->clientScript->registerScriptFile(Yii::app()->request->baseUrl."/js/highstock.js"); ?>
 <?php
 
@@ -10,7 +15,7 @@ $this->menu=array(
 	array('label'=>'      Tiempo medio entre fallas', 'url'=>array('Indicadores/ind9')),
   array('label'=>'      Tiempo medio para reparaciones', 'url'=>array('Indicadores/ind10')),
   array('label'=>'      Disponibilidad de unidades', 'url'=>array('Indicadores/ind11')),
-  array('label'=>'      Costo de mtto por valor de reposición', 'url'=>array('Indicadores/ind12')),
+  array('label'=>'      Costo de mtto por valor de reposición', 'url'=>array('Indicadores/ind5')),
   array('label'=>'      % de incidentes por conductor', 'url'=>array('Indicadores/ind1')),
   array('label'=>'      % de incidentes por unidad', 'url'=>array('Indicadores/ind2')),
   array('label'=>'      Consumo de combustible por unidad', 'url'=>array('Indicadores/ind3')),
@@ -22,135 +27,109 @@ $this->menu=array(
 );
 ?>
 <div class="crugepanel">
-<?php
-
-$this->Widget('ext.highcharts.HighchartsWidget', array(
-        'scripts' => array(
-        'modules/exporting',
-        'themes/grid-light',
-    ),
-
-   'options'=>array(
-           'chart'=> array(
- 
-            'defaultSeriesType'=> 'column',
-            //'zoomType'=> 'xyz',
-        ),
-            'lang'=>array(  
-                'loading'=> 'Cargando...',  
-                'months'=> array('Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'),  
-                'weekdays'=> array('Domingo', 'Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes', 'Sábado'),  
-                'shortMonths'=> array('Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'),  
-                'exportButtonTitle'=> "Exportar",  
-                'printButtonTitle'=> "Importar",  
-                'rangeSelectorFrom'=> "De",  
-                'rangeSelectorTo'=> "A",  
-                'rangeSelectorZoom'=> "Periodo",  
-                'downloadPNG'=> 'Descargar gráfica PNG',  
-                'downloadJPEG'=> 'Descargar gráfica JPEG',  
-                'downloadPDF'=> 'Descargar gráfica PDF',  
-                'downloadSVG'=> 'Descargar gráfica SVG',  
-                'printChart'=> 'Imprimir Gráfica',  
-                'thousandsSep'=> ",",  
-                'decimalPoint'=> '.'  
-            ),
-        'title' => array('text' => 'Tiempo medio para reparaciones'),
-        'credits'=> array(
-            'enabled'=> false
-        ),
-        'yAxis'=> array(
-           //'endOnTick'=>false,
-           //'tickInterval'=>1,
-        array( // Primary yAxis
-          'min'=>0,
-          //'max'=>31,
-            'labels'=> array(
-                'format'=> '{value}días',
-            ),
-            'title'=> array(
-                'text'=> 'Días',
-            )
-        )),
-
-    'xAxis'=> array(
-          array(
-              'title'=>array(
-                'text'=>'Año',
-              ),
-    
-            'categories'=> $mes,
-            //tickPositions: [3, 5, 8],
-            'labels'=> array(
-
-                    //y:20,
-                'style'=> array(
-                    //fontWeight: 'bold'
-                ),
-            ),
-        )),
-
-
-    'series'=> array(
-        array(
-            'type'=> 'column',
-            'data'=> array_map('floatVal', $TMPR),
-            'name'=>'días',
-
-        )),
-   ),
-));
- 
-//select  from sgu_historicocombustible group by idvehiculo,month(fecha)
-     /* $this->widget('ext.highcharts.ActiveHighstockWidget', array(
-      'options' => array(
-            'lang'=>array(  
-                'loading'=> 'Cargando...',  
-                'months'=> array('Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'),  
-                'weekdays'=> array('Domingo', 'Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes', 'Sábado'),  
-                'shortMonths'=> array('Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'),  
-                'exportButtonTitle'=> "Exportar",  
-                'printButtonTitle'=> "Importar",  
-                'rangeSelectorFrom'=> "De",  
-                'rangeSelectorTo'=> "A",  
-                'rangeSelectorZoom'=> "Periodo",  
-                'downloadPNG'=> 'Descargar gráfica PNG',  
-                'downloadJPEG'=> 'Descargar gráfica JPEG',  
-                'downloadPDF'=> 'Descargar gráfica PDF',  
-                'downloadSVG'=> 'Descargar gráfica SVG',  
-                'printChart'=> 'Imprimir Gráfica',  
-                'thousandsSep'=> ",",  
-                'decimalPoint'=> '.'  
-            ), 
-
-      'title' => array('text' => 'Site Percentile'),
-      'yAxis' => array(
-      'title' => array('text' => 'Site Rank')
-      ),
-      'series' => array(
-      array(
-      'name'  => 'Costo',
-      'data'  => array(// data column in the dataprovider
-        'costoTotal',
-      ),        
-      'time'  => 'fecha',          // time column in the dataprovider
-       'timeType'  => 'date',
-      // defaults to a mysql timestamp, other options are 'date' (run through strtotime()) or 'plain'
-      ),
- 
-      /*array(
-              'name'  => 'Site percentile',
-              'time'  => 'fechaFalla',          // time column in the dataprovider
-              'type'  => 'arearange',
-              'data'  => array(
-              'Column1',      // specify an array of data options
-              'Column2',      // if you are using an area range charts
-            ),
-        ),*/
-      /*),
-      ),
-      'dataProvider' => $dataProvider,
-      ));*/
-?>
+<h1>Costo de mantenimiento por valor de reposición</h1>
+<i>*indica si conviene seguir realizando mantenimientos a una unidad o si es preferible reemplazarla por una nueva</i><br><br>
+<i style="float:left">Buscar vehiculo por #:</i><br>
+    <?php $model=new Vehiculo;
+    echo CHtml::dropDownList('vehiculos','id',CHtml::listData(Vehiculo::model()->findAll('activo=1'),'id','numeroUnidad'),array('prompt'=>'Seleccione ','style' => 'width:110px;float:left')); 
+    echo CHtml::button('Buscar',array("id"=>"boton","onclick"=>"actualizar($('#vehiculos').val());","style"=>"float:left;margin-top:2px;margin-left:10px;")); ?>
 </div>
- 
+<div id="panel1" class="crugepanel" style="display:none">
+<?php 
+  $this->widget('zii.widgets.CListView', array(
+    'dataProvider'=>$veh,
+    'emptyText'=>'Seleccione un vehiculo',
+    'summaryText'=>'',
+    'id'=>"listaVeh",
+    'itemView'=>'vehiculos',
+  ));
+$this->widget('zii.widgets.grid.CGridView', array(
+    'id'=>'det',
+    'dataProvider' => $rawData,
+    'summaryText'=>'',
+    //'afterAjaxUpdate' => 'js:function(id, data) {alert(id);}',
+    'columns' => array(
+      array(
+        'header'=>'Mtto. preventivo',
+        'name' => 'Preventivo',
+        'type' => 'raw',
+        'value' => 'CHtml::encode(number_format($data["Preventivo"], 2,",","."))',
+        'htmlOptions'=>array('style'=>'text-align:center;'),
+      ),
+      array(
+        'header'=>'Mtto. correctivo',           
+        'name' => 'Correctivo',
+        'type' => 'raw',
+        'value' => 'CHtml::encode(number_format($data["Correctivo"], 2,",","."))',
+        'htmlOptions'=>array('style'=>'text-align:center;'),
+      ),
+      array(
+        
+        'name' => 'Neumaticos',
+        'type' => 'raw',
+        'value' => 'CHtml::encode(number_format($data["Neumaticos"], 2,",","."))',
+        'htmlOptions'=>array('style'=>'text-align:center;'),
+      ),
+      array(
+        'name' => 'Combustible',
+        'type' => 'raw',
+        'value' => 'CHtml::encode(number_format($data["Combustible"], 2,",","."))',
+        'htmlOptions'=>array('style'=>'text-align:center;'),
+      ),
+      array(
+        'name' => 'Gasto totalizado Bs.',
+        'type' => 'raw',
+        'value' => 'CHtml::encode(number_format($data["Total"], 2,",","."))',
+        'htmlOptions'=>array('style'=>'text-align:center;'),
+      ),
+    ),
+  )); 
+?>
+<div style="float:left;width:180px;">
+<?php 
+echo "<b>Valor de reposición:</b>";?><br>
+<?php echo CHtml::textField('Text', '',
+ array('id'=>'reposicion', 
+       'width'=>100,
+       'style'=>'width:120px', 
+       'maxlength'=>100)); ?> Bs.<br>
+<?php echo CHtml::button('Calcular',array("id"=>"boton","onclick"=>"calcular($('#vehiculos').val());","style"=>"margin-top:2px;"));?>
+</div>
+<div id="resultado" style="display:none;float:left;width:80%;margin-top: 30px;">
+<span id="etiqueta" class="label label-success"></span><br><br>
+<i>Sí el resultado es mayor o igual a 100% se ha gastado más en mantenimiento que lo que vale la unidad nueva</i>
+</div>
+</div>
+<script>
+
+function actualizar(id){
+  if(id!="")
+    $("#panel1").show();
+  else
+    $("#panel1").hide();
+    $.fn.yiiListView.update('listaVeh',{ data : "idveh="+id});
+    $.fn.yiiGridView.update('det',{ data : "idveh="+id});
+}
+function calcular(id){
+
+  jQuery.ajax({
+                url: "<?php echo Yii::app()->baseUrl;?>"+"/indicadores/ind5/",
+                'data':"id="+id+"&valor="+$("#reposicion").val(),
+                'type':'post',
+                'dataType':'json',
+                'success':function(data){
+                $('#resultado').show();
+                    //$('#mi').removeClass($('#mi').attr('class')).addClass('badge badge-'+result.color+' pull-right');
+                    //$('#mi').text(result.total);
+                if(data.valor>=100)
+                  $('#etiqueta').removeClass($('#etiqueta').attr('class')).addClass('label label-warning'); 
+                else
+                  $('#etiqueta').addClass('label label-success'); 
+                      
+                  $("#etiqueta").text(data.valor+"%");
+                },
+                'cache':false});
+    return false;  
+}
+</script>
 

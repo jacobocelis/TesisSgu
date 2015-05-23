@@ -7,6 +7,7 @@ $this->breadcrumbs=array(
 	'Plantillas de montaje',
 );
 $this->menu=array(
+	
 	array('label'=>'<div id="menu"><strong>Neumáticos</strong></div>'),
 	array('label'=>'      Neumáticos actuales', 'url'=>array('neumaticos/index')),
 	array('label'=>'      Plantillas de montaje', 'url'=>array('neumaticos/plantilla')),
@@ -16,16 +17,12 @@ $this->menu=array(
 	array('label'=>'      Registro de averías', 'url'=>array('averiaNeumatico')),
 	
 	array('label'=>'      Averías por atender <span title="hay '.$totalFalla.' averías en neumaticos por atender" class="badge badge-'.$this->Color($totalFalla).' pull-right">'.$totalFalla.'</span>', 'url'=>array('neumaticos/listaAveriaNeumatico')),
-	
-	
 	array('label'=>'<div id="menu"><strong>Órdenes de neumaticos</strong></div>'),
 	
 	array('label'=>'      Crear órden de neumaticos', 'url'=>array('crearOrdenNeumaticos')),
 	array('label'=>'      Ver órdenes abiertas <span class="badge badge-'.$this->Color($abiertas).' pull-right">'.$abiertas.'</span>', 'url'=>array('verOrdenes')),
 	array('label'=>'      Órdenes listas para cerrar <span class="badge badge-'.$this->Color($listas).' pull-right">'.$listas.'</span>', 'url'=>array('cerrarOrdenes')),
 	
-	
-		
 	array('label'=>'<div id="menu"><strong>Historial</strong></div>'),
 	array('label'=>'      Histórico de averías', 'url'=>array('historicoAverias')),
 	array('label'=>'      Histórico de montajes', 'url'=>array('historicoMontajes')),

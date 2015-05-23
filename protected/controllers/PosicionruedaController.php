@@ -32,7 +32,7 @@ class PosicionruedaController extends Controller
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create','update','agregar'),
+				'actions'=>array('create','update','agregar','actualizar'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -54,6 +54,29 @@ class PosicionruedaController extends Controller
 		$this->render('view',array(
 			'model'=>$this->loadModel($id),
 		));
+	}
+	public function actionActualizar($id){
+		$model=$this->loadModel($id);
+		  
+		if(isset($_POST['Posicionrueda'])){
+				$model->attributes=$_POST['Posicionrueda'];
+				if($model->save()){
+					if (Yii::app()->request->isAjaxRequest){
+						echo CJSON::encode(array(
+							'status'=>'success', 
+							'div'=>"se actualizó el grupo"
+							));
+						exit;               
+					}
+				}
+			}
+			if (Yii::app()->request->isAjaxRequest){
+				echo CJSON::encode(array(
+					'status'=>'failure', 
+					'div'=>$this->renderPartial('_formPosicionRueda', array('model'=>$model), true)));
+				exit;               
+			}
+		 
 	}
 	public function actionAgregar(){
 		$model=new Posicionrueda;

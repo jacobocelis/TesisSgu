@@ -15,7 +15,7 @@
 	'enableAjaxValidation'=>false,
 )); ?>
 
-	<p class="note">Campo con <span class="required">*</span> obligatorios.</p>
+	
 
 
 	<div class="row">

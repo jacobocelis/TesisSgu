@@ -32,7 +32,7 @@ class ChasisController extends Controller
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create','update','agregar'),
+				'actions'=>array('create','update','agregar','actualizar'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -60,8 +60,30 @@ class ChasisController extends Controller
 	 * Creates a new model.
 	 * If creation is successful, the browser will be redirected to the 'view' page.
 	 */
-	 
-		public function actionAgregar(){
+	 public function actionActualizar($id){
+		$model=$this->loadModel($id);
+		  
+		if(isset($_POST['Chasis'])){
+				$model->attributes=$_POST['Chasis'];
+				if($model->save()){
+					if (Yii::app()->request->isAjaxRequest){
+						echo CJSON::encode(array(
+							'status'=>'success', 
+							'div'=>"se actualizó"
+							));
+						exit;               
+					}
+				}
+			}
+		if (Yii::app()->request->isAjaxRequest){
+			echo CJSON::encode(array(
+				'status'=>'failure', 
+				'div'=>$this->renderPartial('_formChasis', array('model'=>$model), true)));
+			exit;               
+		}
+	}
+	
+	public function actionAgregar(){
 		$model=new Chasis;
 		if(isset($_POST['Chasis'])){
             $model->attributes=$_POST['Chasis'];

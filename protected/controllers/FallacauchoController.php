@@ -32,7 +32,7 @@ class FallacauchoController extends Controller
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create','update'),
+				'actions'=>array('create','update','agregar','actualizar'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -60,6 +60,52 @@ class FallacauchoController extends Controller
 	 * Creates a new model.
 	 * If creation is successful, the browser will be redirected to the 'view' page.
 	 */
+	public function actionAgregar(){
+		$model=new Fallacaucho;
+		if(isset($_POST['Fallacaucho'])){
+            $model->attributes=$_POST['Fallacaucho'];
+            if($model->save()){
+                if (Yii::app()->request->isAjaxRequest){
+				  
+                    echo CJSON::encode(array(
+                        'status'=>'success', 
+                        'div'=>"registrado"
+                        ));
+					exit;
+                }
+            }
+        }
+		 if (Yii::app()->request->isAjaxRequest){	
+            echo CJSON::encode(array(
+                'status'=>'failure', 
+                'div'=>$this->renderPartial('_form', array('model'=>$model), true)
+				));
+            exit;               
+        }
+	}
+	public function actionActualizar($id){
+		$model=$this->loadModel($id);
+		  
+		if(isset($_POST['Fallacaucho'])){
+				$model->attributes=$_POST['Fallacaucho'];
+				if($model->save()){
+					if (Yii::app()->request->isAjaxRequest){
+						echo CJSON::encode(array(
+							'status'=>'success', 
+							'div'=>"se actualizó la falla"
+							));
+						exit;               
+					}
+				}
+			}
+			if (Yii::app()->request->isAjaxRequest){
+				echo CJSON::encode(array(
+					'status'=>'failure', 
+					'div'=>$this->renderPartial('_form', array('model'=>$model), true)));
+				exit;               
+			}
+		 
+	}
 	public function actionCreate()
 	{
 		$model=new Fallacaucho;

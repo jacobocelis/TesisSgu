@@ -32,7 +32,7 @@ class GrupoController extends Controller
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-	'actions'=>array('create','update','nuevoGrupo','ActualizarListaGrupo'),
+	'actions'=>array('create','update','nuevoGrupo','ActualizarListaGrupo','parametros','actualizar'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -83,21 +83,46 @@ class GrupoController extends Controller
         /*else
             $this->render('create',array('model'=>$model,));*/
 }
-        public function RegistrarGrupo(){
-                $model=new Grupo;
-                if(isset($_POST['Grupo'])){
-                        $model->attributes=$_POST['Grupo'];
-                if($model->save()){
-                    echo "Grupo registrado correctamente\n";
-                    return true;
-                }
-                else{
-                    echo "No se pudo registrar el grupo, verifique los datos ingresados";
-                    return false;
-                }
-            }
-        }
-        
+	public function actionActualizar($id){
+		$model=$this->loadModel($id);
+		  
+		if(isset($_POST['Grupo'])){
+				$model->attributes=$_POST['Grupo'];
+				if($model->save()){
+					if (Yii::app()->request->isAjaxRequest){
+						echo CJSON::encode(array(
+							'status'=>'success', 
+							'div'=>"se actualizó el grupo"
+							));
+						exit;               
+					}
+				}
+			}
+			if (Yii::app()->request->isAjaxRequest){
+				echo CJSON::encode(array(
+					'status'=>'failure', 
+					'div'=>$this->renderPartial('_form', array('model'=>$model), true)));
+				exit;               
+			}
+		 
+	}
+
+    public function actionParametros(){
+
+		$gridGrupo=new CActiveDataProvider('Grupo',array('criteria' => array(
+		'condition' =>"1",
+		'order'=>'id')));
+
+		$gridTipo=new CActiveDataProvider('Tipo',array('criteria' => array(
+		'condition' =>"1",
+		'order'=>'id')));
+		
+		$this->render('parametros',array(
+			'gridGrupo'=>$gridGrupo,
+			'gridTipo'=>$gridTipo,
+		));
+	}
+
 	public function actionNuevoGrupo(){
 		$model=new Grupo;
 		  

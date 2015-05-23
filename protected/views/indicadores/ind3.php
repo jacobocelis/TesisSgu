@@ -10,7 +10,7 @@ $this->menu=array(
 	array('label'=>'      Tiempo medio entre fallas', 'url'=>array('Indicadores/ind9')),
   array('label'=>'      Tiempo medio para reparaciones', 'url'=>array('Indicadores/ind10')),
   array('label'=>'      Disponibilidad de unidades', 'url'=>array('Indicadores/ind11')),
-  array('label'=>'      Costo de mtto por valor de reposición', 'url'=>array('Indicadores/ind12')),
+  array('label'=>'      Costo de mtto por valor de reposición', 'url'=>array('Indicadores/ind5')),
   array('label'=>'      % de incidentes por conductor', 'url'=>array('Indicadores/ind1')),
     array('label'=>'      % de incidentes por unidad', 'url'=>array('Indicadores/ind2')),
     array('label'=>'      Consumo de combustible por unidad', 'url'=>array('Indicadores/ind3')),
@@ -31,12 +31,12 @@ $this->Widget('ext.highcharts.HighchartsWidget', array(
 
    'options'=>array(
            'chart'=> array(
-          'options3d'=> array(
+          /*'options3d'=> array(
                 'enabled'=> true,
                 'alpha'=> 10,
                 'beta'=> 25,
                 'depth'=> 70
-            ),
+            ),*/
             'defaultSeriesType'=> 'column',
             //'zoomType'=> 'xyz',
         ),

@@ -18,10 +18,9 @@ $this->menu=array(
     array('label'=>'      Ver grupos', 'url'=>array('grupo/index')),
     array('label'=>'      Crear grupo', 'url'=>array('grupo/create')),
 
-    array('label'=>'<div id="menu"><strong>Administrar</strong></div>' , 'visible'=>'1'),
-    array('label'=>'      Parámetros y datos maestros', 'url'=>array('vehiculo/parametros')),
-
-);
+    array('label'=>'<div id="menu"><strong>Administrar datos maestros</strong></div>' , 'visible'=>'1'),
+    array('label'=>'      Vehiculos', 'url'=>array('vehiculo/parametros')),
+    array('label'=>'      Grupos', 'url'=>array('grupo/parametros')));
 ?>
 <div class='crugepanel'>
 <h1>Marcas y modelos</h1>
@@ -106,7 +105,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
                     "",
                     array(
                             \'style\'=>\'cursor: pointer;text-decoration: underline;text-align:center;\',
-                            \'onclick\'=>\'{agregar("\'.Yii::app()->createUrl("subtiporepuesto/actualizar",array("id"=>$data["id"])).\'");}\'
+                            \'onclick\'=>\'{agregar("/modelo/actualizar/\'.$data["id"].\'","modelo");}\'
                     )
                 );',),
                 array(
@@ -129,6 +128,112 @@ $this->widget('zii.widgets.grid.CGridView', array(
         'onclick'=>"{auxiliar('/modelo/nuevoModelo/','marca','modelo');}"));
 		?>	
 </div>
+</div>
+<div  class="crugepanel">
+<h1>Color</h1>
+<?php
+$this->widget('zii.widgets.grid.CGridView', array(
+                'id'=>'color',
+                'summaryText'=>'',
+                'selectableRows'=>1,
+                'template'=>"{items}\n{summary}\n{pager}",
+                'emptyText'=>'no hay colores registrados',
+                'dataProvider'=>$gridColor,
+                'htmlOptions'=>array('style'=>'font-size: 1.0em;cursor:pointer'),
+                'columns'=>array(
+                array(
+                    'header'=>'Color',
+                    'name'=>'color',
+                    //'value'=>'$data->idsubTipoRepuesto0->subTipo',
+                    'htmlOptions'=>array('style'=>'text-align:center;'),
+                ),
+ 
+                array(
+                    'headerHtmlOptions'=>array('style'=>'text-align:center;width:80px'),
+                    'htmlOptions'=>array('style'=>'text-align:center;'),
+                    'header'=>'Editar',
+                    'type'=>'raw',
+                    'value'=>'CHtml::link(
+                    CHtml::image(Yii::app()->request->baseUrl."/imagenes/agregar.png",
+                                      "Agregar",array("title"=>"Editar")),
+                    "",
+                    array(
+                            \'style\'=>\'cursor: pointer;text-decoration: underline;text-align:center;\',
+                            \'onclick\'=>\'{agregar("/color/actualizar/\'.$data["id"].\'","color");}\'
+                    )
+                );',),
+                array(
+                    'header'=>'Eliminar',
+                    'class'=>'CButtonColumn',
+                     'template'=>'{delete}',
+                         'buttons'=>array(
+                            'delete' => array(
+                                'url'=>'Yii::app()->createUrl("color/delete", array("id"=>$data->id))',
+                        ),
+                    ),
+                ),
+            )
+        ));
+?>
+<?php echo CHtml::link('Registrar color(+)', "",  // the link for open the dialog
+    array(
+        'id'=>'regColor',
+        'style'=>'cursor: pointer; text-decoration: underline;',
+        'onclick'=>"{agregar('/color/agregarColor/','color');}"));
+        ?>  
+</div>
+<div  class="crugepanel">
+<h1>Propiedad</h1>
+<?php
+$this->widget('zii.widgets.grid.CGridView', array(
+                'id'=>'propiedad',
+                'summaryText'=>'',
+                'selectableRows'=>1,
+                'template'=>"{items}\n{summary}\n{pager}",
+                'emptyText'=>'no hay registros',
+                'dataProvider'=>$gridPropiedad,
+                'htmlOptions'=>array('style'=>'font-size: 1.0em;cursor:pointer'),
+                'columns'=>array(
+                array(
+                    'header'=>'Propiedad',
+                    'name'=>'propiedad',
+                    //'value'=>'$data->idsubTipoRepuesto0->subTipo',
+                    'htmlOptions'=>array('style'=>'text-align:center;'),
+                ),
+ 
+                array(
+                    'headerHtmlOptions'=>array('style'=>'text-align:center;width:80px'),
+                    'htmlOptions'=>array('style'=>'text-align:center;'),
+                    'header'=>'Editar',
+                    'type'=>'raw',
+                    'value'=>'CHtml::link(
+                    CHtml::image(Yii::app()->request->baseUrl."/imagenes/agregar.png",
+                                      "Agregar",array("title"=>"Editar")),
+                    "",
+                    array(
+                            \'style\'=>\'cursor: pointer;text-decoration: underline;text-align:center;\',
+                            \'onclick\'=>\'{agregar("/propiedad/actualizar/\'.$data["id"].\'","propiedad");}\'
+                    )
+                );',),
+                array(
+                    'header'=>'Eliminar',
+                    'class'=>'CButtonColumn',
+                     'template'=>'{delete}',
+                         'buttons'=>array(
+                            'delete' => array(
+                                'url'=>'Yii::app()->createUrl("propiedad/delete", array("id"=>$data->id))',
+                        ),
+                    ),
+                ),
+            )
+        ));
+?>
+<?php echo CHtml::link('Registrar propiedad(+)', "",  // the link for open the dialog
+    array(
+        'id'=>'regPropiedad',
+        'style'=>'cursor: pointer; text-decoration: underline;',
+        'onclick'=>"{agregar('/propiedad/nuevaPropiedad/','propiedad');}"));
+        ?>  
 </div>
 <?php
 /*ventana agregar recurso*/

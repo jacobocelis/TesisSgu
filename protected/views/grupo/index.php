@@ -18,14 +18,16 @@ $this->menu=array(
 	array('label'=>'      Ver grupos', 'url'=>array('grupo/index')),
 	array('label'=>'      Crear grupo', 'url'=>array('grupo/create')),
 
-	array('label'=>'<div id="menu"><strong>Administrar</strong></div>' , 'visible'=>'1'),
-	array('label'=>'      Parámetros y datos maestros', 'url'=>array('vehiculo/parametros')),
+	array('label'=>'<div id="menu"><strong>Administrar datos maestros</strong></div>' , 'visible'=>'1'),
+	array('label'=>'      Vehiculos', 'url'=>array('vehiculo/parametros')),
+	array('label'=>'      Grupos', 'url'=>array('grupo/parametros')),
 );
 ?>
-
+<div class="crugepanel">
 <h1>Grupos</h1>
 
 <?php $this->widget('zii.widgets.CListView', array(
 	'dataProvider'=>$dataProvider,
 	'itemView'=>'_view',
 )); ?>
+</div>

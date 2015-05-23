@@ -28,12 +28,11 @@ class Piso extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('id, piso', 'required'),
-			array('id', 'numerical', 'integerOnly'=>true),
+			array('piso', 'required'),
 			array('piso', 'length', 'max'=>45),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, piso', 'safe', 'on'=>'search'),
+			array('piso', 'safe', 'on'=>'search'),
 		);
 	}
 

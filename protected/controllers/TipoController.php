@@ -32,7 +32,7 @@ class TipoController extends Controller
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create','update','nuevoTipo','actualizarListaTipo'),
+				'actions'=>array('create','update','nuevoTipo','actualizarListaTipo','actualizar'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -49,6 +49,29 @@ class TipoController extends Controller
 	 * Displays a particular model.
 	 * @param integer $id the ID of the model to be displayed
 	 */
+	public function actionActualizar($id){
+		$model=$this->loadModel($id);
+		  
+		if(isset($_POST['Tipo'])){
+				$model->attributes=$_POST['Tipo'];
+				if($model->save()){
+					if (Yii::app()->request->isAjaxRequest){
+						echo CJSON::encode(array(
+							'status'=>'success', 
+							'div'=>"se actualizó el tipo"
+							));
+						exit;               
+					}
+				}
+			}
+			if (Yii::app()->request->isAjaxRequest){
+				echo CJSON::encode(array(
+					'status'=>'failure', 
+					'div'=>$this->renderPartial('_form', array('model'=>$model), true)));
+				exit;               
+			}
+		 
+	}
 	 public function actionNuevoTipo(){
 					$model=new Tipo;
 		  

@@ -296,7 +296,7 @@ ul, ol {
 	array('label'=>'      Repuestos y partes', 'url'=>array('repuesto/index')),
 	array('label'=>'      Registrar repuesto', 'url'=>array('repuesto/create')),
 	array('label'=>'      Asignación de repuestos', 'url'=>array('repuesto/AsignarPiezaGrupo')),
-	array('label'=>'      Registrar repuestos iniciales <span class="badge badge- pull-right">0</span>', 'url'=>array('repuesto/iniciales/')),
+	array('label'=>'      Registrar repuestos iniciales '.$total.'', 'url'=>array('repuesto/iniciales/')),
 	
 	array('label'=>'<div id="menu"><strong>Histórial</strong></div>' , 'visible'=>'1'),
 	array('label'=>'      Histórico de repuestos', 'url'=>array('repuesto/historico')),
@@ -526,6 +526,7 @@ $("#listaRep").hide();
 				i++;
 			}
 		}
+		actualizarSpan();
 	}
 	<?php /* a cada LI del div de roles le anexa un evento click y le pone un cursor */ ?>
 	//$('#_lista2').find('input[type=text],textarea,select').filter(':visible:first').attr('placeholder', 'Búsqueda..');
@@ -680,6 +681,16 @@ function addDetalle(_url){
                 'cache':false});
         return false;
 }
-
+function actualizarSpan(){
+	var dir="<?php echo Yii::app()->baseUrl;?>"+"/repuesto/actualizarSpan";
+	$.ajax({
+		url: dir,
+		'data':$(this).serialize(),
+        'dataType':'json',
+         'success':function( result ) {
+    	     $('#ini').removeClass($('#ini').attr('class')).addClass('badge badge-'+result.color+' pull-right');
+			 $('#ini').text(result.total);
+		},});
+}
 </script>
 

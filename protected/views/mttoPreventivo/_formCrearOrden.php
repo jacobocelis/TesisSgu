@@ -22,7 +22,7 @@
 		
 		<?php echo $form->hiddenField($model,'tipo',array('value'=>0)); ?>
 		<?php 
-		$models = Empleado::model()->findAll('idtipoEmpleado=2');
+		$models = Empleado::model()->findAll('idtipoEmpleado=2  and activo=1');
 		$data = array();
 		foreach ($models as $mode)
 			$data[$mode->id] = $mode->nombre . ' '. $mode->apellido;  ?>
@@ -33,7 +33,7 @@
 		<?php echo $form->error($model,'cOperativo'); ?>
 	</div>
 	<?php 
-		$models = Empleado::model()->findAll("idtipoEmpleado=3");
+		$models = Empleado::model()->findAll("idtipoEmpleado=3 and activo=1");
 		$datac		= array();
 		foreach ($models as $mode)
 			$datac[$mode->id] = $mode->nombre . ' '. $mode->apellido;  ?>

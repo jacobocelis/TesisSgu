@@ -32,7 +32,7 @@ class RecursocauchoController extends Controller
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create','update'),
+				'actions'=>array('create','update','agregar','actualizar'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -61,7 +61,52 @@ class RecursocauchoController extends Controller
 	 * If creation is successful, the browser will be redirected to the 'view' page.
 	 */
 	 
-
+	public function actionAgregar(){
+		$model=new Recursocaucho;
+		if(isset($_POST['Recursocaucho'])){
+            $model->attributes=$_POST['Recursocaucho'];
+            if($model->save()){
+                if (Yii::app()->request->isAjaxRequest){
+				  
+                    echo CJSON::encode(array(
+                        'status'=>'success', 
+                        'div'=>"registrado"
+                        ));
+					exit;
+                }
+            }
+        }
+		 if (Yii::app()->request->isAjaxRequest){	
+            echo CJSON::encode(array(
+                'status'=>'failure', 
+                'div'=>$this->renderPartial('_formNuevoRec', array('model'=>$model), true)
+				));
+            exit;               
+        }
+	}
+	public function actionActualizar($id){
+		$model=$this->loadModel($id);
+		  
+		if(isset($_POST['Recursocaucho'])){
+				$model->attributes=$_POST['Recursocaucho'];
+				if($model->save()){
+					if (Yii::app()->request->isAjaxRequest){
+						echo CJSON::encode(array(
+							'status'=>'success', 
+							'div'=>"se actualizó el piso"
+							));
+						exit;               
+					}
+				}
+			}
+			if (Yii::app()->request->isAjaxRequest){
+				echo CJSON::encode(array(
+					'status'=>'failure', 
+					'div'=>$this->renderPartial('_formNuevoRec', array('model'=>$model), true)));
+				exit;               
+			}
+		 
+	}
 	
 	public function actionCreate()
 	{

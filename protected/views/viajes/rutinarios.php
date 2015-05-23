@@ -18,7 +18,7 @@ $this->menu=array(
 	array('label'=>'      Histórico de viajes especiales', 'url'=>array('viajes/historicoEspeciales')),
 	array('label'=>'      Histórico de conductores', 'url'=>array('empleados/historicoConductores')),
 	array('label'=>'<div id="menu"><strong>Administrar</strong></div>' , 'visible'=>'1'),
-	array('label'=>'      Parámetros y datos maestros', 'url'=>array('mttoPreventivo/parametros')),
+	array('label'=>'      Parámetros y datos maestros', 'url'=>array('viajes/parametros')),
 	array('label'=>'      Gestión de conductores', 'url'=>array('empleados/conductores')),
 );
 ?>

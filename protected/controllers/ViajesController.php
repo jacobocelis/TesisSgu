@@ -31,7 +31,7 @@ class ViajesController extends Controller
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create','update','agregarViajeRutinario','agregarViajeEspecial','rutinarios','ultimosViajes','especiales','formAgregarEspecial','agregarRutaNueva','actualizarSpan','validarRuta','puestos','insumos','repuesto','validarRutaNormal','actualizarListaConductor','historicoRutinarios','historicoEspeciales','ActualizarListaLugar'),
+				'actions'=>array('create','update','agregarViajeRutinario','agregarViajeEspecial','rutinarios','ultimosViajes','especiales','formAgregarEspecial','agregarRutaNueva','actualizarSpan','validarRuta','puestos','insumos','repuesto','validarRutaNormal','actualizarListaConductor','historicoRutinarios','historicoEspeciales','ActualizarListaLugar','parametros'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -43,7 +43,26 @@ class ViajesController extends Controller
 			),
 		);
 	}
-public function actionActualizarSpan(){
+	public function actionParametros(){
+		$idestado=0;
+
+		$gridEstados=new CActiveDataProvider('Estados',array('criteria' => array(
+		'condition' =>"1",
+		'order'=>'id')));
+
+		if(isset($_GET["idestado"]))
+			$idestado=$_GET["idestado"];
+
+		$gridLugar=new CActiveDataProvider('Lugar',array('criteria' => array(
+		'condition' =>"idestados='".$idestado."'",
+		'order'=>'id')));
+
+		$this->render('parametros',array(
+			'gridLugar'=>$gridLugar,
+			'gridEstados'=>$gridEstados,
+		));
+	}
+	public function actionActualizarSpan(){
 		$tot=Yii::app()->db->createCommand("select count(*) as total from sgu_historicoViajes hv, sgu_viaje v where hv.idviaje=v.id and v.idtipo=1 and date(fechaSalida)<>date(now())")->queryRow();
 		echo CJSON::encode(array(
 			'total'=>$tot["total"],

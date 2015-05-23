@@ -324,9 +324,19 @@ class VehiculoController extends Controller
 		'condition' =>"idMarca='".$idmarca."'",
 		'order'=>'id')));
 
+		$gridColor=new CActiveDataProvider('Color',array('criteria' => array(
+		'condition' =>"1",
+		'order'=>'id')));
+
+		$gridPropiedad=new CActiveDataProvider('Propiedad',array('criteria' => array(
+		'condition' =>"1",
+		'order'=>'id')));
+		
 		$this->render('parametros',array(
 			'gridMarca'=>$gridMarca,
-			'gridModelo'=>$gridModelo
+			'gridModelo'=>$gridModelo,
+			'gridColor'=>$gridColor,
+			'gridPropiedad'=>$gridPropiedad,
 		));
 	}
 	/**

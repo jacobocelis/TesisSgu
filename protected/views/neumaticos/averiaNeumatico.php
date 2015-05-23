@@ -66,8 +66,6 @@ $this->menu=array(
 	array('label'=>'      Ver órdenes abiertas <span class="badge badge-'.$this->Color($abiertas).' pull-right">'.$abiertas.'</span>', 'url'=>array('verOrdenes')),
 	array('label'=>'      Órdenes listas para cerrar <span class="badge badge-'.$this->Color($listas).' pull-right">'.$listas.'</span>', 'url'=>array('cerrarOrdenes')),
 	
-	
-		
 	array('label'=>'<div id="menu"><strong>Historial</strong></div>'),
 	array('label'=>'      Histórico de averías', 'url'=>array('historicoAverias')),
 	array('label'=>'      Histórico de montajes', 'url'=>array('historicoMontajes')),

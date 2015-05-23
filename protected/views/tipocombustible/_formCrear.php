@@ -15,7 +15,7 @@
 	'enableAjaxValidation'=>false,
 )); ?>
 
-	<p class="note">Campos con <span class="required">*</span> obligatorios.</p>
+	
 
 	<div class="row">
 		<?php echo $form->labelEx($model,'combustible'); ?>

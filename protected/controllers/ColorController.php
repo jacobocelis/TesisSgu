@@ -32,7 +32,7 @@ class ColorController extends Controller
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create','update','ActualizarListaColor','agregarColor'),
+				'actions'=>array('create','update','ActualizarListaColor','agregarColor','actualizar'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -102,6 +102,29 @@ class ColorController extends Controller
 			/*else
 				$this->render('create',array('model'=>$model,));*/
 		}
+
+		public function actionActualizar($id){
+		$model=$this->loadModel($id);
+		if(isset($_POST['Color'])){
+				$model->attributes=$_POST['Color'];
+				if($model->save()){
+					if (Yii::app()->request->isAjaxRequest){
+						echo CJSON::encode(array(
+							'status'=>'success', 
+							'div'=>"se actualizó el color"
+							));
+						exit;               
+					}
+				}
+			}
+			if (Yii::app()->request->isAjaxRequest){
+				echo CJSON::encode(array(
+					'status'=>'failure', 
+					'div'=>$this->renderPartial('_form', array('model'=>$model), true)));
+				exit;               
+			}
+		 
+	}
 		public function actionActualizarListaColor(){
 	
 			$lista=Color::model()->findAll('1 order by id desc');

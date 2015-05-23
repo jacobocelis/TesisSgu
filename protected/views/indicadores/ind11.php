@@ -9,8 +9,8 @@ $this->menu=array(
 	array('label'=>'<div id="menu"><strong>Indicadores y reportes</strong></div>' , 'visible'=>'1'),
 	array('label'=>'      Tiempo medio entre fallas', 'url'=>array('Indicadores/ind9')),
   array('label'=>'      Tiempo medio para reparaciones', 'url'=>array('Indicadores/ind10')),
-  array('label'=>'      Disponibilidad de unidades', 'url'=>array('Indicadores/ind11')),
-  array('label'=>'      Costo de mtto por valor de reposición', 'url'=>array('Indicadores/ind12')),
+  array('label'=>'      Disponibilidad por unidad', 'url'=>array('Indicadores/ind11')),
+  array('label'=>'      Costo de mtto por valor de reposición', 'url'=>array('Indicadores/ind5')),
   array('label'=>'      % de incidentes por conductor', 'url'=>array('Indicadores/ind1')),
   array('label'=>'      % de incidentes por unidad', 'url'=>array('Indicadores/ind2')),
   array('label'=>'      Consumo de combustible por unidad', 'url'=>array('Indicadores/ind3')),
@@ -23,7 +23,7 @@ $this->menu=array(
 ?>
 <div class="crugepanel">
 <?php
-//print_r($var);
+//print_r($filas);
 $this->Widget('ext.highcharts.HighchartsWidget', array(
         'scripts' => array(
         'modules/exporting',
@@ -34,7 +34,7 @@ $this->Widget('ext.highcharts.HighchartsWidget', array(
            'chart'=> array(
  
             'defaultSeriesType'=> 'column',
-            //'zoomType'=> 'xyz',
+            'zoomType'=> 'xy',
         ),
             'lang'=>array(  
                 'loading'=> 'Cargando...',  
@@ -54,19 +54,21 @@ $this->Widget('ext.highcharts.HighchartsWidget', array(
                 'thousandsSep'=> ",",  
                 'decimalPoint'=> '.'  
             ),
-        'title' => array('text' => 'Disponibilidad de unidades mensual'),
+        'title' => array('text' => 'Disponibilidad por unidad mensual'),
         'credits'=> array(
             'enabled'=> false
         ),
         'tooltip'=> array(
-            'pointFormat'=> '<b> {point.y:.2f} %</b>'
+            'pointFormat'=> '<b> {point.y:.1f} %</b>'
         ),
         'yAxis'=> array(
            //'endOnTick'=>false,
            //'tickInterval'=>1,
         array( // Primary yAxis
-          'min'=>0,
-          //'max'=>31,
+          //'min'=>1,
+           'allowDecimals'=> false,
+            'min'=>0,
+            'max'=>100,
             'labels'=> array(
                 'format'=> '{value}%',
             ),
@@ -82,7 +84,7 @@ $this->Widget('ext.highcharts.HighchartsWidget', array(
               ),
             'categories'=> $mes,
             'tickmarkPlacement'=> 'on',
-             'min'=> 5, 
+             'min'=> $filas, 
         ), /*array(
             'linkedTo'=> 0,
             'categories'=> $mes,

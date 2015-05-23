@@ -23,7 +23,16 @@ class CaracteristicaVeh extends CActiveRecord
 	{
 		return 'sgu_CaracteristicaVeh';
 	}
-
+	public function tieneIniciales(){
+		$tiene=0;
+		$cantidad=Cantidad::model()->findAll('idCaracteristicaVeh="'.$this->id.'"');
+		foreach ($cantidad as $val) {
+			if($val["estado"]==0){
+				$tiene=1;	
+			}
+		}
+		return $tiene;
+	}
 	/**
 	 * @return array validation rules for model attributes.
 	 */
