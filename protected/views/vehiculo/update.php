@@ -4,7 +4,7 @@
 
 $this->breadcrumbs=array(
 	'Vehiculos'=>array('index'),
-	'Unidad '.$model->id=>array('view','id'=>$model->id),
+	'Unidad '.$model->numeroUnidad=>array('view','id'=>$model->id),
 	'Editar',
 );
 

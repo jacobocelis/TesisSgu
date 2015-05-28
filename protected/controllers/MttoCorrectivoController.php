@@ -199,7 +199,7 @@ class MttoCorrectivoController extends Controller
 				)));
 			}
 		}
-		$totFactura=Yii::app()->db->createCommand('select (round(sum(ar.costoTotal),2)) as Total from sgu_recursoFalla ar, sgu_detalleordenCo d where d.idreporteFalla=ar.idreporteFalla and d.idordenMtto="'.$id.'"')->queryRow();
+		$totFactura=Yii::app()->db->createCommand('select (round(sum(ar.costoTotal),2)) as Total from sgu_recursoFalla ar, sgu_detalleOrdenCo d where d.idreporteFalla=ar.idreporteFalla and d.idordenMtto="'.$id.'"')->queryRow();
 		
 
 		$factura=new CActiveDataProvider('Factura',array('criteria' => array(

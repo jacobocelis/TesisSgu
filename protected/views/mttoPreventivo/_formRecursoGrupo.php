@@ -90,6 +90,14 @@
 
 </div><!-- form -->
 <script>
+$("#panelBuscar").show();
+/*
+if($("#Actividadrecurso_idrepuesto").val()!="")
+$("#garantia").show();*/
+$( "#buscador" ).focusout(function() {
+    $( "#buscador" ).val('');
+  });
+  
 var iden=$('#Tipoinsumo_tipo option:selected').val();
 	validarInsumo(iden);
 

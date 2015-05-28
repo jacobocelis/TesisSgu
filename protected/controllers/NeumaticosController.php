@@ -433,12 +433,12 @@ class NeumaticosController extends Controller
 			 $model->attributes=$_POST['Historicocaucho'];
 			 $model->fecha=date("Y-m-d", strtotime(str_replace('/', '-',$model->fecha)));
 
-			if($model->save()){
+			if($model->save(false)){
 				if($model->iddetalleRueda=="")
 					$model->idestatusCaucho=4;
 				else
 					$model->idestatusCaucho=1;
-				$model->update();
+				$model->update(false);
                 if (Yii::app()->request->isAjaxRequest){
                     echo CJSON::encode(array(
                         'status'=>'success', 

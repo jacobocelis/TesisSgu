@@ -103,7 +103,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
 					'type'=>'raw',
 					'headerHtmlOptions'=>array('style'=>'width:7%;text-align:left;background:#F3FDA4'),
 					'header'=>'Vehiculo',
-					'value'=>'\'<strong>Unidad: </strong> #0\'.$data->numeroUnidad.\' \'.$data->idmodelo0->idmarca0->marca.\'  \'.$data->idmodelo0->modelo.\' \'.$data->anno.\' \'.$data->idcolor0->color',
+					'value'=>'\'<strong>Unidad: </strong> #\'.$data->numeroUnidad.\' \'.$data->idmodelo0->idmarca0->marca.\'  \'.$data->idmodelo0->modelo.\' \'.$data->anno.\' \'.$data->idcolor0->color',
 					'htmlOptions'=>array('style'=>'text-align:left;width:100px;background:#F3FDA4'
 				),
 			),

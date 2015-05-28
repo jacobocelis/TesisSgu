@@ -161,6 +161,7 @@ public function actionCreate()
 			
 			$model->attributes=$_POST['Foto'];
 			//if($model->validate())
+			//file_put_contents("borrar.txt", $_POST['Foto']);
 			$model->imagen=base64_encode(file_get_contents(CUploadedFile::getInstance($model,'imagen')->tempName));	
 			if($model->save())
 				$this->redirect(array('/foto/index','id'=>$_POST['Foto']['idvehiculo']));

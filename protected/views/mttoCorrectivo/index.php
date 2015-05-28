@@ -33,13 +33,13 @@ $this->menu=array(
 
 ?>
 <div class='crugepanel user-assignments-role-list'>
-<h1>Incidentes reportados en vehiculos</h1>
+<h1>Incidentes reportados</h1>
 <div id="filtro">
 <select id="lista" >
 			<option value="1">Por atender</option>
 			<option value="2">En progreso</option>
 			<option value="3">Ejecutados</option>
-			<option value="3">Todos</option>
+			<option value="4">Todos</option>
 		</select>
 </div>
 <?php
@@ -130,19 +130,7 @@ select {
     background-color: #FFF;
     border: 1px solid #CCC;
 }
-#menu{
-	font-size:15px;
-
-}
-.crugepanel {
-    background-color: #FFF;
-    border: 1px dotted #AAA;
-    border-radius: 1px;
-    box-shadow: 3px 3px 5px #EEE;
-    display: block;
-    margin-top: 10px;
-    padding: 10px;
-}
+ 
 
 .rojo{
 background: none repeat scroll 0% 0% #FFD6D6;

@@ -574,6 +574,7 @@ class MttoPreventivoController extends Controller
 			'condition' =>'idestatus=2',
 			'order'=>'proximoFecha'
 			)));
+		$dataProvider->setPagination(false);
 		$this->render('crearOrdenPreventiva',array(
 			'dataProvider'=>$dataProvider,
 			'mi'=>$this->getIniciales(),
@@ -1177,6 +1178,8 @@ class MttoPreventivoController extends Controller
 	}
 	public function actionRepuesto($id){
 			$lista2=Repuesto::model()->findAll('idsubTipoRepuesto = :id order by repuesto asc',array(':id'=>$id));
+			if(isset($_GET["rep"]))
+				$lista2=Repuesto::model()->findAll('idsubTipoRepuesto = :id order by repuesto = :rep desc',array(':id'=>$id,':rep'=>$_GET["rep"]));
 			foreach($lista2 as $li){
 				echo CHtml::tag('option',array('type'=>'text','value'=>(($li->id))),Chtml::encode(($li->repuesto)),true);
 			}

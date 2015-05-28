@@ -540,6 +540,41 @@ $this->beginWidget('zii.widgets.jui.CJuiDialog', array( // the dialog
 		'resizable'=>false
     ),
 ));?>
+<div id="panelBuscar" style="float:left;width:100%;display:none">
+<i><b style="float:left;">Buscar recurso: </b></i>
+<?php
+$this->widget('ext.myAutoComplete.myAutoComplete',array(
+    'name'=>'ajaxrequest',
+	'id'=>'buscador',
+    // additional javascript options for the autocomplete plugin
+    'options'=>array(
+        'minLength'=>'1',
+        'showAnim'=>'fold',
+        'open'=> 'js:function(e, ui) {
+        	/*$(".ui-menu-item").css("top", $("ul.ui-autocomplete").cssUnit("top")[0] + 4);
+        	$(".ui-menu-item").css("left", $("ul.ui-autocomplete").cssUnit("left")[0] - 2);
+        	$(".ui-menu-item").append("<div><span>2,000</span> results found, showing <span>10</span></div>");*/
+
+        }',
+       'select'=>"js:function(event, ui) { 
+        	Filtrar(ui.item.id,ui.item.tipo);
+       }"
+    ),
+    'source'=>$this->createUrl("vehiculo/buscarRecurso"),
+    'htmlOptions'=>array(
+        'style'=>'width:300px;float:left',
+		'placeholder'=>"Ejemplo: Aceite",
+    ),
+    'methodChain'=>'.data( "autocomplete" )._renderItem = function( ul, item ) {
+      return $( "<li>" )
+        .append( "<a><b>" + item.label + "</b><br>" + item.desc + "</a>" )
+        .appendTo( ul );
+	};'
+
+));
+?>
+
+</div><br>
 <div class="divForForm"></div>
  
 <?php $this->endWidget();?>
@@ -561,7 +596,6 @@ $this->beginWidget('zii.widgets.jui.CJuiDialog', array( // the dialog
 <?php $this->endWidget();?>
 
 <script>
- 
 var idAct;
 $('#recur').hide();
 cargar();
@@ -612,6 +646,8 @@ idAct=id;
 	$('#recur').show();
 	$.fn.yiiGridView.update('rec',{ data : "idAct="+id});
 	$("#dialog3").dialog("open");
+	//return false;
+	
 }
 var Uurl;
 var idfac=<?php echo $idfac?>;
@@ -771,6 +807,7 @@ $('#recurso').dialog('open');
                                 }
                                 else{
                                         $('#recurso div.divForForm').html(data.div);
+                                        $("#panelBuscar").hide();
                                         setTimeout("$('#recurso').dialog('close') ",1000);
                                         $.fn.yiiGridView.update('rec');
                                         $.fn.yiiGridView.update('factu');
@@ -862,4 +899,35 @@ function nuevoServicio(){
                 'cache':false});
     return false; 
 }
+function Filtrar(idrecurso,idtipo){
+
+	jQuery.ajax({
+        url: "<?php echo Yii::app()->baseUrl;?>"+"/vehiculo/seleccionarRecurso",
+        'data':$(this).serialize()+"&idrecurso="+idrecurso+"&idtipo="+idtipo,
+        'type':'post',
+        'dataType':'json',
+        'success':function(data){
+        		if(data.idTipo==1){
+        			$("#lista").val(data.idTipo).change();
+        			$("#Tipoinsumo_tipo").val(data.idTipoIns).change();
+					setTimeout(function(){ $("#_idinsumo").val(data.idInsumo).change(); }, 300);
+
+        		}
+        		if(data.idTipo==2){
+        			$("#lista").val(data.idTipo).change();
+        			$("#Subtiporepuesto_subTipo").val(data.idSubTipo).change();
+        			setTimeout(function(){ $("#_idrepuesto").val(data.idRepuesto).change(); }, 300);
+        			
+        		}
+        		if(data.idTipo==3){
+        			$("#lista").val(data.idTipo).change();
+        			$("#_idservicio").val(data.idServicio);
+        		}          
+        },
+                'cache':false});
+    return false; 
+}
 </script>
+<style>
+.ui-autocomplete { height: 130px; overflow-y: scroll; overflow-x: hidden;}
+</style>

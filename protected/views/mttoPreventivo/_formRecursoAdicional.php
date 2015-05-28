@@ -15,11 +15,9 @@
 	'enableAjaxValidation'=>false,
 )); ?>
 
-	<p class="note">Campos con <span class="required">*</span> obligatorios.</p>
-
 	<div class="row">
 		<?php echo $form->labelEx($model,'Tipo de recurso: ',array("style"=>"width:130px")); ?>
-		<select id="lista" >
+		<select id="lista" style="width:120px">
 			<option value="1">Insumo</option>
 			<option value="2">Repuesto</option>
 			<option value="3">Servicio</option>
@@ -63,6 +61,7 @@
 	
 	<div id="nuevoRepuesto"></div>
 	
+
 	<div id="restoFormRecurso">
 	<div class="row">
 		<?php echo $form->labelEx($model,'cantidad',array("style"=>"width:130px")); ?>
@@ -109,18 +108,18 @@
 
 </div><!-- form -->
 <script>
-/*$("#garantia").hide();
+$("#panelBuscar").show();
+/*
 if($("#Actividadrecurso_idrepuesto").val()!="")
 $("#garantia").show();*/
-
+$( "#buscador" ).focusout(function() {
+    $( "#buscador" ).val('');
+  });
    var iden=$('#Tipoinsumo_tipo option:selected').val();
 	validarInsumo(iden);
 
 	var idrep=$('#Subtiporepuesto_subTipo option:selected').val();
 	validarRepuesto(idrep); 
-
-
-
 
 $("#actividadrecurso-form").submit(function(event){
 	event.preventDefault();

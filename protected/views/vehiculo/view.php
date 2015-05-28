@@ -5,7 +5,7 @@
 
 $this->breadcrumbs=array(
 	'Vehiculos'=>array('index'),
-	"Unidad ".$model->id,
+	"Unidad ".$model->numeroUnidad,
 );
 $this->menu=array(
 	array('label'=>'<div id="menu"><strong>Opciones de vehiculo</strong></div>' , 'visible'=>'1'),

@@ -97,6 +97,11 @@
 
 </div><!-- form -->
 <script>
+$("#panelBuscar").show();
+$( "#buscador" ).focusout(function() {
+    $( "#buscador" ).val('');
+  });
+
 $("#recursofalla-form").submit(function(event){
 	event.preventDefault();
 	total();

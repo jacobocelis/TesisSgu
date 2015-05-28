@@ -28,11 +28,11 @@ class VehiculoController extends Controller
 	{
 		return array(
 			array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array('index','view','detallePieza','fotos','Selectdos','Getdatos','buscarRepuesto','parametros'),
+				'actions'=>array('index','view','detallePieza','fotos','Selectdos','Getdatos','buscarRepuesto','parametros','buscarRecurso'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create','update','Desincorporar','historico','detalleHistorico','RegistrarVehiculo'),
+				'actions'=>array('create','update','Desincorporar','historico','detalleHistorico','RegistrarVehiculo','seleccionarRecurso'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -90,7 +90,81 @@ class VehiculoController extends Controller
             ));
 	}*/
 
-
+	public function actionBuscarRecurso(){
+			$request=trim($_GET['term']);
+			if($request!=''){
+				$insumo=Insumo::model()->findAll(array("condition"=>"insumo like '%$request%'"));
+				$repuesto=Repuesto::model()->findAll(array("condition"=>"repuesto like '%$request%'"));
+				$servicio=Servicio::model()->findAll(array("condition"=>"servicio like '%$request%'"));
+				$data=array();
+				foreach($insumo as $get){
+					$model=Tipoinsumo::model()->findByPk($get->tipoInsumo);
+					$data[]=array(
+						'id'=>$get->id,
+						'label'=>$get->insumo,
+						'value'=>$get->insumo,
+						'desc'=>'Tipo: Insumo->'.$model->tipo,
+						'tipo'=>1,
+					);
+				}
+				foreach($repuesto as $get){
+					$sub=Subtiporepuesto::model()->findByPk($get->idsubTipoRepuesto);
+					$tip=Tiporepuesto::model()->findByPk($sub->idTipoRepuesto); 
+					$data[]=array(
+						'id'=>$get->id,
+						'label'=>$get->repuesto,
+						'value'=>$get->repuesto,
+						'desc'=>'Tipo: Repuesto->'.$tip->tipo.'->'.$sub->subTipo,
+						'tipo'=>2,
+					);
+				}
+				foreach($servicio as $get){
+					$data[]=array(
+						'id'=>$get->id,
+						'label'=>$get->servicio,
+						'value'=>$get->servicio,
+						'desc'=>'Tipo: Servicio',
+						'tipo'=>3,
+					);
+				}
+				//$this->layout='empty';
+				echo json_encode($data);
+			}
+	}
+	public function actionSeleccionarRecurso(){
+		if(isset($_POST["idtipo"])){
+			if($_POST["idtipo"]==1){
+				$ins=Insumo::model()->findByPk($_POST["idrecurso"]);
+				$tipoInsumo=Subtiporepuesto::model()->findByPk($ins->tipoInsumo);
+				
+				echo CJSON::encode(array(
+	                'idTipo'=>$_POST["idtipo"],
+	                'idTipoIns'=>$tipoInsumo->id, 
+	                'idInsumo'=>$_POST["idrecurso"],
+	            ));
+            		exit;    
+			}
+			if($_POST["idtipo"]==2){
+				$rep=Repuesto::model()->findByPk($_POST["idrecurso"]);
+				$sub=Subtiporepuesto::model()->findByPk($rep->idsubTipoRepuesto);
+				$tipo=Tiporepuesto::model()->findByPk($sub->idTipoRepuesto);
+				echo CJSON::encode(array(
+	                'idTipo'=>$_POST["idtipo"], 
+	                'idTipoRep'=>$tipo->id, 
+	                'idSubTipo'=>$sub->id, 
+	                'idRepuesto'=>$rep->id,
+	            ));
+            		exit; 
+			}
+			if($_POST["idtipo"]==3){
+				echo CJSON::encode(array(
+	                'idTipo'=>$_POST["idtipo"], 
+	                'idServicio'=>$_POST["idrecurso"],
+	            ));
+            		exit; 
+			}
+		}
+	}
 	public function actiondetallePieza($id){ 
 	if (isset($_GET['idetalle'])){ 
 			$idetalle=$_GET['idetalle'];
@@ -99,21 +173,21 @@ class VehiculoController extends Controller
 		}
 		
 	$var=new CActiveDataProvider('CaracteristicaVeh',array(
-                    'criteria'=>array(
-					  'select' => 'max(t.id) as id, t.cantidad, t.idvehiculo, t.idrepuesto' ,
-                      'condition'=>'t.idvehiculo=0',
-					  'group'=>'t.idvehiculo, t.idrepuesto')));
+        'criteria'=>array(
+		  'select' => 'max(t.id) as id, t.cantidad, t.idvehiculo, t.idrepuesto' ,
+          'condition'=>'t.idvehiculo=0',
+		  'group'=>'t.idvehiculo, t.idrepuesto')));
 					  
 	$dataProvider=new CActiveDataProvider('CaracteristicaVeh',array(
-                    'criteria'=>array(
-					  /*'select' => 'max(t.id) as id, t.cantidad, t.idvehiculo, t.idrepuesto' ,*/
-                      'condition'=>'t.idrepuesto in (select id from sgu_repuesto order by idsubTipoRepuesto ASC ) and t.idvehiculo="'.$id.'"',
-					  /*'group'=>'t.idvehiculo, t.idrepuesto',*/
-                  ),
-				  'pagination'=>array(
-					'pageSize'=>9999,
-					),
-                    ));
+        'criteria'=>array(
+		  /*'select' => 'max(t.id) as id, t.cantidad, t.idvehiculo, t.idrepuesto' ,*/
+          'condition'=>'t.idrepuesto in (select id from sgu_repuesto order by idsubTipoRepuesto ASC ) and t.idvehiculo="'.$id.'"',
+		  /*'group'=>'t.idvehiculo, t.idrepuesto',*/
+      ),
+	  'pagination'=>array(
+		'pageSize'=>9999,
+		),
+        ));
 	$detalle=new CActiveDataProvider('Cantidad',array(
                     'criteria'=>array(                          
                       'condition'=>'t.idCaracteristicaVeh="'.$idetalle.'"'),'pagination'=>array('pageSize'=>9999,),));

@@ -202,7 +202,7 @@ class IndicadoresController extends Controller
 			LEFT JOIN sgu_recursoFalla re ON (rf.id=re.idreporteFalla)
 			where year(rf.fechaFalla)
 			group by v.id,DATE_FORMAT(fechaFalla,"%b %y")
-			order by DATE_FORMAT(fechaFalla,"%b %y"),v.numeroUnidad asc;')
+			order by fechaFalla,v.numeroUnidad asc;')
                 ->queryAll();
 
         //$ind1=array_map('intVal', $ind1); 
@@ -225,7 +225,7 @@ class IndicadoresController extends Controller
             ->from('sgu_vehiculo v,sgu_historicoViajes hv')
             ->where('hv.idvehiculo=v.id')
             ->group(' v.id, DATE_FORMAT(fechaSalida,"%b %y")')
-            ->order('DATE_FORMAT(fechaSalida,"%b %y"),v.numeroUnidad asc')
+            ->order('fechaSalida,v.numeroUnidad asc')
             ->queryAll();
                 //$ind1=array_map('intVal', $ind1); 
 	 	$this->render('ind6',array(
@@ -296,9 +296,10 @@ class IndicadoresController extends Controller
 			if($desde["anno"]==$anno)
 				$diasOperacion=(strtotime($anno."-12-31")-strtotime($desde["fechaCompleta"]))/86400;
 			array_push($mes,$anno);
-			$NTMC=Yii::app()->db->createCommand('select count(*) as NTMC from sgu_reportefalla where idvehiculo in (select id from sgu_vehiculo where activo=1) and idestatus=3 and year(fechaFalla)="'.$anno.'"')->queryRow();
+			$NTMC=Yii::app()->db->createCommand('select count(*) as NTMC from sgu_reporteFalla where idvehiculo in (select id from sgu_vehiculo where activo=1) and idestatus=3 and year(fechaFalla)="'.$anno.'"')->queryRow();
 			if($NTMC["NTMC"]<=0)
-				$NTMC["NTMC"]=1;
+				$TME=null;
+			else
 			$TME=(count($vehiculos)*$diasOperacion)/$NTMC["NTMC"];
 			array_push($TMEF,round($TME,1));
 			//array_push($prueba, $diasOperacion);

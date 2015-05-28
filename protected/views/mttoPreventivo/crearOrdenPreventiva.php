@@ -117,7 +117,7 @@ $this->menu=array(
 </div>
 <div class='crugepanel user-assignments-role-list'>
 <?php
-$this->widget('zii.widgets.grid.CGridView', array(
+$this->widget('ext.selgridview.SelGridView', array(
                 'id'=>'actividades',
 				'selectionChanged'=>'validar',
 				'summaryText'=>'',
