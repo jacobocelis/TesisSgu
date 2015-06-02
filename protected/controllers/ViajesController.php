@@ -63,7 +63,7 @@ class ViajesController extends Controller
 		));
 	}
 	public function actionActualizarSpan(){
-		$tot=Yii::app()->db->createCommand("select count(*) as total from sgu_historicoViajes hv, sgu_viaje v where hv.idviaje=v.id and v.idtipo=1 and date(fechaSalida)<>date(now())")->queryRow();
+		$tot=Yii::app()->db->createCommand("select count(*) as total from sgu_historicoViajes hv, sgu_viaje v where hv.idviaje=v.id and v.idtipo=1 and date(fechaSalida)<>date(now()) and fechaSalida=(select fechaSalida from sgu_historicoViajes hv, sgu_viaje v where hv.idviaje=v.id and v.idtipo=1 and fechaSalida<>date(now()) group by fechaSalida order by fechaSalida desc limit 1)")->queryRow();
 		echo CJSON::encode(array(
 			'total'=>$tot["total"],
 		));
@@ -159,8 +159,8 @@ class ViajesController extends Controller
             if($model->save()){
 				$ultimaLectura=Yii::app()->db->createCommand('select lectura from sgu_kilometraje where idvehiculo='.$model->idvehiculo.' order by id desc limit 1')->queryRow();
 				$kmViaje=Yii::app()->db->createCommand('select distanciaKm from sgu_viaje where id='.$model->idviaje.'')->queryRow();
-				Yii::app()->db->createCommand('INSERT INTO `tsg`.`sgu_kilometraje` (`fecha`,`lectura`,`idvehiculo`) 
-			VALUES ("'.date('Y-m-d').'",'.($ultimaLectura['lectura']+$kmViaje['distanciaKm']).','.$model->idvehiculo.')')->query();
+				Yii::app()->db->createCommand('INSERT INTO `tsg`.`sgu_kilometraje` (`fecha`,`lectura`,`idvehiculo`,`idhistoricoViajes`) 
+			VALUES ("'.date('Y-m-d').'",'.($ultimaLectura['lectura']+$kmViaje['distanciaKm']).','.$model->idvehiculo.','.$model->id.')')->query();
                 if (Yii::app()->request->isAjaxRequest){
 					echo CJSON::encode(array(
                         'status'=>'success', 
@@ -202,11 +202,10 @@ class ViajesController extends Controller
 			if($_POST['Historicoviajes']['horaLlegada']<>'')
 			$model->horaLlegada=date("H:i", strtotime($_POST['Historicoviajes']['horaLlegada']));
             if($model->save()){
-				
 				$ultimaLectura=Yii::app()->db->createCommand('select lectura from sgu_kilometraje where idvehiculo='.$model->idvehiculo.' order by id desc limit 1')->queryRow();
 				$kmViaje=Yii::app()->db->createCommand('select distanciaKm from sgu_viaje where id='.$model->idviaje.'')->queryRow();
-				Yii::app()->db->createCommand('INSERT INTO `tsg`.`sgu_kilometraje` (`fecha`,`lectura`,`idvehiculo`) 
-				VALUES ("'.date('Y-m-d').'",'.($ultimaLectura['lectura']+$kmViaje['distanciaKm']).','.$model->idvehiculo.')')->query();
+				Yii::app()->db->createCommand('INSERT INTO `tsg`.`sgu_kilometraje` (`fecha`,`lectura`,`idvehiculo`,`idhistoricoViajes`) 
+			VALUES ("'.date('Y-m-d').'",'.($ultimaLectura['lectura']+$kmViaje['distanciaKm']).','.$model->idvehiculo.','.$model->id.')')->query();
 			
                 if (Yii::app()->request->isAjaxRequest){
 					echo CJSON::encode(array(
@@ -233,23 +232,33 @@ class ViajesController extends Controller
 		));
 	}
 	public function actionUltimosViajes(){
-             
-					Yii::app()->db->createCommand("INSERT  ignore INTO `tsg`.`sgu_historicoViajes` (`fechaSalida`,`horaSalida`,`fechaLlegada`,`horaLlegada`,`nroPersonas`,`ultimaRutina`,`idviaje`,`idvehiculo`,`idconductor`)
-					select date(now()) as fechaSalida, horaSalida, date(now()) as fechaLlegada, horaLlegada, nroPersonas, ultimaRutina,idviaje, idvehiculo, idconductor  from sgu_historicoViajes where fechaSalida=(select fechaSalida from sgu_historicoViajes hv, sgu_viaje v where hv.idviaje=v.id and v.idtipo=1 and fechaSalida<>date(now()) group by fechaSalida order by fechaSalida desc limit 1)")->query();
-    
-        if (Yii::app()->request->isAjaxRequest){
-            echo CJSON::encode(array(
-                'status'=>'hecho', 
-				));
-            exit;               
+        if(isset($_POST["selUnidad"]) and !empty($_POST["selUnidad"])){
+        	$selUnidad = explode(",", $_POST["selUnidad"]);	
+        	foreach ($selUnidad as $idu) {
+        		if(isset($_POST["unidad".$idu]) and isset($_POST["conductor".$idu])){
+        			$anteriorViaje=Historicoviajes::model()->findByPk($idu);
+        			$nuevoViaje= new Historicoviajes;
+        			$nuevoViaje->fechaSalida=date("Y-m-d");
+        			$nuevoViaje->horaSalida=$anteriorViaje->horaSalida;
+        			$nuevoViaje->horaLlegada=$anteriorViaje->horaLlegada;
+        			$nuevoViaje->fechaLlegada=date("Y-m-d");
+        			$nuevoViaje->nroPersonas=$anteriorViaje->nroPersonas;
+        			$nuevoViaje->idviaje=$anteriorViaje->idviaje;
+        			$nuevoViaje->idvehiculo=$_POST["unidad".$idu];
+        			$nuevoViaje->idconductor=$_POST["conductor".$idu];
+        			$nuevoViaje->save();
+						$ultimaLectura=Yii::app()->db->createCommand('select lectura from sgu_kilometraje where idvehiculo="'.$nuevoViaje->idvehiculo.'" order by id desc limit 1')->queryRow();
+						$kmViaje=Yii::app()->db->createCommand('select distanciaKm from sgu_viaje where id="'.$nuevoViaje->idviaje.'"')->queryRow();
+						Yii::app()->db->createCommand('INSERT INTO `tsg`.`sgu_kilometraje` (`fecha`,`lectura`,`idvehiculo`,`idhistoricoViajes`) 
+						VALUES ("'.date('Y-m-d').'",'.($ultimaLectura['lectura']+$kmViaje['distanciaKm']).',"'.$nuevoViaje->idvehiculo.'","'.$nuevoViaje->id.'")')->query();
+        		}  
+        	}
+	        echo CJSON::encode(array('estado'=>'success'));
+	        	exit;               
         }
-        /*else
-            $this->render('create',array('model'=>$model,));*/
+        echo CJSON::encode(array('estado'=>'failure'));
+	    	exit;
 	}
-	/**
-	 * Creates a new model.
-	 * If creation is successful, the browser will be redirected to the 'view' page.
-	 */
 	 public function actionIndex()
 	{
 		$dataProvider=new CActiveDataProvider('Historicoviajes');
@@ -300,7 +309,7 @@ class ViajesController extends Controller
 		 if (Yii::app()->request->isAjaxRequest){
             echo CJSON::encode(array(
                 'status'=>'failure', 
-                'div'=>$this->renderPartial('_formViajeRutinario', array('model'=>$model,'fecha'=>$model->fecha), true)));
+                'div'=>$this->renderPartial('_formUpdateRutinario', array('model'=>$model), true)));
             exit;               
         }
 	}
@@ -312,14 +321,17 @@ class ViajesController extends Controller
 	 */
 	public function actionDelete($id)
 	{
-				$model=$this->loadModel($id);
-				
-				$ultimaLectura=Yii::app()->db->createCommand('select lectura from sgu_kilometraje where idvehiculo='.$model->idvehiculo.' order by id desc limit 1')->queryRow();
-				$kmViaje=Yii::app()->db->createCommand('select distanciaKm from sgu_viaje where id='.$model->idviaje.'')->queryRow();
-				Yii::app()->db->createCommand('INSERT INTO `tsg`.`sgu_kilometraje` (`fecha`,`lectura`,`idvehiculo`) 
-			VALUES ("'.date('Y-m-d').'",'.($ultimaLectura['lectura']-$kmViaje['distanciaKm']).','.$model->idvehiculo.')')->query();
-			
-			
+		$model=$this->loadModel($id);
+		
+		$lectura=Kilometraje::model()->find('idhistoricoViajes="'.$id.'"');
+		if($lectura<>null)
+			$lectura->delete();
+		/*$ultimaLectura=Yii::app()->db->createCommand('select lectura from sgu_kilometraje where idvehiculo='.$model->idvehiculo.' order by id desc limit 1')->queryRow();
+		$kmViaje=Yii::app()->db->createCommand('select distanciaKm from sgu_viaje where id='.$model->idviaje.'')->queryRow();
+		Yii::app()->db->createCommand('INSERT INTO `tsg`.`sgu_kilometraje` (`fecha`,`lectura`,`idvehiculo`) 
+	VALUES ("'.date('Y-m-d').'",'.($ultimaLectura['lectura']-$kmViaje['distanciaKm']).','.$model->idvehiculo.')')->query();
+	*/
+	
 			
 				
 				/*$ultimaLectura=Yii::app()->db->createCommand('select id from sgu_kilometraje where idvehiculo='.$model->idvehiculo.' order by id desc limit 1')->queryRow();
@@ -360,10 +372,16 @@ class ViajesController extends Controller
 		array('criteria' => array(
 			'condition'=>'date(fechaSalida)="'.$Fecha.'" and id in (select hv.id as id from sgu_historicoViajes hv, sgu_viaje v where hv.idviaje=v.id and v.idtipo=1)',
 		)));
-		$tot=Yii::app()->db->createCommand("select count(*) as total from sgu_historicoViajes hv, sgu_viaje v where hv.idviaje=v.id and v.idtipo=1 and date(fechaSalida)<>date(now())")->queryRow();
+		$ultimos=new CActiveDataProvider('Historicoviajes',
+		array('criteria' => array(
+			'condition'=>'fechaSalida=(select fechaSalida from sgu_historicoViajes hv, sgu_viaje v where hv.idviaje=v.id and v.idtipo=1 and fechaSalida<>date(now()) group by fechaSalida order by fechaSalida desc limit 1) and idviaje in (select id from sgu_viaje where idtipo=1)',
+		)));
+		$ultimos->setPagination(false);
+		$tot=Yii::app()->db->createCommand("select count(*) as total from sgu_historicoViajes hv, sgu_viaje v where hv.idviaje=v.id and v.idtipo=1 and date(fechaSalida)<>date(now()) and fechaSalida=(select fechaSalida from sgu_historicoViajes hv, sgu_viaje v where hv.idviaje=v.id and v.idtipo=1 and fechaSalida<>date(now()) group by fechaSalida order by fechaSalida desc limit 1)")->queryRow();
 		
 		$this->render('rutinarios',array(
 			'dataProvider'=>$dataProvider,
+			'ultimos'=>$ultimos,
 			'total'=>$tot['total'],
 		));
 	}

@@ -106,7 +106,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
 					'value'=>'date("g:i a", strtotime($data->horaLlegada));',
 					'htmlOptions'=>array('style'=>'text-align:center;width:60px;'),
 				),
-				array(
+				/*array(
 						'headerHtmlOptions'=>array('style'=>'text-align:center;width:10px;'),
 						'htmlOptions'=>array('style'=>'text-align:center;width:30px;'),
 						'header'=>'Modificar',
@@ -119,7 +119,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
                                 \'style\'=>\'cursor: pointer;text-decoration: underline;text-align:center;\',
                                 \'onclick\'=>\'{editarViaje("\'.Yii::app()->createUrl("Viajes/update",array("id"=>$data["id"])).\'"); $("#modificar").dialog("open");}\'
                         )
-                );',),
+                );',),*/
 				array(
 					'header'=>'Eliminar',
 					'class'=>'CButtonColumn',

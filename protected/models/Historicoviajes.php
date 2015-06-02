@@ -35,7 +35,7 @@ class Historicoviajes extends CActiveRecord
 		return array(
 			array('fechaSalida,fechaLlegada,horaSalida,horaLlegada, idviaje, idvehiculo,nroPersonas,idconductor', 'required'),
 			array('idviaje, idvehiculo,nroPersonas,idconductor', 'numerical', 'integerOnly'=>true),
-			// The following rule is used by search().
+			array('fechaSalida,fechaLlegada,horaSalida,idviaje, idvehiculo,idconductor','unique'),
 			// @todo Please remove those attributes that should not be searched.
 			array('id, fechaSalida, fechaLlegada, idviaje, idvehiculo,idconductor', 'safe', 'on'=>'search'),
 		);

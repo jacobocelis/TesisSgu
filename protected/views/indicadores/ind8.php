@@ -57,7 +57,7 @@ $this->Widget('ext.highcharts.HighchartsWidget', array(
                 'thousandsSep'=> ",",  
                 'decimalPoint'=> '.'  
             ),
-        'title' => array('text' => 'Total de reparaciones y cambios de neumáticos mensuales por unidad'),
+        'title' => array('text' => 'Total de reparaciones y cambios de neumáticos por unidad'),
         'credits'=> array(
             'enabled'=> false
         ),

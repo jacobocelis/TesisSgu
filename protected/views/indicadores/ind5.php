@@ -1,5 +1,5 @@
 <style>
-.label, .badge {
+.fuente {
   font-size: 40px;
 }
 </style>
@@ -96,7 +96,7 @@ echo "<b>Valor de reposición:</b>";?><br>
 <?php echo CHtml::button('Calcular',array("id"=>"boton","onclick"=>"calcular($('#vehiculos').val());","style"=>"margin-top:2px;"));?>
 </div>
 <div id="resultado" style="display:none;float:left;width:80%;margin-top: 30px;">
-<span id="etiqueta" class="label label-success"></span><br><br>
+<span id="etiqueta" class="label label-success fuente"></span><br><br>
 <i>Sí el resultado es mayor o igual a 100% se ha gastado más en mantenimiento que lo que vale la unidad nueva</i>
 </div>
 </div>
@@ -122,9 +122,9 @@ function calcular(id){
                     //$('#mi').removeClass($('#mi').attr('class')).addClass('badge badge-'+result.color+' pull-right');
                     //$('#mi').text(result.total);
                 if(data.valor>=100)
-                  $('#etiqueta').removeClass($('#etiqueta').attr('class')).addClass('label label-warning'); 
+                  $('#etiqueta').removeClass($('#etiqueta').attr('class')).addClass('label label-warning fuente'); 
                 else
-                  $('#etiqueta').addClass('label label-success'); 
+                  $('#etiqueta').addClass('label label-success fuente'); 
                       
                   $("#etiqueta").text(data.valor+"%");
                 },

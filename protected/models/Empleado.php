@@ -55,7 +55,10 @@ class Empleado extends CActiveRecord
 			'sguHistoricoviajes' => array(self::HAS_MANY, 'Historicoviajes', 'idconductor'),
 		);
 	}
-
+	public function getNombreCompleto()
+    {
+        return $this->nombre.' '.$this->apellido;
+    }
 	/**
 	 * @return array customized attribute labels (name=>label)
 	 */

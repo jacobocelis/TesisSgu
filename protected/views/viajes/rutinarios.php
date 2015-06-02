@@ -29,13 +29,14 @@ $this->menu=array(
 </div>
 <div class='crugepanel user-assignments-detail'>
 	<div id="resultado"></div>
-<h1>Viajes rutinarios en la fecha seleccionada</h1>
-		<div id='etiqueta' ><?php echo CHtml::link('Registrar viajes de última rutina', "",  
+<h1>Viajes rutinarios</h1>
+<i style="float:left">*Muestra los viajes rutinarios en la fecha seleccionada</i><br>
+		<div id='etiqueta' style="float:right" ><?php echo CHtml::link('Registrar viajes de última rutina', "",  
  array(
         'style'=>'cursor: pointer; text-decoration: underline;',
-        'onclick'=>"{ultimosViajes(); }"));
+        'onclick'=>"js:{ $('#anteriores').dialog('open'); $.fn.yiiGridView.update('ultimoViaje'); $('#contenedorUltV').show();}"));
 	?>
-	<span id="span" class="badge badge-important pull-right"><?php echo $total;?></span></div>
+	</div>
 	<?php
 $this->widget('zii.widgets.grid.CGridView', array(
                 'id'=>'viajes',
@@ -96,7 +97,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
 					//'value'=>'date("g:i a", strtotime($data->horaLlegada));',
 					'htmlOptions'=>array('style'=>'text-align:center;width:100px;'),
 				),
-				array(
+				/*array(
 						'headerHtmlOptions'=>array('style'=>'text-align:center;width:10px;'),
 						'htmlOptions'=>array('style'=>'text-align:center;width:30px;'),
 						'header'=>'Modificar',
@@ -109,7 +110,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
                                 \'style\'=>\'cursor: pointer;text-decoration: underline;text-align:center;\',
                                 \'onclick\'=>\'{editarViaje("\'.Yii::app()->createUrl("Viajes/update",array("id"=>$data["id"])).\'"); $("#modificar").dialog("open");}\'
                         )
-                );',),
+                );',),*/
 				array(
 					'header'=>'Eliminar',
 					'class'=>'CButtonColumn',
@@ -125,6 +126,91 @@ $this->widget('zii.widgets.grid.CGridView', array(
 ?>
 
 </div>
+<?php
+/*ventana agregar recurso*/
+$this->beginWidget('zii.widgets.jui.CJuiDialog', array( // the dialog
+    'id'=>'anteriores',
+    'options'=>array(
+        'title'=>'Viajes de última rutina',
+        'autoOpen'=>false,
+        'modal'=>true,
+        'width'=>'70%',
+		'position'=>array(null,50),
+		'resizable'=>false
+    ),
+));?>
+
+
+
+<?php $form=$this->beginWidget('CActiveForm', array(
+    'id'=>'formulario',
+    'enableAjaxValidation'=>false,
+        'htmlOptions'=>array(
+       'onsubmit'=>"return false;",/* Disable normal form submit */
+     ),
+));?>
+<div id="contenedorUltV" style="display:none">
+	<i>* Seleccione los viajes que desea registrar, puede ajustar los conductores y las unidades si éstos cambiaron</i>
+<?php
+$this->widget('zii.widgets.grid.CGridView', array(
+	'id'=>'ultimoViaje',
+	'summaryText'=>'',
+	'selectableRows'=>2,
+    'dataProvider'=>$ultimos,
+    'htmlOptions'=>array('style'=>'text-align:center;overflow-y:scroll;max-height:400px;'),
+    'columns'=>array(
+    array(
+		'class'=>'CCheckBoxColumn',
+	),
+      array(
+      	'headerHtmlOptions'=>array('style'=>'text-align:center;width:80px;'),
+        'header'=>'Unidad',
+        'value'=>'CHTML::dropDownList("unidad".$data->id,$data->idvehiculo,CHtml::listData(Vehiculo::model()->findAll(),"id","numeroUnidad"),array(\'width\'=>20,\'maxlength\'=>10,\'style\'=>\'width: 80px;margin: 0 auto;text-align: center;\'))',
+        'type'=>'raw',
+        'htmlOptions'=>array('style'=>'text-align:center;width:20px;'),
+      ), 
+		array(
+			'header'=>'Hora de salida',
+			'name'=>'horaSalida',
+			'value'=>'date("g:i a", strtotime($data->horaSalida));',
+			'htmlOptions'=>array('style'=>'text-align:center;'),
+		),
+
+		array(
+			'header'=>'Ruta realizada',
+			'name'=>'idviaje',
+			'value'=>'$data->idviaje0->idOrigen0->lugar.\' - \'.$data->idviaje0->idDestino0->lugar',
+			//'value'=>'$data->idplan0->idplanGrupo0->CompiledColour->$data-id.\' \'.$data->CompiledColour',
+			'htmlOptions'=>array('style'=>'text-align:center;'),
+		),
+		/*array(
+			'header'=>'Distancia',
+			'value'=>'$data->idviaje0->distanciaKm.\' Km \'',
+			//'value'=>'date("g:i a", strtotime($data->horaLlegada));',
+			'htmlOptions'=>array('style'=>'text-align:center;width:100px;'),
+		),*/
+		array(
+			'header'=>'Hora de retorno',
+			'name'=>'horaLlegada',
+			'value'=>'date("g:i a", strtotime($data->horaLlegada));',
+			'htmlOptions'=>array('style'=>'text-align:center;'),
+		),
+      array(
+        'header'=>'Conductor',
+        'value'=>'CHTML::dropDownList("conductor".$data->id,$data->idconductor,CHtml::listData(Empleado::model()->findAll("idtipoEmpleado=1"),"id","nombreCompleto"),array(\'width\'=>20,\'maxlength\'=>3,\'style\'=>\'width: 140px;margin: 0 auto;text-align: center;\'))',
+        'type'=>'raw',
+        'htmlOptions'=>array('style'=>'text-align:center;width:140px;'),
+      ),
+    ),
+));
+
+$this->endWidget(); ?>
+
+<?php 
+echo CHTML::button('Agregar viajes'  ,array('onclick'=>'ultimosViajes(); $("#anteriores").dialog("close");'));
+?>
+</div>
+<?php $this->endWidget();?>
 
 <?php
 /*ventana agregar recurso*/
@@ -179,18 +265,7 @@ $this->beginWidget('zii.widgets.jui.CJuiDialog', array( // the dialog
 .badge {
     margin-left: 3px;
 }
-.crugepanel {
-    background-color: #FFF;
-    border: 1px dotted #AAA;
-    border-radius: 1px;
-    box-shadow: 3px 3px 5px #EEE;
-    display: block;
-    margin-top: 10px;
-    padding: 10px;
-}
-#menu {
-    font-size: 15px;
-}
+
 #etiqueta{
 	width: auto;
 	float: left;
@@ -260,9 +335,26 @@ function agregarViajeRutinario(){
     return false; 
 }
 function ultimosViajes(){
-var total="<?php echo $total?>";
 
-if (confirm("¿Confirma que desea agregar los ultimos viajes registrados?")){
+	var seleccion= $.fn.yiiGridView.getSelection('ultimoViaje');
+	jQuery.ajax({
+                url: "<?php echo Yii::app()->baseUrl."/viajes/ultimosViajes/"?>",
+                'data':$('#formulario').serialize()+"&selUnidad="+seleccion,
+                'type':'post',
+                'dataType':'json',
+                'success':function(data){
+					if(data.estado=="success"){
+						$.fn.yiiGridView.update('viajes');
+						$("#etiqueta").hide();
+					}
+            	},
+                'cache':false});
+	
+    return false;
+
+/*var total="<?php echo $total?>";
+
+if (confirm("¿Confirma que desea agregar los ultimos viajes registrados en el día de hoy?")){
 	var dir="<?php echo Yii::app()->baseUrl."/viajes/ultimosViajes/"?>";
 	jQuery.ajax({
                 url: dir,
@@ -270,14 +362,14 @@ if (confirm("¿Confirma que desea agregar los ultimos viajes registrados?")){
                 'type':'post',
                 'dataType':'json',
                 'success':function(data){
-                                if (data.status == 'hecho'){
-									 $.fn.yiiGridView.update('viajes');
-									 $('#etiqueta').hide();
-                                }
-                        },
+                    if (data.status == 'hecho'){
+						 $.fn.yiiGridView.update('viajes');
+						 $('#etiqueta').hide();
+                    }
+            	},
                 'cache':false});
 	}
-    return false; 
+    return false; */
 }
 function editarViaje(id){
 $('#modificar').dialog('open');
