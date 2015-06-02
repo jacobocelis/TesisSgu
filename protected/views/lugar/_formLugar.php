@@ -26,15 +26,15 @@
 	</div>
 
 	<div class="row">
-		<?php echo $form->labelEx($model,'idestados'); ?>
-		<?php echo $form->dropDownList($model,'idestados',CHtml::listData(Estados::model()->findAll(),'id','estado'),array('style'=>'width:180px;')); ?>
-		<?php echo $form->error($model,'idestados'); ?>
+		
+		<?php echo $form->hiddenField($model,'idestados',array('style'=>'width:180px;')); ?>
+		
 	</div>
 
 	<div class="row">
-		 
-		<?php echo $form->hiddenField($model,'primario'); ?>
-		 
+		<?php echo $form->labelEx($model,'primario'); ?>
+		<?php echo $form->dropDownList($model,'primario',array(1=>"Sí",0=>"No"),array('style' => 'width:100px;')); ?>
+		<?php echo $form->error($model,'primario'); ?>
 	</div>
 
 	<div class="row buttons">

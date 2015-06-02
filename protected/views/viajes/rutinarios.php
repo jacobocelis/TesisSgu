@@ -40,7 +40,7 @@ $this->menu=array(
 	<?php
 $this->widget('zii.widgets.grid.CGridView', array(
                 'id'=>'viajes',
-				'summaryText'=>'',
+				//'summaryText'=>'',
 				'selectableRows'=>1,
 				'template'=>"{items}\n{summary}\n{pager}",
 			    'enableSorting' => true,
@@ -139,8 +139,6 @@ $this->beginWidget('zii.widgets.jui.CJuiDialog', array( // the dialog
 		'resizable'=>false
     ),
 ));?>
-
-
 
 <?php $form=$this->beginWidget('CActiveForm', array(
     'id'=>'formulario',
@@ -345,14 +343,14 @@ function ultimosViajes(){
                 'success':function(data){
 					if(data.estado=="success"){
 						$.fn.yiiGridView.update('viajes');
-						$("#etiqueta").hide();
+						//$("#etiqueta").hide();
 					}
             	},
                 'cache':false});
 	
     return false;
 
-/*var total="<?php echo $total?>";
+/*
 
 if (confirm("¿Confirma que desea agregar los ultimos viajes registrados en el día de hoy?")){
 	var dir="<?php echo Yii::app()->baseUrl."/viajes/ultimosViajes/"?>";

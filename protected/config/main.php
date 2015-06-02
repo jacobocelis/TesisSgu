@@ -28,6 +28,7 @@ return array(
 		'application.extensions.yii-mail.*',
 		'application.extensions.highcharts.*',
 		'application.extensions.selgridview.*',
+        'application.components.validators.*',
     ),
     'modules' => array(
         // uncomment the following to enable the Gii tool

@@ -246,12 +246,14 @@ class ViajesController extends Controller
         			$nuevoViaje->idviaje=$anteriorViaje->idviaje;
         			$nuevoViaje->idvehiculo=$_POST["unidad".$idu];
         			$nuevoViaje->idconductor=$_POST["conductor".$idu];
-        			$nuevoViaje->save();
-						$ultimaLectura=Yii::app()->db->createCommand('select lectura from sgu_kilometraje where idvehiculo="'.$nuevoViaje->idvehiculo.'" order by id desc limit 1')->queryRow();
+        			if($nuevoViaje->save()){
+        				$ultimaLectura=Yii::app()->db->createCommand('select lectura from sgu_kilometraje where idvehiculo="'.$nuevoViaje->idvehiculo.'" order by id desc limit 1')->queryRow();
 						$kmViaje=Yii::app()->db->createCommand('select distanciaKm from sgu_viaje where id="'.$nuevoViaje->idviaje.'"')->queryRow();
 						Yii::app()->db->createCommand('INSERT INTO `tsg`.`sgu_kilometraje` (`fecha`,`lectura`,`idvehiculo`,`idhistoricoViajes`) 
 						VALUES ("'.date('Y-m-d').'",'.($ultimaLectura['lectura']+$kmViaje['distanciaKm']).',"'.$nuevoViaje->idvehiculo.'","'.$nuevoViaje->id.'")')->query();
-        		}  
+        			
+        			}
+				}  
         	}
 	        echo CJSON::encode(array('estado'=>'success'));
 	        	exit;               
@@ -377,12 +379,12 @@ class ViajesController extends Controller
 			'condition'=>'fechaSalida=(select fechaSalida from sgu_historicoViajes hv, sgu_viaje v where hv.idviaje=v.id and v.idtipo=1 and fechaSalida<>date(now()) group by fechaSalida order by fechaSalida desc limit 1) and idviaje in (select id from sgu_viaje where idtipo=1)',
 		)));
 		$ultimos->setPagination(false);
-		$tot=Yii::app()->db->createCommand("select count(*) as total from sgu_historicoViajes hv, sgu_viaje v where hv.idviaje=v.id and v.idtipo=1 and date(fechaSalida)<>date(now()) and fechaSalida=(select fechaSalida from sgu_historicoViajes hv, sgu_viaje v where hv.idviaje=v.id and v.idtipo=1 and fechaSalida<>date(now()) group by fechaSalida order by fechaSalida desc limit 1)")->queryRow();
+		$dataProvider->setPagination(false);
 		
 		$this->render('rutinarios',array(
 			'dataProvider'=>$dataProvider,
 			'ultimos'=>$ultimos,
-			'total'=>$tot['total'],
+			
 		));
 	}
 	public function actionHistoricoRutinarios(){
