@@ -288,7 +288,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
                         )
                 );',),
 				array(
-					'headerHtmlOptions'=>array('style'=>'text-align:center;'),
+					'headerHtmlOptions'=>array('style'=>'text-align:center;width:90px'),
 					'type'=>'raw',
 					'header'=>'Estatus',
 					'name'=>'idestatus',

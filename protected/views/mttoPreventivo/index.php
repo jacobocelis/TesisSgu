@@ -44,6 +44,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
                 'id'=>'head',
 				'summaryText'=>'',
 			    'enableSorting' => true,
+			    'selectableRows'=>0,
 				'emptyText'=>'No hay actividades de mantenimiento registradas',
                 'dataProvider'=>$dataProvider,
 				'rowCssClassExpression'=>'$this->dataProvider->data[$row]->diasRestantes($this->dataProvider->data[$row]->proximoFecha)<=5 || ($this->dataProvider->data[$row]->kmRestantes($this->dataProvider->data[$row]->idvehiculo,$this->dataProvider->data[$row]->proximoKm))<=50?"rojo":"even"',

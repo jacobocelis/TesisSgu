@@ -9,7 +9,7 @@ $this->breadcrumbs=array(
 	array('label'=>'<div id="menu"><strong>Opciones de orden</strong></div>'),
 	array('label'=>'      Detalle de orden', 'url'=>array('mttoPreventivo/vistaPrevia/'.$id.'?nom='.$nom.'&dir='.$dir.'')),
 	array('label'=>'      Actualizar orden', 'url'=>array('mttoPreventivo/mttopRealizados/'.$id.'?nom='.$nom.'&dir='.$dir.'')),
-	array('label'=>'      Registrar facturación', 'url'=>array('mttoPreventivo/registrarFacturacion/'.$id.'?nom='.$nom.'&dir='.$dir.'')),
+	array('itemOptions'=>array('id' => 'mFacturar'),'label'=>'      Registrar facturación', 'url'=>array('mttoPreventivo/registrarFacturacion/'.$id.'?nom='.$nom.'&dir='.$dir.'')),
 
 	array('label'=>'<div id="menu"><strong>Órdenes de mantenimiento</strong></div>'),
 	array('label'=>'      Crear orden de mantenimiento', 'url'=>array('mttoPreventivo/crearOrdenPreventiva') ,'visible'=>Yii::app()->user->checkAccess('action_mttopreventivo_crearOrdenPreventiva')),
@@ -927,6 +927,9 @@ function Filtrar(idrecurso,idtipo){
                 'cache':false});
     return false; 
 }
+var url="<?php echo Yii::app()->controller->action->id;?>";
+if(url=="registrarFacturacion")
+	$("#mFacturar").addClass("active");
 </script>
 <style>
 .ui-autocomplete { height: 130px; overflow-y: scroll; overflow-x: hidden;}

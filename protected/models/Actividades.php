@@ -42,6 +42,12 @@ class Actividades extends CActiveRecord
 	{
 		return 'sgu_actividades';
 	}
+	public function textoFecha(){
+		if($this->fechaRealizada=='0000-01-01')
+			return '<span style="color:red">no registrado</span>';
+		else
+			return date("d/m/Y",strtotime($this->fechaRealizada));
+	}
 	public function noasignado(){
 		if($this->noConfirmo==1)
 			return '<span style="color:orange">Desconocido</span>';

@@ -11,7 +11,7 @@
 );
 $this->menu=array(
 	array('label'=>'<div id="menu"><strong>Opciones de orden</strong></div>'),
-	array('label'=>'      Detalle de orden', 'url'=>array('mttoPreventivo/vistaPrevia/'.$idOrden.'?nom='.$nom.'&dir='.$dir.'')),
+	array('itemOptions'=>array('id' => 'mDetalle'), 'label'=>'      Detalle de orden', 'url'=>array('mttoPreventivo/vistaPrevia/'.$idOrden.'?nom='.$nom.'&dir='.$dir.'')),
 	array('label'=>'      Actualizar orden', 'url'=>array('mttoPreventivo/mttopRealizados/'.$idOrden.'?nom='.$nom.'&dir='.$dir.''),'visible'=>Yii::app()->controller->estatusOrden($idOrden)<>7),
 	array('label'=>'      Registrar facturación', 'url'=>array('mttoPreventivo/registrarFacturacion/'.$idOrden.'?nom='.$nom.'&dir='.$dir.''),'visible'=>Yii::app()->controller->estatusOrden($idOrden)<>7),
 
@@ -293,7 +293,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
 				//'selectionChanged'=>'nuevoSerial',
 				'template'=>"{items}\n{summary}\n{pager}",
 				'selectableRows'=>0,
-				'emptyText'=>'No se ha registrado ningun cambio de éste repueso en progeso',
+				'emptyText'=>'No se ha registrado ningun cambio de éste repueso en ésta orden',
                 'dataProvider'=>$det,
 				'htmlOptions'=>array('style'=>'cursor:pointer;'),
 				'columns'=>array(
@@ -482,5 +482,7 @@ function cerrar(orden){
 	}
 	$.fn.yiiGridView.update('ordenes');
 }
-
+var url="<?php echo Yii::app()->controller->action->id;?>";
+if(url=="vistaPrevia")
+	$("#mDetalle").addClass("active");
 </script>

@@ -687,11 +687,12 @@ class MttoPreventivoController extends Controller
 			'order'=>'proximoFecha asc',
 			'condition'=>'id in (select idactividades from sgu_detalleOrden where idordenMtto="'.$id.'")')
 			,'pagination'=>array('pageSize'=>9999999)));
-			
+		
+		$fac=Yii::app()->db->createCommand('select total from sgu_factura where idordenMtto="'.$id.'"')->queryRow();
 		$data=$dataProvider->getData();
 		for($i=0;$i<count($data);$i++){
 			//if($data[$i]["fechaRealizada"]=="0000-01-01" or $data[$i]["kmRealizada"]==-1){
-			if($data[$i]["idestatus"]<>3){
+			if($data[$i]["idestatus"]<>3 or (isset($fac["total"]) and $fac["total"]==0)) {
 				$estado=0;
 				break;
 			}else	

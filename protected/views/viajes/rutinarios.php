@@ -30,7 +30,7 @@ $this->menu=array(
 <div class='crugepanel user-assignments-detail'>
 	<div id="resultado"></div>
 <h1>Viajes rutinarios</h1>
-<i style="float:left">*Muestra los viajes rutinarios en la fecha seleccionada</i><br>
+<i style="float:left">*Muestra los viajes rutinarios registrados en la fecha seleccionada</i><br>
 		<div id='etiqueta' style="float:right" ><?php echo CHtml::link('Registrar viajes de última rutina', "",  
  array(
         'style'=>'cursor: pointer; text-decoration: underline;',
@@ -156,9 +156,11 @@ $this->widget('zii.widgets.grid.CGridView', array(
 	'selectableRows'=>2,
     'dataProvider'=>$ultimos,
     'htmlOptions'=>array('style'=>'text-align:center;overflow-y:scroll;max-height:400px;'),
+    //'rowCssClassExpression'=>'"rojo"',
     'columns'=>array(
     array(
 		'class'=>'CCheckBoxColumn',
+		//'disabled'=>'1',
 	),
       array(
       	'headerHtmlOptions'=>array('style'=>'text-align:center;width:80px;'),
@@ -380,20 +382,21 @@ $('#modificar').dialog('open');
                 'dataType':'json',
                 'success':function(data)
                  {
-                                if (data.status == 'failure')
-                                {
-                                        $('#modificar div.divForForm').html(data.div);
-                                        // Here is the trick: on submit-> once again this function!
-                                        $('#modificar div.divForForm form').submit(editarViaje); // updatePaymentComment
-                                }
-                                else
-                                {
-                                        $('#modificar div.divForForm').html(data.div);
-                                        setTimeout("$('#modificar').dialog('close') ",1000);
-										$.fn.yiiGridView.update('viajes');
-                                }
+	                    if (data.status == 'failure')
+	                    {
+	                            $('#modificar div.divForForm').html(data.div);
+	                            // Here is the trick: on submit-> once again this function!
+	                            $('#modificar div.divForForm form').submit(editarViaje); // updatePaymentComment
+	                    }
+	                    else
+	                    {
+	                            $('#modificar div.divForForm').html(data.div);
+	                            setTimeout("$('#modificar').dialog('close') ",1000);
+								$.fn.yiiGridView.update('viajes');
+	                    }
                 } ,
                 'cache':false});
     return false; 
 }
+
 </script>

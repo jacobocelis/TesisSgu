@@ -7,7 +7,7 @@ $this->breadcrumbs=array(
 	$this->menu=array(
 	array('label'=>'<div id="menu"><strong>Opciones de orden</strong></div>'),
 	array('label'=>'      Detalle de orden', 'url'=>array('mttoPreventivo/vistaPrevia/'.$id.'?nom='.$nom.'&dir='.$dir.'')),
-	array('label'=>'      Actualizar orden', 'url'=>array('mttoPreventivo/mttopRealizados/'.$id.'?nom='.$nom.'&dir='.$dir.'')),
+	array('itemOptions'=>array('id' => 'mActualizar'),'label'=>'      Actualizar orden', 'url'=>array('mttoPreventivo/mttopRealizados/'.$id.'?nom='.$nom.'&dir='.$dir.'')),
 	array('label'=>'      Registrar facturación', 'url'=>array('mttoPreventivo/registrarFacturacion/'.$id.'?nom='.$nom.'&dir='.$dir.'')),
 
 	array('label'=>'<div id="menu"><strong>Órdenes de mantenimiento</strong></div>'),
@@ -152,7 +152,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
 					'header'=>'Fecha de realizada',
 					'name'=>'fechaRealizada',
 					'type'=>'raw',
-					'value'=>'($data->valores($data->fechaRealizada)?date("d/m/Y",strtotime($data->fechaRealizada)):$data->noasignado()).CHtml::link(
+					'value'=>'($data->textoFecha()).CHtml::link(
                      CHtml::image(Yii::app()->request->baseUrl."/imagenes/agregar.png",
                                           "Agregar",array("title"=>"Editar")),
                         "",
@@ -301,4 +301,7 @@ function validar(id){
 				
 	$.fn.yiiGridView.update('ordenes');
 }
+var url="<?php echo Yii::app()->controller->action->id;?>";
+if(url=="mttopRealizados")
+	$("#mActualizar").addClass("active");
 </script>
