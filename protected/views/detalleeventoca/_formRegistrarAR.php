@@ -71,6 +71,7 @@
 
 </div><!-- form -->
 <script>
+var intervalo = "<?php echo $intervalo;?>";
 	$(function($){
 	    $.datepicker.regional['es'] = {
 	        closeText: 'Cerrar',
@@ -91,7 +92,7 @@
 	        showMonthAfterYear: false,
 	        yearSuffix: '',
 	        maxDate: '0d',
-	        minDate: '-30d',
+ 			minDate: '-'+intervalo+'d',
 	    };
 	    $.datepicker.setDefaults($.datepicker.regional['es']);
 	});      		

@@ -10,7 +10,7 @@ $this->breadcrumbs=array(
 	array('label'=>'<div id="menu"><strong>Opciones de orden</strong></div>'),
 	array('label'=>'      Detalle de orden', 'url'=>array('mttoCorrectivo/vistaPrevia/'.$id.'?nom='.$nom.'&dir='.$dir.'')),
 	array('label'=>'      Actualizar orden', 'url'=>array('mttoCorrectivo/mttocRealizados/'.$id.'?nom='.$nom.'&dir='.$dir.''),'visible'=>Yii::app()->controller->estatusOrden($id)<>7),
-	array('label'=>'      Registrar facturación', 'url'=>array('mttoCorrectivo/registrarFacturacion/'.$id.'?nom='.$nom.'&dir='.$dir.''),'visible'=>Yii::app()->controller->estatusOrden($id)<>7),
+	array('itemOptions'=>array('id' => 'mFacturar'),'label'=>'      Registrar facturación', 'url'=>array('mttoCorrectivo/registrarFacturacion/'.$id.'?nom='.$nom.'&dir='.$dir.''),'visible'=>Yii::app()->controller->estatusOrden($id)<>7),
 
 	array('label'=>'<div id="menu"><strong>Ordenes de mantenimiento</strong></div>'),
 	array('label'=>'      Crear orden de mantenimiento', 'url'=>array('mttoCorrectivo/crearOrdenCorrectiva') ,'visible'=>Yii::app()->user->checkAccess('action_mttocorrectivo_crearOrdenCorrectiva')),
@@ -163,7 +163,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
 					'name'=>'fechaRealizada',
 					'type'=>'raw',
 					'value'=>'$data->valores($data->fechaRealizada)?date("d/m/Y",strtotime($data->fechaRealizada)).CHtml::link(
-                     CHtml::image(Yii::app()->request->baseUrl."/imagenes/agregar.png",
+                     CHtml::image(Yii::app()->request->baseUrl."/imagenes/calendario.png",
                                           "Agregar",array("title"=>"Editar")),
                         "",
                         array(
@@ -171,7 +171,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
                                 \'onclick\'=>\'{registrarMR("\'.Yii::app()->createUrl("reportefalla/actualizar",array("id"=>$data["id"])).\'"); $("#dialog2").dialog("open");}\'
                         )
                 ):$data->noasignado().CHtml::link(
-                     CHtml::image(Yii::app()->request->baseUrl."/imagenes/agregar.png",
+                     CHtml::image(Yii::app()->request->baseUrl."/imagenes/calendario.png",
                                           "Agregar",array("title"=>"Editar")),
                         "",
                         array(
@@ -255,7 +255,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
 					'name'=>'fechaRealizada',
 					'type'=>'raw',
 					'value'=>'$data->valores($data->fechaRealizada)?date("d/m/Y",strtotime($data->fechaRealizada)).CHtml::link(
-                     CHtml::image(Yii::app()->request->baseUrl."/imagenes/agregar.png",
+                     CHtml::image(Yii::app()->request->baseUrl."/imagenes/calendario.png",
                                           "Agregar",array("title"=>"Editar")),
                         "",
                         array(
@@ -263,7 +263,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
                                 \'onclick\'=>\'{registrarMR("\'.Yii::app()->createUrl("reportefalla/actualizar",array("id"=>$data["id"])).\'"); $("#dialog2").dialog("open");}\'
                         )
                 ):$data->noasignado().CHtml::link(
-                     CHtml::image(Yii::app()->request->baseUrl."/imagenes/agregar.png",
+                     CHtml::image(Yii::app()->request->baseUrl."/imagenes/calendario.png",
                                           "Agregar",array("title"=>"Editar")),
                         "",
                         array(
@@ -410,6 +410,22 @@ $this->beginWidget('zii.widgets.jui.CJuiDialog', array( // the dialog
 		?>	
 </div>
  
+<?php $this->endWidget();?>
+
+<?php
+/*ventana agregar recurso*/
+$this->beginWidget('zii.widgets.jui.CJuiDialog', array( // the dialog
+    'id'=>'iva',
+    'options'=>array(
+        'title'=>'Cambiar valor del IVA',
+        'autoOpen'=>false,
+        'modal'=>true,
+        'width'=>300,
+		'resizable'=>false,
+		'position'=>array(null,100),
+    ),
+));?>
+<div class="divForForm"></div> 
 <?php $this->endWidget();?>
 
 <?php
@@ -1031,6 +1047,29 @@ function Filtrar(idrecurso,idtipo){
                 'cache':false});
     return false; 
 }
+function editarIva(){
+	$("#iva").dialog("open");
+	jQuery.ajax({
+                url: "<?php echo Yii::app()->baseUrl;?>"+"/factura/iva",
+                'data':$(this).serialize(),
+                'type':'post',
+                'dataType':'json',
+                'success':function(data){
+                        if(data.status == 'failure'){
+                            $('#iva').html(data.div);
+							$('#iva form').submit(editarIva);
+                        }
+                        else{
+                        	$("#iva").dialog("close");
+                        	$("#idTextField").val(data.valor);
+                        }
+                },
+                'cache':false});
+    return false; 
+}
+var url="<?php echo Yii::app()->controller->action->id;?>";
+if(url=="registrarFacturacion")
+	$("#mFacturar").addClass("active");
 </script>
 <style>
 .ui-autocomplete { height: 130px; overflow-y: scroll; overflow-x: hidden;}

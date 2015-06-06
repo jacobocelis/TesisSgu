@@ -129,21 +129,6 @@ $this->beginWidget('zii.widgets.jui.CJuiDialog', array( // the dialog
 <?php $this->endWidget();?>
 </div>
 <style>
-#menu{
-	font-size:15px;
-
-}
-.crugepanel {
-    background-color: #FFF;
-    border: 1px dotted #AAA;
-    border-radius: 1px;
-    box-shadow: 3px 3px 5px #EEE;
-    display: block;
-    margin-top: 10px;
-    padding: 10px;
-}
-</style>
-<style>
 .grid-view table.items th {
     text-align: center;
     background: none repeat scroll 0% 0% rgba(0, 138, 255, 0.15);

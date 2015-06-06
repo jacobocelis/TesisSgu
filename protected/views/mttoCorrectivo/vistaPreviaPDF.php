@@ -165,9 +165,9 @@ $this->widget('zii.widgets.grid.CGridView', array(
 ?>
 		
 </div>
-<div class='crugepanel user-assignments-role-list' id="ob">
-		Observaciones:<hr><hr><hr><hr><hr><hr>
-		</div>
+<?php if(!isset($correo)){?>
+<div class='crugepanel user-assignments-role-list' id="ob">Observaciones:<hr><hr><hr><hr><hr><hr></div>
+<?php }?>
 
 <style>
 

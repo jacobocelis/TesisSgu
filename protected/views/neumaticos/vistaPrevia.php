@@ -7,7 +7,7 @@
 $this->menu=array(
 
 	array('label'=>'<div id="menu"><strong>Opciones de orden</strong></div>'),
-	array('label'=>'      Detalle de orden', 'url'=>array('neumaticos/vistaPrevia/'.$id.'?nom='.$nom.'&dir='.$dir.'')),
+	array('itemOptions'=>array('id' => 'mDetalle'), 'label'=>'      Detalle de orden', 'url'=>array('neumaticos/vistaPrevia/'.$id.'?nom='.$nom.'&dir='.$dir.'')),
 	array('label'=>'      Actualizar orden', 'url'=>array('neumaticos/mttonRealizados/'.$id.'?nom='.$nom.'&dir='.$dir.''),'visible'=>Yii::app()->controller->estatusOrden($id)<>7),
 	array('label'=>'      Registrar facturación', 'url'=>array('neumaticos/registrarFacturacion/'.$id.'?nom='.$nom.'&dir='.$dir.''),'visible'=>Yii::app()->controller->estatusOrden($id)<>7),
 
@@ -511,5 +511,7 @@ function cerrar(orden){
 	}
 	$.fn.yiiGridView.update('ordenes');
 }
-
+var url="<?php echo Yii::app()->controller->action->id;?>";
+if(url=="vistaPrevia")
+	$("#mDetalle").addClass("active");
 </script>

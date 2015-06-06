@@ -2,6 +2,7 @@
 /* @var $this FacturaController */
 /* @var $model Factura */
 /* @var $form CActiveForm */
+$iva=Parametro::model()->findByAttributes(array('nombre'=>'IVA'));
 ?>
 <div class="form">
 <?php $form=$this->beginWidget('CActiveForm', array(
@@ -14,6 +15,7 @@
 )); ?>
 <h1>Registrar facturación</h1>
 	<p class="note">Campos con <span class="required">*</span> obligatorios.</p>
+
 	<div class="row">
 		<?php echo $form->labelEx($model,'fechaFactura'); ?>
 		<?php echo $form->textField($model,'fechaFactura',array('readonly'=>'readonly','value'=>$model->fechaFactura==""?date('d/m/Y'):date("d/m/Y", strtotime( $model->fechaFactura )),'style' => 'width:100px;cursor:pointer;')); ?>
@@ -22,7 +24,13 @@
 	
 	<div class="row">
 		<?php echo $form->labelEx($model,'codigo'); ?>
-		<?php echo $form->textField($model,'codigo'); ?>
+		<?php echo $form->textField($model,'codigo',array("style"=>"width:100px")); echo "      IVA: "; echo CHtml::textField('iva', $iva["valor"],
+ array('id'=>'idTextField', 
+       'width'=>5,
+       'style'=>'width:30px;cursor:pointer;',
+       'readonly'=>'readonly',
+       'onclick'=>'editarIva()', 
+       'maxlength'=>2)); ?>%
 		<?php echo $form->error($model,'codigo'); ?>
 	</div>
 

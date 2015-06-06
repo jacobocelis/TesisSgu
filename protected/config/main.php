@@ -197,7 +197,7 @@ return array(
     // using Yii::app()->params['paramName']
     'params' => array(
         // this is used in contact page
-        'correoPrincipal' => 'jacobo.celis@gmail.com',
+        'correoPrincipal' => 'sgunet@unet.edu.ve',
         'var'=>0,
     ),
     

@@ -2,6 +2,7 @@
 /* @var $this FacturaController */
 /* @var $model Factura */
 /* @var $form CActiveForm */
+$iva=Parametro::model()->findByAttributes(array('nombre'=>'IVA'));
 ?>
 <div class="form">
 <?php $form=$this->beginWidget('CActiveForm', array(
@@ -21,13 +22,19 @@
 	</div>
 	
 	<div class="row">
-		<?php echo $form->labelEx($model,'codigo',array("style"=>"width:120px;")); ?>
-		<?php echo $form->textField($model,'codigo',array("style"=>"width:100px;")); ?>
+		<?php echo $form->labelEx($model,'codigo'); ?>
+		<?php echo $form->textField($model,'codigo',array("style"=>"width:100px")); echo "      IVA: "; echo CHtml::textField('iva', $iva["valor"],
+ array('id'=>'idTextField', 
+       'width'=>5,
+       'style'=>'width:30px;cursor:pointer;',
+       'readonly'=>'readonly',
+       'onclick'=>'editarIva()', 
+       'maxlength'=>2)); ?>%
 		<?php echo $form->error($model,'codigo'); ?>
 	</div>
 
 	<div class="row">
-		<?php echo $form->labelEx($model,'idproveedor',array("style"=>"width:120px;")); ?>
+		<?php echo $form->labelEx($model,'idproveedor',array("style"=>"width:80px;")); ?>
 		<?php echo $form->dropDownList($model,'idproveedor',CHtml::listData(Proveedor::model()->findAll(),'id','nombre'),array('id'=>'nombre','style' => 'width:300px;')); ?>
 		<?php echo $form->error($model,'idproveedor'); ?>
 	</div>
@@ -43,6 +50,7 @@
 </div><!-- form -->
 
 <script>
+var intervalo = "<?php echo $intervalo;?>";
 	$(function($){
 	    $.datepicker.regional['es'] = {
 	        closeText: 'Cerrar',
@@ -63,7 +71,7 @@
 	        showMonthAfterYear: false,
 	        yearSuffix: '',
 	        maxDate: '0d',
-	        //minDate: '0d',
+	        minDate: '-'+intervalo+'d',
 	    };
 	    $.datepicker.setDefaults($.datepicker.regional['es']);
 	});      		

@@ -256,7 +256,82 @@ class IndicadoresController extends Controller
 	}
 	public function actionInd8(){
 		$this->local();
-		$ind = Yii::app()->db->createCommand('select v.numeroUnidad as unidad, count(case hc.inicial when "0" then 1 else null end) as total_montajes, IfNULL(round(sum(case when hc.inicial = "0" then hc.costounitario+(hc.costounitario*hc.iva) else 0 end),2),0) as costoMontajes, count(case de.idaccionCaucho when "3" then 1 else null end) as total_averias, DATE_FORMAT(hc.fecha,"%b %y") as fecha, IfNULL(round(sum(case de.idaccionCaucho when "3" then drc.costoTotal+(drc.costoTotal*drc.iva) else 0 end),2),0) as costoAverias, IfNULL(round(sum(case de.idaccionCaucho when "3" then drc.costoTotal+(drc.costoTotal*drc.iva) else 0 end)+sum(case when hc.inicial = "0" then hc.costounitario+(hc.costounitario*hc.iva) else 0 end),2),0) as total
+		$idvehiculo=0;
+
+			$unidad= Vehiculo::model()->findByPk($idvehiculo);
+			$preventivo=Yii::app()->db->createCommand('select ifnull(round(sum(costoTotal+(costoTotal*iva)),2),0)  as total from sgu_actividades a, sgu_actividadRecurso ar where a.idvehiculo="'.$idvehiculo.'" and a.id=ar.idactividades and a.idestatus=3')->queryRow();
+			$correctivo=Yii::app()->db->createCommand('select ifnull(round(sum(re.costoTotal+(re.costoTotal*re.iva)),2),0) as total FROM sgu_vehiculo v LEFT JOIN sgu_reporteFalla rf ON (v.id=rf.idvehiculo) LEFT JOIN sgu_recursoFalla re ON (rf.id=re.idreporteFalla) where v.id="'.$idvehiculo.'"')->queryRow();
+			$neumaticos=Yii::app()->db->createCommand('select ifnull(round(sum(case de.idaccionCaucho when "3" then drc.costoTotal+(drc.costoTotal*drc.iva) else 0 end)+sum(case when hc.inicial = "0" then hc.costounitario+(hc.costounitario*hc.iva) else 0 end),2),0) as total from sgu_vehiculo v left join sgu_historicoCaucho hc on(hc.idvehiculo=v.id) left join sgu_detalleEventoCa de on(de.idhistoricoCaucho=hc.id) left join sgu_detRecCaucho drc on(drc.iddetalleEventoCa=de.id) where v.id="'.$idvehiculo.'"')->queryRow();
+			$combustible=Yii::app()->db->createCommand('select ifnull(round(sum(costoTotal),2),0) as total from sgu_historicoCombustible hc where hc.idvehiculo="'.$idvehiculo.'"')->queryRow();
+			
+			$data=array(
+			
+			array('id'=>1,'Vehiculo'=>$unidad["numeroUnidad"],'Preventivo'=>$preventivo["total"],'Correctivo'=>$correctivo["total"],'Neumaticos'=>$neumaticos["total"],'Combustible'=>$combustible["total"],'Total'=>$preventivo["total"]+$correctivo["total"]+$neumaticos["total"]+$combustible["total"]));
+
+		if(isset($_GET["fechaIni"]) or isset($_GET["fechaFin"]) or isset($_GET["vehiculo"])){
+			
+			if($_GET["fechaIni"]=="" and $_GET["vehiculo"]!=""){
+				$idvehiculo=$_GET["vehiculo"];
+
+				$unidad= Vehiculo::model()->findByPk($idvehiculo);
+				$preventivo=Yii::app()->db->createCommand('select ifnull(round(sum(costoTotal+(costoTotal*iva)),2),0)  as total from sgu_actividades a, sgu_actividadRecurso ar where a.idvehiculo="'.$idvehiculo.'" and a.id=ar.idactividades and a.idestatus=3')->queryRow();
+				$correctivo=Yii::app()->db->createCommand('select ifnull(round(sum(re.costoTotal+(re.costoTotal*re.iva)),2),0) as total FROM sgu_vehiculo v LEFT JOIN sgu_reporteFalla rf ON (v.id=rf.idvehiculo) LEFT JOIN sgu_recursoFalla re ON (rf.id=re.idreporteFalla) where v.id="'.$idvehiculo.'"')->queryRow();
+				$neumaticos=Yii::app()->db->createCommand('select ifnull(round(sum(case de.idaccionCaucho when "3" then drc.costoTotal+(drc.costoTotal*drc.iva) else 0 end)+sum(case when hc.inicial = "0" then hc.costounitario+(hc.costounitario*hc.iva) else 0 end),2),0) as total from sgu_vehiculo v left join sgu_historicoCaucho hc on(hc.idvehiculo=v.id) left join sgu_detalleEventoCa de on(de.idhistoricoCaucho=hc.id) left join sgu_detRecCaucho drc on(drc.iddetalleEventoCa=de.id) where v.id="'.$idvehiculo.'"')->queryRow();
+				$combustible=Yii::app()->db->createCommand('select ifnull(round(sum(costoTotal),2),0) as total from sgu_historicoCombustible hc where hc.idvehiculo="'.$idvehiculo.'"')->queryRow();
+				
+				$data=array(
+					array('id'=>1,'Vehiculo'=>$unidad["numeroUnidad"],'Preventivo'=>$preventivo["total"],'Correctivo'=>$correctivo["total"],'Neumaticos'=>$neumaticos["total"],'Combustible'=>$combustible["total"],'Total'=>$preventivo["total"]+$correctivo["total"]+$neumaticos["total"]+$combustible["total"]));
+
+			}
+			if($_GET["fechaIni"]=="" and $_GET["fechaFin"]=="" and $_GET["vehiculo"]==""){
+				$data=array();
+				$unidad= Vehiculo::model()->findAll('activo=1');
+
+				foreach ($unidad as $u) {
+
+					$preventivo=Yii::app()->db->createCommand('select ifnull(round(sum(costoTotal+(costoTotal*iva)),2),0)  as total from sgu_actividades a, sgu_actividadRecurso ar where a.idvehiculo="'.$u["id"].'" and a.id=ar.idactividades and a.idestatus=3')->queryRow();
+					$correctivo=Yii::app()->db->createCommand('select ifnull(round(sum(re.costoTotal+(re.costoTotal*re.iva)),2),0) as total FROM sgu_vehiculo v LEFT JOIN sgu_reporteFalla rf ON (v.id=rf.idvehiculo) LEFT JOIN sgu_recursoFalla re ON (rf.id=re.idreporteFalla) where v.id="'.$u["id"].'"')->queryRow();
+					$neumaticos=Yii::app()->db->createCommand('select ifnull(round(sum(case de.idaccionCaucho when "3" then drc.costoTotal+(drc.costoTotal*drc.iva) else 0 end)+sum(case when hc.inicial = "0" then hc.costounitario+(hc.costounitario*hc.iva) else 0 end),2),0) as total from sgu_vehiculo v left join sgu_historicoCaucho hc on(hc.idvehiculo=v.id) left join sgu_detalleEventoCa de on(de.idhistoricoCaucho=hc.id) left join sgu_detRecCaucho drc on(drc.iddetalleEventoCa=de.id) where v.id="'.$u["id"].'"')->queryRow();
+					$combustible=Yii::app()->db->createCommand('select ifnull(round(sum(costoTotal),2),0) as total from sgu_historicoCombustible hc where hc.idvehiculo="'.$u["id"].'"')->queryRow();
+				
+					array_push($data, array('id'=>$u["numeroUnidad"],'Vehiculo'=>$u["numeroUnidad"],'Preventivo'=>$preventivo["total"],'Correctivo'=>$correctivo["total"],'Neumaticos'=>$neumaticos["total"],'Combustible'=>$combustible["total"],'Total'=>$preventivo["total"]+$correctivo["total"]+$neumaticos["total"]+$combustible["total"]));
+				}
+			}
+			if($_GET["fechaIni"]!="" and $_GET["vehiculo"]!=""){
+				$fechaini=date("Y-m-d", strtotime(str_replace('/', '-',$_GET["fechaIni"])));
+				$fechafin=date("Y-m-d", strtotime(str_replace('/', '-',$_GET["fechaFin"])));
+				$idvehiculo=$_GET["vehiculo"];
+				$unidad= Vehiculo::model()->findByPk($idvehiculo);
+				$preventivo=Yii::app()->db->createCommand('select ifnull(round(sum(costoTotal+(costoTotal*iva)),2),0)  as total from sgu_actividades a, sgu_actividadRecurso ar where a.idvehiculo="'.$idvehiculo.'" and a.id=ar.idactividades and a.idestatus=3 and a.fechaRealizada>="'.$fechaini.'" and a.fechaRealizada<="'.$fechafin.'"')->queryRow();
+				$correctivo=Yii::app()->db->createCommand('select ifnull(round(sum(re.costoTotal+(re.costoTotal*re.iva)),2),0) as total FROM sgu_vehiculo v LEFT JOIN sgu_reporteFalla rf ON (v.id=rf.idvehiculo) LEFT JOIN sgu_recursoFalla re ON (rf.id=re.idreporteFalla) where v.id="'.$idvehiculo.'" and rf.fechaRealizada>="'.$fechaini.'" and rf.fechaRealizada<="'.$fechafin.'"')->queryRow();
+				$neumaticos=Yii::app()->db->createCommand('select ifnull(round(sum(case de.idaccionCaucho when "3" then drc.costoTotal+(drc.costoTotal*drc.iva) else 0 end)+sum(case when hc.inicial = "0" then hc.costounitario+(hc.costounitario*hc.iva) else 0 end),2),0) as total from sgu_vehiculo v left join sgu_historicoCaucho hc on(hc.idvehiculo=v.id) left join sgu_detalleEventoCa de on(de.idhistoricoCaucho=hc.id) left join sgu_detRecCaucho drc on(drc.iddetalleEventoCa=de.id) where v.id="'.$idvehiculo.'"  and de.fechaRealizada>="'.$fechaini.'" and de.fechaRealizada<="'.$fechafin.'"')->queryRow();
+				$combustible=Yii::app()->db->createCommand('select ifnull(round(sum(costoTotal),2),0) as total from sgu_historicoCombustible hc where hc.idvehiculo="'.$idvehiculo.'" and date(hc.fecha)>="'.$fechaini.'" and date(hc.fecha)<="'.$fechafin.'"')->queryRow();
+				
+				$data=array(
+					array('id'=>1,'Vehiculo'=>$unidad["numeroUnidad"],'Preventivo'=>$preventivo["total"],'Correctivo'=>$correctivo["total"],'Neumaticos'=>$neumaticos["total"],'Combustible'=>$combustible["total"],'Total'=>$preventivo["total"]+$correctivo["total"]+$neumaticos["total"]+$combustible["total"]));
+			}
+			if($_GET["fechaIni"]!="" and $_GET["vehiculo"]==""){
+				$data=array();
+				$unidad= Vehiculo::model()->findAll('activo=1');
+				$fechaini=date("Y-m-d", strtotime(str_replace('/', '-',$_GET["fechaIni"])));
+				$fechafin=date("Y-m-d", strtotime(str_replace('/', '-',$_GET["fechaFin"])));
+				foreach ($unidad as $u) {
+
+					$preventivo=Yii::app()->db->createCommand('select ifnull(round(sum(costoTotal+(costoTotal*iva)),2),0)  as total from sgu_actividades a, sgu_actividadRecurso ar where a.idvehiculo="'.$u["id"].'" and a.id=ar.idactividades and a.idestatus=3 and a.fechaRealizada>="'.$fechaini.'" and a.fechaRealizada<="'.$fechafin.'"')->queryRow();
+					$correctivo=Yii::app()->db->createCommand('select ifnull(round(sum(re.costoTotal+(re.costoTotal*re.iva)),2),0) as total FROM sgu_vehiculo v LEFT JOIN sgu_reporteFalla rf ON (v.id=rf.idvehiculo) LEFT JOIN sgu_recursoFalla re ON (rf.id=re.idreporteFalla) where v.id="'.$u["id"].'" and rf.fechaRealizada>="'.$fechaini.'" and rf.fechaRealizada<="'.$fechafin.'"')->queryRow();
+					$neumaticos=Yii::app()->db->createCommand('select ifnull(round(sum(case de.idaccionCaucho when "3" then drc.costoTotal+(drc.costoTotal*drc.iva) else 0 end)+sum(case when hc.inicial = "0" then hc.costounitario+(hc.costounitario*hc.iva) else 0 end),2),0) as total from sgu_vehiculo v left join sgu_historicoCaucho hc on(hc.idvehiculo=v.id) left join sgu_detalleEventoCa de on(de.idhistoricoCaucho=hc.id) left join sgu_detRecCaucho drc on(drc.iddetalleEventoCa=de.id) where v.id="'.$u["id"].'"  and de.fechaRealizada>="'.$fechaini.'" and de.fechaRealizada<="'.$fechafin.'"')->queryRow();
+					$combustible=Yii::app()->db->createCommand('select ifnull(round(sum(costoTotal),2),0) as total from sgu_historicoCombustible hc where hc.idvehiculo="'.$u["id"].'" and date(hc.fecha)>="'.$fechaini.'" and date(hc.fecha)<="'.$fechafin.'"')->queryRow();
+				
+					array_push($data, array('id'=>$u["numeroUnidad"],'Vehiculo'=>$u["numeroUnidad"],'Preventivo'=>$preventivo["total"],'Correctivo'=>$correctivo["total"],'Neumaticos'=>$neumaticos["total"],'Combustible'=>$combustible["total"],'Total'=>$preventivo["total"]+$correctivo["total"]+$neumaticos["total"]+$combustible["total"]));
+				}
+			}
+		}
+	 	$this->render('ind8',array(
+ 			'rawData'=>new CArrayDataProvider($data),
+ 			'vehiculo'=>new Vehiculo,
+	 	));
+
+		/*$ind = Yii::app()->db->createCommand('select v.numeroUnidad as unidad, count(case hc.inicial when "0" then 1 else null end) as total_montajes, IfNULL(round(sum(case when hc.inicial = "0" then hc.costounitario+(hc.costounitario*hc.iva) else 0 end),2),0) as costoMontajes, count(case de.idaccionCaucho when "3" then 1 else null end) as total_averias, DATE_FORMAT(hc.fecha,"%b %y") as fecha, IfNULL(round(sum(case de.idaccionCaucho when "3" then drc.costoTotal+(drc.costoTotal*drc.iva) else 0 end),2),0) as costoAverias, IfNULL(round(sum(case de.idaccionCaucho when "3" then drc.costoTotal+(drc.costoTotal*drc.iva) else 0 end)+sum(case when hc.inicial = "0" then hc.costounitario+(hc.costounitario*hc.iva) else 0 end),2),0) as total
 				from sgu_vehiculo v
 				left join sgu_historicoCaucho hc on(hc.idvehiculo=v.id)
 				left join sgu_detalleEventoCa de on(de.idhistoricoCaucho=hc.id)
@@ -276,7 +351,7 @@ class IndicadoresController extends Controller
 	 		'costoAverias'=>$this->separar($ind,"costoAverias"),
 	 		'total'=>$this->separar($ind,"total"),
 	 		'filas'=>$this->filas($ind,6),
-	 	));
+	 	));*/
 	}
 	public function actionInd9(){
 		$this->local();

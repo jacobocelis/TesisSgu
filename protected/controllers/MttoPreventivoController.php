@@ -147,9 +147,9 @@ class MttoPreventivoController extends Controller
 			'idvehiculo'=>$idvehiculo,
 			'recursos'=>$recursos,
 			'orden'=>$orden,
+			'correo'=>1,
 		),true));
 		 $mPDF1->Output('Orden-'.$id.'.pdf','F');
-		 //exit;
 	}	 
 	
 	public function actionCorreo($id){
@@ -525,7 +525,6 @@ class MttoPreventivoController extends Controller
 			'Colorabi'=>$this->getColor($this->getOrdenesAbiertas()),
 			'Colorli'=>$this->getColor($this->getOrdenesListas()),
 			'listas'=>$this->getOrdenesListas(),
-			
 		));
 	}
 	public function actionCrearOrden(){

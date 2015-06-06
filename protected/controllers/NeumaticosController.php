@@ -32,7 +32,7 @@ class NeumaticosController extends Controller
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create','EditarMontado','plantilla','ActualizarListaPlantillas','MostrarLinkEje','actualizarListaPosicionesEje','MostrarLinkCaucho','actualizarEstado','MostrarLinkRep','MostrarDivRep','TieneGrupo','montajeInicial','montar','alertaCambioCauchos','ActualizarSpan','averiaNeumatico','RegistrarAveriaNeumatico','AgregarAveriaNueva','ajaxActualizarAverias','CrearOrdenNeumaticos','crearOrden','agregarNeumaticosRenovar','agregarNeumaticosRotar','verOrdenes','vistaPrevia','AgregarRotacionNueva','MttonRealizados','agregarFactura','registrarFacturacion','actualizarCheck','agregarRecursoAveria','estatusOrden','vistaPreviaPDF','nuevoRec','actualizarListaRecursos','montarNuevo','verificarEstadoRenovacion','cerrarOrdenes','HistoricoOrdenes','HistoricoAverias','historicoMontajes','historicoRotaciones','ActualizarSpanListas','ListaAveriaNeumatico','ActualizarSpanAverias','ActualizarListaPosCaucho','ActualizarListaMedCaucho','HistoricoGastos','parametros'),
+				'actions'=>array('create','EditarMontado','plantilla','ActualizarListaPlantillas','MostrarLinkEje','actualizarListaPosicionesEje','MostrarLinkCaucho','actualizarEstado','MostrarLinkRep','MostrarDivRep','TieneGrupo','montajeInicial','montar','alertaCambioCauchos','ActualizarSpan','averiaNeumatico','RegistrarAveriaNeumatico','AgregarAveriaNueva','ajaxActualizarAverias','CrearOrdenNeumaticos','crearOrden','agregarNeumaticosRenovar','agregarNeumaticosRotar','verOrdenes','vistaPrevia','AgregarRotacionNueva','MttonRealizados','agregarFactura','registrarFacturacion','actualizarCheck','agregarRecursoAveria','estatusOrden','vistaPreviaPDF','nuevoRec','actualizarListaRecursos','montarNuevo','verificarEstadoRenovacion','cerrarOrdenes','HistoricoOrdenes','HistoricoAverias','historicoMontajes','historicoRotaciones','ActualizarSpanListas','ListaAveriaNeumatico','ActualizarSpanAverias','ActualizarListaPosCaucho','ActualizarListaMedCaucho','HistoricoGastos','parametros','correo'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -793,6 +793,163 @@ class NeumaticosController extends Controller
 		));
 	
 	}
+	public function generarPDF($id){
+		$orden=new CActiveDataProvider('Ordenmtto',array('criteria' => array(
+			'condition' =>'id='.$id."")
+			,'pagination'=>array('pageSize'=>9999999)));
+			
+		// and idfallaCaucho is not null (para solo fallas)
+		$idvehiculoAver=Yii::app()->db->createCommand("select distinct(h.idvehiculo), count(*) as totAct from sgu_detalleEventoCa de, sgu_detOrdNeumatico d, sgu_historicoCaucho h where de.idfallaCaucho is not null and de.idhistoricoCaucho=h.id and de.id=d.iddetalleEventoCa and d.idordenMtto=".$id." group by h.idvehiculo")->queryAll();
+		$totalVehAver=count($idvehiculoAver);
+		//necesario cuando no existan averias
+		if($totalVehAver==0){
+			$vehiculosAver[]=new CActiveDataProvider('Vehiculo',array('criteria' => array(
+			'condition' =>'id="0"',
+			)));
+			$actividadesAver[][]=new CActiveDataProvider('Detalleeventoca',array('criteria' => array(
+				'condition' =>'id="0"',
+			)));
+			$recursosAver[][]=new CActiveDataProvider('Detreccaucho',array('criteria' => array(
+				'condition' =>'iddetalleEventoCa="0"',
+			)));
+		}
+		
+		for($i=0;$i<$totalVehAver;$i++){
+			
+			$vehiculosAver[]=new CActiveDataProvider('Vehiculo',array('criteria' => array(
+			'condition' =>'id="'.$idvehiculoAver[$i]["idvehiculo"].'"',
+			)));
+			
+		$totAct=Yii::app()->db->createCommand('select iddetalleEventoCa as id from sgu_detOrdNeumatico where idordenMtto="'.$id.'" and iddetalleEventoCa in(select de.id from sgu_detalleEventoCa de, sgu_historicoCaucho h where h.id=de.idhistoricoCaucho and de.idfallaCaucho is not null and h.idvehiculo="'.$idvehiculoAver[$i]["idvehiculo"].'")')->queryAll();
+		
+		for($j=0;$j<$idvehiculoAver[$i]["totAct"];$j++){		
+				$actividadesAver[$i][$j]=new CActiveDataProvider('Detalleeventoca',array('criteria' => array(
+				'condition' =>'id="'.$totAct[$j]["id"].'"',
+				)));
+				$recursosAver[$i][$j]=new CActiveDataProvider('Detreccaucho',array('criteria' => array(
+				'condition' =>'iddetalleEventoCa="'.$totAct[$j]["id"].'"',
+				)));
+			}
+		}
+		//para solo renovaciones and idaccionCaucho=1
+		$idvehiculoMont=Yii::app()->db->createCommand("select distinct(h.idvehiculo), count(*) as totAct from sgu_detalleEventoCa de, sgu_detOrdNeumatico d, sgu_historicoCaucho h where de.idaccionCaucho=1 and de.idhistoricoCaucho=h.id and de.id=d.iddetalleEventoCa and d.idordenMtto=".$id." group by h.idvehiculo")->queryAll();
+		$totalVehMont=count($idvehiculoMont);
+		//necesario cuando no existan renovaciones
+		
+		if($totalVehMont==0){
+			$vehiculosMont[]=new CActiveDataProvider('Vehiculo',array('criteria' => array(
+			'condition' =>'id="0"',
+			)));
+			$actividadesMont[][]=new CActiveDataProvider('Detalleeventoca',array('criteria' => array(
+				'condition' =>'id="0"',
+			)));
+		}
+		
+		for($i=0;$i<$totalVehMont;$i++){
+			$vehiculosMont[]=new CActiveDataProvider('Vehiculo',array('criteria' => array(
+			'condition' =>'id="'.$idvehiculoMont[$i]["idvehiculo"].'"',
+			)));
+		
+				$actividadesMont[$i]=new CActiveDataProvider('Detalleeventoca',array('criteria' => array(
+				'condition' =>'id in (select iddetalleEventoCa as id from sgu_detOrdNeumatico where idordenMtto="'.$id.'" and iddetalleEventoCa in(select de.id from sgu_detalleEventoCa de, sgu_historicoCaucho h where h.id=de.idhistoricoCaucho and idaccionCaucho=1 and h.idvehiculo="'.$idvehiculoMont[$i]["idvehiculo"].'"))',
+				)));
+		}
+		//para solo rotaciones and idaccionCaucho=2
+		//$Rot=Yii::app()->db->createCommand("select de.idrotacionCauchos as id,count(de.idrotacionCauchos) as totRot from sgu_detOrdNeumatico d, sgu_detalleEventoCa de where d.iddetalleEventoCa=de.id and d.idordenMtto=".$id." and de.idaccionCaucho=2 group by de.idrotacionCauchos")->queryAll();
+		//$totalRot=count($Rot);
+		
+		//necesario cuando no existan rotaciones
+		/*if($totalRot==0){
+			$Rotaciones[$i]=new CActiveDataProvider('Rotacioncauchos',array('criteria' => array(
+				'condition' =>'id=0',
+				)));
+				
+		$actividadesRot[$i]=new CActiveDataProvider('Detalleeventoca',array('criteria' => array(
+				'condition' =>'idrotacionCauchos=0',
+				)));
+		}*/
+		
+		/*for($i=0;$i<$totalRot;$i++){
+		$Rotaciones[$i]=new CActiveDataProvider('Rotacioncauchos',array('criteria' => array(
+				'condition' =>'id="'.$Rot[$i]["id"].'"',
+				)));
+				
+		$actividadesRot[$i]=new CActiveDataProvider('Detalleeventoca',array('criteria' => array(
+				'condition' =>'idrotacionCauchos="'.$Rot[$i]["id"].'"',
+				)));	
+		}*/
+		
+		$totFactura=Yii::app()->db->createCommand('select (round(sum(ar.costoTotal),2)) as Total from sgu_detRecCaucho ar, sgu_detOrdNeumatico d where d.iddetalleEventoCa=ar.iddetalleEventoCa and d.idordenMtto="'.$id.'"')->queryRow();
+
+		$factura=new CActiveDataProvider('Factura',array('criteria' => array(
+			'condition'=>'idordenMtto="'.$id.'"'),
+			'pagination'=>array('pageSize'=>9999999)));
+			
+		
+		
+		$mPDF1 = Yii::app()->ePdf->mpdf('utf-8', 'Letter'); //Esto lo pueden configurar como quieren, para eso deben de entrar en la web de MPDF para ver todo lo que permite.
+		 //$mPDF1->useOnlyCoreFonts = true;
+		 $mPDF1->SetTitle("Solicitud de servicio");
+		 $mPDF1->SetAuthor("J&M");
+		 //$mPDF1->SetWatermarkText("U.N.E.T.");
+		 $mPDF1->showWatermarkText = false;
+		 $mPDF1->watermark_font = 'DejaVuSansCondensed';
+		 $mPDF1->watermarkTextAlpha = 0.1;
+		 $mPDF1->SetDisplayMode('fullpage');
+		 //$mPDF1->use_kwt = true; 
+		 $mPDF1->WriteHTML($this->renderPartial('vistaPreviaPDF',array(
+			'vehiculosAver'=>$vehiculosAver,
+			'totalVehAver'=>$totalVehAver,
+			'actividadesAver'=>$actividadesAver,
+			'idvehiculoAver'=>$idvehiculoAver,
+			'recursosAver'=>$recursosAver,
+			'vehiculosMont'=>$vehiculosMont,
+			'totalVehMont'=>$totalVehMont,
+			'actividadesMont'=>$actividadesMont,
+			'idvehiculoMont'=>$idvehiculoMont,
+			'orden'=>$orden,
+			'factura'=>$factura,
+			'totFactura'=>$totFactura,
+			'correo'=>1,
+		),true));
+		 $mPDF1->Output('Orden-'.$id.'.pdf','F');
+	}	
+	public function actionCorreo($id){
+		//se envia desde la vista mail
+			$model = new Mail;
+		if(isset($_POST['Mail'])){
+				$model->attributes=$_POST['Mail'];
+				if($model->validate()){
+					$this->GenerarPDF($id);
+					$adjunto="Orden-".$id.".pdf";
+					$correo = PublicoController::enviarMail($model->to,$model->from,$model->subject,$model->body,$adjunto);
+					if($correo){
+						echo CJSON::encode(array(
+							'status'=>'success', 
+							'div'=>"La órden fue enviada con éxito"
+							));
+						//unlink(Yii::app()->basePath.'/../ordenes/Orden-'.$id.'.pdf');
+						unlink('Orden-'.$id.'.pdf');
+						exit;
+						
+					}
+					else{
+						echo CJSON::encode(array(
+							'status'=>'failure', 
+							'div'=>"No se pudo enviar la órden. Contacte al administrador"
+							));
+						exit;
+					}
+				}
+		}
+			if (Yii::app()->request->isAjaxRequest){	
+            echo CJSON::encode(array(
+                'status'=>'failure', 
+                'div'=>$this->renderPartial('_formMail', array('model'=>$model), true)
+				));
+            exit;               
+        }
+	}
 	public function actionAgregarRecursoAveria($id){
                 $model=new Detreccaucho;
         // Uncomment the following line if AJAX validation is needed
@@ -1071,6 +1228,10 @@ class NeumaticosController extends Controller
 	
 	public function actionAgregarFactura($id){
 		$model=new Factura;
+			$fecha=Ordenmtto::model()->findByPk($id);
+			$fecha=date("Y-m-d", strtotime(str_replace('/', '-',$fecha->fecha)));
+			$intervalo=((strtotime(date("Y-m-d"))-strtotime($fecha))/86400);
+			
 		if(isset($_POST['Factura'])){
             $model->attributes=$_POST['Factura'];
 			$model->fechaFactura=date("Y-m-d", strtotime(str_replace('/', '-',$model->fechaFactura)));
@@ -1087,7 +1248,7 @@ class NeumaticosController extends Controller
 		 if (Yii::app()->request->isAjaxRequest){	
             echo CJSON::encode(array(
                 'status'=>'failure', 
-                'div'=>$this->renderPartial('_formFactura', array('model'=>$model,'id'=>$id), true)
+                'div'=>$this->renderPartial('_formFactura', array('model'=>$model,'id'=>$id,'intervalo'=>$intervalo), true)
 				));
             exit;               
         }
@@ -1357,7 +1518,7 @@ class NeumaticosController extends Controller
 					$idv=$_GET["idvehiculo"];
 			}	
 			/*ojo con and idestatus=8 */
-		$montados=new CActiveDataProvider('Historicocaucho',array("criteria"=>array("condition"=>"idvehiculo=".$idv." and idestatusCaucho=1 and id not in (select idhistoricoCaucho from sgu_detalleEventoCa where idaccionCaucho=1 and (idestatus=8 or idestatus=4))"),'pagination' => false));
+		$montados=new CActiveDataProvider('Historicocaucho',array("criteria"=>array("condition"=>"idvehiculo=".$idv." and idestatusCaucho=1 and id not in (select idhistoricoCaucho from sgu_detalleEventoCa where idaccionCaucho=3 and (idestatus=8 or idestatus=4))"),'pagination' => false));
 		
 		$montadosR=new CActiveDataProvider('Historicocaucho',array("criteria"=>array("condition"=>"idvehiculo=".$idv." and (idestatusCaucho=1 or idestatusCaucho=4) and id not in (select idhistoricoCaucho from sgu_detalleEventoCa where idaccionCaucho=2 and (idestatus=8 or idestatus=4))"),'pagination' => false));
 		

@@ -16,190 +16,163 @@ $this->menu=array(
   array('label'=>'      Consumo de combustible por unidad', 'url'=>array('Indicadores/ind3')),
   array('label'=>'      Gastos por mtto. preventivo', 'url'=>array('Indicadores/ind7')),
   array('label'=>'      Gastos por mtto. correctivo', 'url'=>array('Indicadores/ind4')),
-  array('label'=>'      Gastos por neumáticos', 'url'=>array('Indicadores/ind8')),
+  array('label'=>'      Gasto totalizado', 'url'=>array('Indicadores/ind8')),
   //array('label'=>'      Tiempo de servicio', 'url'=>array('Indicadores/ind5')),
   array('label'=>'      Viajes por unidad', 'url'=>array('Indicadores/ind6')),
 );
 ?>
 <div class="crugepanel">
-<?php
-$this->Widget('ext.highcharts.HighchartsWidget', array(
-        'scripts' => array(
-        'modules/exporting',
-        'themes/grid-light',
-    ),
-   'options'=>array(
-           'chart'=> array(
-            'defaultSeriesType'=> 'column',
-            //'zoomType'=> 'xz',
-            /*'options3d'=> array(
-                'enabled'=> true,
-                'alpha'=> 10,
-                'beta'=> 25,
-                'depth'=> 70
-            )*/
-        ),
-            'lang'=>array(  
-                'loading'=> 'Cargando...',  
-                'months'=> array('Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'),  
-                'weekdays'=> array('Domingo', 'Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes', 'Sábado'),  
-                'shortMonths'=> array('Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'),  
-                'exportButtonTitle'=> "Exportar",  
-                'printButtonTitle'=> "Importar",  
-                'rangeSelectorFrom'=> "De",  
-                'rangeSelectorTo'=> "A",  
-                'rangeSelectorZoom'=> "Periodo",  
-                'downloadPNG'=> 'Descargar gráfica PNG',  
-                'downloadJPEG'=> 'Descargar gráfica JPEG',  
-                'downloadPDF'=> 'Descargar gráfica PDF',  
-                'downloadSVG'=> 'Descargar gráfica SVG',  
-                'printChart'=> 'Imprimir Gráfica',  
-                'thousandsSep'=> ",",  
-                'decimalPoint'=> '.'  
-            ),
-        'title' => array('text' => 'Total de reparaciones y cambios de neumáticos por unidad'),
-        'credits'=> array(
-            'enabled'=> false
-        ),
-        'yAxis'=> array(
+  <h1>Gasto totalizado</h1>
+  <div id="filtro" style="width:20%">
+<i>Por # de unidad: </i>
 
-        array( // Primary yAxis
-            'allowDecimals'=> false,
-            'min'=>0,
-            'labels'=> array(
-                'format'=> '{value}',
- 
-            ),
-            'title'=> array(
-                'text'=> 'Reparaciones',
- 
-            )
-        ), array( // Secondary yAxis
-        'min'=>0,
-            'title'=> array(
-                'text'=> 'Gasto',
- 
-            ),
-            'labels'=> array(
-                'format'=> '{value} Bs.',
- 
-            ),
-            'opposite'=> true
-        )),
-
-    'xAxis'=> array(
-        array(
-          
-            'title'=>array(
-                'text'=>'# Unidad',
-              ),
-            'categories'=> $unidad,
-            'tickmarkPlacement'=> 'on',
-             'min'=> $filas, 
-        ), array(
-            'linkedTo'=> 0,
-            'categories'=> $fecha,
-            //tickPositions: [3, 5, 8],
-            'opposite'=> true,
-            'labels'=> array(
-                    //y:20,
-                'style'=> array(
-                    //fontWeight: 'bold'
-                ),
-            ),
-        )),
-
-    'scrollbar'=> array(
-        'enabled'=> true,
-    ),
-    'series'=> array(
-        array(
-            'type'=> 'column',
-            'data'=> array_map('intVal', $total_montajes),
-            'name'=>'# Montajes',
-            'color'=>'green',
-        ),
-        array(
-            'type'=> 'column',
-            'data'=> array_map('intVal', $total_averias),
-            'name'=>'# Averías',
-            'color'=>'yellow',
-        ),
-        array(
-          'type'=> 'spline',
-          'yAxis'=> 1,
-          'name'=>'Costo montajes',
-          'color'=>'green',
-          'data'=> array_map('floatVal', $costoMontajes),
-        ),
-        array(
-          'type'=> 'spline',
-          'yAxis'=> 1,
-          'name'=>'Costo averías',
-          'color'=>'yellow',
-          'data'=> array_map('floatVal', $costoAverias),
-        ),
-        array(
-          'type'=> 'spline',
-          'yAxis'=> 1,
-          'name'=>'Costo total',
-          'color'=>'red',
-          'data'=> array_map('floatVal', $total),
-        ),),
-   ),
-));
-
-//select  from sgu_historicocombustible group by idvehiculo,month(fecha)
-     /* $this->widget('ext.highcharts.ActiveHighstockWidget', array(
-      'options' => array(
-            'lang'=>array(  
-                'loading'=> 'Cargando...',  
-                'months'=> array('Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'),  
-                'weekdays'=> array('Domingo', 'Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes', 'Sábado'),  
-                'shortMonths'=> array('Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'),  
-                'exportButtonTitle'=> "Exportar",  
-                'printButtonTitle'=> "Importar",  
-                'rangeSelectorFrom'=> "De",  
-                'rangeSelectorTo'=> "A",  
-                'rangeSelectorZoom'=> "Periodo",  
-                'downloadPNG'=> 'Descargar gráfica PNG',  
-                'downloadJPEG'=> 'Descargar gráfica JPEG',  
-                'downloadPDF'=> 'Descargar gráfica PDF',  
-                'downloadSVG'=> 'Descargar gráfica SVG',  
-                'printChart'=> 'Imprimir Gráfica',  
-                'thousandsSep'=> ",",  
-                'decimalPoint'=> '.'  
-            ), 
-
-      'title' => array('text' => 'Site Percentile'),
-      'yAxis' => array(
-      'title' => array('text' => 'Site Rank')
-      ),
-      'series' => array(
-      array(
-      'name'  => 'Costo',
-      'data'  => array(// data column in the dataprovider
-        'costoTotal',
-      ),        
-      'time'  => 'fecha',          // time column in the dataprovider
-       'timeType'  => 'date',
-      // defaults to a mysql timestamp, other options are 'date' (run through strtotime()) or 'plain'
-      ),
- 
-      /*array(
-              'name'  => 'Site percentile',
-              'time'  => 'fechaFalla',          // time column in the dataprovider
-              'type'  => 'arearange',
-              'data'  => array(
-              'Column1',      // specify an array of data options
-              'Column2',      // if you are using an area range charts
-            ),
-        ),*/
-      /*),
-      ),
-      'dataProvider' => $dataProvider,
-      ));*/
-?>
+    <?php $model=new Vehiculo;  
+    echo CHtml::dropDownList('vehiculo',$model,CHtml::listData(Vehiculo::model()->findAll(),'id','numeroUnidad'),
+              array('empty' => 'Todos',
+                   'style'=>"width:80px;")); 
+        ?>
 </div>
+<div id="fechas" style="float:left;">
+<i>Por período: </i>
+    <?php echo CHtml::textField('Fechaini', '',array('style'=>'width:80px;cursor:pointer;','size'=>"10","readonly"=>'readonly','placeholder'=>"Inicio",'id'=>'inicio')); ?>
+    <?php echo CHtml::textField('Fechafin', '',array('style'=>'width:80px;cursor:pointer;',"readonly"=>'readonly','disabled'=>'disabled','id'=>'fin','placeholder'=>"Fin")); 
+    echo CHtml::submitButton('Buscar',array("id"=>"boton","onclick"=>"FiltrarFecha()","style"=>"float:right;margin-top:2px;margin-left:10px;")); ?>
+</div>
+
+<?php 
+$this->widget('zii.widgets.grid.CGridView', array(
+    'id'=>'det',
+    'dataProvider' => $rawData,
+    'summaryText'=>'',
+    //'afterAjaxUpdate' => 'js:function(id, data) {alert(id);}',
+    'columns' => array(
+      array(
+        'header'=>'Unidad',
+        'name' => 'Vehiculo',
+        'type' => 'raw',
+        'value'=>'str_pad((int) $data["Vehiculo"],2,"0",STR_PAD_LEFT);',
+        'htmlOptions'=>array('style'=>'text-align:center;'),
+      ),
+      array(
+        'header'=>'Mtto. preventivo',
+        'name' => 'Preventivo',
+        'type' => 'raw',
+        'value' => 'CHtml::encode(number_format($data["Preventivo"], 2,",","."))',
+        'htmlOptions'=>array('style'=>'text-align:center;'),
+      ),
+      array(
+        'header'=>'Mtto. correctivo',           
+        'name' => 'Correctivo',
+        'type' => 'raw',
+        'value' => 'CHtml::encode(number_format($data["Correctivo"], 2,",","."))',
+        'htmlOptions'=>array('style'=>'text-align:center;'),
+      ),
+      array(
+        
+        'name' => 'Neumaticos',
+        'type' => 'raw',
+        'value' => 'CHtml::encode(number_format($data["Neumaticos"], 2,",","."))',
+        'htmlOptions'=>array('style'=>'text-align:center;'),
+      ),
+      array(
+        'name' => 'Combustible',
+        'type' => 'raw',
+        'value' => 'CHtml::encode(number_format($data["Combustible"], 2,",","."))',
+        'htmlOptions'=>array('style'=>'text-align:center;'),
+      ),
+      array(
+        'name' => 'Total',
+        'type' => 'raw',
+        'value' => 'CHtml::encode(number_format($data["Total"], 2,",","."))',
+        'htmlOptions'=>array('style'=>'text-align:center;'),
+        'footer'=>'<strong>Total: </strong>'.$vehiculo->totalGastosReporte($rawData->getData()).' Bs.',
+        'footerHtmlOptions'=>array("style"=>"background: none repeat scroll 0% 0% rgba(5, 255, 0, 0.35);text-align:center"),
+      ),
+    ),
+  )); 
+?>
+
+<?php
+/*ventana agregar actividad*/
+$this->beginWidget('zii.widgets.jui.CJuiDialog', array( // the dialog
+    'id'=>'nuevaPos',
+    'options'=>array(
  
+        'autoOpen'=>false,
+        'modal'=>true, 
+    ),
+));?>
+<?php $this->endWidget();?>
+
+</div>
+<style>
+.grid-view table.items th {
+    text-align: center;
+    background: none repeat scroll 0% 0% rgba(0, 138, 255, 0.15);
+}
+.grid-view table.items th a {
+    color: #000!important;
+    font-weight: bold;
+    text-decoration: none;
+}
+.grid-view table.items td {
+    font-size: 0.9em;
+    border: 1px solid #5877C3;
+    padding: 0.3em;
+}
+.grid-view table.items th, .grid-view table.items td {
+    font-size: 0.9em;
+    border: 1px solid #A8C5F0;
+    padding: 0.3em;
+}
+</style>
+<script type="text/javascript">
+$(function($){
+      $.datepicker.regional['es'] = {
+          closeText: 'Cerrar',
+          prevText: 'Anterior',
+          nextText: 'Siguiente',
+          currentText: 'Hoy',
+          monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+          monthNamesShort: ['Ene','Feb','Mar','Abr', 'May','Jun','Jul','Ago','Sep', 'Oct','Nov','Dic'],
+          dayNames: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
+          dayNamesShort: ['Dom','Lun','Mar','Mié','Juv','Vie','Sáb'],
+          dayNamesMin: ['Do','Lu','Ma','Mi','Ju','Vi','Sá'],
+          weekHeader: 'Sm',
+          dateFormat: 'dd/mm/yy',
+          firstDay: 1,
+          isRTL: false,
+      changeMonth: true,
+            changeYear: true,
+          showMonthAfterYear: false,
+          yearSuffix: '',
+          maxDate: '0d',
+          //minDate: '-30d',
+      };
+      $.datepicker.setDefaults($.datepicker.regional['es']);
+    });  
+    
+    $("#inicio").datepicker({
+      onSelect: function(selected) {
+        $("#fin").datepicker("option","minDate", selected+" +1d");
+        if($("#inicio").val().length==0)
+          
+          $('#fin').attr("disabled", true);
+        else
+          $('#fin').attr("disabled", false);
+      }
+    });
+    $("#fin").datepicker({
+      onSelect: function(selected) {
+        
+      }
+    });
+    
+function FiltrarFecha(){
+  var hoy="<?php echo date("d/m/Y")?>";
+  if($("#fin").val().length==0 && $("#inicio").val().length>0)
+    $("#fin").val(hoy);
+  $.fn.yiiGridView.update('det',{ data : "fechaIni="+$("#inicio").val()+"&fechaFin="+$("#fin").val()+"&vehiculo="+$("#vehiculo").val()});
+}
+</script>
 

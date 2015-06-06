@@ -111,9 +111,33 @@ class OrdenmttoController extends Controller
 	public function actionDelete($id){
 		
 		$modelo=$this->loadModel($id);
-		$act=Detalleorden::model()->findAll('idordenMtto='.$modelo->id.'');
-		for($i=0;$i<count($act);$i++){
-				Yii::app()->db->createCommand("update `tsg`.`sgu_actividades` set `idestatus` = '2' where `sgu_actividades`.`id` = ".$act[$i]['idactividades']."")->query();
+		
+		$actP=Detalleorden::model()->findAll('idordenMtto='.$modelo->id.'');
+		for($i=0;$i<count($actP);$i++){
+				Yii::app()->db->createCommand("update `tsg`.`sgu_actividades` set `idestatus` = '2' where `sgu_actividades`.`id` = ".$actP[$i]['idactividades']."")->query();
+				Yii::app()->db->createCommand("delete from `tsg`.`sgu_detalleOrden` where `sgu_detalleOrden`.`idactividades` = ".$actP[$i]['idactividades']."")->query();
+		}
+		//$this->loadModel($id)->delete();
+
+
+		$actC=Detalleordenco::model()->findAll('idordenMtto='.$modelo->id.'');
+		for($i=0;$i<count($actC);$i++){
+				Yii::app()->db->createCommand("update `tsg`.`sgu_reporteFalla` set `idestatus` = '8' where `sgu_reporteFalla`.`id` = ".$actC[$i]['idreporteFalla']."")->query();
+				Yii::app()->db->createCommand("delete from `tsg`.`sgu_detalleOrdenCo` where `sgu_detalleOrdenCo`.`idreporteFalla` = ".$actC[$i]['idreporteFalla']."")->query();
+		}
+		//$this->loadModel($id)->delete();
+
+		$actN=Detordneumatico::model()->findAll('idordenMtto='.$modelo->id.'');
+		for($i=0;$i<count($actN);$i++){
+			$evento=Detalleeventoca::model()->findByPk($actN[$i]['iddetalleEventoCa']);
+			if($evento["idfallaCaucho"]<>null){
+				$evento->idestatus=8;
+				$evento->update();
+				Yii::app()->db->createCommand("delete from `tsg`.`sgu_detOrdNeumatico` where `sgu_detOrdNeumatico`.`iddetalleEventoCa` = ".$actN[$i]['iddetalleEventoCa']."")->query();
+			}else{
+				Yii::app()->db->createCommand("delete from `tsg`.`sgu_detOrdNeumatico` where `sgu_detOrdNeumatico`.`iddetalleEventoCa` = ".$actN[$i]['iddetalleEventoCa']."")->query();
+				$evento->delete();
+			}
 		}
 		$this->loadModel($id)->delete();
 

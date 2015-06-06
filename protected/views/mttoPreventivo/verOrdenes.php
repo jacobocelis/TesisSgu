@@ -1,7 +1,7 @@
 <?php 
 	$this->breadcrumbs=array(
 	'Mantenimiento preventivo'=>array('mttoPreventivo/index'),
-	'Ordenes abiertas',
+	'Órdenes abiertas',
 );
 $this->menu=array(
 	//if(Yii::app()->user->checkAccess('xxx')):
@@ -10,26 +10,23 @@ $this->menu=array(
 	array('label'=>'      Registrar actividades de mantenimiento', 'url'=>array('mttoPreventivo/planes') , 'visible'=>Yii::app()->user->checkAccess('action_mttopreventivo_planes')),
 	array('label'=>'      Registrar matenimientos iniciales <span id="mi" class="badge badge-'.$color.' pull-right">'.$mi.'</span>', 'url'=>array('mttoPreventivo/iniciales/') , 'visible'=>Yii::app()->user->checkAccess('action_mttopreventivo_iniciales')),
 	array('label'=>'      Ajuste de fechas en calendario', 'url'=>array('mttoPreventivo/calendario') , 'visible'=>Yii::app()->user->checkAccess('action_mttopreventivo_calendario')),
-	//endif;
 	
 	array('label'=>'<div id="menu"><strong>Órdenes de mantenimiento</strong></div>'),
 	array('label'=>'      Crear orden de mantenimiento', 'url'=>array('mttoPreventivo/crearOrdenPreventiva') ,'visible'=>Yii::app()->user->checkAccess('action_mttopreventivo_crearOrdenPreventiva')),
 	array('label'=>'      Ver ordenes abiertas <span class="badge badge-'.$Colorabi.' pull-right">'.$abiertas.'</span>', 'url'=>array('mttoPreventivo/verOrdenes') ,'visible'=>Yii::app()->user->checkAccess('action_mttopreventivo_verOrdenes')),
-	array('label'=>'      Ordenes listas para cerrar <span class="badge badge-'.$Colorli.' pull-right">'.$listas.'</span>', 'url'=>array('mttoPreventivo/cerrarOrdenes'),'visible'=>Yii::app()->user->checkAccess('action_mttopreventivo_cerrarOrdenes')),
-	
-	 
+	array('label'=>'      Órdenes listas para cerrar <span class="badge badge-'.$Colorli.' pull-right">'.$listas.'</span>', 'url'=>array('mttoPreventivo/cerrarOrdenes'),'visible'=>Yii::app()->user->checkAccess('action_mttopreventivo_cerrarOrdenes')),
 	
 	array('label'=>'<div id="menu"><strong>Historial</strong></div>'),
 	array('label'=>'      Histórico de mantenimientos', 'url'=>array('mttoPreventivo/historicoPreventivo') ,'visible'=>Yii::app()->user->checkAccess('action_mttopreventivo_historicoPreventivo')),
 	array('label'=>'      Histórico de gastos', 'url'=>array('mttoPreventivo/historicoGastos'),'visible'=>Yii::app()->user->checkAccess('action_mttopreventivo_historicoGastos')),
-	array('label'=>'      Histórico de ordenes', 'url'=>array('mttoPreventivo/historicoOrdenes'),'visible'=>Yii::app()->user->checkAccess('action_mttopreventivo_historicoOrdenes')),
+	array('label'=>'      Histórico de órdenes', 'url'=>array('mttoPreventivo/historicoOrdenes'),'visible'=>Yii::app()->user->checkAccess('action_mttopreventivo_historicoOrdenes')),
 
 	array('label'=>'<div id="menu"><strong>Administrar</strong></div>' , 'visible'=>'1'),
 	array('label'=>'      Parámetros y datos maestros', 'url'=>array('mttoPreventivo/parametros')),
 );
 ?>
 <div class='crugepanel user-assignments-role-list'>
-	<h1>Ordenes de mantenimiento abiertas</h1>
+	<h1>Órdenes de mantenimiento abiertas</h1>
 <?php
 $this->widget('zii.widgets.grid.CGridView', array(
                 'id'=>'orden',
@@ -37,7 +34,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
 			    'enableSorting' => true,
 				'template'=>"{items}\n{summary}\n{pager}",
 				'selectableRows'=>1,
-				'emptyText'=>'No hay ordenes abiertas',
+				'emptyText'=>'No hay órdenes abiertas',
                 'dataProvider'=>$dataProvider,
 				'htmlOptions'=>array('style'=>'cursor:pointer'),
 				'columns'=>array(
@@ -119,7 +116,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
                         CHtml::image(Yii::app()->request->baseUrl."/imagenes/ver.png",
                                           "Ver detalle",array("title"=>"Ver")),
 										  
-                        Yii::app()->createUrl("mttoPreventivo/vistaPrevia", array("id"=>$data->id,"nom"=>"Ordenes abiertas","dir"=>"mttoPreventivo/verOrdenes")),
+                        Yii::app()->createUrl("mttoPreventivo/vistaPrevia", array("id"=>$data->id,"nom"=>"Órdenes abiertas","dir"=>"mttoPreventivo/verOrdenes")),
                         array(
 								
                                 \'style\'=>\'cursor: pointer;text-decoration: underline;text-align:center;\',
@@ -135,27 +132,35 @@ $this->widget('zii.widgets.grid.CGridView', array(
                         CHtml::image(Yii::app()->request->baseUrl."/imagenes/agregar.png",
                                           "Agregar",array("title"=>"Editar")),
 										  
-                        Yii::app()->createUrl("mttoPreventivo/mttopRealizados", array("id"=>$data->id,"nom"=>"Ordenes abiertas","dir"=>"mttoPreventivo/verOrdenes")),
+                        Yii::app()->createUrl("mttoPreventivo/mttopRealizados", array("id"=>$data->id,"nom"=>"Órdenes abiertas","dir"=>"mttoPreventivo/verOrdenes")),
                         array(
                                 \'style\'=>\'cursor: pointer;text-decoration: underline;text-align:center;\',
                         )
                 );',),
-					array(
+                array(
+						'headerHtmlOptions'=>array('style'=>'text-align:left;width:20px;text-align:center;'),
+						'htmlOptions'=>array('style'=>'text-align:center;width:30px;'),
+						'header'=>'Eliminar',
+						'type'=>'raw',
+						'value'=>'$data->puedeEliminar()',
+				),
+				/*array(
 					'header'=>'Eliminar',
 					'class'=>'CButtonColumn',
 					 'template'=>'{delete}',
 					 'afterDelete'=>'function(link,success,data){
-	                               window.setTimeout("location.reload()");
+	                      	window.setTimeout("location.reload()");
 	                  }',
 					     'buttons'=>array(
 							'delete' => array(
+								'imageUrl'=>Yii::app()->request->baseUrl.'/imagenes/delete-off.png',
 								'url'=>'Yii::app()->createUrl("ordenmtto/delete", array("id"=>$data->id))',
 								'options'=>array(
-									'confirm'=>'¿Desea cancelar la órden? Todas las actividades volverán a su estado anterior'
-									),
+									'confirm'=>'¿Desea cancelar la órden? Todas las actividades volverán a su estado anterior',
+								),
 						),
 					),
-				),
+				),*/
 			)
         ));
 		?>
@@ -206,4 +211,15 @@ function enviar(id){
                 'cache':false});
     return false; 
 }
+function eliminar(id){
+var dir="<?php echo Yii::app()->baseUrl;?>"+"/ordenmtto/delete/";
+	$.ajax({  		
+			 type: 'POST',
+          url: dir+id+'?ajax=ajax',
+        })
+  	.done(function(result) {    	
+		location.reload();
+  	});
+}
+
 </script>

@@ -7,7 +7,7 @@ $this->breadcrumbs=array(
 	$this->menu=array(
  	array('label'=>'<div id="menu"><strong>Opciones de orden</strong></div>'),
 	array('label'=>'      Detalle de orden', 'url'=>array('mttoCorrectivo/vistaPrevia/'.$id.'?nom='.$nom.'&dir='.$dir.'')),
-	array('label'=>'      Actualizar orden', 'url'=>array('mttoCorrectivo/mttocRealizados/'.$id.'?nom='.$nom.'&dir='.$dir.''),'visible'=>Yii::app()->controller->estatusOrden($idOrden)<>7),
+	array('itemOptions'=>array('id' => 'mActualizar'),'label'=>'      Actualizar orden', 'url'=>array('mttoCorrectivo/mttocRealizados/'.$id.'?nom='.$nom.'&dir='.$dir.''),'visible'=>Yii::app()->controller->estatusOrden($idOrden)<>7),
 	array('label'=>'      Registrar facturación', 'url'=>array('mttoCorrectivo/registrarFacturacion/'.$id.'?nom='.$nom.'&dir='.$dir.''),'visible'=>Yii::app()->controller->estatusOrden($idOrden)<>7),
 
 	array('label'=>'<div id="menu"><strong>Órdenes de mantenimiento</strong></div>'),
@@ -45,7 +45,12 @@ $this->widget('zii.widgets.grid.CGridView', array(
 					'value'=>'date("d/m/Y h:i A",strtotime($data->fecha))',
 					'htmlOptions'=>array('style'=>'text-align:center;width:100px'),
 				),
-				
+				array(
+					'header'=>'Estado',
+					//'name'=>'idestatus',
+					'value'=>'$data->idestatus0->estatus',
+					'htmlOptions'=>array('style'=>'text-align:center;width:50px'),
+				),
 				array(
 					'header'=>'Coordinador operativo',
 					'name'=>'cOperativo',
@@ -64,12 +69,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
 					'value'=>'$data->taller0->nombre',
 					'htmlOptions'=>array('style'=>'text-align:center;width:80px'),
 				),
-				array(
-					'header'=>'Estado',
-					//'name'=>'idestatus',
-					'value'=>'$data->idestatus0->estatus',
-					'htmlOptions'=>array('style'=>'text-align:center;width:50px'),
-				),
+
 				array(
 						'headerHtmlOptions'=>array('style'=>'text-align:left;width:10px;text-align:center;'),
 						'htmlOptions'=>array('style'=>'text-align:center;width:10px;'),
@@ -226,12 +226,6 @@ $this->beginWidget('zii.widgets.jui.CJuiDialog', array( // the dialog
  
 <?php $this->endWidget();?>
 
-<style>
-
-.grid-view {
-    padding: 0px 0px;
-}
-</style>
 <script>
 var idorden="<?php echo $id;?>";
 actualizarCheck(idorden);
@@ -311,4 +305,7 @@ function validar(id){
 				
 	$.fn.yiiGridView.update('ordenes');
 }
+var url="<?php echo Yii::app()->controller->action->id;?>";
+if(url=="mttocRealizados")
+	$("#mActualizar").addClass("active");
 </script>

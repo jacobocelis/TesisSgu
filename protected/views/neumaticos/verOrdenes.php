@@ -28,7 +28,7 @@ $this->menu=array(
 	array('label'=>'      Histórico de montajes', 'url'=>array('historicoMontajes')),
 	//array('label'=>'      Histórico de rotaciones', 'url'=>array('historicoRotaciones')),
 	array('label'=>'      Histórico de gastos', 'url'=>array('historicoGastos')),
-	array('label'=>'      Histórico de ordenes', 'url'=>array('historicoOrdenes')),
+	array('label'=>'      Histórico de órdenes', 'url'=>array('historicoOrdenes')),
 	
 	array('label'=>'<div id="menu"><strong>Administrar</strong></div>' , 'visible'=>'1'),
 	array('label'=>'      Parámetros y datos maestros', 'url'=>array('neumaticos/parametros')),
@@ -42,7 +42,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
 				'summaryText'=>'',
 				'template'=>"{items}\n{summary}\n{pager}",
 				'selectableRows'=>1,
-				'emptyText'=>'No hay ordenes abiertas',
+				'emptyText'=>'No hay órdenes abiertas',
                 'dataProvider'=>$dataProvider,
 				'htmlOptions'=>array('style'=>'cursor:pointer'),
 				'columns'=>array(
@@ -112,7 +112,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
                         "",
                         array(
                                 \'style\'=>\'cursor: pointer;text-decoration: underline;text-align:center;\',
-                                \'onclick\'=>\'{enviar("\'.Yii::app()->createUrl("mttoCorrectivo/correo",array("id"=>$data["id"])).\'"); $("#dialog").dialog("open");}\'
+                                \'onclick\'=>\'{enviar("\'.Yii::app()->createUrl("neumaticos/correo",array("id"=>$data["id"])).\'"); $("#dialog").dialog("open");}\'
                         )
                 );',),
 				array(
@@ -145,16 +145,29 @@ $this->widget('zii.widgets.grid.CGridView', array(
                                 \'style\'=>\'cursor: pointer;text-decoration: underline;text-align:center;\',
                         )
                 );',),
-					array(
-					'header'=>'Eliminar',
-					'class'=>'CButtonColumn',
-					 'template'=>'{delete}',
-					     'buttons'=>array(
-							'delete' => array(
-								'url'=>'Yii::app()->createUrl("ordenmtto/delete", array("id"=>$data->id))',
-						),
+                array(
+						'headerHtmlOptions'=>array('style'=>'text-align:left;width:20px;text-align:center;'),
+						'htmlOptions'=>array('style'=>'text-align:center;width:30px;'),
+						'header'=>'Eliminar',
+						'type'=>'raw',
+						'value'=>'$data->puedeEliminar()',
+				),
+		/*array(
+				'header'=>'Eliminar',
+				'class'=>'CButtonColumn',
+				 'template'=>'{delete}',
+				 'afterDelete'=>'function(link,success,data){
+                               window.setTimeout("location.reload()");
+                  }',
+				     'buttons'=>array(
+						'delete' => array(
+							'url'=>'Yii::app()->createUrl("ordenmtto/delete", array("id"=>$data->id))',
+							'options'=>array(
+								'confirm'=>'¿Desea cancelar la órden?'
+								),
 					),
 				),
+			),*/
 			)
         ));
 		?>
@@ -176,86 +189,8 @@ $this->beginWidget('zii.widgets.jui.CJuiDialog', array( // the dialog
  
 <?php $this->endWidget();?>
 </div>
-<style>
-#menu{
-	font-size:15px;
-}
-.grid-view table.items tr.selected {
-    background: none repeat scroll 0% 0% rgba(0, 249, 3, 0.3);
-}
-.crugepanel {
-    background-color: #FFF;
-    border: 1px dotted #AAA;
-    border-radius: 1px;
-    box-shadow: 3px 3px 5px #EEE;
-    display: block;
-    margin-top: 10px;
-    padding: 10px;
-}
-h1 {
-    font-size: 250%;
-    line-height: 40px;
-}
-.grid-view table.items th {
-	color: rgba(0, 0, 0, 1);
-    text-align: center;
-    background: none repeat scroll 0% 0% rgba(0, 138, 255, 0.15);
-}
-.grid-view table.items th a {
-    color: #000;
-    font-weight: bold;
-    text-decoration: none;
-}
-.grid-view table.items td {
-    font-size: 0.9em;
-    border: 1px solid #5877C3;
-    padding: 0.3em;
-}
-.grid-view table.items th, .grid-view table.items td {
-    font-size: 0.9em;
-    border: 1px solid #A8C5F0;
-    padding: 0.3em;
-}
-</style>
-<style>
-.ui-progressbar .ui-widget-header {
-	background: #FFF;
-}
-.ui-widget-header {
-    border: 1px solid #AAA;
-    background-image: url("<?php echo Yii::app()->request->baseUrl;?>/imagenes/imagen.png");
-    color: #222;
-    font-weight: bold;
-}
-.ui-progressbar {
-    border: 0px none;
-    border-radius: 0px;
-    clear: both;
-	margin-bottom: 0px;
-}
-.progress, .ui-progressbar {
-    height: 10px;
-}
-.ui-corner-all, .ui-corner-bottom, .ui-corner-right, .ui-corner-br {
-    border-bottom-right-radius: 0px;
-}
-.ui-corner-all, .ui-corner-bottom, .ui-corner-left, .ui-corner-bl {
-    border-bottom-left-radius: 0px;
-}
-.ui-corner-all, .ui-corner-top, .ui-corner-right, .ui-corner-tr {
-    border-top-right-radius: 0px;
-}
-.ui-corner-all, .ui-corner-top, .ui-corner-left, .ui-corner-tl {
-    border-top-left-radius: 0px;
-}
-</style>
+
 <script>
-
-$( document ).ready(function() {
-	//$.fn.yiiGridView.update('orden');
-});
-
-
 
 var Uurl;
 function enviar(id){
@@ -264,7 +199,7 @@ function enviar(id){
 	jQuery.ajax({
                 url: Uurl,
                 'data':$(this).serialize(),
-               // 'type':'post',
+                'type':'post',
                 'dataType':'json',
                 'success':function(data)
                         {
@@ -283,5 +218,15 @@ function enviar(id){
                         } ,
                 'cache':false});
     return false; 
+}
+function eliminar(id){
+var dir="<?php echo Yii::app()->baseUrl;?>"+"/ordenmtto/delete/";
+	$.ajax({  		
+			 type: 'POST',
+          url: dir+id+'?ajax=ajax',
+        })
+  	.done(function(result) {    	
+		location.reload();
+  	});
 }
 </script>

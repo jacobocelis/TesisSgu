@@ -87,30 +87,80 @@ class MttoCorrectivoController extends Controller
 			'listas'=>$this->getOrdenesListas(),
 		));
 	}
-	 public function actionGenerarPdf($id){
-	 
-  //Consulta para buscar todos los registros
-		 $mPDF1 = Yii::app()->ePdf->mpdf('utf-8','A4','','',15,15,35,25,9,9,'P'); //Esto lo pueden configurar como quieren, para eso deben de entrar en la web de MPDF para ver todo lo que permite.
-		 $mPDF1->useOnlyCoreFonts = true;
-		 $mPDF1->SetTitle("JuzgadoSys - Reporte");
-		 $mPDF1->SetAuthor("S.G.U.");
-		 $mPDF1->SetWatermarkText("U.N.E.T.");
-		 $mPDF1->showWatermarkText = true;
+
+	public function generarPDF($id){
+		$orden=new CActiveDataProvider('Ordenmtto',array('criteria' => array(
+			'condition' =>'id='.$id."")
+			,'pagination'=>array('pageSize'=>9999999)));
+			
+		$idvehiculo=Yii::app()->db->createCommand("select distinct( a.idvehiculo), count(*) as totAct from sgu_reporteFalla a, sgu_detalleOrdenCo d where d.idreporteFalla=a.id and d.idordenMtto=".$id." group by a.idvehiculo")->queryAll();
+		$totalVeh=count($idvehiculo);
+		
+		//$actividades=Yii::app()->db->createCommand("select idactividades from sgu_detalleorden where idordenMtto=".$id."")->queryAll();
+		
+		for($i=0;$i<$totalVeh;$i++){
+			$vehiculos[]=new CActiveDataProvider('Vehiculo',array('criteria' => array(
+			'condition' =>'id="'.$idvehiculo[$i]["idvehiculo"].'"',
+			)));
+			
+		$totAct=Yii::app()->db->createCommand('select idreporteFalla as id from sgu_detalleOrdenCo where idordenMtto="'.$id.'" and idreporteFalla in(select a.id from sgu_reporteFalla a where a.idvehiculo="'.$idvehiculo[$i]["idvehiculo"].'")')->queryAll();
+		
+		for($j=0;$j<$idvehiculo[$i]["totAct"];$j++){		
+				$actividades[$i][$j]=new CActiveDataProvider('Reportefalla',array('criteria' => array(
+				'condition' =>'id="'.$totAct[$j]["id"].'"',
+				)));
+				$recursos[$i][$j]=new CActiveDataProvider('Recursofalla',array('criteria' => array(
+				'condition' =>'idreporteFalla="'.$totAct[$j]["id"].'"',
+				)));
+			}
+		}
+		 $mPDF1 = Yii::app()->ePdf->mpdf(); //Esto lo pueden configurar como quieren, para eso deben de entrar en la web de MPDF para ver todo lo que permite.
+		 //$mPDF1->useOnlyCoreFonts = true;
+		 $mPDF1->SetTitle("Solicitud de servicio");
+		 $mPDF1->SetAuthor("J&M");
+		 //$mPDF1->SetWatermarkText("U.N.E.T.");
+		 $mPDF1->showWatermarkText = false;
 		 $mPDF1->watermark_font = 'DejaVuSansCondensed';
 		 $mPDF1->watermarkTextAlpha = 0.1;
 		 $mPDF1->SetDisplayMode('fullpage');
-		 $mPDF1->WriteHTML("Pruebaaa");
-		 $mPDF1->Output('Orden'.date('YmdHis'),'I');
-		 exit;
-	}
-	
-	public function actionCorreo($id){
+		 $mPDF1->WriteHTML($this->renderPartial('vistaPreviaPDF',array(
+			'vehiculos'=>$vehiculos,
+			'totalVeh'=>$totalVeh,
+			'actividades'=>$actividades,
+			'idvehiculo'=>$idvehiculo,
+			'recursos'=>$recursos,
+			'orden'=>$orden,
+			'correo'=>1,
+		),true));
+		 $mPDF1->Output('Orden-'.$id.'.pdf','F');
+	}	 
+
+public function actionCorreo($id){
 		//se envia desde la vista mail
 			$model = new Mail;
 		if(isset($_POST['Mail'])){
 				$model->attributes=$_POST['Mail'];
-				if($model->validate()){	
-					$correo = PublicoController::enviarMail($model->to,$model->from,$model->subject,$model->body);
+				if($model->validate()){
+					$this->GenerarPDF($id);
+					$adjunto="Orden-".$id.".pdf";
+					$correo = PublicoController::enviarMail($model->to,$model->from,$model->subject,$model->body,$adjunto);
+					if($correo){
+						echo CJSON::encode(array(
+							'status'=>'success', 
+							'div'=>"La órden fue enviada con éxito"
+							));
+						//unlink(Yii::app()->basePath.'/../ordenes/Orden-'.$id.'.pdf');
+						unlink('Orden-'.$id.'.pdf');
+						exit;
+						
+					}
+					else{
+						echo CJSON::encode(array(
+							'status'=>'failure', 
+							'div'=>"No se pudo enviar la órden. Contacte al administrador"
+							));
+						exit;
+					}
 				}
 		}
 			if (Yii::app()->request->isAjaxRequest){	
@@ -149,7 +199,7 @@ class MttoCorrectivoController extends Controller
 		}
 		 $mPDF1 = Yii::app()->ePdf->mpdf(); //Esto lo pueden configurar como quieren, para eso deben de entrar en la web de MPDF para ver todo lo que permite.
 		 //$mPDF1->useOnlyCoreFonts = true;
-		 $mPDF1->SetTitle("Solicitud de servicio SIRCA");
+		 $mPDF1->SetTitle("Solicitud de servicio");
 		 $mPDF1->SetAuthor("J&M");
 		 //$mPDF1->SetWatermarkText("U.N.E.T.");
 		 $mPDF1->showWatermarkText = false;
@@ -356,6 +406,10 @@ class MttoCorrectivoController extends Controller
 	}
 	public function actionAgregarFactura($id){
 		$model=new Factura;
+				$fecha=Ordenmtto::model()->findByPk($id);
+				$fecha=date("Y-m-d", strtotime(str_replace('/', '-',$fecha->fecha)));
+				$intervalo=((strtotime(date("Y-m-d"))-strtotime($fecha))/86400);
+			
 		if(isset($_POST['Factura'])){
             $model->attributes=$_POST['Factura'];
             if($model->fechaFactura<>null)
@@ -374,7 +428,7 @@ class MttoCorrectivoController extends Controller
 		 if (Yii::app()->request->isAjaxRequest){	
             echo CJSON::encode(array(
                 'status'=>'failure', 
-                'div'=>$this->renderPartial('_formFactura', array('model'=>$model,'id'=>$id), true)
+                'div'=>$this->renderPartial('_formFactura', array('model'=>$model,'id'=>$id,'intervalo'=>$intervalo), true)
 				));
             exit;               
         }

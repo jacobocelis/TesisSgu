@@ -91,7 +91,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
 			   // 'enableSorting' => false,
 				'template'=>"{items}\n{summary}\n{pager}",
 				'selectableRows'=>0,
-			    'rowCssClassExpression'=>'$this->dataProvider->data[$row]->tiempoCambio($data->fecha)>='.$reposicionDias.'?"rojo":"verde"',
+			    'rowCssClassExpression'=>'$this->dataProvider->data[$row]->tiempoCambio($data->fecha)>='.$reposicionDias.'?"rojo":"odd"',
 				'emptyText'=>'No hay registros',
                 'dataProvider'=>$mont,
 				'htmlOptions'=>array('style'=>'margin-top:10px;float: left;width:100%'),

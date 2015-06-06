@@ -32,7 +32,7 @@ class FacturaController extends Controller
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create','update'),
+				'actions'=>array('create','update','iva'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -134,7 +134,34 @@ class FacturaController extends Controller
             exit;               
         }
 	}
-	
+	public function actionIva()
+	{
+		$model=new Iva;
+		$iva=Parametro::model()->findByAttributes(array('nombre'=>'IVA'));
+		//$model->iva=$iva->valor;
+			
+		if(isset($_POST['Iva'])){
+			$model->iva=$_POST['Iva']['iva'];
+			if($model->validate()){
+				$iva->valor=$_POST['Iva']['iva'];
+				if($iva->update())
+					if (Yii::app()->request->isAjaxRequest){
+	                    echo CJSON::encode(array(
+	                        'status'=>'success',
+	                        'valor'=>$iva->valor, 
+	                        'div'=>"Se actualizó la información correctamente"
+	                        ));
+	                    exit;               
+				}
+			}
+		}
+		if (Yii::app()->request->isAjaxRequest){
+            echo CJSON::encode(array(
+                'status'=>'failure', 
+                'div'=>$this->renderPartial('_formIva', array('model'=>$model), true)));
+            exit;               
+        }
+	}
 	/**
 	 * Deletes a particular model.
 	 * If deletion is successful, the browser will be redirected to the 'admin' page.

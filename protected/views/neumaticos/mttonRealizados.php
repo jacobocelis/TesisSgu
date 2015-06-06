@@ -7,7 +7,7 @@ $this->breadcrumbs=array(
 	$this->menu=array(
 	array('label'=>'<div id="menu"><strong>Opciones de orden</strong></div>'),
 	array('label'=>'      Detalle de orden', 'url'=>array('neumaticos/vistaPrevia/'.$id.'?nom='.$nom.'&dir='.$dir.'')),
-	array('label'=>'      Actualizar orden', 'url'=>array('neumaticos/mttonRealizados/'.$id.'?nom='.$nom.'&dir='.$dir.''),'visible'=>Yii::app()->controller->estatusOrden($id)<>7),
+	array('itemOptions'=>array('id' => 'mActualizar'),'label'=>'      Actualizar orden', 'url'=>array('neumaticos/mttonRealizados/'.$id.'?nom='.$nom.'&dir='.$dir.''),'visible'=>Yii::app()->controller->estatusOrden($id)<>7),
 	array('label'=>'      Registrar facturación', 'url'=>array('neumaticos/registrarFacturacion/'.$id.'?nom='.$nom.'&dir='.$dir.''),'visible'=>Yii::app()->controller->estatusOrden($id)<>7),
 
 	array('label'=>'<div id="menu"><strong>Órdenes de mantenimiento</strong></div>'),
@@ -260,11 +260,12 @@ $this->widget('zii.widgets.grid.CGridView', array(
                         )
                 );',),*/
 				array(
+					'headerHtmlOptions'=>array('style'=>'width:30px;text-align:center;'),
 					'header'=>'Estado',
 					'name'=>'idestatus',
 					'type'=>'raw',
 					'value'=>'$data->color($data->idestatus,$data->idestatus0->estatus)',
-					'htmlOptions'=>array('style'=>'width:80px;text-align:center;'),
+					'htmlOptions'=>array('style'=>'width:30px;text-align:center;'),
 				),
 			)
         ));
@@ -291,14 +292,6 @@ $this->beginWidget('zii.widgets.jui.CJuiDialog', array( // the dialog
  
 <?php $this->endWidget();?>
 
-<style>
-.grid-view table.items tr.selected {
-    background: none repeat scroll 0% 0% rgba(0, 249, 3, 0.3);
-}
-.grid-view {
-    padding: 0px 0px;
-}
-</style>
 <script>
 function mostrarMovimientos(id){
 	idRotacion=id;
@@ -422,4 +415,7 @@ function validar(id){
 				
 	$.fn.yiiGridView.update('ordenes');
 }
+var url="<?php echo Yii::app()->controller->action->id;?>";
+if(url=="mttonRealizados")
+	$("#mActualizar").addClass("active");
 </script>

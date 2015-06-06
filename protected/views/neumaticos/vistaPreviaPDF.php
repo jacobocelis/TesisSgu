@@ -401,11 +401,12 @@ $this->widget('zii.widgets.grid.CGridView', array(
 ?>
 </div>
 <?php }?>
-<div class='crugepanel user-assignments-role-list' id="ob">
-		Observaciones:<hr><hr><hr><hr><hr><hr>
-</div>
-<style>
 
+<?php if(!isset($correo)){?>
+<div class='crugepanel user-assignments-role-list' id="ob">Observaciones:<hr><hr><hr><hr><hr><hr></div>
+<?php }?>
+
+<style>
 body {
     font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
     font-size: 14px;

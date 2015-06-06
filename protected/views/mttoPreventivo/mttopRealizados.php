@@ -17,7 +17,7 @@ $this->breadcrumbs=array(
 	
 );
 ?>
-<div class='crugepanel user-assignments-role-list'>
+<div class='crugepanel'>
 	<h1>Actualizar orden de mantenimiento</h1>
 <?php
 $this->widget('zii.widgets.grid.CGridView', array(
@@ -153,7 +153,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
 					'name'=>'fechaRealizada',
 					'type'=>'raw',
 					'value'=>'($data->textoFecha()).CHtml::link(
-                     CHtml::image(Yii::app()->request->baseUrl."/imagenes/agregar.png",
+                     CHtml::image(Yii::app()->request->baseUrl."/imagenes/calendario.png",
                                           "Agregar",array("title"=>"Editar")),
                         "",
                         array(

@@ -2,18 +2,7 @@
 .badge {
     margin-left: 3px;
 }
-.crugepanel {
-    background-color: #FFF;
-    border: 1px dotted #AAA;
-    border-radius: 1px;
-    box-shadow: 3px 3px 5px #EEE;
-    display: block;
-    margin-top: 10px;
-    padding: 10px;
-}
-#menu {
-    font-size: 15px;
-}
+
 #etiqueta{
 	width: auto;
 	float: left;
@@ -213,18 +202,18 @@ function AgregarAveriaNueva(){
                 'type':'post',
                 'dataType':'json',
                 'success':function(data){
-                                if (data.status == 'failure')
-                                {
-                                        $('#dialog div.divForForm').html(data.div);
-                                        // Here is the trick: on submit-> once again this function!
-                                        $('#dialog div.divForForm form').submit(AgregarAveriaNueva); // updatePaymentComment
-                                }
-                                else
-                                {
-                                        $('#dialog div.divForForm').html(data.div);
-                                        setTimeout("$('#dialog').dialog('close') ",1000);
-										actualizarAverias();
-                                }
+                        if (data.status == 'failure')
+                        {
+                                $('#dialog div.divForForm').html(data.div);
+                                // Here is the trick: on submit-> once again this function!
+                                $('#dialog div.divForForm form').submit(AgregarAveriaNueva); // updatePaymentComment
+                        }
+                        else
+                        {
+                                $('#dialog div.divForForm').html(data.div);
+                                setTimeout("$('#dialog').dialog('close') ",1000);
+								actualizarAverias();
+                        }
                         },
                 'cache':false});
     return false; 

@@ -31,6 +31,36 @@ class Ordenmtto extends CActiveRecord
 		if($id==6)
 			return 1;
 	}
+	public function puedeEliminar(){
+		$url;
+		$imagen;
+		$realizoAct=0;
+		$detOrden=Detalleorden::model()->findAll("idordenMtto='".$this->id."'");
+		foreach ($detOrden as $value) {
+			$act=Actividades::model()->findByPk($value["idactividades"]);
+			if($act['idestatus']==3)
+				$realizoAct=1;
+		}
+		$factura=Factura::model()->find("idordenMtto='".$this->id."'");
+		if($factura or $realizoAct){
+			$imagen=Yii::app()->request->baseUrl."/imagenes/delete-off.png";
+			$url="{alert('No puede eliminar la orden en éste punto')}";
+		}
+		else{
+			$imagen=Yii::app()->request->baseUrl."/imagenes/delete.png";
+			$url='{if(confirm("¿Desea cancelar ésta orden?")) eliminar("'.$this->id.'");}';
+		}
+
+		return CHtml::link(
+                CHtml::image($imagen,
+                        "Eliminar",array("title"=>"Eliminar orden")),		  
+                "",
+                array(
+                	'style'=>'cursor: pointer;text-decoration: underline;text-align:center;',
+                     'onclick'=>$url
+                )
+        );
+	}
 	public function tableName()
 	{
 		return 'sgu_ordenMtto';

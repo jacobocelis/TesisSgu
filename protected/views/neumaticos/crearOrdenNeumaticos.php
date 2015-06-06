@@ -159,7 +159,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
 				),
 			
 				array(
-					'header'=>'Falla reportada',
+					'header'=>'Avería reportada',
 					'name'=>'idfallaCaucho',
 					'value'=>'$data->idfallaCaucho0->falla',
 					'htmlOptions'=>array('style'=>'text-align:center;'),

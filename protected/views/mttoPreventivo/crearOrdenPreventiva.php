@@ -105,15 +105,15 @@ $this->menu=array(
 	array('label'=>'<div id="menu"><strong>Historial</strong></div>'),
 	array('label'=>'      Histórico de mantenimientos', 'url'=>array('mttoPreventivo/historicoPreventivo') ,'visible'=>Yii::app()->user->checkAccess('action_mttopreventivo_historicoPreventivo')),
 	array('label'=>'      Histórico de gastos', 'url'=>array('mttoPreventivo/historicoGastos'),'visible'=>Yii::app()->user->checkAccess('action_mttopreventivo_historicoGastos')),
-	array('label'=>'      Histórico de ordenes', 'url'=>array('mttoPreventivo/historicoOrdenes'),'visible'=>Yii::app()->user->checkAccess('action_mttopreventivo_historicoOrdenes')),
+	array('label'=>'      Histórico de órdenes', 'url'=>array('mttoPreventivo/historicoOrdenes'),'visible'=>Yii::app()->user->checkAccess('action_mttopreventivo_historicoOrdenes')),
 
 	array('label'=>'<div id="menu"><strong>Administrar</strong></div>' , 'visible'=>'1'),
 	array('label'=>'      Parámetros y datos maestros', 'url'=>array('mttoPreventivo/parametros')),
 );
 ?>
 <div class='crugepanel user-assignments-role-list'>
-<h1>Crear órden de mantenimiento preventivo</h1>
-<i>Para crear una órden de mantenimiento preventivo seleccione una o varias actividades listadas abajo.</i>
+<h1>Crear orden de mantenimiento preventivo</h1>
+<i>Para crear una orden de mantenimiento preventivo seleccione una o varias actividades listadas abajo.</i>
 </div>
 <div class='crugepanel user-assignments-role-list'>
 <?php

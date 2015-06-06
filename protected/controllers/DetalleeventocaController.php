@@ -79,7 +79,13 @@ class DetalleeventocaController extends Controller
 	public function actionActualizar($id){
 	
 		$model=$this->loadModel($id);
-		
+
+		$aux=Detordneumatico::model()->find('iddetalleEventoCa="'.$id.'"');
+		$fecha=Ordenmtto::model()->findByPk($aux->idordenMtto);
+		$fecha=date("Y-m-d", strtotime(str_replace('/', '-',$fecha->fecha)));
+		$intervalo=((strtotime(date("Y-m-d"))-strtotime($fecha))/86400);
+			
+
 		if($model->fechaRealizada=='0000-01-01')
 			$var=1;
 		else
@@ -103,7 +109,7 @@ class DetalleeventocaController extends Controller
         if (Yii::app()->request->isAjaxRequest){
             echo CJSON::encode(array(
                 'status'=>'failure', 
-                'div'=>$this->renderPartial('_formRegistrarAR', array('model'=>$model,'id'=>$var), true)));
+                'div'=>$this->renderPartial('_formRegistrarAR', array('model'=>$model,'id'=>$var,'intervalo'=>$intervalo), true)));
             exit;               
         }
 

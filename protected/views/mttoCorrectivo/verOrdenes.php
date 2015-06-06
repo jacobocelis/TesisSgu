@@ -127,7 +127,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
                                 
                         )
                 );',),
-				array(
+                array(
 						'headerHtmlOptions'=>array('style'=>'text-align:left;width:20px;text-align:center;'),
 						'htmlOptions'=>array('style'=>'text-align:center;width:30px;'),
 						'header'=>'Actualizar',
@@ -141,16 +141,29 @@ $this->widget('zii.widgets.grid.CGridView', array(
                                 \'style\'=>\'cursor: pointer;text-decoration: underline;text-align:center;\',
                         )
                 );',),
-					array(
+                array(
+						'headerHtmlOptions'=>array('style'=>'text-align:left;width:20px;text-align:center;'),
+						'htmlOptions'=>array('style'=>'text-align:center;width:30px;'),
+						'header'=>'Eliminar',
+						'type'=>'raw',
+						'value'=>'$data->puedeEliminar()',
+				),
+				/*array(
 					'header'=>'Eliminar',
 					'class'=>'CButtonColumn',
 					 'template'=>'{delete}',
+					 'afterDelete'=>'function(link,success,data){
+	                               window.setTimeout("location.reload()");
+	                  }',
 					     'buttons'=>array(
 							'delete' => array(
 								'url'=>'Yii::app()->createUrl("ordenmtto/delete", array("id"=>$data->id))',
+								'options'=>array(
+									'confirm'=>'¿Desea cancelar la órden?'
+									),
 						),
 					),
-				),
+				),*/
 			)
         ));
 		?>
@@ -173,25 +186,11 @@ $this->beginWidget('zii.widgets.jui.CJuiDialog', array( // the dialog
 <?php $this->endWidget();?>
 </div>
 <style>
-#menu{
-	font-size:15px;
-}
+
 .grid-view table.items tr.selected {
     background: none repeat scroll 0% 0% rgba(0, 249, 3, 0.3);
 }
-.crugepanel {
-    background-color: #FFF;
-    border: 1px dotted #AAA;
-    border-radius: 1px;
-    box-shadow: 3px 3px 5px #EEE;
-    display: block;
-    margin-top: 10px;
-    padding: 10px;
-}
-h1 {
-    font-size: 250%;
-    line-height: 40px;
-}
+
 .grid-view table.items th {
 	color: rgba(0, 0, 0, 1);
     text-align: center;
@@ -252,24 +251,34 @@ function enviar(id){
 	jQuery.ajax({
                 url: Uurl,
                 'data':$(this).serialize(),
-               // 'type':'post',
+                'type':'post',
                 'dataType':'json',
                 'success':function(data)
-                        {
-                                if (data.status == 'failure')
-                                {
-                                        $('#dialog div.divForForm').html(data.div);
-                                        // Here is the trick: on submit-> once again this function!
-                                        $('#dialog div.divForForm form').submit(enviar); // updatePaymentComment
-                                }
-                                else
-                                {
-                                        $('#dialog div.divForForm').html(data.div);
-                                        setTimeout("$('#dialog').dialog('close') ",1000);
-                                        $.fn.yiiGridView.update('final');
-                                }
-                        } ,
+	                {
+	                        if (data.status == 'failure')
+	                        {
+	                                $('#dialog div.divForForm').html(data.div);
+	                                // Here is the trick: on submit-> once again this function!
+	                                $('#dialog div.divForForm form').submit(enviar); // updatePaymentComment
+	                        }
+	                        else
+	                        {
+	                                $('#dialog div.divForForm').html(data.div);
+	                                setTimeout("$('#dialog').dialog('close') ",1000);
+	                                $.fn.yiiGridView.update('final');
+	                        }
+	                } ,
                 'cache':false});
     return false; 
+}
+function eliminar(id){
+var dir="<?php echo Yii::app()->baseUrl;?>"+"/ordenmtto/delete/";
+	$.ajax({  		
+			 type: 'POST',
+          url: dir+id+'?ajax=ajax',
+        })
+  	.done(function(result) {    	
+		location.reload();
+  	});
 }
 </script>

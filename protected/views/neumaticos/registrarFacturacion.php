@@ -9,7 +9,7 @@ $this->breadcrumbs=array(
 	array('label'=>'<div id="menu"><strong>Opciones de orden</strong></div>'),
 	array('label'=>'      Detalle de orden', 'url'=>array('neumaticos/vistaPrevia/'.$id.'?nom='.$nom.'&dir='.$dir.'')),
 	array('label'=>'      Actualizar orden', 'url'=>array('neumaticos/mttonRealizados/'.$id.'?nom='.$nom.'&dir='.$dir.''),'visible'=>Yii::app()->controller->estatusOrden($id)<>7),
-	array('label'=>'      Registrar facturación', 'url'=>array('neumaticos/registrarFacturacion/'.$id.'?nom='.$nom.'&dir='.$dir.''),'visible'=>Yii::app()->controller->estatusOrden($id)<>7),
+	array('itemOptions'=>array('id' => 'mFacturar'),'label'=>'      Registrar facturación', 'url'=>array('neumaticos/registrarFacturacion/'.$id.'?nom='.$nom.'&dir='.$dir.''),'visible'=>Yii::app()->controller->estatusOrden($id)<>7),
 
 	array('label'=>'<div id="menu"><strong>Órdenes de mantenimiento</strong></div>'),
 	array('label'=>'      Crear orden de mantenimiento', 'url'=>array('neumaticos/crearOrdenCorrectiva') ,'visible'=>Yii::app()->user->checkAccess('action_neumaticos_crearOrdenCorrectiva')),
@@ -504,7 +504,22 @@ $this->beginWidget('zii.widgets.jui.CJuiDialog', array( // the dialog
 <?php }?>
 
  
- 
+<?php
+/*ventana agregar recurso*/
+$this->beginWidget('zii.widgets.jui.CJuiDialog', array( // the dialog
+    'id'=>'iva',
+    'options'=>array(
+        'title'=>'Cambiar valor del IVA',
+        'autoOpen'=>false,
+        'modal'=>true,
+        'width'=>300,
+		'resizable'=>false,
+		'position'=>array(null,100),
+    ),
+));?>
+<div class="divForForm"></div> 
+<?php $this->endWidget();?>
+
 
 <?php
 /*ventana agregar recurso*/
@@ -921,4 +936,27 @@ function renovarAveria(id,tipo){
 		return false; 
 	}
 }
+function editarIva(){
+	$("#iva").dialog("open");
+	jQuery.ajax({
+                url: "<?php echo Yii::app()->baseUrl;?>"+"/factura/iva",
+                'data':$(this).serialize(),
+                'type':'post',
+                'dataType':'json',
+                'success':function(data){
+                        if(data.status == 'failure'){
+                            $('#iva').html(data.div);
+							$('#iva form').submit(editarIva);
+                        }
+                        else{
+                        	$("#iva").dialog("close");
+                        	$("#idTextField").val(data.valor);
+                        }
+                },
+                'cache':false});
+    return false; 
+}
+var url="<?php echo Yii::app()->controller->action->id;?>";
+if(url=="registrarFacturacion")
+	$("#mFacturar").addClass("active");
 </script>

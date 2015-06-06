@@ -307,6 +307,22 @@ $this->beginWidget('zii.widgets.jui.CJuiDialog', array( // the dialog
 <?php
 /*ventana agregar recurso*/
 $this->beginWidget('zii.widgets.jui.CJuiDialog', array( // the dialog
+    'id'=>'iva',
+    'options'=>array(
+        'title'=>'Cambiar valor del IVA',
+        'autoOpen'=>false,
+        'modal'=>true,
+        'width'=>300,
+		'resizable'=>false,
+		'position'=>array(null,100),
+    ),
+));?>
+<div class="divForForm"></div> 
+<?php $this->endWidget();?>
+
+<?php
+/*ventana agregar recurso*/
+$this->beginWidget('zii.widgets.jui.CJuiDialog', array( // the dialog
     'id'=>'ModFactura',
     'options'=>array(
         'title'=>'Editar información de factura',
@@ -930,6 +946,28 @@ function Filtrar(idrecurso,idtipo){
 var url="<?php echo Yii::app()->controller->action->id;?>";
 if(url=="registrarFacturacion")
 	$("#mFacturar").addClass("active");
+
+function editarIva(){
+	$("#iva").dialog("open");
+	jQuery.ajax({
+                url: "<?php echo Yii::app()->baseUrl;?>"+"/factura/iva",
+                'data':$(this).serialize(),
+                'type':'post',
+                'dataType':'json',
+                'success':function(data){
+                        if(data.status == 'failure'){
+                            $('#iva').html(data.div);
+							$('#iva form').submit(editarIva);
+                        }
+                        else{
+                        	$("#iva").dialog("close");
+                        	$("#idTextField").val(data.valor);
+                        }
+                },
+                'cache':false});
+    return false; 
+}
+
 </script>
 <style>
 .ui-autocomplete { height: 130px; overflow-y: scroll; overflow-x: hidden;}
