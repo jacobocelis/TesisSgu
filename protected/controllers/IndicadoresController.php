@@ -476,7 +476,7 @@ class IndicadoresController extends Controller
 			exit;
 		}
 	 	$this->render('ind5',array(
-	 		'rawData'=>new CArrayDataProvider($data),
+	 		'rawData'=>new CArrayDataProvider($data, array('pagination' => false)),
 	 		'veh'=>$veh,
 	 	));
 	}

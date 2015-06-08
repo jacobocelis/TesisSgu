@@ -73,7 +73,7 @@ class Vehiculo extends CActiveRecord
 			$total=$total+($dat["costoTotal"]+($dat["costoTotal"]*($factura->iva/$factura->total)));
 		}
 			
-		return number_format($total, 2,",",".");
+		return $total;
 	}
 	public function totalGastosCo($data)
 	{
@@ -84,7 +84,7 @@ class Vehiculo extends CActiveRecord
 			$total=$total+($dat["costoTotal"]+($dat["costoTotal"]*($factura->iva/$factura->total)));
 		}
 			
-		return number_format($total, 2,",",".");
+		return $total;
 	}
 	public function totalGastosMontajes($data){
 		$total=0;
@@ -102,7 +102,7 @@ class Vehiculo extends CActiveRecord
 				$total=$total+($dat["costounitario"]+($dat["costounitario"]*($iva)));
 			}
 		}
-		return number_format($total, 2,",",".");
+		return $total;
 	}
 	public function totalGastosNeumatico($data){
 		$total=0;
@@ -113,7 +113,7 @@ class Vehiculo extends CActiveRecord
 			$total=$total+($dat["costoTotal"]+($dat["costoTotal"]*($factura->iva/$factura->total)));
 		}
 			
-		return number_format($total, 2,",",".");
+		return $total;
 	}
 	public function totalGastosReporte($data){
 		$total=0;

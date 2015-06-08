@@ -16,14 +16,15 @@ $this->menu=array(
   array('label'=>'      Consumo de combustible por unidad', 'url'=>array('Indicadores/ind3')),
   array('label'=>'      Gastos por mtto. preventivo', 'url'=>array('Indicadores/ind7')),
   array('label'=>'      Gastos por mtto. correctivo', 'url'=>array('Indicadores/ind4')),
-  array('label'=>'      Gasto totalizado', 'url'=>array('Indicadores/ind8')),
+  array('label'=>'      Total de gastos', 'url'=>array('Indicadores/ind8')),
   //array('label'=>'      Tiempo de servicio', 'url'=>array('Indicadores/ind5')),
   array('label'=>'      Viajes por unidad', 'url'=>array('Indicadores/ind6')),
 );
 ?>
 <div class="crugepanel">
   <h1>Gasto totalizado</h1>
-  <div id="filtro" style="width:20%">
+  <i>*Muestra el total de gastos realizados a los vehiculos de la flota clasificandolos por tipo</i>
+  <div id="filtro" style="width:20%;margin-top:10px">
 <i>Por # de unidad: </i>
 
     <?php $model=new Vehiculo;  

@@ -66,7 +66,7 @@ $this->menu=array(
 					'htmlOptions'=>array('style'=>'width:50px;text-align:center;'),
 					//'footer'=>'',
 				),
-				array(
+				/*array(
 					//'headerHtmlOptions'=>array('style'=>'width:7%'),
 					'header'=>'Placa',
 					'name'=>'idplan',
@@ -89,8 +89,8 @@ $this->menu=array(
 					'value'=>'$data->idactividades0->idvehiculo0->idmodelo0->modelo',
 					//'value'=>'$data->idplan0->idplanGrupo0->CompiledColour->$data-id.\' \'.$data->CompiledColour',
 					'htmlOptions'=>array('style'=>'text-align:center;width:80px'),
-				),
-	
+				),*/
+
 				array(
 					'headerHtmlOptions'=>array('style'=>'text-align:center;'),
 					'header'=>'Recurso',

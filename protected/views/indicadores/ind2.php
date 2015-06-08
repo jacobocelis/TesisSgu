@@ -15,7 +15,7 @@ $this->menu=array(
     array('label'=>'      Consumo de combustible por unidad', 'url'=>array('Indicadores/ind3')),
     array('label'=>'      Gastos por mtto. preventivo', 'url'=>array('Indicadores/ind7')),
     array('label'=>'      Gastos por mtto. correctivo', 'url'=>array('Indicadores/ind4')),
-    array('label'=>'      Gastos por neumáticos', 'url'=>array('Indicadores/ind8')),
+    array('label'=>'      Total de gastos', 'url'=>array('Indicadores/ind8')),
     //array('label'=>'      Tiempo de servicio', 'url'=>array('Indicadores/ind5')),
     array('label'=>'      Viajes por unidad', 'url'=>array('Indicadores/ind6')),
 );
