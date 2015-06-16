@@ -5,7 +5,7 @@
 ?>
 
 <div class="form">
-
+<?php $estado = new Estados;?>
 <?php $form=$this->beginWidget('CActiveForm', array(
 	'id'=>'viaje-form',
 	// Please note: When you enable ajax validation, make sure the corresponding
@@ -20,14 +20,25 @@
 	<div class="row">
 		<?php echo $form->labelEx($model,'idOrigen',array('style'=>'width:80px')); ?>
 		<?php echo $form->dropDownList($model,'idOrigen',CHtml::listData(Lugar::model()->findAll('primario=1'),'id','lugar'),array(
-			'style' => 'width:150px;','prompt'=>'Seleccione: ','onchange'=>'validarLugar(this.value);')); ?>
+			'style' => 'width:150px;','prompt'=>'Seleccione: ','onchange'=>"{
+				validarLugar($('#Viaje_idOrigen option:selected').val());}",)); ?>
 		<?php echo $form->error($model,'idOrigen'); ?>
 	</div>
-
+	<div class="row" id="_estado" style="display:none">
+		<?php echo $form->labelEx($estado,'estado',array('style'=>'width:80px')); ?>
+		<?php echo $form->dropDownList($estado,'estado',CHtml::listData(Estados::model()->findAll(array('order' => 'estado ASC')), 'id', 'estado'),
+		array(
+			'onchange'=>"{
+				validarLugar($('#Viaje_idOrigen option:selected').val());}",
+			'prompt'=>'Seleccione: ')
+		); ?>
+		<?php echo $form->error($estado,'estado'); ?>
+	</div>
 	<div class="row" id="dest" style="display:none">
 		<?php echo $form->labelEx($model,'idDestino',array('style'=>'width:80px')); ?>
 		<?php echo $form->dropDownList($model,'idDestino',array(),array('prompt'=>'-','style' => 'width:150px;'));  	echo CHtml::link(CHtml::image(Yii::app()->request->baseUrl."/imagenes/agregar.png",
                                           "Agregar",array("title"=>"Nuevo destino")), "",array('title'=>'',
+        'id'=>'link',
         'style'=>'cursor: pointer;',
         'onclick'=>"{
 		destino();}")); ?>
@@ -58,15 +69,34 @@
 </div>
 <script>
 $( "#Viaje_idOrigen" ).change(function() {
-  if($("#Viaje_idOrigen").val()!="")
-  		$("#dest").show();
-  	else
-  		$("#dest").hide();
+	if($("#Estados_estado").val()=="")
+		$("#link").hide();
+	else
+		$("#link").show();
+  if($("#Viaje_idOrigen").val()!=""){
+  	$("#dest").show();
+  	$("#_estado").show();
+  }
+  		
+  	else{
+		$("#dest").hide();
+		$("#_estado").hide();
+  	}
+  		
 });
-
+$( "#Estados_estado" ).change(function() {
+  if($(this).val()==""){
+ 	$("#link").hide();
+  }
+  		
+  	else{
+ 		$("#link").show();
+  	}
+  		
+});
 function destino(){
 $('#destino').dialog('open');
-	 var dir="<?php echo Yii::app()->baseUrl."/Lugar/agregar/"?>";
+	 var dir="<?php echo Yii::app()->baseUrl."/Lugar/agregar/"?>"+$("#Estados_estado option:selected").val();
 	jQuery.ajax({
                 url: dir,
                 'data':$(this).serialize(),
@@ -103,7 +133,7 @@ var dir="<?php echo Yii::app()->baseUrl;?>"+"/viajes/actualizarListaLugar";
 	
 }
 function validarLugar(id){
-var dir="<?php echo Yii::app()->baseUrl;?>"+"/viajes/validarRuta/"+id;
+var dir="<?php echo Yii::app()->baseUrl;?>"+"/viajes/validarRuta/"+id+"?estado="+$("#Estados_estado option:selected").val();
 	$.ajax({  		
           url: dir,
         })

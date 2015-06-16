@@ -130,7 +130,7 @@ else{
                                 //array('label' => 'Sesiones', 'url' => array('/cruge/ui/sessionadmin')),
 								//array('label' => 'Perfil', 'url' => array('/cruge/ui/editprofile')),
 								//array('label' => 'Bitácora', 'url' => array('/cruge/ui/bitacora')),
-                                //array('label' => 'Opciones', 'url' => array('/cruge/ui/systemupdate')),
+                                array('label' => 'Opciones sistema', 'url' => array('/cruge/ui/systemupdate')),
                                 
                                 array('label' => 'Cerrar Sesión ', 'url' => Yii::app()->user->ui->logoutUrl, 'visible' => !Yii::app()->user->isGuest and Yii::app()->user->isSuperAdmin),
 								

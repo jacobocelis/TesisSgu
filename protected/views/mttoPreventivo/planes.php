@@ -5,6 +5,12 @@ negro{
 rojo{
 	color: rgba(255, 0, 0, 1);
 }
+div.form h6 {
+    background-color: #efefef;
+    border-radius: 3px;
+    margin-bottom: 10px;
+    padding: 5px 5px 5px 10px;
+}
 ul, ol {
     padding: 0px;
     margin: 0px 0px 10px 0px;

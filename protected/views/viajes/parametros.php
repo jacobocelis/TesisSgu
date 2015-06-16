@@ -3,7 +3,7 @@
 /* @var $model Historicocombustible */
 
 $this->breadcrumbs=array(
-	'Parámetros',
+	'Parámetros de viajes',
 );
 
 $this->menu=array(

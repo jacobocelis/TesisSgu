@@ -31,6 +31,7 @@
 			),'prompt'=>'Seleccione: ')
 		); ?>
 		<?php echo CHtml::link('<img src='.Yii::app()->baseUrl.'/imagenes/agregar.png alt="algo"/>',"",array('title'=>'Registrar un nuevo grupo de vehiculos',
+        'id'=>'link',
         'style'=>'cursor: pointer;',
         'onclick'=>"{
 		nuevo('Crear un nuevo grupo de vehiculos','/grupo/nuevoGrupo','/grupo/actualizarListaGrupo','#Vehiculo_idgrupo');}"));?>
@@ -181,9 +182,14 @@ $this->beginWidget('zii.widgets.jui.CJuiDialog', array( // the dialog
  
 <?php $this->endWidget();?>
 
-
+ 
 </div><!-- form -->
 <script>
+var oculto="<?php echo $model->isNewRecord?>";
+if(!oculto){
+	$("#link").hide();
+	$("#Vehiculo_idgrupo").attr("disabled", 'disabled');
+}
 $( document ).ready(function() {
 var idgrupo="<?php if(isset($grupo)) echo $grupo;?>";
 if(idgrupo>0){

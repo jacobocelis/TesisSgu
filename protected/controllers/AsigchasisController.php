@@ -161,13 +161,27 @@ class AsigchasisController extends Controller
 	 */
 	public function actionDelete($id)
 	{
+		$transaction = Yii::app()->db->beginTransaction();
+		try{
+
+			$this->loadModel($id)->delete();
+			//if(!isset($_GET['ajax']))
+			//$this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));
+			$transaction->commit();
+		}
+		catch(CDbException $e){
+			    
+        	header("HTTP/1.0 400 Relation Restriction");
+        	echo "No es posible eliminar la asociación porque ya fueron registrados realizadas acciones.\n";
+ 			$transaction->rollBack();
+			//echo CHtml::decode(" No se puede eliminar el eje porque tiene neumáticos asociados ");
+				//throw new CHttpException(400, Yii::t('err', 'bad request'));
+		}
 		
-			
-		$this->loadModel($id)->delete();
 
 		// if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
-		if(!isset($_GET['ajax']))
-			$this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));
+		//if(!isset($_GET['ajax']))
+			//$this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));
 		
 		
 	}

@@ -3,7 +3,7 @@
 /* @var $dataProvider CActiveDataProvider */
 
 $this->breadcrumbs=array(
-	'Viajes'=>array('viajes/index'),
+	//'Viajes'=>array('viajes/index'),
 	'Conductores',
 );
 
@@ -74,7 +74,7 @@ $this->menu=array(
 					'type'=>'raw',
 					'value'=>'CHtml::link(
                     CHtml::image(Yii::app()->request->baseUrl."/imagenes/cambiar.png",
-                                      "Agregar",array("title"=>"Editar")),
+                                      "Agregar",array("title"=>"Cambiar por otro")),
                     "",
                     array(
                             \'style\'=>\'cursor: pointer;text-decoration: underline;text-align:center;\',
@@ -88,8 +88,7 @@ $this->menu=array(
 					 'template'=>'{delete}',
 					     'buttons'=>array(
 							'delete' => array(
-								'url'=>'Yii::app()->createUrl("Empleados/deleteAsignados", array("id"=>$data->id))',
-								 
+								'url'=>'Yii::app()->createUrl("Empleados/deleteAsignados", array("id"=>$data->id))', 
 						),
 					),
 				),

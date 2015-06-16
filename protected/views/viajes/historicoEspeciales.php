@@ -3,7 +3,7 @@
 /* @var $dataProvider CActiveDataProvider */
 
 $this->breadcrumbs=array(
-	'Viajes'=>array('viajes/index'),
+	//'Viajes'=>array('viajes/index'),
 	'Viajes especiales',
 );
 $this->menu=array(

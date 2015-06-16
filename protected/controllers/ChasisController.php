@@ -156,11 +156,16 @@ class ChasisController extends Controller
 	 */
 	public function actionDelete($id)
 	{
-		$this->loadModel($id)->delete();
-
-		// if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
-		if(!isset($_GET['ajax']))
-			$this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));
+		try{
+			
+			$this->loadModel($id)->delete();
+				if(!isset($_GET['ajax']))
+			$this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('index'));
+		}catch(CDbException $e){
+            header("HTTP/1.0 400 Relation Restriction");      	 
+			echo CHtml::decode(" No se puede eliminar la plantilla");
+			
+		}
 	}
 
 	/**

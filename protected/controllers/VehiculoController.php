@@ -314,6 +314,53 @@ class VehiculoController extends Controller
 							}
 					}
 				}
+				/*insertar actividades de mtto preventivo en el vehiculo*/
+				$null='NULL';
+				$actividadesGrupo= Actividadesgrupo::model()->findAll('idgrupo="'.$model->idgrupo.'"');
+				foreach ($actividadesGrupo as $actgrupo) {
+					$actividades=new Actividades;
+					$actividades->idactividadMtto=$actgrupo->idactividadMtto;
+					$actividades->frecuenciaKm=$actgrupo->frecuenciaKm;
+					$actividades->frecuenciaMes=$actgrupo->frecuenciaMes;
+					$actividades->duracion=$actgrupo->duracion;
+					$actividades->idprioridad=$actgrupo->idprioridad;
+					$actividades->idvehiculo=$model->id;
+					$actividades->idtiempod=$actgrupo->idtiempod;
+					$actividades->idtiempof=$actgrupo->idtiempof;
+					$actividades->idactividadesGrupo=$actgrupo->id;
+					$actividades->idestatus=1;
+					$actividades->procedimiento=$actgrupo->procedimiento;
+					$actividades->inicial=1;
+					$actividades->save();
+					$recursoGrupo=Actividadrecursogrupo::model()->findAll('idactividadesGrupo="'.$actgrupo->id.'"');
+						foreach ($recursoGrupo as $recgrupo) {
+							Yii::app()->db->createCommand("INSERT INTO `tsg`.`sgu_actividadRecurso` (`cantidad`,`idactividades`,`idinsumo`,`idrepuesto`,`idservicio`,`idunidad`,`detalle`,`idactividadRecursoGrupo`)
+							VALUES (".$recgrupo->cantidad.",".$actividades->id.",".($recgrupo->idinsumo==null?$null:$recgrupo->idinsumo).",".($recgrupo->idrepuesto==null?$null:$recgrupo->idrepuesto).",".($recgrupo->idservicio==null?$null:$recgrupo->idservicio).",".$recgrupo->idunidad.",'".$recgrupo->detalle."',".$recgrupo->id.")")->query();
+						}
+				}	
+				/*insertar los neumaticos en el vehiculo*/
+				$asigChasis=Asigchasis::model()->find("idgrupo=".$model->idgrupo."");
+				$ruedas=Yii::app()->db->createCommand("select dr.idcaucho, dr.id from sgu_detalleRueda dr, sgu_detalleEje de, sgu_chasis c where dr.iddetalleEje=de.id and de.idchasis=c.id and de.idchasis=".$asigChasis["idchasis"]."")->queryAll();
+				$repuesto=Yii::app()->db->createCommand("select * from sgu_chasis c, sgu_cauchoRep cr where c.id=cr.idchasis and cr.idchasis=".$asigChasis["idchasis"]."")->queryRow();
+				foreach($ruedas as $rue){
+						$historico=new Historicocaucho;
+						$historico->idasigChasis=$asigChasis["id"];
+						$historico->idvehiculo=$model->id;
+						$historico->iddetalleRueda=$rue["id"];
+						$historico->idcaucho=$rue["idcaucho"];
+						$historico->idestatusCaucho=5;
+						$historico->inicial=1;
+						$historico->save(false);	
+				}
+				for($i=0;$i<$repuesto["cantidadRepuesto"];$i++){
+						$historico=new Historicocaucho;
+						$historico->idasigChasis=$asigChasis["id"];
+						$historico->idvehiculo=$model->id;
+						$historico->idcaucho=$repuesto["idcaucho"];
+						$historico->idestatusCaucho=6;
+						$historico->inicial=1;
+						$historico->save(false);	
+				}
 				$this->redirect(array('view','id'=>$model->id));
 			}
 		}

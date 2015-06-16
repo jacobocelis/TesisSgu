@@ -539,7 +539,7 @@ class ViajesController extends Controller
 			}
 		}
 		else{
-			$lista2=Lugar::model()->findAll('id <> :id',array(':id'=>$id));
+			$lista2=Lugar::model()->findAll('id <> :id and idestados = :idestado',array(':id'=>$id,':idestado'=>$_GET["estado"]));
 			foreach($lista2 as $li){
 				echo CHtml::tag('option',array('type'=>'text','value'=>(($li->id))),Chtml::encode(($li->lugar)),true);
 			}

@@ -1577,7 +1577,7 @@ class NeumaticosController extends Controller
 			}
 		}else
 			foreach($idveh as $idv){
-				$montados[]=new CActiveDataProvider('Historicocaucho',array("criteria"=>array("condition"=>"(idestatusCaucho=5 or idestatusCaucho=1) and idvehiculo=".$idv["id"]." and inicial=1")));
+				$montados[]=new CActiveDataProvider('Historicocaucho',array("criteria"=>array("condition"=>"(idestatusCaucho=5 or idestatusCaucho=1) and idvehiculo=".$idv["id"]." and inicial=1","order"=>"idestatusCaucho=5 or idestatusCaucho=6")));
 				$rep[]=new CActiveDataProvider('Historicocaucho',array("criteria"=>array("condition"=>"(idestatusCaucho=6 or idestatusCaucho=4) and idvehiculo=".$idv["id"]." and inicial=1")));
 				$veh[]=new CActiveDataProvider('Historicocaucho',array("criteria"=>array("condition"=>"idvehiculo=".$idv["id"]."","limit"=>"1"),'pagination' => false));
 		}

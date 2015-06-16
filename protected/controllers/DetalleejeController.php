@@ -140,7 +140,7 @@ class DetalleejeController extends Controller
 			$this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));
 		}
 		catch(CDbException $e){
-			
+			header("HTTP/1.0 400 Relation Restriction");	
 			echo CHtml::decode(" No se puede eliminar el eje porque tiene neumáticos asociados ");
 		}
 	}
