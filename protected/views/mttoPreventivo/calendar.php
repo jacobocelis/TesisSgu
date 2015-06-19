@@ -2,7 +2,7 @@
 	$this->breadcrumbs=array(
 	'Mantenimiento preventivo'=>array('mttoPreventivo/index'),
 	'Calendario de mantenimientos',
-);
+); 
 $this->menu=array(
 	//if(Yii::app()->user->checkAccess('xxx')):
 	array('label'=>'<div id="menu"><strong>Opciones de mantenimiento</strong></div>' , 'visible'=>Yii::app()->user->checkAccess('action_mttopreventivo_planes')),
@@ -88,17 +88,100 @@ $this->widget('ext.EFullCalendar.EFullCalendar', array(
 ));
 
 ?>
-<style>
-#menu{
-	font-size:15px;
+<div class="crugepanel">
+<b><p>*Actividades de mantenimiento cuya fecha de realización sea un sábado o domingo automaticamente sera reajustadas al siguiente día hábil</p></b>
+<b><p>*Puede indicar días feriados, las actividades seran reajustadas al siguiente día hábil.</p></b>
+<?php $this->widget('zii.widgets.grid.CGridView', array(
+                'id'=>'fechas',
+				//'summaryText'=>'',
+				'selectableRows'=>0,
+				'template'=>"{items}\n{summary}\n{pager}",
+			    
+				//'emptyText'=>'no hay conductores asignados',
+                'dataProvider'=>$feriados,
+				//'htmlOptions'=>array('style'=>'font-size: 1.0em;'),
+				
+				'columns'=>array(
 
-}
-</style>
+				array(
+					'header'=>'Evento',
+					'name'=>'descripcion',
+					//'value'=>'$data->idempleado0->nombre.\'  \'.$data->idempleado0->apellido',
+					//'value'=>'$data->idplan0->idplanGrupo0->CompiledColour->$data-id.\' \'.$data->CompiledColour',
+					'htmlOptions'=>array('style'=>'text-align:center;width:100px;'),
+				),
+				array(
+					'header'=>'Fecha inicio',
+					'name'=>'fechaInicio',
+					'value'=>'date("d/m", strtotime($data->fechaInicio));',
+					'htmlOptions'=>array('style'=>'text-align:center;width:100px;'),
+				),
+				array(
+					'header'=>'Fecha fin',
+					'name'=>'fechaFin',
+					'value'=>'date("d/m", strtotime($data->fechaFin));',
+					'htmlOptions'=>array('style'=>'text-align:center;width:100px;'),
+				),
+ 				/*array(
+					'headerHtmlOptions'=>array('style'=>'text-align:center;width:10px;'),
+					'htmlOptions'=>array('style'=>'text-align:center;width:30px;'),
+					'header'=>'Cambiar conductor',
+					'type'=>'raw',
+					'value'=>'CHtml::link(
+                    CHtml::image(Yii::app()->request->baseUrl."/imagenes/cambiar.png",
+                                      "Agregar",array("title"=>"Cambiar por otro")),
+                    "",
+                    array(
+                            \'style\'=>\'cursor: pointer;text-decoration: underline;text-align:center;\',
+                            \'onclick\'=>\'{cambiar("\'.Yii::app()->createUrl("empleados/cambiar",array("id"=>$data["id"])).\'");}\'
+                    )
+                );',),*/
+				array(
+					'header'=>'Eliminar',
+					'class'=>'CButtonColumn',
+					//'deleteConfirmation'=>'¿Desea dejar la unidad sin conductor?',
+					 'template'=>'{delete}',
+					     'buttons'=>array(
+							'delete' => array(
+								'url'=>'Yii::app()->createUrl("Feriado/delete", array("id"=>$data->id))', 
+						),
+					),
+				),
+			)
+        ));
+
+?>
+<div id="registro"></div>
+</div>
+
 <script>
+nuevoFeriado();
+function nuevoFeriado(){
+var dir="<?php echo Yii::app()->baseUrl."/feriado/agregar"?>";
+jQuery.ajax({
+                url: dir,
+                'data':$(this).serialize(),
+                'type':'post',
+                'dataType':'json',
+                'success':function(data){
+                                if (data.status == 'failure'){
+                                        $('#registro').html(data.div);
+                                        $('#registro form').submit(nuevoFeriado);
+                                }
+                                else{
+                                		nuevoFeriado();
+                                        
+										$('#resultado').html(data.mensaje);
+										$.fn.yiiGridView.update('fechas');
+                                }
+                        } ,
+                'cache':false});
+		return false; 
+}
+
 var MONTH_NAMES=new Array('January','February','March','April','May','June','July','August','September','October','November','December','Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec');
 var DAY_NAMES=new Array('Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sun','Mon','Tue','Wed','Thu','Fri','Sat');
 function LZ(x) {return(x<0||x>9?"":"0")+x}
-
 function formatDate(date,format) {
 	format=format+"";
 	var result="";
@@ -153,5 +236,31 @@ function formatDate(date,format) {
 		else { result=result + token; }
 		}
 	return result;
+}
+var Uurl;
+function agregarFeriado(){
+	jQuery.ajax({
+                url: "<?php echo Yii::app()->baseUrl;?>"+"/Feriado/agregar",
+                'data':$(this).serialize(),
+                'type':'post',
+                'dataType':'json',
+                'success':function(data){
+                    if (data.status == 'failure'){
+                            //$('#dialog div.divForForm').html(data.div);
+							$('#agregarFeriado div.divForForm').html(data.div);
+                            // Here is the trick: on submit-> once again this function!
+                            //$('#dialog div.divForForm form').submit(agregarActividad); // updatePaymentComment
+							$('#agregarFeriado div.divForForm form').submit(agregarFeriado);
+                    }
+                    else{
+                            //$('#dialog div.divForForm').html(data.div);
+							$('#agregarFeriado div.divForForm').html(data.div);
+                            //setTimeout("agregarActividad()",1000);
+                            $('#agregarFeriado').dialog('close');
+							$.fn.yiiGridView.update('fechas');
+                    }
+                } ,
+                'cache':false});
+    return false; 
 }
 </script>

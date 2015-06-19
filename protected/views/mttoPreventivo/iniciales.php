@@ -31,7 +31,6 @@ $this->menu=array(
 ?>
 <div class='crugepanel user-assignments-role-list'>
 	<h1>Registrar mantenimientos iniciales</h1>
-
 <?php
 	$this->widget('zii.widgets.grid.CGridView', array(
                 'id'=>'inicial',

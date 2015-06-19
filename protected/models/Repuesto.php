@@ -118,7 +118,7 @@ class Repuesto extends CActiveRecord
 			$dataProvider= new CActiveDataProvider($this, array(
 				'criteria'=>$criteria,
 			));
-			$dataProvider->pagination->pageSize=$dataProvider->totalItemCount;
+			$dataProvider->pagination->pageSize=10;
 			return $dataProvider;
 		}
 		if($grupo==""){
@@ -127,7 +127,7 @@ class Repuesto extends CActiveRecord
 			$dataProvider=new CActiveDataProvider($this, array(
 				'criteria'=>$criteria,
 				));
-			$dataProvider->pagination->pageSize=$dataProvider->totalItemCount;
+			$dataProvider->pagination->pageSize=10;
 			return $dataProvider;
 		}
 	}
@@ -148,7 +148,7 @@ class Repuesto extends CActiveRecord
 		$dataProvider= new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
 		));
-		$dataProvider->pagination->pageSize=$dataProvider->totalItemCount;
+		$dataProvider->pagination->pageSize=10;
 		return $dataProvider;
 	}
 

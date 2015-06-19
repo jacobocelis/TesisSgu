@@ -27,6 +27,15 @@ class Historicocaucho extends CActiveRecord
 	/**
 	 * @return string the associated database table name
 	 */
+ public function beforeValidate() {
+    if(parent::beforeValidate()) {
+      if($this->inicial==1){
+      		return true;
+      }
+
+    }
+  }
+
 	public function tableName()
 	{
 		return 'sgu_historicoCaucho';
@@ -76,6 +85,7 @@ class Historicocaucho extends CActiveRecord
 		if($data=='0000-01-01'||$data=="0"||$data=="")
 			return '<span style="color:red">Por definir</span>';
     }
+
 	public function coloresEstatus($data){
 		if($data->idestatusCaucho==1||$data->idestatusCaucho==4)
 			return '<span style="color:green">'.$data->idestatusCaucho0->estatusCaucho.'</span>';

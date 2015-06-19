@@ -84,6 +84,33 @@ class ActividadesController extends Controller
 	 * If update is successful, the browser will be redirected to the 'view' page.
 	 * @param integer $id the ID of the model to be updated
 	 */
+	public function esSabado($fecha){
+		$numeroDia=date("w",strtotime($fecha));
+		if($numeroDia==6){
+			return true;
+		}
+		else
+			return false;
+	}
+	public function esDomingo($fecha){
+		$numeroDia=date("w",strtotime($fecha));
+		if($numeroDia==7){
+			return true;
+		}
+		else
+			return false;
+	}
+	public function esFeriado($fecha){
+		$feriados = Feriado::model()->findAll();
+		foreach ($feriados as $value) {
+			//$fecha=date("m-d",strtotime($fecha));
+			//$value["fechaInicio"]=date("m-d",strtotime($value["fechaInicio"]));
+			//$value["fechaFin"]=date("m-d",strtotime($value["fechaFin"]));
+			if(($fecha>=$value["fechaInicio"] and $fecha<=$value["fechaFin"]) or $this->esSabado($fecha) or $this->esDomingo($fecha))
+			return 1;
+		}
+		return 0;
+	}
 	public function actionUpdate($id,$idestatus){
 	
 		$model=$this->loadModel($id);
@@ -93,7 +120,6 @@ class ActividadesController extends Controller
 			$var=0;
 		if(isset($_POST['Actividades'])){
             $model->attributes=$_POST['Actividades'];
-			
             $model->proximoFecha=date("Y-m-d", strtotime(str_replace('/', '-',$model->proximoFecha)));
             if($model->save()){
 			//calculo del proximo mantenimiento a realizarse en base al ultimo ingresado
@@ -104,7 +130,18 @@ class ActividadesController extends Controller
 				//$proximoFecha->add(new DateInterval('P'.$model->frecuenciaMes.$model->idtiempof0->sqlTimevalues));
 				
                 	$proximoFecha=date("Y-m-d",strtotime($model->ultimoFecha . "+".$model->frecuenciaMes.$model->idtiempof0->palabraUnidad));
-                                
+                    /*validamos que se corra la actividad si cae en dia feriado*/
+                    
+                    /*if($this->esSabado($proximoFecha)){
+                    	$proximoFecha=date("Y-m-d",strtotime($proximoFecha . "+2 day"));
+                    }
+                    if($this->esDomingo($proximoFecha)){
+                    	$proximoFecha=date("Y-m-d",strtotime($proximoFecha . "+1 day"));	
+                    }*/
+                    while($this->esFeriado($proximoFecha)){
+                    	$proximoFecha=date("Y-m-d",strtotime($proximoFecha . "+1 day"));
+                    }
+
 					Yii::app()->db->createCommand("update `tsg`.`sgu_actividades` set ultimoFecha='".$model->ultimoFecha."',proximoKm='".$proximoKm."', proximoFecha='".$proximoFecha."', idestatus='".$model->idestatus."'
 					where id = '".$id."'")->query();
 				}

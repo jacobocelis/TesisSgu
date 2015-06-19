@@ -201,7 +201,7 @@ class RepuestoController extends Controller
 		sgu_grupo gu, sgu_subTipoRepuesto st, sgu_repuesto re where cg.idgrupo=gu.id and gu.grupo="'.$authItemName.'" 
 		and re.idSubTipoRepuesto=st.id  
 		and re.id=cg.idrepuesto ORDER BY st.subTipo ASC')->queryAll(); 
-		$piezasGrupo=new CArrayDataProvider($consulta, array('keyField'=>'id','pagination'=>array('pageSize'=>$pieza_->count())));
+		$piezasGrupo=new CArrayDataProvider($consulta, array('keyField'=>'id','pagination'=>array('pageSize'=>10)));
         $this->render(
             'AsignarPieza',
             array(

@@ -1,5 +1,10 @@
 <div class='crugepanel user-assignments-role-list'>
-	<h1>Orden de mantenimiento correctivo</h1>
+	<div style="margin: 0px auto 0px;width:50px;">
+	<IMG SRC="imagenes/logounet.png" style="width:50px;height:50px" ALT="">
+	</div>
+	<h1>Dirección de servicios generales U.N.E.T.</h1>
+	<p>Gerencia de negocios Dpto. de transporte</p>
+	<h1>Solicitud de orden de mantenimiento correctivo</h1>
 <?php
 $this->widget('zii.widgets.grid.CGridView', array(
                 'id'=>'factura',

@@ -342,7 +342,7 @@ ul, ol {
 			'id'=>'_lista1',
 			'selectableRows'=>2,
 			'dataProvider'=>$piezasGrupo,
-			'enablePagination' => false,
+			'enablePagination' => true,
 			'afterAjaxUpdate' => "actualizar",
 			'template'=>"{items}\n{summary}\n{pager}",
 			'ajaxUpdate' => true,
@@ -401,7 +401,7 @@ ul, ol {
 			'ajaxUpdate' => true,
 			'afterAjaxUpdate' => "actualizar",
 			'dataProvider'=>$DataProvider,
-			'enablePagination' => false,
+			'enablePagination' => true,
 			'template'=>"{items}{summary}{pager}",
 			'columns'=>array(	
 			
@@ -459,7 +459,7 @@ ul, ol {
 			'summaryText' =>'',
 			'emptyText'=>'',
 			'dataProvider'=>$detalle,
-			'enablePagination' => false,
+			'enablePagination' => true,
 			
 			'enableSorting' => false,
 			'columns'=>array(

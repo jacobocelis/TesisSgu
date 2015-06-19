@@ -149,6 +149,7 @@ var unidad="<?php echo $data->sqlTimevalues;?>";
             changeYear: true,
 	        showMonthAfterYear: false,
 	        yearSuffix: '',
+	        beforeShowDay: $.datepicker.noWeekends, 
 	        //maxDate: '0d',
 	        //minDate: '-'+tiempo+unidad,
 	    };

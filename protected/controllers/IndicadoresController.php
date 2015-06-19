@@ -191,7 +191,7 @@ class IndicadoresController extends Controller
 	 		'mes'=>$this->separar($ind,"mes"),
 	 		'total'=>$this->separar($ind,"total"),
 	 		'litros'=>$this->separar($ind,"litros"),
-	 		'filas'=>$this->filas($ind,6),
+	 		'filas'=>$this->filas($ind,12),
 	 	));
 	}
 	public function actionInd4(){
@@ -233,7 +233,7 @@ class IndicadoresController extends Controller
 	 		'fecha'=>$this->separar($ind,"fecha"),
 	 		'total'=>$this->separar($ind,"total"),
 	 		'personas'=>$this->separar($ind,"personas"),
-	 		'filas'=>$this->filas($ind,6),
+	 		'filas'=>$this->filas($ind,12),
 	 	));
 	}
 	public function actionInd7(){
@@ -251,7 +251,7 @@ class IndicadoresController extends Controller
 	 		'fecha'=>$this->separar($ind,"fecha"),
 	 		'total'=>$this->separar($ind,"total"),
 	 		'reparaciones'=>$this->separar($ind,"reparaciones"),
-	 		'filas'=>$this->filas($ind,6),
+	 		'filas'=>$this->filas($ind,12),
 	 	));
 	}
 	public function actionInd8(){

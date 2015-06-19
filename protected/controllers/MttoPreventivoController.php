@@ -362,7 +362,9 @@ class MttoPreventivoController extends Controller
     );}
 	if($tot==0)
 		$items="";
+	$feriados=new CActiveDataProvider('Feriado');
 	$this->render('calendar',array(
+		'feriados'=>$feriados,
 		'items'=>$items,
 		'mi'=>$this->getIniciales(),
 		'color'=>$this->getColor($this->getIniciales()),
