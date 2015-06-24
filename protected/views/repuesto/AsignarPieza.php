@@ -575,7 +575,7 @@ $("#listaRep").hide();
 		}
 		var itemName = _getSelectedItemName();
 		var selectedUsers = $.fn.yiiGridView.getSelection('_lista2');
-		
+		//var selectedUsers = $("#_lista2").selGridView("getAllSelection"); 
 		if(((selectedUsers == 'undefined') || (selectedUsers==""))==false){
 			$.fn.yiiGridView.update('_lista1',
 				{ 

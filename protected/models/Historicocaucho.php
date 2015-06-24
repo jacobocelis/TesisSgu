@@ -27,14 +27,14 @@ class Historicocaucho extends CActiveRecord
 	/**
 	 * @return string the associated database table name
 	 */
- public function beforeValidate() {
+ /*public function beforeValidate() {
     if(parent::beforeValidate()) {
       if($this->inicial==1){
       		return true;
       }
 
     }
-  }
+  }*/
 
 	public function tableName()
 	{
@@ -117,7 +117,7 @@ class Historicocaucho extends CActiveRecord
 		);
 	}
 	   function validarCosto(){
-        if($this->costounitario<=0 and ($this->idestatusCaucho<5)){
+        if($this->costounitario<=0 and ($this->idestatusCaucho<5) and $this->inicial<>1){
             $this->addError('costounitario', 'Costo debe ser mayor a cero');
         }
 	}

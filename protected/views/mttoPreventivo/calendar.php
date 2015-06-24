@@ -30,6 +30,20 @@ $this->menu=array(
 );
 ?>
 <?php
+$this->beginWidget('zii.widgets.jui.CJuiDialog', array(
+    'id'=>'dssd',
+    'options'=>array(
+        'autoOpen'=>false,
+		'position'=>array(null,100),
+		'resizable'=>false
+    ),
+));?>
+<div class="divForForm">
+
+</div>
+<?php $this->endWidget();?>
+
+<?php
 $this->widget('ext.EFullCalendar.EFullCalendar', array(
      'lang'=>'es',
 	 'id'=>'calendar',

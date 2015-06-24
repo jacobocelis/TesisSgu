@@ -94,11 +94,33 @@ class ActividadesController extends Controller
 	}
 	public function esDomingo($fecha){
 		$numeroDia=date("w",strtotime($fecha));
-		if($numeroDia==7){
+		
+		if($numeroDia==0){
+
 			return true;
 		}
 		else
 			return false;
+	}
+	public function compararFechas($fecha1,$comparador,$fecha2){
+		$dia1=date("d",strtotime($fecha1));
+		$mes1=date("m",strtotime($fecha1));
+		$dia2=date("d",strtotime($fecha2));
+		$mes2=date("m",strtotime($fecha2));
+		$fecha1=$mes1.$dia1;
+		$fecha2=$mes2.$dia2;
+		if($comparador==">="){
+			if($fecha1>=$fecha2)
+				return 1;
+			else
+				return 0;
+		}
+		else{
+			if($fecha1<=$fecha2)
+				return 1;
+			else
+				return 0;
+		}
 	}
 	public function esFeriado($fecha){
 		$feriados = Feriado::model()->findAll();
@@ -106,7 +128,7 @@ class ActividadesController extends Controller
 			//$fecha=date("m-d",strtotime($fecha));
 			//$value["fechaInicio"]=date("m-d",strtotime($value["fechaInicio"]));
 			//$value["fechaFin"]=date("m-d",strtotime($value["fechaFin"]));
-			if(($fecha>=$value["fechaInicio"] and $fecha<=$value["fechaFin"]) or $this->esSabado($fecha) or $this->esDomingo($fecha))
+			if(($this->compararFechas($fecha,">=",$value["fechaInicio"]) and $this->compararFechas($fecha,"<=",$value["fechaFin"])) or $this->esSabado($fecha) or $this->esDomingo($fecha))
 			return 1;
 		}
 		return 0;

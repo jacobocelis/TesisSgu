@@ -485,6 +485,7 @@ ul, ol {
 			return;
 		}
 		var itemName = _getSelectedItemName();
+		//var selectedUsers = $("#_lista2").selGridView("getAllSelection"); 
 		var selectedUsers = $.fn.yiiGridView.getSelection('_lista2');
 		
 		if(((selectedUsers == 'undefined') || (selectedUsers==""))==false){
