@@ -107,6 +107,12 @@ class Actividades extends CActiveRecord
 		
 		return 100-(($diasR/$diasT)*100);
 	}*/
+	public function historico_atraso(){
+		if($this->atraso==1)
+			return (int)(abs($this->atraso)).' Día';
+		if($this->atraso>1)
+			return (int)(abs($this->atraso)).' Días';
+	}
 	public function atraso($fin){
 		//$datetime1 = new DateTime($fin);
 		//$datetime2 = new DateTime("now");

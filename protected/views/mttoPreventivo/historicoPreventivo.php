@@ -96,7 +96,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
 					'type'=>'raw',
 					'header'=>'Atraso',
 					'name'=>'atraso',
-					'value'=>'\'<b><span style="color:red">\'.$data->atraso($data->proximoFecha).\'</span></b>\'',
+					'value'=>'\'<b><span style="color:red">\'.$data->historico_atraso().\'</span></b>\'',
 					'htmlOptions'=>array('style'=>' text-align:center;'),
 				),
 				array(

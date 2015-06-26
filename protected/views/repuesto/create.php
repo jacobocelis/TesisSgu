@@ -23,8 +23,97 @@ $this->menu=array(
 	array('label'=>'      Proveedores', 'url'=>array('empleados/proveedores')),
 );
 ?>
-<div class='crugepanel user-assignments-role-list'>
+<div class='crugepanel'>
 <h1>Registrar repuesto</h1>
+	
 
-<?php $this->renderPartial('_form', array('model'=>$model,'tipo'=>$tipo)); ?>
+<div id="rep" ></div>
+
 </div>
+<div class='crugepanel'>
+<h1>Repuesto registrados</h1>
+	
+<?php
+$this->widget('zii.widgets.grid.CGridView', array(
+                'id'=>'repuestos',
+				//'summaryText'=>'no hay repuestos registrados',
+				'template'=>"{items}\n{summary}\n{pager}",
+				'selectableRows'=>0,
+				'emptyText'=>'No hay repuestos registrados',
+                'dataProvider'=>$repuestos,
+				'htmlOptions'=>array('style'=>''),
+				'columns'=>array(
+				array(
+					'header'=>'Repuesto',
+					'name'=>'repuesto',
+					//'value'=>'str_pad((int) $data->idvehiculo0->numeroUnidad,2,"0",STR_PAD_LEFT);',
+					//'value'=>'$data->idCaracteristicaVeh0->idrepuesto0->repuesto',
+					'htmlOptions'=>array('style'=>'text-align:center;width:20px'),
+				),
+				array(
+					'header'=>'Tipo',
+					//'name'=>'idsubTipoRepuesto',
+					//'value'=>'str_pad((int) $data->idvehiculo0->numeroUnidad,2,"0",STR_PAD_LEFT);',
+					'value'=>'$data->idsubTipoRepuesto0->idTipoRepuesto0->tipo',
+					'htmlOptions'=>array('style'=>'text-align:center;width:20px'),
+				),
+				array(
+					'header'=>'Subtipo',
+					'name'=>'idsubTipoRepuesto',
+					'value'=>'$data->idsubTipoRepuesto0->subTipo',
+					//'value'=>'$data->idplan0->idplanGrupo0->CompiledColour->$data-id.\' \'.$data->CompiledColour',
+					'htmlOptions'=>array('style'=>'text-align:center;width:20px'),
+				),
+			)
+        ));
+		?>
+
+</div>
+<script>
+agregarRepuesto();
+function agregarRepuesto(){
+	var dir="<?php echo Yii::app()->baseUrl."/repuesto/agregar/"?>";
+	jQuery.ajax({
+                url: dir,
+                'data':$(this).serialize(),
+                'type':'post',
+                'dataType':'json',
+                'success':function(data){
+                                if (data.status == 'failure'){
+                                        $('#rep').html(data.div);
+                                        $('#rep form').submit(agregarRepuesto);
+                                }
+                                else{
+                                        //$('#viaje').html(data.div);
+										//$('#viaje').css('background','#9EF79C');
+                                        //setTimeout("$('#viaje').dialog('close') ",1000);
+                                         //agregarViajeRutinario();
+                                         //$('body').scrollTo('#resultado',{duration:'slow', offsetTop : '0'});
+                                         //$('#resultado').html(data.mensaje);
+										 $.fn.yiiGridView.update('repuestos');
+										 agregarRepuesto();
+
+                                }
+                        },
+                'cache':false});
+    return false; 
+}
+function Subtipo(id){
+	
+var dir="<?php echo Yii::app()->baseUrl;?>"+"/repuesto/Selectdos/"+id;
+	$.ajax({  		
+          url: dir,
+		  //'type'=>'POST',
+		  'success':function(data){
+
+			$('#Repuesto_idsubTipoRepuesto').html(data);
+			//$('#Historicoviajes_idconductor').html(result.lista);		  
+		  }
+        })
+  	.done(function( result ) {
+	
+    	     $('#Repuesto_idsubTipoRepuesto').val(result.puestos);
+			 //$('#Historicoviajes_idconductor').html(result.lista);
+  	});
+}
+</script>

@@ -131,6 +131,9 @@ class ActividadesController extends Controller
 			if(($this->compararFechas($fecha,">=",$value["fechaInicio"]) and $this->compararFechas($fecha,"<=",$value["fechaFin"])) or $this->esSabado($fecha) or $this->esDomingo($fecha))
 			return 1;
 		}
+		if(count($feriados)==0)
+			if($this->esSabado($fecha) or $this->esDomingo($fecha))
+				return 1;
 		return 0;
 	}
 	public function actionUpdate($id,$idestatus){

@@ -28,12 +28,12 @@
 		<?php echo $form->labelEx($tipo,'tipo'); ?>
 		<?php echo $form->dropDownList($tipo,'id',CHtml::listData(Tiporepuesto::model()->findAll(array('order' => 'id ASC')), 'id', 'tipo'),
 		array(
-			'style'=>'width:120px',
-			'ajax'=>array(
+			'style'=>'width:120px','onchange'=>'Subtipo(this.value);',
+			/*'ajax'=>array(
 			'type'=>'POST',
 			'url'=>CController::createUrl('Repuesto/Selectdos'),
 			'update'=>'#'.CHtml::activeId($model,'idsubTipoRepuesto'),
-			),'prompt'=>'Seleccione: ')); 
+			),*/'prompt'=>'Seleccione: ')); 
 			
 			?>
 		<?php echo $form->error($tipo,'id'); ?>
@@ -41,7 +41,7 @@
 	
 	<div class="row">
 		<?php echo $form->labelEx($model,'idsubTipoRepuesto'); ?>
-		<?php echo $form->dropDownList($model,'idsubTipoRepuesto',CHtml::listData(Subtiporepuesto::model()->findAll(), 'id', 'subTipo'),array('style'=>'width:180px')); ?>
+		<?php echo $form->dropDownList($model,'idsubTipoRepuesto',array(),array('style'=>'width:180px')); ?>
 		<?php echo $form->error($model,'idsubTipoRepuesto'); ?>
 	</div>
  

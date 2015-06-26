@@ -311,8 +311,10 @@ function actualizarSpan(){
 agregarViajeRutinario();
 function agregarViajeRutinario(){
 	var dir="<?php echo Yii::app()->baseUrl."/viajes/agregarViajeRutinario/"?>";
+	if (typeof(dir)=='string')
+                Uurl=dir;
 	jQuery.ajax({
-                url: dir,
+                url: Uurl,
                 'data':$(this).serialize(),
                 'type':'post',
                 'dataType':'json',

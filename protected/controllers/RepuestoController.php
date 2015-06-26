@@ -32,7 +32,7 @@ class RepuestoController extends Controller
 				'users'=>array('@'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create','update','crear','Selectdos','buscarRepuesto','DetalleRepuestoVehiculo','AsignarPiezaGrupo','DetallePiezaGrupo','iniciales','historico','ActualizarSerial','parametros','actualizar','ActualizarSpan'),
+				'actions'=>array('create','update','crear','Selectdos','buscarRepuesto','DetalleRepuestoVehiculo','AsignarPiezaGrupo','DetallePiezaGrupo','iniciales','historico','ActualizarSerial','parametros','actualizar','ActualizarSpan','agregar'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -315,7 +315,11 @@ class RepuestoController extends Controller
 	{
 		$model=new Repuesto;
 		$tipo = new Tiporepuesto;
-
+		$repuestos=new CActiveDataProvider('Repuesto',array(        'sort'=>array(
+            'defaultOrder'=>'id DESC',
+        ),'criteria' => array(
+				'condition' =>"1",
+				)));
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
 
@@ -329,6 +333,7 @@ class RepuestoController extends Controller
 		$this->render('create',array(
 			'model'=>$model,
 			'tipo'=>$tipo,
+			'repuestos'=>$repuestos
 		));
 	}
 	public function actionCrear()
@@ -544,6 +549,29 @@ class RepuestoController extends Controller
 			'model'=>$model,
 		));
 	}
+	public function actionAgregar(){
+		$model=new Repuesto;
+		$tipo = new Tiporepuesto;
+		if(isset($_POST['Repuesto'])){
+            $model->attributes=$_POST['Repuesto'];
+            if($model->save()){
+			
+                if (Yii::app()->request->isAjaxRequest){
+                    echo CJSON::encode(array(
+                        'status'=>'success', 
+                        'div'=>"se agrego el repuesto"
+                        ));
+                    exit;               
+                }
+            }
+        }
+        if (Yii::app()->request->isAjaxRequest){
+            echo CJSON::encode(array(
+                'status'=>'failure', 
+                'div'=>$this->renderPartial('_form', array('model'=>$model,'tipo' =>$tipo), true)));
+            exit;               
+        }
+	}
 	public function actionActualizar($id){
 		$model=$this->loadModel($id);
 		
@@ -595,10 +623,8 @@ class RepuestoController extends Controller
 		}
 	}
 		
-	public function actionSelectdos(){
-		if(isset($_POST['Tiporepuesto']['id'])){
-			$idmarca = $_POST['Tiporepuesto']['id'];
-			$lista2=Subtiporepuesto::model()->findAll('idTipoRepuesto = :id',array(':id'=>$idmarca));
+	public function actionSelectdos($id){
+			$lista2=Subtiporepuesto::model()->findAll('idTipoRepuesto = :id',array(':id'=>$id));
 			
 			foreach($lista2 as $li){
 			
@@ -606,6 +632,6 @@ class RepuestoController extends Controller
 				//CHTML::textField("campo",1,array(\'width\'=>4,\'maxlength\'=>4,\'onkeypress\'=>"return justNumbers(event)"))
 			}
 			
-		}
+		
 	}
 }
