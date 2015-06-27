@@ -65,13 +65,79 @@ class AlternateAuthDemo extends CBaseUserIdentity implements ICrugeAuth
     public function authenticate()
     {
 
+        $tipo=4;
+        $activo=0;
+        $server="192.168.0.50";
+        $cn="profread";
+        $pwd="UnLectP013.";
+        $user = $this->username;
+        $pass = $this->password; 
+        $dominio="dc=unet,dc=edu,dc=ve";
+        $ds=ldap_connect($server);  
+        //$this->setState('result','NADA');
+        if($ds){
+
+            ldap_set_option($ds,LDAP_OPT_PROTOCOL_VERSION,3);
+            ldap_set_option($ds,LDAP_OPT_REFERRALS,0);
+            $dn="cn=".$cn.",dc=unet,dc=edu,dc=ve";
+            $bind=ldap_bind($ds,$dn,$pwd);      
+            if($bind){
+                $busqueda = ldap_search($ds,$dominio,"uid=".$user);
+                if($busqueda)
+                { 
+                    $info   = ldap_get_entries($ds,$busqueda);
+                    
+                    $login=$info[0]["dn"];
+                    $bind2=@ldap_bind($ds,$login,$pass);
+                    if($bind2){
+                        $model = Yii::app()->user->um->loadUser($this->username);
+                        if($model==null){
+                            $nuevoUser = array(
+                                'username' => $this->username,
+                                'email' => $this->username."@unet.edu.ve",
+                                );
+                            $nuevo = Yii::app()->user->um->createNewUser($nuevoUser);
+                            $model = Yii::app()->user->um->loadUser($nuevo->username);
+                            $this->_user = $model;
+                            $this->errorCode = self::ERROR_NONE; 
+                        }else{
+                            $this->_user = $model;
+                            $this->errorCode = self::ERROR_NONE; 
+                        }
+                        $this->errorCode = self::ERROR_NONE; 
+                              
+                    }
+                    else{
+                        $model = Yii::app()->user->um->loadUser($this->username);
+                        if($model==null)
+                           $this->errorCode=self::ERROR_USERNAME_INVALID;
+                        else if($model->password!==$this->password)
+                            $this->errorCode=self::ERROR_PASSWORD_INVALID;
+                        else
+                        {
+                            $this->_user = $model;
+                            $this->errorCode=self::ERROR_NONE;
+                        }
+                    }
+                }
+                else{
+
+                
+                        $this->errorCode=self::ERROR_USERNAME_INVALID;                  
+                }
+            }    
+        }
         // en errorcode reporta el error generado
         //
-        $this->errorCode = self::ERROR_USERNAME_INVALID;
+        //$model = Yii::app()->user->um->loadUser($this->username);
+        //$this->_user = $model;
+        //$this->errorCode = self::ERROR_NONE; 
+        //$this->errorCode = self::ERROR_USERNAME_INVALID;
 
 
         // retorna boolean, true si la autenticacion es exitosa
         //
+        //return $this->errorCode == self::ERROR_NONE;
         return $this->errorCode == self::ERROR_NONE;
     }
 }

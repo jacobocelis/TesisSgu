@@ -46,7 +46,8 @@ return array(
 				// en vez de 'default' pon 'authdemo' para que utilice el demo de autenticacion alterna
             // para saber mas lee documentacion de la clase modules/cruge/models/auth/AlternateAuthDemo.php
             //
-				'availableAuthMethods' => array('default'),
+			'availableAuthMethods' => array('default'),
+            //'availableAuthMethods' => array('authdemo'),
             'availableAuthModes' => array('username', 'email'),
             // url base para los links de activacion de cuenta de usuario
             'baseUrl' => 'http://curly.unet.edu.ve/',
