@@ -88,16 +88,17 @@ class CrugeUser extends CBaseUserIdentity implements IUserIdentity
         // auth es una instancia de un metodo de autenticacion
 
         if ($this->_performAuth($auth) == true) {
+
             Yii::log(__METHOD__ . "\n_performAuth es true\n", "info");
+            
             return true;
         } else {
-
             switch ($this->errorCode) {
                 case self::ERROR_USERNAME_INVALID:
-                    $this->_lastErrorDescr = "usuario o correo invalido";
+                    $this->_lastErrorDescr = "usuario o contraseña invalida";
                     break;
                 case self::ERROR_PASSWORD_INVALID:
-                    $this->_lastErrorDescr = "clave invalida";
+                    $this->_lastErrorDescr = "contraseña invalida";
                     break;
                 default:
                     $this->_lastErrorDescr = "error desconocido";

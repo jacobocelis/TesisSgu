@@ -37,7 +37,7 @@ class CrugeLogon extends CFormModel
         return array(
             array('username', 'required'),
             array('username', 'length', 'max' => 45),
-            array('username', 'user_exists_validator'),
+            //array('username', 'user_exists_validator'),
             array('rememberMe', 'boolean', 'on' => 'login'),
             array('password', 'required', 'on' => 'login'),
             array('password', 'length', 'max' => 20, 'on' => 'login'),

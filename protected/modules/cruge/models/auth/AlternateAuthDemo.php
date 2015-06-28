@@ -92,19 +92,18 @@ class AlternateAuthDemo extends CBaseUserIdentity implements ICrugeAuth
                     if($bind2){
                         $model = Yii::app()->user->um->loadUser($this->username);
                         if($model==null){
-                            $nuevoUser = array(
-                                'username' => $this->username,
-                                'email' => $this->username."@unet.edu.ve",
-                                );
-                            $nuevo = Yii::app()->user->um->createNewUser($nuevoUser);
-                            $model = Yii::app()->user->um->loadUser($nuevo->username);
-                            $this->_user = $model;
+                            $usuarioNuevo = Yii::app()->user->um->createBlankUser();
+                            $usuarioNuevo->username =$this->username;
+                            $usuarioNuevo->email = $this->username."@unet.edu.ve";
+                            Yii::app()->user->um->save($usuarioNuevo);
+                            $nuevoUsuario = Yii::app()->user->um->loadUser($usuarioNuevo->username);
+                            $this->_user = $nuevoUsuario;
                             $this->errorCode = self::ERROR_NONE; 
                         }else{
                             $this->_user = $model;
                             $this->errorCode = self::ERROR_NONE; 
                         }
-                        $this->errorCode = self::ERROR_NONE; 
+                        //$this->errorCode = self::ERROR_NONE; 
                               
                     }
                     else{
