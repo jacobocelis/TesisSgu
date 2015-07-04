@@ -89,21 +89,34 @@ class AlternateAuthDemo extends CBaseUserIdentity implements ICrugeAuth
                     
                     $login=$info[0]["dn"];
                     $bind2=@ldap_bind($ds,$login,$pass);
+                    //file_put_contents("salida.txt", print_r($info,TRUE));
                     if($bind2){
                         $model = Yii::app()->user->um->loadUser($this->username);
                         if($model==null){
                             $usuarioNuevo = Yii::app()->user->um->createBlankUser();
                             $usuarioNuevo->username =$this->username;
-                            $usuarioNuevo->email = $this->username."@unet.edu.ve";
+                            $usuarioNuevo->email = $info[0]['mail'][0];
                             Yii::app()->user->um->save($usuarioNuevo);
                             $nuevoUsuario = Yii::app()->user->um->loadUser($usuarioNuevo->username);
+                            $campoFoto = Yii::app()->user->um->getFieldValueInstance($nuevoUsuario,'Foto');
+                            $campoFoto->value = base64_encode($info[0]['jpegphoto'][0]);
+                            $campoFoto->save();
+                            $campoNombre = Yii::app()->user->um->getFieldValueInstance($nuevoUsuario,'Nombre');
+                            $campoNombre->value = $info[0]['givenname'][0];
+                            $campoNombre->save();
+                            $campoApellido = Yii::app()->user->um->getFieldValueInstance($nuevoUsuario,'Apellido');
+                            $campoApellido->value = $info[0]['sn'][0];
+                            $campoApellido->save();
+                            $campogidnumber = Yii::app()->user->um->getFieldValueInstance($nuevoUsuario,'gidnumber');
+                            $campogidnumber->value = $info[0]['gidnumber'][0];
+                            $campogidnumber->save();                             
                             $this->_user = $nuevoUsuario;
-                            $this->errorCode = self::ERROR_NONE; 
+                            //$this->errorCode = self::ERROR_NONE; 
                         }else{
                             $this->_user = $model;
-                            $this->errorCode = self::ERROR_NONE; 
+                            //$this->errorCode = self::ERROR_NONE; 
                         }
-                        //$this->errorCode = self::ERROR_NONE; 
+                        $this->errorCode = self::ERROR_NONE; 
                               
                     }
                     else{

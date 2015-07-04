@@ -8,7 +8,7 @@
 
 $this->menu=array(
 	array('label'=>'<div id="menu"><strong>Sistema</strong></div>' , 'visible'=>'1'),
-	array('label'=>'Crear usuario', 'url'=>array('/cruge/ui/usermanagementcreate')),
+	//array('label'=>'Crear usuario', 'url'=>array('/cruge/ui/usermanagementcreate')),
 	array('label'=>'Administrar usuarios', 'url'=>array('/cruge/ui/usermanagementadmin')),
 	array('label'=>'Sesiones de usuarios', 'url'=>array('/cruge/ui/sessionadmin')),
 	array('label'=>'Perfil', 'url'=>array('/cruge/ui/editprofile')),

@@ -46,7 +46,7 @@ class DefaultSessionFilter implements ICrugeSessionFilter
         // no puede iniciar sesion si su cuenta no esta activada o si esta suspendida
         // los estados estan definidos en CrugeUserManager::getUserStateOptions
         if ($user->state == CRUGEUSERSTATE_NOTACTIVATED) {
-            $this->lastErrorDescr = "Su cuenta debe ser activada por el administrador del sistema. Se le notificará mediante un correo cuando haya sido activada.";
+            $this->lastErrorDescr = "Por favor espere a que su cuenta sea activada por el administrador del sistema.";
             return null;
         }
         if ($user->state == CRUGEUSERSTATE_SUSPENDED) {

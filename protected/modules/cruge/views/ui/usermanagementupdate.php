@@ -8,7 +8,7 @@
 
 $this->menu=array(
 	array('label'=>'<div id="menu"><strong>Sistema</strong></div>' , 'visible'=>'1'),
-	array('label'=>'Crear usuario', 'url'=>array('/cruge/ui/usermanagementcreate')),
+	//array('label'=>'Crear usuario', 'url'=>array('/cruge/ui/usermanagementcreate')),
 	array('label'=>'Administrar usuarios', 'url'=>array('/cruge/ui/usermanagementadmin')),
 	array('label'=>'Sesiones de usuarios', 'url'=>array('/cruge/ui/sessionadmin')),
 	array('label'=>'Perfil', 'url'=>array('/cruge/ui/editprofile')),
@@ -34,7 +34,7 @@ $this->menu=array(
 )); ?>
 <div class="row form-group">
 <h1><?php echo ucwords(CrugeTranslator::t(	
-	$boolIsUserManagement ? "editando usuario" : "editando tu perfil"
+	$boolIsUserManagement ? "Información de usuario" : "editando tu perfil"
 ));?></h1>
 	<div class='field-group'>
 
@@ -46,7 +46,7 @@ $this->menu=array(
 			<?php echo $form->error($model,'username'); ?>
 		</div>
 		<?php }else{?>
-		<div class='col' style="display:none">
+		<div class='col'>
 			<?php echo $form->labelEx($model,'username'); ?>
 			<?php echo $form->textField($model,'username'); ?>
 			<?php echo $form->error($model,'username'); ?>
@@ -57,7 +57,7 @@ $this->menu=array(
 			<?php echo $form->textField($model,'email'); ?>
 			<?php echo $form->error($model,'email'); ?>
 		</div>
-		<div class='col'>
+		<div class='col' style="display:none">
 			
 			
 			<?php echo $form->labelEx($model,'newPassword'); ?>
@@ -119,13 +119,26 @@ $this->menu=array(
 <?php if($boolIsUserManagement)
 	if(count($model->getFields()) > 0){
 		echo "<div class='row form-group'>";
+		//$foto = Yii::app()->user->um->getFieldValue(Yii::app()->user->id,'foto'); 
+		//echo CHtml::image('data:image/jpeg;base64,'.$foto );
 		echo "<h6>".ucfirst(CrugeTranslator::t("perfil"))."</h6>";
 		foreach($model->getFields() as $f){
 			// aqui $f es una instancia que implementa a: ICrugeField
 			echo "<div class='col'>";
-			echo Yii::app()->user->um->getLabelField($f);
-			echo Yii::app()->user->um->getInputField($model,$f);
-			echo $form->error($model,$f->fieldname);
+			
+
+			if($f->fieldname=="Foto"){
+				echo CHtml::image('data:image/jpeg;base64,'.$f->fieldvalue);
+			}else{
+			echo "<br>";
+			if($f->fieldname!="gidnumber"){
+					echo Yii::app()->user->um->getLabelField($f);
+					echo ": ";
+					echo Yii::app()->user->um->getInputField($model,$f);
+					
+					echo $form->error($model,$f->fieldname);
+				}
+			}
 			echo "</div>";
 		}
 		echo "</div>";

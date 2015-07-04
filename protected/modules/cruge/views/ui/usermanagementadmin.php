@@ -8,7 +8,7 @@
 
 $this->menu=array(
 	array('label'=>'<div id="menu"><strong>Sistema</strong></div>' , 'visible'=>'1'),
-	array('label'=>'Crear usuario', 'url'=>array('/cruge/ui/usermanagementcreate')),
+	//array('label'=>'Crear usuario', 'url'=>array('/cruge/ui/usermanagementcreate')),
 	array('label'=>'Administrar usuarios', 'url'=>array('/cruge/ui/usermanagementadmin')),
 	array('label'=>'Sesiones de usuarios', 'url'=>array('/cruge/ui/sessionadmin')),
 	array('label'=>'Perfil', 'url'=>array('/cruge/ui/editprofile')),
@@ -37,8 +37,9 @@ foreach(Yii::app()->user->um->getSortFieldNamesForICrugeStoredUser() as $key=>$f
 	$filter=null; // default, textbox
 	$type='text';
 	if($fieldName == 'state'){
-		$value = '$data->getStateName()';
+		$value = '$data->getStateNameColor()';
 		$filter = Yii::app()->user->um->getUserStateOptions();
+		$type='raw';
 	}
 	if($fieldName == 'logondate'){
 		$type='datetime';

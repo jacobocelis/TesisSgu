@@ -40,46 +40,46 @@ $this->widget('zii.widgets.grid.CGridView', array(
 				'htmlOptions'=>array('style'=>'cursor:pointer'),
 				'columns'=>array(
 				array(
-					'headerHtmlOptions'=>array('style'=>'width:7%'),
+					'headerHtmlOptions'=>array('style'=>''),
 					'header'=>'Orden #',
 					'name'=>'id',
 					'value'=>'str_pad((int) $data->id,6,"0",STR_PAD_LEFT);',
 					//'value'=>'$data->idplan0->idplanGrupo0->CompiledColour->$data-id.\' \'.$data->CompiledColour',
-					'htmlOptions'=>array('style'=>'text-align:center;width:100px'),
+					'htmlOptions'=>array('style'=>'text-align:center;'),
 				),
 				array(
 					'header'=>'Fecha y hora de creada',
 					'name'=>'fecha',
 					'value'=>'date("d/m/Y h:i A",strtotime($data->fecha))',
-					'htmlOptions'=>array('style'=>'text-align:center;width:100px'),
+					'htmlOptions'=>array('style'=>'text-align:center;'),
 				),
 				array( 
 					"type"=>"raw",
 					'header'=>'Estado',
 					'name'=>'idestatus',
 					'value'=>'$data->color($data->idestatus,$data->idestatus0->estatus)',
-					'htmlOptions'=>array('style'=>'text-align:center;width:50px'),
+					'htmlOptions'=>array('style'=>'text-align:center;'),
 				),
 				array(
 					'header'=>'Coordinador operativo',
 					'name'=>'cOperativo',
 					'value'=>'$data->cOperativo0->nombre.\'  \'.$data->cOperativo0->apellido',
-					'htmlOptions'=>array('style'=>'text-align:center;width:80px'),
+					'htmlOptions'=>array('style'=>'text-align:center;'),
 				),
 				array(
 					'header'=>'Coordinador de transporte',
 					'name'=>'cTaller',
 					'value'=>'$data->cTaller0->nombre.\'  \'.$data->cTaller0->apellido',
-					'htmlOptions'=>array('style'=>'text-align:center;width:80px'),
+					'htmlOptions'=>array('style'=>'text-align:center;'),
 				),
 				array(
 					'header'=>'Taller asignado',
 					'name'=>'taller',
 					'value'=>'$data->taller0->nombre',
-					'htmlOptions'=>array('style'=>'text-align:center;width:80px'),
+					'htmlOptions'=>array('style'=>'text-align:center;'),
 				),
 				array(
-						'headerHtmlOptions'=>array('style'=>'text-align:center;width:50px;'),
+						'headerHtmlOptions'=>array('style'=>'text-align:center;'),
 						'htmlOptions'=>array('style'=>'text-align:center;'),
 						'header'=>'Ver orden',
 						'type'=>'raw',
@@ -93,8 +93,8 @@ $this->widget('zii.widgets.grid.CGridView', array(
                         )
                 );',),
 				array(
-						'headerHtmlOptions'=>array('style'=>'text-align:left;width:20px;text-align:center;'),
-						'htmlOptions'=>array('style'=>'text-align:center;width:30px;'),
+						'headerHtmlOptions'=>array('style'=>'text-align:left;text-align:center;'),
+						'htmlOptions'=>array('style'=>'text-align:center;'),
 						'header'=>'Actualizar',
 						'type'=>'raw',
 						'value'=>'CHtml::link(
@@ -110,7 +110,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
 					'header'=>'Cerrar órden',
 					'value'=>'CHTML::checkBox("campo",0,array(\'id\'=>"campo$data->id",\'width\'=>4,\'maxlength\'=>2,\'onchange\'=>"return validar($data->id)"))',
 					'type'=>'raw',
-					'htmlOptions'=>array('style'=>'width: 50px;text-align: center'),
+					'htmlOptions'=>array('style'=>'text-align: center'),
 				),
 			)
         ));

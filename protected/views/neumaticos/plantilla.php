@@ -19,7 +19,7 @@ $this->menu=array(
 	array('label'=>'      Averías por atender <span title="hay '.$totalFalla.' averías en neumaticos por atender" class="badge badge-'.$this->Color($totalFalla).' pull-right">'.$totalFalla.'</span>', 'url'=>array('neumaticos/listaAveriaNeumatico')),
 	array('label'=>'<div id="menu"><strong>Órdenes de neumaticos</strong></div>'),
 	
-	array('label'=>'      Crear órden de neumaticos', 'url'=>array('crearOrdenNeumaticos')),
+	array('label'=>'      Crear orden de neumaticos', 'url'=>array('crearOrdenNeumaticos')),
 	array('label'=>'      Ver órdenes abiertas <span class="badge badge-'.$this->Color($abiertas).' pull-right">'.$abiertas.'</span>', 'url'=>array('verOrdenes')),
 	array('label'=>'      Órdenes listas para cerrar <span class="badge badge-'.$this->Color($listas).' pull-right">'.$listas.'</span>', 'url'=>array('cerrarOrdenes')),
 	

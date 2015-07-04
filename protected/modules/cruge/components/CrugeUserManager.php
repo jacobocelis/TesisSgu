@@ -59,6 +59,18 @@ class CrugeUserManager
         }
         return $state;
     }
+        public function getStateNameColor($state)
+    {
+        switch ($state) {
+            case CRUGEUSERSTATE_NOTACTIVATED:
+                return "<div style='color:red'><strong>".CrugeTranslator::t("Cuenta sin Activar")."</strong></div>";
+            case CRUGEUSERSTATE_ACTIVATED:
+                return "<div style='color:green'><strong>".CrugeTranslator::t("Cuenta Activada")."</strong></div>";
+            case CRUGEUSERSTATE_SUSPENDED:
+                return CrugeTranslator::t("Cuenta Suspendida");
+        }
+        return $state;
+    }
 
     public function getFieldTypeOptions()
     {

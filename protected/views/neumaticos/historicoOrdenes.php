@@ -20,7 +20,7 @@ $this->menu=array(
 	
 	array('label'=>'<div id="menu"><strong>Órdenes de neumaticos</strong></div>'),
 	
-	array('label'=>'      Crear órden de neumaticos', 'url'=>array('crearOrdenNeumaticos')),
+	array('label'=>'      Crear orden de neumaticos', 'url'=>array('crearOrdenNeumaticos')),
 	array('label'=>'      Ver órdenes abiertas <span class="badge badge-'.$this->Color($abiertas).' pull-right">'.$abiertas.'</span>', 'url'=>array('verOrdenes')),
 	array('label'=>'      Órdenes listas para cerrar <span class="badge badge-'.$this->Color($listas).' pull-right">'.$listas.'</span>', 'url'=>array('cerrarOrdenes')),
 	
@@ -61,7 +61,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
 			    'enableSorting' => true,
 				'template'=>"{items}\n{summary}\n{pager}",
 				'selectableRows'=>1,
-				'emptyText'=>'No hay ordenes listas para cerrar',
+				'emptyText'=>'No hay ordenes registradas',
                 'dataProvider'=>$dataProvider,
 				'htmlOptions'=>array('style'=>'cursor:pointer'),
 				'columns'=>array(

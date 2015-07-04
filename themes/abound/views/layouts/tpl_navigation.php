@@ -40,7 +40,11 @@ if (isset($_GET['nrol']))
     $currentRole = Yii::app()->getSession()->get('rolActual');
 ?>
 <?php
-
+$cuentasActivar = Yii::app()->db->createCommand('SELECT count(*) as total  from cruge_user where state = 0')->queryRow();
+//if($cuentasActivar["total"]>0){
+    $spanActivar='<span class="badge badge-important pull-left">'.$cuentasActivar["total"].'</span>';
+    $diActivar='/cruge/ui/usermanagementadmin';
+//}
 $alertasPre = Yii::app()->db->createCommand('SELECT count(*) as total  from sgu_actividades a where (a.proximoKm-(select lectura from sgu_kilometraje where idvehiculo=a.idvehiculo order by id desc limit 1)<=0 or a.proximoFecha<=date(now())) and a.idestatus=2')->queryRow();
 
 if($alertasPre["total"]>0){
@@ -122,7 +126,7 @@ else{
                                 //array('label' => 'Administrar Usuarios', 'url' => array('/cruge/ui/usermanagementadmin')),
                                 //array('label' => 'Listar Campos Perfil', 'url' => array('/cruge/ui/fieldsadminlist')),
                                 //array('label' => 'Crear Campo de Perfil', 'url' => array('/cruge/ui/fieldsadmincreate')),
-                                array('label' => 'Opciones', 'url' => array('/cruge/ui/usermanagementcreate')),
+                                array('label' => 'Opciones', 'url' => array('/cruge/ui/usermanagementadmin')),
                                 array('label' => 'Crear Roles', 'url' => array('/cruge/ui/rbaclistroles')),
                                 //array('label' => 'Crear Tareas', 'url' => array('/cruge/ui/rbaclisttasks')),
                                 array('label' => 'Crear Operaciones', 'url' => array('/cruge/ui/rbaclistops')),
@@ -166,7 +170,7 @@ else{
             <!-- Cambio de Colores en la barra principal -->
             <div class="style-switcher pull-left">  
                 <?php if (!Yii::app()->user->isGuest) { ?>
-                    <span>Bienvenido <strong><?php echo Yii::app()->user->name ?></strong>. Último Inicio de Sesión: <?php echo $fecha; ?></span>
+                    <span>Bienvenido <strong><?php echo Yii::app()->user->name ?></strong>. Último Inicio de Sesión: <?php echo $fecha; ?></span> <?php if($cuentasActivar["total"]>0 and Yii::app()->user->isSuperAdmin){?><span style="float:right;margin-right:10px;"><?php echo $spanActivar;?> <a href="<?=$baseUrl?>/cruge/ui/usermanagementadmin" ><strong>Cuenta(s) por activar</strong></a></span><?php } ?>
                     <?php
                 } else {
                     ?>
@@ -190,4 +194,8 @@ else{
         </div><!-- container -->
     </div><!-- navbar-inner -->
 </div><!-- subnav -->
-
+<style>
+.pull-left {
+    float: none;
+}
+</style>

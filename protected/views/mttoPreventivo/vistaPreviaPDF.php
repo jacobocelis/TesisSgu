@@ -4,8 +4,10 @@
 	<div style="margin: 0px auto 0px;width:50px;">
 		<IMG SRC="imagenes/logounet.png" style="width:50px;height:50px" ALT="">
 	</div>
-	<h1>Dirección de servicios generales U.N.E.T.</h1>
-	<p>Gerencia de negocios Dpto. de transporte</p>
+	<p>Universidad Nacional Experimental del Táchira</p>
+	<p>Dirección de servicios generales</p>
+	<p>Gerencia de negocios</p>
+	<p>Departamento de transporte</p>
 	<h1>Solicitud de orden de mantenimiento preventivo</h1>
 <?php
 $this->widget('zii.widgets.grid.CGridView', array(

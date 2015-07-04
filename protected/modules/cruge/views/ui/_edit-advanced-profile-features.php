@@ -27,7 +27,7 @@
 	$granticonOff = "<img {$tit3} class='iconhelp grant-icon' src='{$handoffimgurl}'>";
 ?>
 <div class='row form-group'>
-	<h6><?php echo ucfirst(CrugeTranslator::t("opciones avanzadas"));?></h6>
+	<h1>Activación de cuenta</h1>
 	<div class='field-group'>
 		<div class='col'>
 			<?php echo $form->labelEx($model,'state'); ?>
@@ -53,12 +53,12 @@
 			 <p class='hint' id='resendStatus'><?php// echo ucfirst(	
 				// CrugeTranslator::t("esta accion creara una nueva clave."));?></p>
 		 </div>
-		<?php }else{ ?>
+		<?php }/*else{ 
 			<input type='button' 
 				value='<?php echo ucfirst(CrugeTranslator::t("reenviar correo de activacion"))?>'
 				disabled='disabled'
 			>
-		<?php } ?>
+		 }*/ ?>
 	</div>
 		
 	<?php 
@@ -68,7 +68,7 @@
 	?>	
 	<div class='field-group'>
 	
-		<h5><?php echo ucfirst(CrugeTranslator::t("asignacion de roles"));?></h5>
+		<h1><?php echo ucfirst(CrugeTranslator::t("Asignación de rol"));?></h1>
 		<p class='hind'>
 			<?php echo ucfirst(CrugeTranslator::t("haga click en un rol para asignarlo o removerlo."));?>
 		</p>

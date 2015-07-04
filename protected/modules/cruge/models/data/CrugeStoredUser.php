@@ -87,7 +87,10 @@ class CrugeStoredUser extends CActiveRecord implements ICrugeStoredUser
     {
         return Yii::app()->user->um->getStateName($this->state);
     }
-
+    public function getStateNameColor()
+    {
+        return Yii::app()->user->um->getStateNameColor($this->state);
+    }
     /*
         recibe un array de instancias de ICrugeField previamente cargada de valores
     */

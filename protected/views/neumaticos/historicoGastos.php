@@ -20,7 +20,7 @@ $this->menu=array(
 	
 	array('label'=>'<div id="menu"><strong>Órdenes de neumaticos</strong></div>'),
 	
-	array('label'=>'      Crear órden de neumaticos', 'url'=>array('crearOrdenNeumaticos')),
+	array('label'=>'      Crear orden de neumaticos', 'url'=>array('crearOrdenNeumaticos')),
 	array('label'=>'      Ver órdenes abiertas <span class="badge badge-'.$this->Color($abiertas).' pull-right">'.$abiertas.'</span>', 'url'=>array('verOrdenes')),
 	array('label'=>'      Órdenes listas para cerrar <span class="badge badge-'.$this->Color($listas).' pull-right">'.$listas.'</span>', 'url'=>array('cerrarOrdenes')),
 	
@@ -60,7 +60,7 @@ $this->menu=array(
 			'dataProvider'=>$recursos,
 			'enablePagination' => false,
 			'template'=>"{items}{summary}{pager}",
-			'emptyText' => 'no hay recursos agregados',
+			'emptyText' => 'no hay gastos registrados',
 			'summaryText' => '',
 			'columns'=>array(
  
