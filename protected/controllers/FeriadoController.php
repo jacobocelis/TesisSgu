@@ -95,6 +95,18 @@ class FeriadoController extends Controller
 			$model->fechaFin=date("Y-m-d", strtotime(str_replace('/', '-', $_POST['Feriado']['fechaFin'])));
 		
             if($model->save()){
+            	$actividades = Actividades::model()->findAll("idestatus=2");
+            	foreach ($actividades as $value) {
+            		if($value->proximoFecha>=$model->fechaInicio and $value->proximoFecha<=$model->fechaFin){
+            			$actualizar=Actividades::model()->findByPk($value->id);
+            			$actController= new ActividadesController("actividades");
+            			while($actController->esFeriado($value->proximoFecha)){
+                    		$value->proximoFecha=date("Y-m-d",strtotime($value->proximoFecha . "+1 day"));
+                    	}
+                    	$actualizar->proximoFecha=$value->proximoFecha;
+                    	$actualizar->update();
+            		}
+            	}
                 if (Yii::app()->request->isAjaxRequest){
 				  
                     echo CJSON::encode(array(

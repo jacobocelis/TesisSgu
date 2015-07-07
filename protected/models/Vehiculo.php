@@ -90,10 +90,10 @@ class Vehiculo extends CActiveRecord
 		$total=0;
 		
 		foreach($data as $dat){
-			$id=Detalleeventoca::model()->find('idhistoricoCaucho='.$dat['id'].' or idNuevoCaucho='.$dat['id'].'');
+			$id=Detalleeventoca::model()->find('idhistoricoCaucho="'.$dat['id'].'" or idNuevoCaucho="'.$dat['id'].'"');
 			if($id['id']<>''){
-				$orden=Detordneumatico::model()->find('iddetalleEventoCa='.$id['id'].'');
-				$factura=Factura::model()->find('idordenMtto='.$orden->idordenMtto.'');
+				$orden=Detordneumatico::model()->find('iddetalleEventoCa="'.$id['id'].'"');
+				$factura=Factura::model()->find('idordenMtto="'.$orden->idordenMtto.'"');
 				if($factura==null){
 					$iva=0;
 				}else{

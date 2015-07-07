@@ -28,7 +28,8 @@ $this->menu=array(
 ?>
 <div class="crugepanel">
 <h1>Costo de mantenimiento por valor de reposición</h1>
-<i>*indica si conviene seguir realizando mantenimientos a una unidad o si es preferible reemplazarla por una nueva</i><br><br>
+<i>*indica si conviene seguir realizando mantenimientos a una unidad o si es preferible reemplazarla por una nueva.</i><br>
+<i>*El valor de reposición se refiere al costo de un vehiculo nuevo.</i><br><br>
 <i style="float:left">Buscar vehiculo por #:</i><br>
     <?php $model=new Vehiculo;
     echo CHtml::dropDownList('vehiculos','id',CHtml::listData(Vehiculo::model()->findAll('activo=1'),'id','numeroUnidad'),array('prompt'=>'Seleccione ','style' => 'width:110px;float:left')); 
@@ -94,7 +95,7 @@ echo "<b>Valor de reposición:</b>";?><br>
        'width'=>100,
        'style'=>'width:120px', 
        'maxlength'=>100)); ?> Bs.<br>
-<?php echo CHtml::button('Calcular',array("id"=>"boton","onclick"=>"calcular($('#vehiculos').val());","style"=>"margin-top:2px;"));?>
+       <?php echo CHtml::button('Calcular',array("id"=>"boton","onclick"=>"calcular($('#vehiculos').val());","style"=>"margin-top:2px;"));?>
 </div>
 <div id="resultado" style="display:none;float:left;width:80%;margin-top: 30px;">
 <span id="etiqueta" class="label label-success fuente"></span><br><br>

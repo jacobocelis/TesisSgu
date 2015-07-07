@@ -54,7 +54,7 @@ $this->Widget('ext.highcharts.HighchartsWidget', array(
                 'thousandsSep'=> ",",  
                 'decimalPoint'=> '.'  
             ),
-        'title' => array('text' => 'Disponibilidad por unidad mensual'),
+        'title' => array('text' => 'Porcentaje mensual de disponibilidad por unidad'),
         'credits'=> array(
             'enabled'=> false
         ),

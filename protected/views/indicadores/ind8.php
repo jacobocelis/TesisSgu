@@ -23,7 +23,8 @@ $this->menu=array(
 ?>
 <div class="crugepanel">
   <h1>Gasto totalizado</h1>
-  <i>*Muestra el total de gastos realizados a los vehiculos de la flota clasificandolos por tipo</i>
+  <i>*Muestra el total de gastos realizados a los vehiculos de la flota clasificandolos por tipo. Por defecto la consulta se hace en el año en curso</i><br>
+  
   <div id="filtro" style="width:20%;margin-top:10px">
 <i>Por # de unidad: </i>
 
@@ -171,8 +172,13 @@ $(function($){
     
 function FiltrarFecha(){
   var hoy="<?php echo date("d/m/Y")?>";
+  var year="<?php echo date("Y")?>";
   if($("#fin").val().length==0 && $("#inicio").val().length>0)
     $("#fin").val(hoy);
+  if($("#fin").val().length==0 && $("#inicio").val().length==0){
+    $("#fin").val(hoy);
+    $("#inicio").val("01/01/"+year);
+  }
   $.fn.yiiGridView.update('det',{ data : "fechaIni="+$("#inicio").val()+"&fechaFin="+$("#fin").val()+"&vehiculo="+$("#vehiculo").val()});
 }
 </script>

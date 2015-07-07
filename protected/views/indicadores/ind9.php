@@ -71,17 +71,24 @@ $this->Widget('ext.highcharts.HighchartsWidget', array(
                 'text'=> 'Días',
             )
         )),
-
+    /*'tooltip'=> array(
+        'pointFormat'=> "Valoe: <b>{point.y:.1f} días</b>",
+    ),*/
     'xAxis'=> array(
-          array(
-              'title'=>array(
-                'text'=>'Año',
+        array(
+          
+            'title'=>array(
+                'text'=>'Grupo de vehiculos',
               ),
-    
+            'categories'=> $grupos,
+            'tickmarkPlacement'=> 'on',
+             //'min'=> $filas, 
+        ), array(
+            'linkedTo'=> 0,
             'categories'=> $mes,
             //tickPositions: [3, 5, 8],
+            'opposite'=> true,
             'labels'=> array(
-
                     //y:20,
                 'style'=> array(
                     //fontWeight: 'bold'
