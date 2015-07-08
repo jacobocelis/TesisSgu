@@ -212,22 +212,32 @@ class VehiculoController extends Controller
 	{
 		$model=new Historicoedos;
 		$vehiculo=Vehiculo::model()->findByPk($id);
+		$msg="";
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
 
 		if(isset($_POST['Historicoedos']))
 		{
+			$estado=Yii::app()->db->createCommand("select he.idestado, e.estado from sgu_historicoEdos he, sgu_estado e where e.id=he.idestado and he.idvehiculo='".$vehiculo->id."' order by he.id desc limit 1")->queryRow();
 			$model->attributes=$_POST['Historicoedos'];
-			if($model->save()){
-				$vehiculo->activo=0;
-				$vehiculo->update();
-				$this->redirect(array('historico'));
+			
+			if($model->validate()){
+				if($estado["idestado"]==1){
+					if($model->save()){
+						$vehiculo->activo=0;
+						$vehiculo->update();
+						$this->redirect(array('historico'));
+					}
+				}
+				else
+					$msg='Verifique primero que el vehiculo no se encuentre en mantenimiento o averiado';
 			}
 		}
 
 		$this->render('desincorporar',array(
 			'model'=>$model,
 			'vehiculo'=>$vehiculo,
+			'msg'=>$msg
 		));
 	}
 	public function actionDetalleHistorico($id)

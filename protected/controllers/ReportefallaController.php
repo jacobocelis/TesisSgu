@@ -147,7 +147,10 @@ public function actionActualizar($id){
 	 */
 	public function actionDelete($id)
 	{
-		$this->loadModel($id)->delete();
+		$modelo=$this->loadModel($id);
+		$vehiculo = Vehiculo::model()->findByPk($modelo->idvehiculo);
+		$vehiculo->setEstado(1,'Averia cancelada por usuario');
+		$modelo->delete();
 
 		// if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
 		if(!isset($_GET['ajax']))

@@ -114,6 +114,11 @@ class OrdenmttoController extends Controller
 		
 		$actP=Detalleorden::model()->findAll('idordenMtto='.$modelo->id.'');
 		for($i=0;$i<count($actP);$i++){
+				/*si elimino la orden devuelvo los estados de vehicuos a activos*/
+				$act = Actividades::model()->findByPk($actP[$i]['idactividades']);
+				$vehiculo = Vehiculo::model()->findByPk($act->idvehiculo);
+				$vehiculo->setEstado(1,'Orden preventiva cancelada');
+				/**/
 				Yii::app()->db->createCommand("update `tsg`.`sgu_actividades` set `idestatus` = '2' where `sgu_actividades`.`id` = ".$actP[$i]['idactividades']."")->query();
 				Yii::app()->db->createCommand("delete from `tsg`.`sgu_detalleOrden` where `sgu_detalleOrden`.`idactividades` = ".$actP[$i]['idactividades']."")->query();
 		}
@@ -122,6 +127,11 @@ class OrdenmttoController extends Controller
 
 		$actC=Detalleordenco::model()->findAll('idordenMtto='.$modelo->id.'');
 		for($i=0;$i<count($actC);$i++){
+			/*si elimino la orden devuelvo los estados de vehicuos a activos*/
+				$falla = Reportefalla::model()->findByPk($actP[$i]['idreporteFalla']);
+				$vehiculo = Vehiculo::model()->findByPk($falla->idvehiculo);
+				$vehiculo->setEstado(1,'Orden correctiva cancelada');
+				/**/
 				Yii::app()->db->createCommand("update `tsg`.`sgu_reporteFalla` set `idestatus` = '8' where `sgu_reporteFalla`.`id` = ".$actC[$i]['idreporteFalla']."")->query();
 				Yii::app()->db->createCommand("delete from `tsg`.`sgu_detalleOrdenCo` where `sgu_detalleOrdenCo`.`idreporteFalla` = ".$actC[$i]['idreporteFalla']."")->query();
 		}
@@ -130,6 +140,13 @@ class OrdenmttoController extends Controller
 		$actN=Detordneumatico::model()->findAll('idordenMtto='.$modelo->id.'');
 		for($i=0;$i<count($actN);$i++){
 			$evento=Detalleeventoca::model()->findByPk($actN[$i]['iddetalleEventoCa']);
+			
+			/*si elimino la orden devuelvo los estados de vehicuos a activos*/
+				$histo=Historicocaucho::model()->findByPk($evento->idhistoricoCaucho);
+				$vehiculo = Vehiculo::model()->findByPk($histo->idvehiculo);
+				$vehiculo->setEstado(1,'Orden neumaticos cancelada');
+				/**/
+				
 			if($evento["idfallaCaucho"]<>null){
 				$evento->idestatus=8;
 				$evento->update();

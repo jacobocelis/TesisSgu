@@ -1460,6 +1460,11 @@ class NeumaticosController extends Controller
 				if($_POST['idfalla']!=""){
 				$fal = explode(",", $_POST['idfalla']);
 				foreach($fal as $idfal){
+					$act = Detalleeventoca::model()->findByPk($idfal);
+					$his = Historicocaucho::model()->findByPk($act->idhistoricoCaucho);
+					$vehiculo = Vehiculo::model()->findByPk($his->idvehiculo);
+					$vehiculo->setEstado(3,'Mantenimiento de neumaticos');
+
 					Yii::app()->db->createCommand("INSERT INTO `tsg`.`sgu_detOrdNeumatico` (`iddetalleEventoCa`,`idordenMtto`) VALUES (".$idfal.",".$model->id.")")->query();
 					Yii::app()->db->createCommand("update `tsg`.`sgu_detalleEventoCa` set `idestatus` = '4' where `sgu_detalleEventoCa`.`id` = ".$idfal."")->query();
 					}
@@ -1469,6 +1474,12 @@ class NeumaticosController extends Controller
 				if($_POST['idren']!=""){
 				$ren = explode(",", $_POST['idren']);
 				foreach($ren as $idren){
+					/*cambio estado del vehiculo*/
+					$act = Detalleeventoca::model()->findByPk($idren);
+					$his = Historicocaucho::model()->findByPk($act->idhistoricoCaucho);
+					$vehiculo = Vehiculo::model()->findByPk($his->idvehiculo);
+					$vehiculo->setEstado(3,'Mantenimiento de neumaticos');
+
 					Yii::app()->db->createCommand("INSERT INTO `tsg`.`sgu_detOrdNeumatico` (`iddetalleEventoCa`,`idordenMtto`) VALUES (".$idren.",".$model->id.")")->query();
 					Yii::app()->db->createCommand("update `tsg`.`sgu_detalleEventoCa` set `idestatus` = '4' where `sgu_detalleEventoCa`.`id` = ".$idren."")->query();
 					}	

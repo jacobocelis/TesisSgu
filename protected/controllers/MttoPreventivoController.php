@@ -539,6 +539,11 @@ class MttoPreventivoController extends Controller
 				foreach($act as $idact){
 					Yii::app()->db->createCommand("INSERT INTO `tsg`.`sgu_detalleOrden` (`idactividades`,`idordenMtto`) VALUES (".$idact.",".$model->id.")")->query();
 					Yii::app()->db->createCommand("update `tsg`.`sgu_actividades` set `idestatus` = '4',`fechaComenzada` = '".date("Y-m-d")."' where `sgu_actividades`.`id` = ".$idact."")->query();
+					/*se cambia el estatus de cada vehiculo a 'en mantenimiento'*/
+					$act = Actividades::model()->findByPk($idact);
+					$vehiculo = Vehiculo::model()->findByPk($act->idvehiculo);
+					$vehiculo->setEstado(3,'Mantenimiento preventivo');
+
 				}
 			}
                 if (Yii::app()->request->isAjaxRequest){
@@ -574,7 +579,11 @@ class MttoPreventivoController extends Controller
 			//'condition' =>'idestatus=2 and atraso >=-5',
 			'condition' =>'idestatus=2',
 			'order'=>'proximoFecha'
-			)));
+			),
+			/*'pagination'=>array(
+        		'pageSize'=>3,
+    		),*/
+		));
 		$dataProvider->setPagination(false);
 		$this->render('crearOrdenPreventiva',array(
 			'dataProvider'=>$dataProvider,

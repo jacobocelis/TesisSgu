@@ -518,6 +518,11 @@ public function actionCorreo($id){
 				if($_POST['idfalla']!=""){
 					$fal = explode(",", $_POST['idfalla']);
 					foreach($fal as $idfal){
+						/*cambio el estado a en mtto*/
+						$act = Reportefalla::model()->findByPk($idfal);
+						$vehiculo = Vehiculo::model()->findByPk($act->idvehiculo);
+						$vehiculo->setEstado(3,'Mantenimiento correctivo');
+						/**/
 						Yii::app()->db->createCommand("INSERT INTO `tsg`.`sgu_detalleOrdenCo` (`idreporteFalla`,`idordenMtto`) VALUES (".$idfal.",".$model->id.")")->query();
 						Yii::app()->db->createCommand("update `tsg`.`sgu_reporteFalla` set `idestatus` = '4' where `sgu_reporteFalla`.`id` = ".$idfal."")->query();
 					}
@@ -527,6 +532,11 @@ public function actionCorreo($id){
 				if($_POST['idmejora']!=""){
 					$fal = explode(",", $_POST['idmejora']);
 					foreach($fal as $idmej){
+						/*cambio estado*/
+						$act = Reportefalla::model()->findByPk($idmej);
+						$vehiculo = Vehiculo::model()->findByPk($act->idvehiculo);
+						$vehiculo->setEstado(3,'Mantenimiento correctivo');
+						/**/
 						Yii::app()->db->createCommand("INSERT INTO `tsg`.`sgu_detalleOrdenCo` (`idreporteFalla`,`idordenMtto`) VALUES (".$idmej.",".$model->id.")")->query();
 						Yii::app()->db->createCommand("update `tsg`.`sgu_reporteFalla` set `idestatus` = '4' where `sgu_reporteFalla`.`id` = ".$idmej."")->query();
 					}
@@ -848,11 +858,14 @@ public function actionRegistroIncidente2(){
     if(isset($_POST['Reportefalla'])){
 			
             $model->attributes=$_POST['Reportefalla'];
-			$model->fechaFalla=date("Y-m-d", strtotime(str_replace('/', '-',$model->fechaFalla )));
+			$model->fechaFalla=date("Y-m-d", strtotime(str_replace('/', '-',$model->fechaFalla)));
             if($model->save()){
+            	/*si registro una falla cambio el estado del vehiculo*/			
+					$vehiculo = Vehiculo::model()->findByPk($model->idvehiculo);
+					$vehiculo->setEstado(2,'Vehiculo averiado');
+					/**/
                 if (Yii::app()->request->isAjaxRequest){
-				   /*inserts por debajo del plan de mantenimiento a cada vehiculo del grupo*/
-				   
+			
 					echo CJSON::encode(array(
                         'status'=>'success', 
                         'mensaje'=>'<div class="alert alert-success">

@@ -21,7 +21,11 @@ $this->menu=array(
 ?>
 <div class='crugepanel user-assignments-role-list'>
 <h1>Desincorporar el vehiculo</h1>
-<?php $this->renderPartial('_formDesinco', array('model'=>$model,'vehiculo'=>$vehiculo->id)); ?>
+<?php $this->renderPartial('_formDesinco', array('model'=>$model,'vehiculo'=>$vehiculo->id)); 
+if(isset($msg))
+	echo '<div style="color:red">'.$msg.' </div> ';
+?>
+
 </div>
 <script>
 function eliminar(id){

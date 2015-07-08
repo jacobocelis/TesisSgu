@@ -144,7 +144,7 @@ class RepuestoController extends Controller
 			/*aqui se hacen los inserts por debajo*/
 			if ($mode == 'assign') {
 				/*insertando data en tabla caracteristicaVeh a cada vehiculo del grupo*/
-				$totalVeh=Yii::app()->db->createCommand('select id from sgu_vehiculo where idgrupo="'.$idGrupo["id"].'"')->queryAll();
+				$totalVeh=Yii::app()->db->createCommand('select id from sgu_vehiculo where idgrupo="'.$idGrupo["id"].'" and activo=1')->queryAll();
 				$total=count($totalVeh);
 				
 				for($i=0;$i<$total;$i++){
@@ -163,7 +163,7 @@ class RepuestoController extends Controller
 			}
 			if ($mode == 'revoke'){
 				/*eliminando cada vehiculo del grupo*/
-				$totalVeh=Yii::app()->db->createCommand('select id from sgu_vehiculo where idgrupo="'.$idGrupo["id"].'"')->queryAll();
+				$totalVeh=Yii::app()->db->createCommand('select id from sgu_vehiculo where idgrupo="'.$idGrupo["id"].'" and activo=1')->queryAll();
 				$total=count($totalVeh);
 				for($i=0;$i<$total;$i++){
 						foreach ($ids as $uid){

@@ -45,16 +45,23 @@ class Vehiculo extends CActiveRecord
 		return 'sgu_vehiculo';
 	}
 	public function setEstado($estado,$motivo){
-		$model = new Historicoedos;
-		$model->idestado=$estado;
-		$model->idvehiculo=$this->id;
-		$model->motivo=$motivo;
-		$model->fecha=date("Y-m-d");
-		return $model->save();
+		$estadoActual=Yii::app()->db->createCommand("select he.idestado, e.estado from sgu_historicoEdos he, sgu_estado e where e.id=he.idestado and he.idvehiculo='".$this->id."' order by he.id desc limit 1")->queryRow();
+		if($estadoActual["idestado"]<>$estado){
+			$model = new Historicoedos;
+			$model->idestado=$estado;
+			$model->idvehiculo=$this->id;
+			$model->motivo=$motivo;
+			$model->fecha=date("Y-m-d");
+			return $model->save();
+		}
+	}
+	public function estadoActual($id){
+		$estado=Yii::app()->db->createCommand("select he.idestado, e.estado from sgu_historicoEdos he, sgu_estado e where e.id=he.idestado and he.idvehiculo='".$id."' order by he.id desc limit 1")->queryRow();
+		return $estado["idestado"];
 	}
 	public function getEstado($id){
 		
-		$estado=Yii::app()->db->createCommand("select he.idestado, e.estado from sgu_historicoEdos he, sgu_estado e where e.id=he.idestado and he.idvehiculo=".$id." order by he.id desc limit 1")->queryRow();
+		$estado=Yii::app()->db->createCommand("select he.idestado, e.estado from sgu_historicoEdos he, sgu_estado e where e.id=he.idestado and he.idvehiculo='".$id."' order by he.id desc limit 1")->queryRow();
 		if($estado["idestado"]=='1')
 			return '<div style="color:green"><b>'.$estado["estado"].'</b></div>';
 		if($estado["idestado"]=='2')
