@@ -422,7 +422,7 @@ class MttoPreventivoController extends Controller
 	public function actionVerOrdenes(){
 		$dataProvider=new CActiveDataProvider('Ordenmtto',array('criteria' => array(
 			'condition' =>'id in (select id from sgu_ordenMtto where (idestatus=5 or idestatus=6) and tipo=0)',
-			'order'=>'idestatus '
+			'order'=>'idestatus,fecha desc'
 			)));
 		$this->render('verOrdenes',array(
 			'dataProvider'=>$dataProvider,
@@ -580,11 +580,11 @@ class MttoPreventivoController extends Controller
 			'condition' =>'idestatus=2',
 			'order'=>'proximoFecha'
 			),
-			/*'pagination'=>array(
-        		'pageSize'=>3,
-    		),*/
+			'pagination'=>array(
+        		'pageSize'=>10,
+    		),
 		));
-		$dataProvider->setPagination(false);
+		//$dataProvider->setPagination(false);
 		$this->render('crearOrdenPreventiva',array(
 			'dataProvider'=>$dataProvider,
 			'mi'=>$this->getIniciales(),

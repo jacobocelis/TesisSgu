@@ -1,87 +1,11 @@
 <style>
-.hidden {
-    display: none;
-}
-.grid-view table.items tr.selected {
-    background: none repeat scroll 0% 0% rgba(0, 249, 3, 0.3);
-}
-.grid-view table.items th {
-    text-align: center;
-    background: none repeat scroll 0% 0% rgba(0, 138, 255, 0.15);
-	color: #000;
-}
-.grid-view table.items th a {
-    color: #000!important;
-    font-weight: bold;
-    text-decoration: none;
-}
-.grid-view table.items td {
-    font-size: 0.9em;
-    border: 1px solid #5877C3;
-    padding: 0.3em;
-}
-.grid-view table.items th, .grid-view table.items td {
-    font-size: 0.9em;
-    border: 1px solid #A8C5F0;
-    padding: 0.3em;
-}
-#menu{
-	font-size:15px;
-}
-
 .grid-view {
     padding: 15px 0px 0px;
 }
 form {
     margin: 0px 0px 0px;
 }
-
-#scrollingDiv{
-	
-	position: fixed;
-    bottom: 70px;
-    left: 40px;
-}
-.btn {
-	-moz-box-shadow:inset 0px 1px 0px 0px #54a3f7;
-	-webkit-box-shadow:inset 0px 1px 0px 0px #54a3f7;
-	box-shadow:inset 0px 1px 0px 0px #54a3f7;
-	background:-webkit-gradient(linear, left top, left bottom, color-stop(0.05, #007dc1), color-stop(1, #0061a7));
-	background:-moz-linear-gradient(top, #007dc1 5%, #0061a7 100%);
-	background:-webkit-linear-gradient(top, #007dc1 5%, #0061a7 100%);
-	background:-o-linear-gradient(top, #007dc1 5%, #0061a7 100%);
-	background:-ms-linear-gradient(top, #007dc1 5%, #0061a7 100%);
-	background:linear-gradient(to bottom, #007dc1 5%, #0061a7 100%);
-	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#007dc1', endColorstr='#0061a7',GradientType=0);
-	background-color:#007dc1;
-	-moz-border-radius:3px;
-	-webkit-border-radius:3px;
-	border-radius:3px;
-	border:1px solid #124d77;
-	display:inline-block;
-	cursor:pointer;
-	color:#ffffff;
-	font-family:Verdana;
-	font-size:13px;
-	font-weight:bold;
-	padding:6px 4px;
-	text-decoration:none;
-	text-shadow:0px 1px 0px #154682;
-}
-.btn:hover {
-	background:-webkit-gradient(linear, left top, left bottom, color-stop(0.05, #0061a7), color-stop(1, #007dc1));
-	background:-moz-linear-gradient(top, #0061a7 5%, #007dc1 100%);
-	background:-webkit-linear-gradient(top, #0061a7 5%, #007dc1 100%);
-	background:-o-linear-gradient(top, #0061a7 5%, #007dc1 100%);
-	background:-ms-linear-gradient(top, #0061a7 5%, #007dc1 100%);
-	background:linear-gradient(to bottom, #0061a7 5%, #007dc1 100%);
-	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#0061a7', endColorstr='#007dc1',GradientType=0);
-	background-color:#0061a7;
-	color: #fff;
-}
-
 </style>
-<div id="scrollingDiv" class="btn" style="display:none">Crear órden de neumáticos</div>
 <?php 
 	$this->breadcrumbs=array(
 	'Neumáticos'=>array('neumaticos/index'),
@@ -123,11 +47,117 @@ $this->menu=array(
 <i>Puede crear una orden de neumáticos para reparar una <strong>avería</strong> previamente registrada ó para solicitar una <strong>renovación</strong> de los neumáticos actuales en una unidad.</i>
 </div>
 <div class='crugepanel user-assignments-role-list'>
+	<h2>Neumáticos a renovar</h2>
+	<?php //<p><b>Nota: </b><i>Sólo se mostrarán las actividades con menos de 5 dias restantes o que posean atraso</p></i>?>
+<?php
+//if(count($renovaciones->getData())>0)
+$this->widget('ext.selgridview.SelGridView', array(
+                'id'=>'renovaciones',
+				'selectionChanged'=>'validar',
+				'summaryText'=>'',
+			    'enableSorting' => true,
+				'template'=>"{items}\n{summary}\n{pager}",
+				'selectableRows'=>2,
+				'emptyText'=>'No hay neumáticos agregados para renovar',
+                'dataProvider'=>$renovaciones,
+                'htmlOptions'=>array('style'=>'cursor:pointer'),
+				'columns'=>array(
+				array(
+					//'header'=>'Seleccione las actividades a incluir',
+					'class'=>'CCheckBoxColumn',
+					'htmlOptions'=>array('style'=>'text-align:center;'),
+				),
+				array(
+					'header'=>'Unidad',
+					'name'=>'idhistoricoCaucho',
+					'value'=>'str_pad((int) $data->idhistoricoCaucho0->idvehiculo0->numeroUnidad,2,"0",STR_PAD_LEFT);',
+					//'value'=>'$data->idplan0->idplanGrupo0->CompiledColour->$data-id.\' \'.$data->CompiledColour',
+					'htmlOptions'=>array('style'=>'text-align:center;width:40px'),
+				),
+				array(
+					'header'=>'Eje',
+					'value'=>'$data->idhistoricoCaucho0->iddetalleRueda0->iddetalleEje0->idposicionEje0->posicionEje',
+					'name'=>'iddetalleRueda',
+					'htmlOptions'=>array('style'=>'text-align:center;width:85px'),
+				),
+				array(
+					'header'=>'Posición',
+					'value'=>'$data->idhistoricoCaucho0->iddetalleRueda0->idposicionRueda0->posicionRueda',
+					'name'=>'iddetalleRueda',
+					'htmlOptions'=>array('style'=>'text-align:center;width:85px'),
+				),
+	
+				array(
+					'type'=>'raw',
+					'header'=>'Marca',
+					'value'=>'$data->idhistoricoCaucho0->idmarcaCaucho==""?$data->porDefinir(""):$data->idhistoricoCaucho0->idmarcaCaucho0->nombre',
+					'name'=>'idmarcaCaucho',
+					'htmlOptions'=>array('style'=>'text-align:center;width:85px'),
+				),
+				array(
+					'header'=>'Detalle',
+					'value'=>'$data->idhistoricoCaucho0->idcaucho0->idmedidaCaucho0->medida.\' R\'.$data->idhistoricoCaucho0->idcaucho0->idrin0->rin.\' \'.$data->idhistoricoCaucho0->idcaucho0->idpiso0->piso',
+					'name'=>'idcaucho',
+					'htmlOptions'=>array('style'=>'text-align:center;width:85px'),
+				),
+				array(
+					'type'=>"raw",
+					'header'=>'Serial',
+					'value'=>'$data->idhistoricoCaucho0->serial=="0"?$data->porDefinir($data->idhistoricoCaucho0->serial):strtoupper($data->idhistoricoCaucho0->serial);',
+					//'name'=>'serial',
+					'htmlOptions'=>array('style'=>'text-align:center;width:65px'),
+				),
+				array(
+					'header'=>'Eliminar',
+					'class'=>'CButtonColumn',
+					 'template'=>'{delete}',
+					     'buttons'=>array(
+							'delete' => array(
+								'url'=>'Yii::app()->createUrl("detalleEventoCa/delete", array("id"=>$data->id))',
+						),
+					),
+				),
+				/*array(
+					'header'=>'Fecha',
+					'name'=>'fechaFalla',
+					'value'=>'date("d/m/Y",strtotime($data->fechaFalla))',
+					'htmlOptions'=>array('style'=>'text-align:center;width:50px'),
+				),*/
+			)
+        ));
+		?>		
+		<?php echo CHtml::link('agregar neumático<img src='.Yii::app()->baseUrl.'/imagenes/agregar.png alt="agregar"/>', "",  // the link for open the dialog
+    array(
+		'id'=>'agregarRenovacion',
+        'style'=>'cursor: pointer; text-decoration: underline;',
+        'onclick'=>"{agregarRenovacion(); }"));
+		?>
+<?php
+/*ventana agregar recurso*/
+$this->beginWidget('zii.widgets.jui.CJuiDialog', array( // the dialog
+    'id'=>'ventanaRenovar',
+    'options'=>array(
+        'title'=>' ',
+        'autoOpen'=>false,
+        'modal'=>true,
+        'width'=>'80%',
+        //'height'=>360,
+		'position'=>array(null,100),
+		'resizable'=>false
+    ),
+));?>
+<div id="arenovar" style="display:none"><?php $this->renderPartial('_formMontaje', array('model'=>new detalleEventoCa,'montados'=>$montados)); ?></div>
+ 
+<?php $this->endWidget();?>
+
+		
+</div>
+<div class='crugepanel user-assignments-role-list'>
 
 	<h2>Averías por atender</h2>
 	<?php //<p><b>Nota: </b><i>Sólo se mostrarán las actividades con menos de 5 dias restantes o que posean atraso</p></i>?>
 <?php
-$this->widget('zii.widgets.grid.CGridView', array(
+$this->widget('ext.selgridview.SelGridView', array(
                 'id'=>'fallas',
 				'selectionChanged'=>'validar',
 				'summaryText'=>'',
@@ -205,112 +235,8 @@ $this->widget('zii.widgets.grid.CGridView', array(
 			)
         ));
 		?>
+<?php echo CHtml::button('Crear orden correctiva', array('id'=>'boton','style'=>"float:left;margin-top:10px", 'onclick'=>'mostrarOrden()','disabled'=>'disabled','class'=>'btn btn-default')); ?>
 		</div>
-		<div class='crugepanel user-assignments-role-list'>
-	<h2>Neumáticos a renovar</h2>
-	<?php //<p><b>Nota: </b><i>Sólo se mostrarán las actividades con menos de 5 dias restantes o que posean atraso</p></i>?>
-<?php
-//if(count($renovaciones->getData())>0)
-$this->widget('zii.widgets.grid.CGridView', array(
-                'id'=>'renovaciones',
-				'selectionChanged'=>'validar',
-				'summaryText'=>'',
-			    'enableSorting' => true,
-				'template'=>"{items}\n{summary}\n{pager}",
-				'selectableRows'=>2,
-				'emptyText'=>'No hay neumáticos agregados para renovar',
-                'dataProvider'=>$renovaciones,
-				'columns'=>array(
-				array(
-					//'header'=>'Seleccione las actividades a incluir',
-					'class'=>'CCheckBoxColumn',
-					'htmlOptions'=>array('style'=>'text-align:center;'),
-				),
-				array(
-					'header'=>'Unidad',
-					'name'=>'idhistoricoCaucho',
-					'value'=>'str_pad((int) $data->idhistoricoCaucho0->idvehiculo0->numeroUnidad,2,"0",STR_PAD_LEFT);',
-					//'value'=>'$data->idplan0->idplanGrupo0->CompiledColour->$data-id.\' \'.$data->CompiledColour',
-					'htmlOptions'=>array('style'=>'text-align:center;width:40px'),
-				),
-				array(
-					'header'=>'Eje',
-					'value'=>'$data->idhistoricoCaucho0->iddetalleRueda0->iddetalleEje0->idposicionEje0->posicionEje',
-					'name'=>'iddetalleRueda',
-					'htmlOptions'=>array('style'=>'text-align:center;width:85px'),
-				),
-				array(
-					'header'=>'Posición',
-					'value'=>'$data->idhistoricoCaucho0->iddetalleRueda0->idposicionRueda0->posicionRueda',
-					'name'=>'iddetalleRueda',
-					'htmlOptions'=>array('style'=>'text-align:center;width:85px'),
-				),
-	
-				array(
-					'type'=>'raw',
-					'header'=>'Marca',
-					'value'=>'$data->idhistoricoCaucho0->idmarcaCaucho==""?$data->porDefinir(""):$data->idhistoricoCaucho0->idmarcaCaucho0->nombre',
-					'name'=>'idmarcaCaucho',
-					'htmlOptions'=>array('style'=>'text-align:center;width:85px'),
-				),
-				array(
-					'header'=>'Detalle',
-					'value'=>'$data->idhistoricoCaucho0->idcaucho0->idmedidaCaucho0->medida.\' R\'.$data->idhistoricoCaucho0->idcaucho0->idrin0->rin.\' \'.$data->idhistoricoCaucho0->idcaucho0->idpiso0->piso',
-					'name'=>'idcaucho',
-					'htmlOptions'=>array('style'=>'text-align:center;width:85px'),
-				),
-				array(
-					'type'=>"raw",
-					'header'=>'Serial',
-					'value'=>'$data->idhistoricoCaucho0->serial=="0"?$data->porDefinir($data->idhistoricoCaucho0->serial):strtoupper($data->idhistoricoCaucho0->serial);',
-					//'name'=>'serial',
-					'htmlOptions'=>array('style'=>'text-align:center;width:65px'),
-				),
-				array(
-					'header'=>'Eliminar',
-					'class'=>'CButtonColumn',
-					 'template'=>'{delete}',
-					     'buttons'=>array(
-							'delete' => array(
-								'url'=>'Yii::app()->createUrl("detalleEventoCa/delete", array("id"=>$data->id))',
-						),
-					),
-				),
-				/*array(
-					'header'=>'Fecha',
-					'name'=>'fechaFalla',
-					'value'=>'date("d/m/Y",strtotime($data->fechaFalla))',
-					'htmlOptions'=>array('style'=>'text-align:center;width:50px'),
-				),*/
-			)
-        ));
-		?>		
-		<?php echo CHtml::link('agregar neumático(+)', "",  // the link for open the dialog
-    array(
-		'id'=>'agregarRenovacion',
-        'style'=>'cursor: pointer; text-decoration: underline;',
-        'onclick'=>"{agregarRenovacion(); }"));
-		?>
-<?php
-/*ventana agregar recurso*/
-$this->beginWidget('zii.widgets.jui.CJuiDialog', array( // the dialog
-    'id'=>'ventanaRenovar',
-    'options'=>array(
-        'title'=>' ',
-        'autoOpen'=>false,
-        'modal'=>true,
-        'width'=>'80%',
-        //'height'=>360,
-		'position'=>array(null,100),
-		'resizable'=>false
-    ),
-));?>
-<div id="arenovar" style="display:none"><?php $this->renderPartial('_formMontaje', array('model'=>new detalleEventoCa,'montados'=>$montados)); ?></div>
- 
-<?php $this->endWidget();?>
-
-		
-</div>
 
 <div style="display:none" class='crugepanel user-assignments-role-list'>
 	<h2>Rotaciones</h2>
@@ -413,23 +339,23 @@ $('#scrollingDiv').css({
 	
 
 
-$( "#scrollingDiv" ).click(function() {
-	$('#scrollingDiv').hide(300);
+ function mostrarOrden(){
+
+	
 	$("#formulario").dialog('open');
-});
+
+}
 var idfalla;
 
 var idren;
 function validar(){
-idren = $.fn.yiiGridView.getSelection('renovaciones');
-idfalla = $.fn.yiiGridView.getSelection('fallas');
+idren = $("#renovaciones").selGridView("getAllSelection"); 
+idfalla = $("#fallas").selGridView("getAllSelection"); 
 
 	if(idfalla=="" &&  idren=="")
-		/*$('#formulario').hide(); */
-		$('#scrollingDiv').hide(300);
+		$( "#boton" ).prop( "disabled", true );
 	else
-		$('#scrollingDiv').show(300);
-		/*$('#formulario').show();*/
+		$( "#boton" ).prop( "disabled", false );
 	
 	
 	/*if(idrot=="")

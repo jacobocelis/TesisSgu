@@ -128,7 +128,7 @@ class OrdenmttoController extends Controller
 		$actC=Detalleordenco::model()->findAll('idordenMtto='.$modelo->id.'');
 		for($i=0;$i<count($actC);$i++){
 			/*si elimino la orden devuelvo los estados de vehicuos a activos*/
-				$falla = Reportefalla::model()->findByPk($actP[$i]['idreporteFalla']);
+				$falla = Reportefalla::model()->findByPk($actC[$i]['idreporteFalla']);
 				$vehiculo = Vehiculo::model()->findByPk($falla->idvehiculo);
 				$vehiculo->setEstado(1,'Orden correctiva cancelada');
 				/**/
@@ -146,7 +146,7 @@ class OrdenmttoController extends Controller
 				$vehiculo = Vehiculo::model()->findByPk($histo->idvehiculo);
 				$vehiculo->setEstado(1,'Orden neumaticos cancelada');
 				/**/
-				
+
 			if($evento["idfallaCaucho"]<>null){
 				$evento->idestatus=8;
 				$evento->update();

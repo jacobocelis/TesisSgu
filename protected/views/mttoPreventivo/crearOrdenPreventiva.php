@@ -1,8 +1,5 @@
 <style>
-#menu{
-	font-size:15px;
 
-}
 .rojo{
 background: none repeat scroll 0% 0% #FFD6D6;
 }
@@ -10,50 +7,6 @@ background: none repeat scroll 0% 0% #FFD6D6;
     background: none repeat scroll 0% 0% rgba(0, 249, 3, 0.3);
 }
 
-
-#scrollingDiv{
-	
-	position: fixed;
-    bottom: 70px;
-    left: 40px;
-}
-.btn {
-	-moz-box-shadow:inset 0px 1px 0px 0px #54a3f7;
-	-webkit-box-shadow:inset 0px 1px 0px 0px #54a3f7;
-	box-shadow:inset 0px 1px 0px 0px #54a3f7;
-	background:-webkit-gradient(linear, left top, left bottom, color-stop(0.05, #007dc1), color-stop(1, #0061a7));
-	background:-moz-linear-gradient(top, #007dc1 5%, #0061a7 100%);
-	background:-webkit-linear-gradient(top, #007dc1 5%, #0061a7 100%);
-	background:-o-linear-gradient(top, #007dc1 5%, #0061a7 100%);
-	background:-ms-linear-gradient(top, #007dc1 5%, #0061a7 100%);
-	background:linear-gradient(to bottom, #007dc1 5%, #0061a7 100%);
-	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#007dc1', endColorstr='#0061a7',GradientType=0);
-	background-color:#007dc1;
-	-moz-border-radius:3px;
-	-webkit-border-radius:3px;
-	border-radius:3px;
-	border:1px solid #124d77;
-	display:inline-block;
-	cursor:pointer;
-	color:#ffffff;
-	font-family:Verdana;
-	font-size:13px;
-	font-weight:bold;
-	padding:6px 4px;
-	text-decoration:none;
-	text-shadow:0px 1px 0px #154682;
-}
-.btn:hover {
-	background:-webkit-gradient(linear, left top, left bottom, color-stop(0.05, #0061a7), color-stop(1, #007dc1));
-	background:-moz-linear-gradient(top, #0061a7 5%, #007dc1 100%);
-	background:-webkit-linear-gradient(top, #0061a7 5%, #007dc1 100%);
-	background:-o-linear-gradient(top, #0061a7 5%, #007dc1 100%);
-	background:-ms-linear-gradient(top, #0061a7 5%, #007dc1 100%);
-	background:linear-gradient(to bottom, #0061a7 5%, #007dc1 100%);
-	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#0061a7', endColorstr='#007dc1',GradientType=0);
-	background-color:#0061a7;
-	color: #fff;
-}
 .ui-progressbar .ui-widget-header {
 	background: #FFF;
 }
@@ -80,7 +33,7 @@ background: none repeat scroll 0% 0% #FFD6D6;
     border-top-left-radius: 0px;
 }
 </style>
-<div id="scrollingDiv" class="btn" style="display:none">Crear órden de mantenimiento</div>
+
 <?php 
 	$this->breadcrumbs=array(
 	'Mantenimiento preventivo'=>array('mttoPreventivo/index'),
@@ -127,7 +80,7 @@ $this->widget('ext.selgridview.SelGridView', array(
 				'emptyText'=>'No hay actividades a tiempo de mantenimiento',
                 'dataProvider'=>$dataProvider,
 				'rowCssClassExpression'=>'$this->dataProvider->data[$row]->diasRestantes($this->dataProvider->data[$row]->proximoFecha)<=5 || ($this->dataProvider->data[$row]->kmRestantes($this->dataProvider->data[$row]->idvehiculo,$this->dataProvider->data[$row]->proximoKm))<=50?"rojo":"even"',
-				'ajaxUpdate'=>false,
+				//'ajaxUpdate'=>false,
 				'htmlOptions'=>array('style'=>'cursor:pointer;'),
 				'columns'=>array(
 				array(
@@ -212,7 +165,9 @@ $this->widget('ext.selgridview.SelGridView', array(
 			)
         ));
 		?>
+		<?php echo CHtml::button('Crear orden preventiva', array('id'=>'boton','style'=>"float:left", 'onclick'=>'mostrarOrden()','disabled'=>'disabled','class'=>'btn btn-default')); ?>
 		</div>
+
 <?php 
 	/*$this->renderPartial('_formCrearOrden',array('model'=>$modeloOrdenMtto));*/?>
 	
@@ -228,7 +183,7 @@ $this->beginWidget('zii.widgets.jui.CJuiDialog', array( // the dialog
         //'height'=>360,
 		'position'=>array(null,100),
 		'resizable'=>false,
-		'close'=>'js:function(){ $("#scrollingDiv").show(300); }',
+		
     ),
 ));?>
 <div class="divForForm"></div>
@@ -241,19 +196,20 @@ $('#scrollingDiv').css({
   'bottom': '50px'
  });
  */
- $( "#scrollingDiv" ).click(function() {
-	$('#scrollingDiv').hide(300);
-	$("#formulario").dialog('open');
-});
+ function mostrarOrden(){
 
+	
+	$("#formulario").dialog('open');
+
+}
 $('#formulario').hide();
 var idAct;
 function validar(){
- idAct= $.fn.yiiGridView.getSelection('actividades');
+ idAct= $("#actividades").selGridView("getAllSelection"); 
 	if(idAct=="")
-		$('#scrollingDiv').hide(300);//$('#formulario').hide();
+		$( "#boton" ).prop( "disabled", true );
 	else
-		$('#scrollingDiv').show(300);//$('#formulario').show();
+		$( "#boton" ).prop( "disabled", false );
 	crear();
 }
 		

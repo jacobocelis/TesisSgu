@@ -1537,11 +1537,20 @@ class NeumaticosController extends Controller
 			//'condition' =>'idestatus=2 and atraso >=-5',
 			'condition' =>'idestatus=8 and idfallaCaucho is not null',
 			'order'=>'id'
-			)));
+			),			
+				'pagination'=>array(
+        		'pageSize'=>5,
+    		),
+
+		));
 		$renovaciones=new CActiveDataProvider('Detalleeventoca',array('criteria' => array(
 			'condition' =>'idaccionCaucho=1 and idestatus=8',
 			//'order'=>'fechaFalla'
-			)));
+			),
+			'pagination'=>array(
+        		'pageSize'=>5,
+    		),
+		));
 		$rotaciones=new CActiveDataProvider('Rotacioncauchos',array('criteria' => array(
 			'condition' =>'idestatus=8',
 			//'order'=>'fechaFalla'

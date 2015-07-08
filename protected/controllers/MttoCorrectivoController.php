@@ -567,12 +567,19 @@ public function actionCorreo($id){
 			//'condition' =>'idestatus=2 and atraso >=-5',
 			'condition' =>'idestatus=8 and idfalla in (select id from sgu_falla where tipo=0)',
 			'order'=>'fechaFalla'
-			)));
+			),
+				'pagination'=>array(
+        		'pageSize'=>5,
+    		)));
 		$mejoras=new CActiveDataProvider('Reportefalla',array('criteria' => array(
 			//'condition' =>'idestatus=2 and atraso >=-5',
 			'condition' =>'idestatus=8 and idfalla in (select id from sgu_falla where tipo=1)',
 			'order'=>'fechaFalla'
-			)));
+			),			
+				'pagination'=>array(
+        		'pageSize'=>5,
+    		)
+		));
 		$this->render('crearOrdenCorrectiva',array(
 			'dataProvider'=>$dataProvider,
 			'mejoras'=>$mejoras,
