@@ -388,7 +388,7 @@ class IndicadoresController extends Controller
 					$diasOperacion=(strtotime($anno."-12-31")-strtotime($desde["fechaCompleta"]))/86400;
 				array_push($mes,$anno);
 				array_push($textoGrupos,$grupo["grupo"]);
-				$NTMC=Yii::app()->db->createCommand('select count(*) as NTMC from sgu_reporteFalla where idvehiculo in (select id from sgu_vehiculo where activo=1) and idestatus=3 and year(fechaFalla)="'.$anno.'"')->queryRow();
+				$NTMC=Yii::app()->db->createCommand('select count(*) as NTMC from sgu_reporteFalla where idvehiculo in (select id from sgu_vehiculo where activo=1 and idgrupo="'.$grupo["id"].'") and idestatus=3 and year(fechaFalla)="'.$anno.'"')->queryRow();
 				if($NTMC["NTMC"]<=0)
 					$TME=null;
 				else
@@ -418,7 +418,7 @@ class IndicadoresController extends Controller
 				$anno=intval($desde["anno"]+$j);
 				array_push($mes,$anno);
 				array_push($textoGrupos,$grupo["grupo"]);
-				$TMP=Yii::app()->db->createCommand('select count(*) as NTMC, sum(DATEDIFF(fechaRealizada,fechaFalla)) as HTMC from sgu_reporteFalla where idvehiculo in (select id from sgu_vehiculo where activo=1 and idgrupo="'.$grupo["id"].'" ) and "'.$anno.'" between year(fechaRealizada) and year(fechaFalla) and idestatus=3')->queryRow();
+				$TMP=Yii::app()->db->createCommand('select count(*) as NTMC, sum(DATEDIFF(fechaRealizada,fechaFalla)+1) as HTMC from sgu_reporteFalla where idvehiculo in (select id from sgu_vehiculo where activo=1 and idgrupo="'.$grupo["id"].'" ) and "'.$anno.'" between year(fechaRealizada) and year(fechaFalla) and idestatus=3')->queryRow();
 				if($TMP["NTMC"]<=0)
 					$TMP["NTMC"]=1;
 				$TMP=($TMP["HTMC"])/$TMP["NTMC"];

@@ -117,6 +117,8 @@ class OrdenmttoController extends Controller
 				/*si elimino la orden devuelvo los estados de vehicuos a activos*/
 				$act = Actividades::model()->findByPk($actP[$i]['idactividades']);
 				$vehiculo = Vehiculo::model()->findByPk($act->idvehiculo);
+				$vehiculo->activo=1;
+				$vehiculo->update();
 				$vehiculo->setEstado(1,'Orden preventiva cancelada');
 				/**/
 				Yii::app()->db->createCommand("update `tsg`.`sgu_actividades` set `idestatus` = '2' where `sgu_actividades`.`id` = ".$actP[$i]['idactividades']."")->query();
@@ -130,6 +132,8 @@ class OrdenmttoController extends Controller
 			/*si elimino la orden devuelvo los estados de vehicuos a activos*/
 				$falla = Reportefalla::model()->findByPk($actC[$i]['idreporteFalla']);
 				$vehiculo = Vehiculo::model()->findByPk($falla->idvehiculo);
+				$vehiculo->activo=1;
+				$vehiculo->update();
 				$vehiculo->setEstado(1,'Orden correctiva cancelada');
 				/**/
 				Yii::app()->db->createCommand("update `tsg`.`sgu_reporteFalla` set `idestatus` = '8' where `sgu_reporteFalla`.`id` = ".$actC[$i]['idreporteFalla']."")->query();
@@ -144,6 +148,8 @@ class OrdenmttoController extends Controller
 			/*si elimino la orden devuelvo los estados de vehicuos a activos*/
 				$histo=Historicocaucho::model()->findByPk($evento->idhistoricoCaucho);
 				$vehiculo = Vehiculo::model()->findByPk($histo->idvehiculo);
+				$vehiculo->activo=1;
+				$vehiculo->update();
 				$vehiculo->setEstado(1,'Orden neumaticos cancelada');
 				/**/
 

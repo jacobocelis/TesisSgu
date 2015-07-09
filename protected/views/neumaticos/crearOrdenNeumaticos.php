@@ -235,7 +235,7 @@ $this->widget('ext.selgridview.SelGridView', array(
 			)
         ));
 		?>
-<?php echo CHtml::button('Crear orden correctiva', array('id'=>'boton','style'=>"float:left;margin-top:10px", 'onclick'=>'mostrarOrden()','disabled'=>'disabled','class'=>'btn btn-default')); ?>
+<?php echo CHtml::button('Crear orden de neumáticos', array('id'=>'boton','style'=>"float:left;margin-top:10px", 'onclick'=>'mostrarOrden()','disabled'=>'disabled','class'=>'btn btn-default')); ?>
 		</div>
 
 <div style="display:none" class='crugepanel user-assignments-role-list'>

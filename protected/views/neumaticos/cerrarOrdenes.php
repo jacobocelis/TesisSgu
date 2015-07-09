@@ -181,7 +181,7 @@ function actualizarSpan(){
 }
 function validar(orden){
 	if(confirm('¿confirma que desea cerrar la orden?')){
-	var dir="<?php echo Yii::app()->baseUrl."/mttoCorrectivo/estatusOrden"?>";
+	var dir="<?php echo Yii::app()->baseUrl."/neumaticos/estatusOrden"?>";
 		x=7;
 	jQuery.ajax({
                 url: dir+"/"+x,

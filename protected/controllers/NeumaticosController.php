@@ -130,8 +130,19 @@ class NeumaticosController extends Controller
 			Yii::app()->db->createCommand("update `tsg`.`sgu_ordenMtto` set `idestatus` = '6' where `sgu_ordenMtto`.`id` = ".$_POST['id']."")->query();
 		if($id==0)	
 			Yii::app()->db->createCommand("update `tsg`.`sgu_ordenMtto` set `idestatus` = '5' where `sgu_ordenMtto`.`id` = ".$_POST['id']."")->query();
-		if($id==7)	
+		if($id==7){
+			$actividades=Detordneumatico::model()->findAll(array("condition"=>"idordenMtto = '".$_POST['id']."'"));
+			for($i=0;$i<count($actividades);$i++){
+				$act = Detalleeventoca::model()->findByPk($actividades[$i]["iddetalleEventoCa"]);
+				$his = Historicocaucho::model()->findByPk($act->idhistoricoCaucho);
+				$vehiculo = Vehiculo::model()->findByPk($his->idvehiculo);
+				$vehiculo->activo=1;
+				$vehiculo->update();
+				$vehiculo->setEstado(1,'Mantenimiento de neumaticos realizado');
+				
+			}
 			Yii::app()->db->createCommand("update `tsg`.`sgu_ordenMtto` set `idestatus` = '7' where `sgu_ordenMtto`.`id` = ".$_POST['id']."")->query();
+		}	
 	}
 	public function actionAgregarAveriaNueva(){
 		$model=new Fallacaucho;
@@ -1463,6 +1474,8 @@ class NeumaticosController extends Controller
 					$act = Detalleeventoca::model()->findByPk($idfal);
 					$his = Historicocaucho::model()->findByPk($act->idhistoricoCaucho);
 					$vehiculo = Vehiculo::model()->findByPk($his->idvehiculo);
+					$vehiculo->activo=3;
+					$vehiculo->update();
 					$vehiculo->setEstado(3,'Mantenimiento de neumaticos');
 
 					Yii::app()->db->createCommand("INSERT INTO `tsg`.`sgu_detOrdNeumatico` (`iddetalleEventoCa`,`idordenMtto`) VALUES (".$idfal.",".$model->id.")")->query();
@@ -1478,6 +1491,8 @@ class NeumaticosController extends Controller
 					$act = Detalleeventoca::model()->findByPk($idren);
 					$his = Historicocaucho::model()->findByPk($act->idhistoricoCaucho);
 					$vehiculo = Vehiculo::model()->findByPk($his->idvehiculo);
+					$vehiculo->activo=3;
+					$vehiculo->update();
 					$vehiculo->setEstado(3,'Mantenimiento de neumaticos');
 
 					Yii::app()->db->createCommand("INSERT INTO `tsg`.`sgu_detOrdNeumatico` (`iddetalleEventoCa`,`idordenMtto`) VALUES (".$idren.",".$model->id.")")->query();

@@ -58,7 +58,7 @@ public function actionActualizar($id){
             $model->attributes=$_POST['Reportefalla'];
             
 			$model->fechaRealizada=date("Y-m-d", strtotime(str_replace('/', '-', $model->fechaRealizada)));
-            $model->diasParo=((strtotime($model->fechaRealizada)-strtotime($model->fechaFalla))/86400);
+            $model->diasParo=((strtotime($model->fechaRealizada)-strtotime($model->fechaFalla))/86400)+1;
             if($model->save()){
 			if (Yii::app()->request->isAjaxRequest){
 			
@@ -149,6 +149,8 @@ public function actionActualizar($id){
 	{
 		$modelo=$this->loadModel($id);
 		$vehiculo = Vehiculo::model()->findByPk($modelo->idvehiculo);
+		$vehiculo->activo=1;
+		$vehiculo->update();
 		$vehiculo->setEstado(1,'Averia cancelada por usuario');
 		$modelo->delete();
 

@@ -521,6 +521,8 @@ public function actionCorreo($id){
 						/*cambio el estado a en mtto*/
 						$act = Reportefalla::model()->findByPk($idfal);
 						$vehiculo = Vehiculo::model()->findByPk($act->idvehiculo);
+						$vehiculo->activo=3;
+						$vehiculo->update();
 						$vehiculo->setEstado(3,'Mantenimiento correctivo');
 						/**/
 						Yii::app()->db->createCommand("INSERT INTO `tsg`.`sgu_detalleOrdenCo` (`idreporteFalla`,`idordenMtto`) VALUES (".$idfal.",".$model->id.")")->query();
@@ -535,6 +537,8 @@ public function actionCorreo($id){
 						/*cambio estado*/
 						$act = Reportefalla::model()->findByPk($idmej);
 						$vehiculo = Vehiculo::model()->findByPk($act->idvehiculo);
+						$vehiculo->activo=3;
+						$vehiculo->update();
 						$vehiculo->setEstado(3,'Mantenimiento correctivo');
 						/**/
 						Yii::app()->db->createCommand("INSERT INTO `tsg`.`sgu_detalleOrdenCo` (`idreporteFalla`,`idordenMtto`) VALUES (".$idmej.",".$model->id.")")->query();
@@ -616,6 +620,13 @@ public function actionCorreo($id){
 			$actividades=Detalleordenco::model()->findAll(array("condition"=>"idordenMtto = '".$_POST['id']."'"));
 			for($i=0;$i<count($actividades);$i++){
 				$vehiculo=Reportefalla::model()->find(array("condition"=>"id = '".$actividades[$i]["idreporteFalla"]."'"));
+				/*cambio estatus a activo al cerrar la orden*/
+					$veh = Vehiculo::model()->findByPk($vehiculo["idvehiculo"]);
+					$vehiculo->activo=1;
+					$vehiculo->update();
+					$veh->setEstado(1,'Mantenimiento correctivo realizado');
+
+				/**/
 				$recursos=Recursofalla::model()->findAll(array("condition"=>"idreporteFalla = '".$actividades[$i]["idreporteFalla"]."'"));
 				for($j=0;$j<count($recursos);$j++){
 					if($recursos[$j]["idrepuesto"]<>null){
@@ -869,6 +880,8 @@ public function actionRegistroIncidente2(){
             if($model->save()){
             	/*si registro una falla cambio el estado del vehiculo*/			
 					$vehiculo = Vehiculo::model()->findByPk($model->idvehiculo);
+					$vehiculo->activo=2;
+					$vehiculo->update();
 					$vehiculo->setEstado(2,'Vehiculo averiado');
 					/**/
                 if (Yii::app()->request->isAjaxRequest){

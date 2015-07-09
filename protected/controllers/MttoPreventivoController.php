@@ -542,6 +542,8 @@ class MttoPreventivoController extends Controller
 					/*se cambia el estatus de cada vehiculo a 'en mantenimiento'*/
 					$act = Actividades::model()->findByPk($idact);
 					$vehiculo = Vehiculo::model()->findByPk($act->idvehiculo);
+					$vehiculo->activo=3;
+					$vehiculo->update();
 					$vehiculo->setEstado(3,'Mantenimiento preventivo');
 
 				}
@@ -621,6 +623,13 @@ class MttoPreventivoController extends Controller
 			
 			for($i=0;$i<count($actividades);$i++){
 				$vehiculo=Actividades::model()->find(array("condition"=>"id = '".$actividades[$i]["idactividades"]."'"));
+				/*cambio estatus a activo al cerrar la orden*/
+					$veh = Vehiculo::model()->findByPk($vehiculo["idvehiculo"]);
+					$vehiculo->activo=1;
+					$vehiculo->update();
+					$veh->setEstado(1,'Mantenimiento preventivo realizado');
+
+				/**/
 				$recursos=Actividadrecurso::model()->findAll(array("condition"=>"idactividades = '".$actividades[$i]["idactividades"]."'"));
 				for($j=0;$j<count($recursos);$j++){
 					if($recursos[$j]["idrepuesto"]<>null){
