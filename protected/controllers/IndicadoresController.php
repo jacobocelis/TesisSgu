@@ -367,68 +367,99 @@ class IndicadoresController extends Controller
 	 	));*/
 	}
 	public function actionInd9(){
+		$meta=Metas::model()->find();
 		$this->local();
-		$hasta=date('Y');
-		$desde=Yii::app()->db->createCommand('select DATE_FORMAT(fechaRegistro,"%Y-%m-%d") as fechaCompleta,DATE_FORMAT(min(fechaRegistro),"%Y-%m") as fecha, DATE_FORMAT(min(fechaRegistro),"%Y") as anno from sgu_vehiculo where activo=1')->queryRow();
-		$mes=array();
+		$hasta=date('Y-m-d');
+		$desde=date("Y-m-d",strtotime(date('Y')."-01-01"));
+		//file_put_contents("borrar.txt", print_r($_POST,true));
+		if(isset($_POST["but"])){
+			$hasta=date("Y-m-d",strtotime(str_replace('/', '-',$_POST["Fechafin"])));
+			$desde=date("Y-m-d",strtotime(str_replace('/', '-',$_POST["Fechaini"])));
+		}		
 		$textoGrupos=array();
-		$TMEF=array();
-		$prueba=array();
+		$TMEF_grupos=array();
+		
 		$grupos = Grupo::model()->findAll();
-		for($j=0;$j<(intval($hasta)-intval($desde["anno"]))+1;$j++){
+		/*calculo el temf por grupo*/				
+		$diasOperacion=abs((strtotime($hasta)-strtotime($desde))/86400);
 			foreach ($grupos as $grupo){
 				$vehiculos=Yii::app()->db->createCommand('select * from sgu_vehiculo where activo=1 and idgrupo="'.$grupo["id"].'"')->queryAll();
-				$diasOperacion=0;
-				$anno=intval($desde["anno"]+$j);
-				$TME=0;
-				$diasOperacion=365;
-				if($anno==$hasta)
-					$diasOperacion=(strtotime(date("Y-m-d"))-strtotime($hasta."-01-01"))/86400;
-				if($desde["anno"]==$anno)
-					$diasOperacion=(strtotime($anno."-12-31")-strtotime($desde["fechaCompleta"]))/86400;
-				array_push($mes,$anno);
+
 				array_push($textoGrupos,$grupo["grupo"]);
-				$NTMC=Yii::app()->db->createCommand('select count(*) as NTMC from sgu_reporteFalla where idvehiculo in (select id from sgu_vehiculo where activo=1 and idgrupo="'.$grupo["id"].'") and idestatus=3 and year(fechaFalla)="'.$anno.'"')->queryRow();
+				$NTMC=Yii::app()->db->createCommand('select count(*) as NTMC from sgu_reporteFalla where idvehiculo in (select id from sgu_vehiculo where activo=1 and idgrupo="'.$grupo["id"].'") and idestatus=3 and fechaFalla between "'.$desde.'" and "'.$hasta.'" ')->queryRow();
 				if($NTMC["NTMC"]<=0)
 					$TME=null;
 				else
 				$TME=(count($vehiculos)*$diasOperacion)/$NTMC["NTMC"];
-				array_push($TMEF,round($TME,1));
+				array_push($TMEF_grupos,round($TME,1));
 			//array_push($prueba, $diasOperacion);
 			}
-		}
+			/*calculo el temf por cada vehiculo*/
+			$textoVehiculos=array();
+			$TMEF_vehiculos=array();
+			$unidades = Vehiculo::model()->findAll('activo = 1');
+			foreach ($unidades as $uni){
+				array_push($textoVehiculos,str_pad((int) $uni["numeroUnidad"],2,"0",STR_PAD_LEFT));
+				$NTMC=Yii::app()->db->createCommand('select count(*) as NTMC from sgu_reporteFalla where idvehiculo in (select id from sgu_vehiculo where activo=1 and idvehiculo="'.$uni["id"].'") and idestatus=3 and fechaFalla between "'.$desde.'" and "'.$hasta.'" ')->queryRow();
+				if($NTMC["NTMC"]<=0)
+					$TME=null;
+				else
+				$TME=(1*$diasOperacion)/$NTMC["NTMC"];
+				array_push($TMEF_vehiculos,round($TME,1));
+			//array_push($prueba, $diasOperacion);
+			}
+			$NTMC=Yii::app()->db->createCommand('select count(*) as NTMC from sgu_reporteFalla where idvehiculo in (select id from sgu_vehiculo where activo=1) and idestatus=3 and fechaFalla between "'.$desde.'" and "'.$hasta.'" ')->queryRow();
+			if($NTMC["NTMC"]<=0)
+				$TMEF_total=null;
+			else
+				$TMEF_total=(count($unidades)*$diasOperacion)/$NTMC["NTMC"];
 	 	$this->render('ind9',array(
-	 		'TMEF'=>$TMEF,
-	 		'mes'=>$mes,
+	 		'TMEF_grupos'=>$TMEF_grupos,
+	 		'TMEF_vehiculos'=>$TMEF_vehiculos,
+	 		'TMEF_total'=>$TMEF_total,
 	 		'grupos'=>$textoGrupos,
+	 		'vehiculos'=>$textoVehiculos,
+	 		'desde'=>date("d/m/Y", strtotime($desde)),
+	 		'hasta'=>date("d/m/Y", strtotime($hasta)),
+	 		'meta'=>$meta["TMEF"],
 	 	));
 
 	}
 	public function actionInd10(){
+		$meta=Metas::model()->find();
 		$this->local();
-		$hasta=date('Y');
-		$desde=Yii::app()->db->createCommand('select DATE_FORMAT(fechaRegistro,"%Y-%m-%d") as fechaCompleta,DATE_FORMAT(min(fechaRegistro),"%Y-%m") as fecha, DATE_FORMAT(min(fechaRegistro),"%Y") as anno from sgu_vehiculo where activo=1')->queryRow();
+		$hasta=date('Y-m-d');
+		$desde=date("Y-m-d",strtotime(date('Y')."-01-01"));
+		if(isset($_POST["but"])){
+			$hasta=date("Y-m-d",strtotime(str_replace('/', '-',$_POST["Fechafin"])));
+			$desde=date("Y-m-d",strtotime(str_replace('/', '-',$_POST["Fechaini"])));
+		}	
 		$mes=array();
 		$TMPR=array();
-		$prueba=array();
+		$TMEF_grupos=array();
 		$textoGrupos=array();
 		$grupos = Grupo::model()->findAll();
-		for($j=0;$j<(intval($hasta)-intval($desde["anno"]))+1;$j++){
+		
 			foreach ($grupos as $grupo){	
-				$anno=intval($desde["anno"]+$j);
-				array_push($mes,$anno);
 				array_push($textoGrupos,$grupo["grupo"]);
-				$TMP=Yii::app()->db->createCommand('select count(*) as NTMC, sum(DATEDIFF(fechaRealizada,fechaFalla)+1) as HTMC from sgu_reporteFalla where idvehiculo in (select id from sgu_vehiculo where activo=1 and idgrupo="'.$grupo["id"].'" ) and "'.$anno.'" between year(fechaRealizada) and year(fechaFalla) and idestatus=3')->queryRow();
+				$TMP=Yii::app()->db->createCommand('select count(*) as NTMC, sum(DATEDIFF(fechaRealizada,fechaFalla)+1) as HTMC from sgu_reporteFalla where idvehiculo in (select id from sgu_vehiculo where activo=1 and idgrupo="'.$grupo["id"].'" ) and fechaFalla between "'.$desde.'" and "'.$hasta.'" and idestatus=3')->queryRow();
 				if($TMP["NTMC"]<=0)
 					$TMP["NTMC"]=1;
 				$TMP=($TMP["HTMC"])/$TMP["NTMC"];
 				array_push($TMPR,round($TMP,1));
 			}
-		}
+			$TMP=Yii::app()->db->createCommand('select count(*) as NTMC, sum(DATEDIFF(fechaRealizada,fechaFalla)+1) as HTMC from sgu_reporteFalla where idvehiculo in (select id from sgu_vehiculo where activo=1) and fechaFalla between "'.$desde.'" and "'.$hasta.'" and idestatus=3')->queryRow();
+				if($TMP["NTMC"]<=0)
+					$TMP["NTMC"]=1;
+				$TMPR_total=($TMP["HTMC"])/$TMP["NTMC"];
+		
 	 	$this->render('ind10',array(
 	 		'TMPR'=>$TMPR,
-	 		'mes'=>$mes,
 	 		'grupos'=>$textoGrupos,
+	 		'meta'=>$meta["TMPR"],
+	 		'TMPR_total'=>$TMPR_total,
+	 		'desde'=>date("d/m/Y", strtotime($desde)),
+	 		'hasta'=>date("d/m/Y", strtotime($hasta)),
 	 	));
 	}
 	/**

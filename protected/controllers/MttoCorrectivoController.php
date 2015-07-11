@@ -622,8 +622,8 @@ public function actionCorreo($id){
 				$vehiculo=Reportefalla::model()->find(array("condition"=>"id = '".$actividades[$i]["idreporteFalla"]."'"));
 				/*cambio estatus a activo al cerrar la orden*/
 					$veh = Vehiculo::model()->findByPk($vehiculo["idvehiculo"]);
-					$vehiculo->activo=1;
-					$vehiculo->update();
+					$veh->activo=1;
+					$veh->update();
 					$veh->setEstado(1,'Mantenimiento correctivo realizado');
 
 				/**/
