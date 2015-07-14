@@ -7,7 +7,8 @@ $this->breadcrumbs=array(
 
 $this->menu=array(
 	array('label'=>'<div id="menu"><strong>Indicadores y reportes</strong></div>' , 'visible'=>'1'),
-	array('label'=>'      Tiempo medio entre fallas', 'url'=>array('Indicadores/ind9')),
+	 array('label'=>'      Resumen de indicadores', 'url'=>array('Indicadores/ind')),
+  array('label'=>'      Tiempo medio entre fallas', 'url'=>array('Indicadores/ind9')),
   array('label'=>'      Tiempo medio para reparaciones', 'url'=>array('Indicadores/ind10')),
   array('label'=>'      Disponibilidad de unidades', 'url'=>array('Indicadores/ind11')),
   array('label'=>'      Costo de mtto por valor de reposición', 'url'=>array('Indicadores/ind5')),

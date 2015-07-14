@@ -8,7 +8,8 @@ $this->breadcrumbs=array(
 
 $this->menu=array(
 	array('label'=>'<div id="menu"><strong>Indicadores y reportes</strong></div>' , 'visible'=>'1'),
-	array('label'=>'      Tiempo medio entre fallas', 'url'=>array('Indicadores/ind9')),
+	 array('label'=>'      Resumen de indicadores', 'url'=>array('Indicadores/ind')),
+  array('label'=>'      Tiempo medio entre fallas', 'url'=>array('Indicadores/ind9')),
   array('label'=>'      Tiempo medio para reparaciones', 'url'=>array('Indicadores/ind10')),
   array('label'=>'      Disponibilidad de unidades', 'url'=>array('Indicadores/ind11')),
   array('label'=>'      Costo de mtto por valor de reposición', 'url'=>array('Indicadores/ind5')),
@@ -309,7 +310,7 @@ $(function () {
             stops: [
                 [0.6, '#DF5353'], 
                 
-                [0.7, '##FC7D00'],
+                [0.7, '#FC7D00'],
                 [0.99, '#DDDF0D'],
                 [1, '#55BF3B'] 
             ],
@@ -359,7 +360,7 @@ $(function () {
             name: 'dias',
             data: [<?php echo round($TMEF_total,1);?>],
             dataLabels: {
-                format: '<div style="text-align:center"><span style="font-size:15px;color:' +
+                format: '<div style="text-align:center"><span style="font-size:25px;color:' +
                     ((Highcharts.theme && Highcharts.theme.contrastTextColor) || 'blue') + '">{y}</span><br/>' +
                        '<span style="font-size:12px;color:silver"> </span></div>'
             }
@@ -386,7 +387,8 @@ function nuevo(dirA,tip){
                       }
                       else{
                               $('#nuevo div.divForForm').html(data.div);
-                              setTimeout("$('#nuevo').dialog('close') ",000);
+                               $('#nuevo').dialog('close');
+                              window.location.replace("<?php echo Yii::app()->baseUrl."/Indicadores/ind9"?>");
           
                       }
                 },

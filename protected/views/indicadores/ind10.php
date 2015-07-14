@@ -9,7 +9,8 @@ $this->breadcrumbs=array(
 
 $this->menu=array(
 	array('label'=>'<div id="menu"><strong>Indicadores y reportes</strong></div>' , 'visible'=>'1'),
-	array('label'=>'      Tiempo medio entre fallas', 'url'=>array('Indicadores/ind9')),
+	 array('label'=>'      Resumen de indicadores', 'url'=>array('Indicadores/ind')),
+  array('label'=>'      Tiempo medio entre fallas', 'url'=>array('Indicadores/ind9')),
   array('label'=>'      Tiempo medio para reparaciones', 'url'=>array('Indicadores/ind10')),
   array('label'=>'      Disponibilidad de unidades', 'url'=>array('Indicadores/ind11')),
   array('label'=>'      Costo de mtto por valor de reposición', 'url'=>array('Indicadores/ind5')),
@@ -129,13 +130,89 @@ $this->menu=array(
 ));
 ?>
 </div>
+<div style="margin-top:60px;">
+
+<?php $this->Widget('ext.highcharts.HighchartsWidget', array(
+        'scripts' => array(
+        //'modules/exporting',
+        'themes/grid-light',
+    ),
+
+   'options'=>array(
+           'chart'=> array(
+ 
+            'defaultSeriesType'=> 'column',
+            //'zoomType'=> 'xyz',
+        ),
+            'lang'=>array(  
+                'loading'=> 'Cargando...',  
+                'months'=> array('Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'),  
+                'weekdays'=> array('Domingo', 'Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes', 'Sábado'),  
+                'shortMonths'=> array('Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'),  
+                'exportButtonTitle'=> "Exportar",  
+                'printButtonTitle'=> "Importar",  
+                'rangeSelectorFrom'=> "De",  
+                'rangeSelectorTo'=> "A",  
+                'rangeSelectorZoom'=> "Periodo",  
+                'downloadPNG'=> 'Descargar gráfica PNG',  
+                'downloadJPEG'=> 'Descargar gráfica JPEG',  
+                'downloadPDF'=> 'Descargar gráfica PDF',  
+                'downloadSVG'=> 'Descargar gráfica SVG',  
+                'printChart'=> 'Imprimir Gráfica',  
+                'thousandsSep'=> ",",  
+                'decimalPoint'=> '.'  
+            ),
+        'title' => array('text' => 'Por vehiculos'),
+        
+        'credits'=> array(
+            'enabled'=> false
+        ),
+        'yAxis'=> array(
+           //'endOnTick'=>false,
+           //'tickInterval'=>1,
+        array( // Primary yAxis
+          'min'=>0,
+          //'max'=>31,
+            'labels'=> array(
+                'format'=> '{value}días',            
+            ),
+            'title'=> array(
+                'text'=> 'Días',
+            ),
+
+        )),
+    /*'tooltip'=> array(
+        'pointFormat'=> "Value: <b>{point.y:.1f} días</b>",
+    ),*/
+    'xAxis'=> array(
+        array(
+          
+            'title'=>array(
+                'text'=>'Vehiculos',
+              ),
+            'categories'=> $vehiculos,
+            'tickmarkPlacement'=> 'on',
+             //'min'=> $filas, 
+        )),
+
+
+    'series'=> array(
+        array(
+            'type'=> 'column',
+            'data'=> array_map('floatVal', $TMPR_vehiculos),
+            'name'=>'días',
+        )),
+   ),
+));
+?>
+</div>
 </div>
 <?php
 
 $this->beginWidget('zii.widgets.jui.CJuiDialog', array( // the dialog
     'id'=>'nuevo',
     'options'=>array(
-        'title'=>'indique el valor de meta de TMEF',
+        'title'=>'indique el valor de meta de TMPR',
         'autoOpen'=>false,
         'modal'=>true,
         'width'=>360,
@@ -230,10 +307,11 @@ $(function () {
         // the value axis
         yAxis: {
             stops: [
-                [0.6, '#DF5353'], 
-                //[0.99, '#DDDF0D'],
-                [0.99, '##FC7D00'],
-                [1, '#55BF3B'] 
+                [0.6, '#55BF3B'], 
+                
+                [0.7, '#DDDF0D'],
+                [0.99, '#FC7D00'],
+                [1, '#DF5353'] 
             ],
             lineWidth: 0,
             minorTickInterval: null,
@@ -281,7 +359,7 @@ $(function () {
             name: 'dias',
             data: [<?php echo round($TMPR_total,1);?>],
             dataLabels: {
-                format: '<div style="text-align:center"><span style="font-size:15px;color:' +
+                format: '<div style="text-align:center"><span style="font-size:25px;color:' +
                     ((Highcharts.theme && Highcharts.theme.contrastTextColor) || 'blue') + '">{y}</span><br/>' +
                        '<span style="font-size:12px;color:silver"> </span></div>'
             }
@@ -308,8 +386,8 @@ function nuevo(dirA,tip){
                       }
                       else{
                               $('#nuevo div.divForForm').html(data.div);
-                              setTimeout("$('#nuevo').dialog('close') ",000);
-          
+                              $('#nuevo').dialog('close');
+                              window.location.replace("<?php echo Yii::app()->baseUrl."/Indicadores/ind10"?>");
                       }
                 },
                 'cache':false});
