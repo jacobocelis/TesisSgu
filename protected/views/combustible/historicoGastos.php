@@ -16,8 +16,8 @@ $this->menu=array(
 	array('label'=>'<div id="menu"><strong>Historial</strong></div>'),
 	array('label'=>'      Histórico de reposiciónes', 'url'=>array('combustible/historicoReposicion')),
 	array('label'=>'      Histórico de gastos', 'url'=>array('combustible/historicoGastos')),
-	array('label'=>'<div id="menu"><strong>Parámetros</strong></div>'),
-	array('label'=>'      Administración de parámetros', 'url'=>array('combustible/parametros')),
+	array('label'=>'<div id="menu"><strong>Parámetros</strong></div>' , 'visible'=>Yii::app()->user->checkAccess('action_combustible_parametros')),
+	array('label'=>'      Administración de parámetros', 'url'=>array('combustible/parametros'), 'visible'=>Yii::app()->user->checkAccess('action_combustible_parametros')),
 	
 );
 ?>

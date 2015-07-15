@@ -2,18 +2,7 @@
 .badge {
     margin-left: 3px;
 }
-.crugepanel {
-    background-color: #FFF;
-    border: 1px dotted #AAA;
-    border-radius: 1px;
-    box-shadow: 3px 3px 5px #EEE;
-    display: block;
-    margin-top: 10px;
-    padding: 10px;
-}
-#menu {
-    font-size: 15px;
-}
+
 #etiqueta{
 	width: auto;
 	float: left;
@@ -59,9 +48,9 @@ $this->menu=array(
 	
 	array('label'=>'<div id="menu"><strong>Órdenes de neumaticos</strong></div>'),
 	
-	array('label'=>'      Crear orden de neumaticos', 'url'=>array('crearOrdenNeumaticos')),
-	array('label'=>'      Ver órdenes abiertas <span class="badge badge-'.$this->Color($abiertas).' pull-right">'.$abiertas.'</span>', 'url'=>array('verOrdenes')),
-	array('label'=>'      Órdenes listas para cerrar <span class="badge badge-'.$this->Color($listas).' pull-right">'.$listas.'</span>', 'url'=>array('cerrarOrdenes')),
+	array('label'=>'      Crear orden de neumaticos', 'url'=>array('neumaticos/crearOrdenNeumaticos')  , 'visible'=>Yii::app()->user->checkAccess('action_neumaticos_crearordenneumaticos')),
+	array('label'=>'      Ver órdenes abiertas <span class="badge badge-'.$this->Color($abiertas).' pull-right">'.$abiertas.'</span>', 'url'=>array('neumaticos/verOrdenes')),
+	array('label'=>'      Órdenes listas para cerrar <span class="badge badge-'.$this->Color($listas).' pull-right">'.$listas.'</span>', 'url'=>array('neumaticos/cerrarOrdenes')  , 'visible'=>Yii::app()->user->checkAccess('action_neumaticos_cerrarordenes')),
 	
 	
 		
@@ -72,8 +61,8 @@ $this->menu=array(
 	array('label'=>'      Histórico de gastos', 'url'=>array('historicoGastos')),
 	array('label'=>'      Histórico de ordenes', 'url'=>array('historicoOrdenes')),
 	
-	array('label'=>'<div id="menu"><strong>Administrar</strong></div>' , 'visible'=>'1'),
-	array('label'=>'      Parámetros y datos maestros', 'url'=>array('neumaticos/parametros')),
+	array('label'=>'<div id="menu"><strong>Administrar</strong></div>', 'visible'=>Yii::app()->user->checkAccess('action_neumaticos_parametros')),
+	array('label'=>'      Parámetros y datos maestros', 'url'=>array('neumaticos/parametros'), 'visible'=>Yii::app()->user->checkAccess('action_neumaticos_parametros')),
 );?>
 
 <div id="averia"class='crugepanel user-assignments-role-list'>

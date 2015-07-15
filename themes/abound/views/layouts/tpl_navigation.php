@@ -106,15 +106,18 @@ else{
                             'visible' => !Yii::app()->user->isGuest),
 							array('label' => 'Indicadores', 'url' => array('/indicadores/ind'), 
                             'visible' => !Yii::app()->user->isGuest),
-							
-							array('label' => 'Mi cuenta<span class="caret"></span>', 'url' => '#', 
+							 
+                             array('label' => 'Salir', 'url' => Yii::app()->user->ui->logoutUrl, 
+                            'visible' => !Yii::app()->user->isSuperAdmin and !Yii::app()->user->isGuest,),
+
+							/*array('label' => 'Mi cuenta<span class="caret"></span>', 'url' => '#', 
                             'visible' => !Yii::app()->user->isSuperAdmin and !Yii::app()->user->isGuest,
                             'itemOptions' => array('class' => 'dropdown', 'tabindex' => "-1"), 
                             'linkOptions' => array('class' => 'dropdown-toggle', 'data-toggle' => "dropdown"),
                             'items' => array(
-								array('label' => 'Perfil', 'url' => array('/cruge/ui/editprofile')),                            
+								//array('label' => 'Perfil', 'url' => array('/cruge/ui/editprofile')),                            
 								array('label' => 'Cerrar Sesión ', 'url' => Yii::app()->user->ui->logoutUrl, 'visible' => !Yii::app()->user->isGuest),
-                            )),
+                            )),*/
 							
                         //Menu de Super Admin
                         array('label' => 'Sistema<span class="caret"></span>', 'url' => '#', 

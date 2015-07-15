@@ -68,10 +68,10 @@ return array(
             //   "CONTROL AVANZADO DE SESIONES Y EVENTOS DE AUTENTICACION Y SESION"
             //
 				// ejemplo:
-           		'afterLoginUrl'=>array('/site/index'),  //( !!! no olvidar el slash inicial / )
+           	 'afterLoginUrl'=>array('/site/index'),  //( !!! no olvidar el slash inicial / )
             //		'afterLogoutUrl'=>array('/site/page','view'=>'about'),
             //
-				'afterLoginUrl' => null,
+			//'afterLoginUrl' => null,
             'afterLogoutUrl' => array('/cruge/ui/login'),
             'afterSessionExpiredUrl' => array('/cruge/ui/login'),
             // manejo del layout con cruge.

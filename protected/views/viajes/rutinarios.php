@@ -17,9 +17,10 @@ $this->menu=array(
 	array('label'=>'      Histórico de viajes rutinarios', 'url'=>array('viajes/historicoRutinarios')),
 	array('label'=>'      Histórico de viajes especiales', 'url'=>array('viajes/historicoEspeciales')),
 	array('label'=>'      Histórico de conductores', 'url'=>array('empleados/historicoConductores')),
-	array('label'=>'<div id="menu"><strong>Administrar</strong></div>' , 'visible'=>'1'),
-	array('label'=>'      Parámetros y datos maestros', 'url'=>array('viajes/parametros')),
-	array('label'=>'      Gestión de conductores', 'url'=>array('empleados/conductores')),
+	
+    array('label'=>'<div id="menu"><strong>Administrar</strong></div>' , 'visible'=>Yii::app()->user->checkAccess('action_viajes_parametros') or Yii::app()->user->checkAccess('action_empleados_conductores')),
+    array('label'=>'      Parámetros y datos maestros', 'url'=>array('viajes/parametros'), 'visible'=>Yii::app()->user->checkAccess('action_viajes_parametros')),
+    array('label'=>'      Gestión de conductores', 'url'=>array('empleados/conductores'), 'visible'=>Yii::app()->user->checkAccess('action_empleados_conductores')),
 );
 ?>
 <div class='crugepanel user-assignments-detail'>	

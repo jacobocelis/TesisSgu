@@ -11,7 +11,7 @@ $this->menu=array(
 	//array('label'=>'Crear usuario', 'url'=>array('/cruge/ui/usermanagementcreate')),
 	array('label'=>'Administrar usuarios', 'url'=>array('/cruge/ui/usermanagementadmin')),
 	array('label'=>'Sesiones de usuarios', 'url'=>array('/cruge/ui/sessionadmin')),
-	array('label'=>'Perfil', 'url'=>array('/cruge/ui/editprofile')),
+	array('label'=>'Perfil', 'url'=>array('/cruge/ui/editprofile'), 'visible'=>Yii::app()->user->isSuperAdmin),
 	array('label'=>'Bitácora', 'url'=>array('/cruge/ui/bitacora')),
 );
 ?>
@@ -57,7 +57,8 @@ $this->menu=array(
 			<?php echo $form->textField($model,'email'); ?>
 			<?php echo $form->error($model,'email'); ?>
 		</div>
-		<div class='col' style="display:none">
+		
+		<div class='col' style=" ">
 			
 			
 			<?php echo $form->labelEx($model,'newPassword'); ?>
@@ -80,6 +81,7 @@ $this->menu=array(
 					'error'=>new CJavaScriptExpression('fnError'))
 			); ?>
 		</div>
+
 	</div>
 	
 	<div class='field-group'>

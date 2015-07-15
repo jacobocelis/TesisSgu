@@ -12,7 +12,7 @@ $this->menu=array(
 	array('label'=>'<div id="menu"><strong>Opciones de grupo</strong></div>' , 'visible'=>'1'),
 	array('label'=>'Ver detalle', 'url'=>array('grupo/view', 'id'=>$model->id)),
 	array('label'=>'Editar grupo', 'url'=>array('update', 'id'=>$model->id)),
-	array('label'=>'Eliminar grupo', 'url'=>'' ,'linkOptions'=>array('confirm'=>'¿Confirma que desea eliminar el grupo?','onclick'=>'eliminar('.$model->id.')','style'=>'cursor:pointer;background:#FFE0E1;')),
+	array('label'=>'Eliminar grupo', 'url'=>'' ,'linkOptions'=>array('confirm'=>'¿Confirma que desea eliminar el grupo?','onclick'=>'eliminar('.$model->id.')','style'=>'cursor:pointer;background:#FFE0E1;'), 'visible'=>Yii::app()->user->checkAccess('action_grupo_delete')),
 	//array('label'=>'Administrar grupo', 'url'=>array('admin')),
 );
 ?>

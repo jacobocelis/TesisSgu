@@ -301,11 +301,10 @@ ul, ol {
 	array('label'=>'<div id="menu"><strong>Histórial</strong></div>' , 'visible'=>'1'),
 	array('label'=>'      Histórico de repuestos', 'url'=>array('repuesto/historico')),
 
-	array('label'=>'<div id="menu"><strong>Administrar</strong></div>' , 'visible'=>'1'),
-	array('label'=>'      Parámetros y datos maestros', 'url'=>array('repuesto/parametros')),
-	array('label'=>'      Coordinadores', 'url'=>array('empleados/coordinadores')),
-	array('label'=>'      Proveedores', 'url'=>array('empleados/proveedores')),
-	
+	array('label'=>'<div id="menu"><strong>Administrar</strong></div>' , 'visible'=>Yii::app()->user->checkAccess('action_repuesto_parametros') or Yii::app()->user->checkAccess('action_empleados_coordinadores') or Yii::app()->user->checkAccess('action_empleados_proveedores')),
+	array('label'=>'      Parámetros y datos maestros', 'url'=>array('repuesto/parametros'), 'visible'=>Yii::app()->user->checkAccess('action_repuesto_parametros')),
+	array('label'=>'      Coordinadores', 'url'=>array('empleados/coordinadores'), 'visible'=>Yii::app()->user->checkAccess('action_empleados_coordinadores')),
+	array('label'=>'      Proveedores', 'url'=>array('empleados/proveedores'), 'visible'=>Yii::app()->user->checkAccess('action_empleados_proveedores')),	
 	);
 
 ?>

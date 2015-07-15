@@ -4,7 +4,7 @@
 
 $this->breadcrumbs=array(
 	'Mantenimiento correctivo'=>array('mttoCorrectivo/index'),
-	'Histórico de mantenimientos',
+	'Histórico de mejoras',
 );
 $this->menu=array(
 	array('label'=>'<div id="menu"><strong>Opciones de mantenimiento</strong></div>'),
@@ -16,9 +16,9 @@ $this->menu=array(
 	
 	
 	array('label'=>'<div id="menu"><strong>Órdenes de mantenimiento</strong></div>'),
-	array('label'=>'      Crear orden de mantenimiento', 'url'=>array('crearOrdenCorrectiva')),
+	array('label'=>'      Crear orden de mantenimiento', 'url'=>array('crearOrdenCorrectiva'), 'visible'=>Yii::app()->user->checkAccess('action_mttocorrectivo_crearordencorrectiva')),
 	array('label'=>'      Ver órdenes abiertas <span class="badge badge-'.$Colorabi.' pull-right">'.$abiertas.'</span>', 'url'=>array('verOrdenes')),
-	array('label'=>'      Órdenes listas para cerrar <span class="badge badge-'.$Colorli.' pull-right">'.$listas.'</span>', 'url'=>array('cerrarOrdenes')),
+	array('label'=>'      Órdenes listas para cerrar <span class="badge badge-'.$Colorli.' pull-right">'.$listas.'</span>', 'url'=>array('mttoCorrectivo/cerrarOrdenes'), 'visible'=>Yii::app()->user->checkAccess('action_mttocorrectivo_cerrarorden')),
 	 
 	
 	array('label'=>'<div id="menu"><strong>Historial</strong></div>'),
@@ -28,7 +28,7 @@ $this->menu=array(
 	array('label'=>'      Histórico de ordenes', 'url'=>array('historicoOrdenes')),
 
 	array('label'=>'<div id="menu"><strong>Administrar</strong></div>' , 'visible'=>'1'),
-	array('label'=>'      Parámetros y datos maestros', 'url'=>array('mttoCorrectivo/parametros')),
+	array('label'=>'      Parámetros y datos maestros', 'url'=>array('mttoCorrectivo/parametros'), 'visible'=>Yii::app()->user->checkAccess('action_mttocorrectivo_parametros')),
 );
 ?>
 <div class='crugepanel user-assignments-role-list'>

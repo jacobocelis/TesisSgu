@@ -14,7 +14,7 @@ $this->menu=array(
 	array('label'=>'Agregar fotografía', 'url'=>array('foto/index', 'id'=>$vehiculo->id)),
 	
 	//array('label'=>'<div id="menu"><strong>Operaciones</strong></div>' , 'visible'=>'1'),
-	array('label'=>'Desincorporar vehiculo', 'url'=>array('vehiculo/desincorporar', 'id'=>$vehiculo->id) ,'linkOptions'=>array('style'=>'cursor:pointer;cursor:pointer;background:#FFE0E1;')),
+	array('label'=>'Desincorporar vehiculo', 'url'=>array('vehiculo/desincorporar', 'id'=>$vehiculo->id) ,'linkOptions'=>array('style'=>'cursor:pointer;cursor:pointer;background:#FFE0E1;') , 'visible'=>Yii::app()->user->checkAccess('action_vehiculo_desincorporar')),
 	
 	//array('label'=>'Eliminar vehiculo', 'url'=>'' ,'linkOptions'=>array('confirm'=>'¿Confirma que desea eliminar el vehiculo?','onclick'=>'eliminar('.$model->id.')','style'=>'cursor:pointer;background:#FFE0E1;')),
 );

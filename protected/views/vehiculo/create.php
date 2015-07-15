@@ -17,10 +17,9 @@ $this->menu=array(
 	array('label'=>'      Ver grupos', 'url'=>array('grupo/index')),
 	array('label'=>'      Crear grupo', 'url'=>array('grupo/create')),
 
-	array('label'=>'<div id="menu"><strong>Administrar datos maestros</strong></div>' , 'visible'=>'1'),
-	array('label'=>'      Vehiculos', 'url'=>array('vehiculo/parametros')),
-	array('label'=>'      Grupos', 'url'=>array('grupo/parametros')));
-
+	array('label'=>'<div id="menu"><strong>Administrar datos maestros</strong></div>' , 'visible'=>Yii::app()->user->checkAccess('action_vehiculo_parametros')),
+	array('label'=>'      Vehiculos', 'url'=>array('vehiculo/parametros') , 'visible'=>Yii::app()->user->checkAccess('action_vehiculo_parametros')),
+	array('label'=>'      Grupos', 'url'=>array('grupo/parametros') , 'visible'=>Yii::app()->user->checkAccess('action_grupo_parametros')));
 if(!isset($grupo))
 	$grupo=0;
 ?>
