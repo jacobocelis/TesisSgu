@@ -50,7 +50,7 @@ class AsigchasisController extends Controller
             $model->attributes=$_POST['Asigchasis'];
             if($model->save()){
                 if (Yii::app()->request->isAjaxRequest){
-					$vehiculos=Vehiculo::model()->findAll("idgrupo=".$model->idgrupo."");
+					$vehiculos=Vehiculo::model()->findAll("idgrupo='".$model->idgrupo."' and activo <> 0");
 					$historico=new Historicocaucho;
 					$ruedas=Yii::app()->db->createCommand("select dr.idcaucho, dr.id from sgu_detalleRueda dr, sgu_detalleEje de, sgu_chasis c where 		dr.iddetalleEje=de.id and de.idchasis=c.id and de.idchasis=".$model->idchasis."")->queryAll();
 					$repuesto=Yii::app()->db->createCommand("select * from sgu_chasis c, sgu_cauchoRep cr where c.id=cr.idchasis and cr.idchasis=".$model->idchasis."")->queryRow();

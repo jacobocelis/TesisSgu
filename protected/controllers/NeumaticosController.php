@@ -496,7 +496,7 @@ class NeumaticosController extends Controller
 		$montados=array();
 		$rep=array();
 		$veh=array();
-		$idveh=Vehiculo::model()->findAll();
+		$idveh=Vehiculo::model()->findAll('activo<>0');
 		$reposicionDias=Parametro::model()->findByAttributes(array('nombre'=>'alertaCambioCauchos'));
 		
 		if(isset($_POST["Vehiculo"])){
@@ -673,11 +673,6 @@ class NeumaticosController extends Controller
 			'totalVehMont'=>$totalVehMont,
 			'actividadesMont'=>$actividadesMont,
 			'idvehiculoMont'=>$idvehiculoMont,
-			
-			
-			
-			
-			
 			'orden'=>$orden,
 			'factura'=>$factura,
 			'totFactura'=>$totFactura,

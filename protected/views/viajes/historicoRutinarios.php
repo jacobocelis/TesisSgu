@@ -29,7 +29,7 @@ $this->menu=array(
 <i>Por # de unidad: </i>
 
 		<?php $model=new Vehiculo;	
-		echo CHtml::dropDownList('vehiculo',$model,CHtml::listData(Vehiculo::model()->findAll(),'id','numeroUnidad'),
+		echo CHtml::dropDownList('vehiculo',$model,CHtml::listData(Vehiculo::model()->findAll('activo<>0'),'id','numeroUnidad'),
               array('empty' => 'Todos',
                    'style'=>"width:80px;")); 
         ?>

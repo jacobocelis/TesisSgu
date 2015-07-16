@@ -98,7 +98,7 @@ $this->beginWidget('zii.widgets.jui.CJuiDialog', array( // the dialog
 		Buscar vehiculo por #:  
 		<?php $model=new Vehiculo;
 		echo CHtml::submitButton('Buscar',array("id"=>"boton","style"=>"float:right;margin-top:2px;margin-left:10px;")); 
-		echo $form->dropDownList($model,'id',CHtml::listData(Vehiculo::model()->findAll(),'id','numeroUnidad'),array('prompt'=>'Todos ','style' => 'width:100px;float:right')); ?>
+		echo $form->dropDownList($model,'id',CHtml::listData(Vehiculo::model()->findAll('activo<>0'),'id','numeroUnidad'),array('prompt'=>'Todos ','style' => 'width:100px;float:right')); ?>
 		
 <?php $this->endWidget(); ?>
 </div>

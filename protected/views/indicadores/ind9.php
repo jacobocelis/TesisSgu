@@ -104,9 +104,9 @@ $this->menu=array(
                 'text'=> 'Días',
             )
         )),
-    /*'tooltip'=> array(
-        'pointFormat'=> "Valoe: <b>{point.y:.1f} días</b>",
-    ),*/
+    'tooltip'=> array(
+        'pointFormat'=> "Valor: <b>{point.y:.1f} días</b>",
+    ),
     'xAxis'=> array(
         array(
           
@@ -122,7 +122,7 @@ $this->menu=array(
     'series'=> array(
         array(
             'type'=> 'column',
-            'data'=> array_map('IntVal', $TMEF_grupos),
+            'data'=> array_map('FloatVal', $TMEF_grupos),
             'name'=>'días',
 
         )),
@@ -177,9 +177,9 @@ $this->menu=array(
                 'text'=> 'Días',
             )
         )),
-    /*'tooltip'=> array(
-        'pointFormat'=> "Valoe: <b>{point.y:.1f} días</b>",
-    ),*/
+    'tooltip'=> array(
+        'pointFormat'=> "Valor: <b>{point.y:.1f} días</b>",
+    ),
     'xAxis'=> array(
         array(
           
@@ -195,7 +195,7 @@ $this->menu=array(
     'series'=> array(
         array(
             'type'=> 'column',
-            'data'=> array_map('IntVal', $TMEF_vehiculos),
+            'data'=> array_map('FloatVal', $TMEF_vehiculos),
             'name'=>'días',
 
         )),

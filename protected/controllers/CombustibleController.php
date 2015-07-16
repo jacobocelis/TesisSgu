@@ -173,7 +173,7 @@ class CombustibleController extends Controller
 	public function actionIndex()
 	{
 		$reposicionDias=Parametro::model()->findByAttributes(array('nombre'=>'alertaReposicion'));
-		$consulta=Yii::app()->db->createCommand("select * from(select * from sgu_historicoCombustible  order by fecha desc) historicoCombustible  group by idvehiculo")->queryAll();
+		$consulta=Yii::app()->db->createCommand("select * from(select * from sgu_historicoCombustible  order by fecha desc) historicoCombustible where idvehiculo in (select id from sgu_vehiculo where activo <>0) group by idvehiculo")->queryAll();
 		//file_put_contents('prueba.txt',print_r($model=new Historicocombustible,true));
 		//$dataProvider=new CArrayDataProvider($consulta, array('keyField'=>'id'));
 		//,array('criteria'=>array('group'=>'t.idvehiculo','order'=>'fecha desc'))

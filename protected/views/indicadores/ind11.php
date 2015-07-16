@@ -133,7 +133,7 @@ $this->menu=array(
     'series'=> array(
         array(
             'type'=> 'column',
-            'data'=> array_map('IntVal',$dispPeriodo),
+            'data'=> array_map('FloatVal',$dispPeriodo),
             'name'=>'días',
 
         )),

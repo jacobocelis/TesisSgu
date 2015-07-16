@@ -239,6 +239,7 @@ class UiController extends Controller
 
         if (isset($_POST[CrugeUtil::config()->postNameMappings['CrugeLogon']])) {
             $model->attributes = $_POST[CrugeUtil::config()->postNameMappings['CrugeLogon']];
+            //file_put_contents("borrar.txt", print_r($model,true));
             if ($model->validate()) {
                 if(Yii::app()->crugemailer->sendPasswordTo($model->getModel())){
 					 Yii::app()->user->setFlash(

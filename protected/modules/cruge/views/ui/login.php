@@ -41,7 +41,7 @@ if(Yii::app()->user->hasFlash('loginflash')): ?>
 		<?php echo $form->error($model,'rememberMe'); ?>
 	</div>
 		<div class="row">
-			<?php /*echo Yii::app()->user->ui->passwordRecoveryLink; */?>
+			<?php echo Yii::app()->user->ui->passwordRecoveryLink; ?>
 		</div>
 	<div class="row buttons">
 		<?php Yii::app()->user->ui->tbutton("Ingresar"); ?>

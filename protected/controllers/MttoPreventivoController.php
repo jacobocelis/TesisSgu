@@ -337,7 +337,7 @@ class MttoPreventivoController extends Controller
 		}
 	}
 	public function actionCalendario(){
-	$act=Yii::app()->db->createCommand("select concat('Unidad ',v.numeroUnidad ,'=>',am.actividad,' Prioridad: ',p.prioridad) as titulo, a.proximoFecha, a.id, a.idestatus, a.fechaRealizada from sgu_prioridad p,sgu_actividadMtto am, sgu_actividades a, sgu_vehiculo v where a.idvehiculo=v.id and  am.id=a.idactividadMtto and a.idprioridad=p.id")->queryAll();
+	$act=Yii::app()->db->createCommand("select concat('Unidad ',v.numeroUnidad ,'=>',am.actividad,' Prioridad: ',p.prioridad) as titulo, a.proximoFecha, a.id, a.idestatus, a.fechaRealizada from sgu_prioridad p,sgu_actividadMtto am, sgu_actividades a, sgu_vehiculo v where a.idvehiculo=v.id and v.activo<>0 and am.id=a.idactividadMtto and a.idprioridad=p.id")->queryAll();
     $tot=count($act);
 	for($i=0;$i<$tot;$i++){
 	if($act[$i]["idestatus"]==3){
@@ -625,8 +625,8 @@ class MttoPreventivoController extends Controller
 				$vehiculo=Actividades::model()->find(array("condition"=>"id = '".$actividades[$i]["idactividades"]."'"));
 				/*cambio estatus a activo al cerrar la orden*/
 					$veh = Vehiculo::model()->findByPk($vehiculo["idvehiculo"]);
-					$vehiculo->activo=1;
-					$vehiculo->update();
+					$veh->activo=1;
+					$veh->update();
 					$veh->setEstado(1,'Mantenimiento preventivo realizado');
 
 				/**/
@@ -710,12 +710,20 @@ class MttoPreventivoController extends Controller
 		$fac=Yii::app()->db->createCommand('select total from sgu_factura where idordenMtto="'.$id.'"')->queryRow();
 		$data=$dataProvider->getData();
 		for($i=0;$i<count($data);$i++){
+			$tieneRecursos=Actividadrecurso::model()->findAll("idactividades= '".$data[$i]['id']."' ");
 			//if($data[$i]["fechaRealizada"]=="0000-01-01" or $data[$i]["kmRealizada"]==-1){
 			if($data[$i]["idestatus"]<>3 or (isset($fac["total"]) and $fac["total"]==0)) {
 				$estado=0;
 				break;
 			}else	
 				$estado=1;
+			foreach ($tieneRecursos as $recurso) {
+				if($recurso["costoUnitario"]<=0){
+					$estado=0;
+					break;
+				}
+					
+			}
 		}
 		  echo CJSON::encode(array(
                 'estado'=>$estado, 
@@ -824,7 +832,7 @@ class MttoPreventivoController extends Controller
             $model->attributes=$_POST['Actividadesgrupo'];
 		   if($model->validate()){
 		   	if(isset($_POST["activi"])){
-		   		$totalVeh=Yii::app()->db->createCommand('select id from sgu_vehiculo where idgrupo="'.$id.'"')->queryAll();
+		   		$totalVeh=Yii::app()->db->createCommand('select id from sgu_vehiculo where idgrupo="'.$id.'" and activo <>0')->queryAll();
 				$total=count($totalVeh);
 		   		$ids = explode(",", $_POST["activi"]);
 		   			foreach ($ids as $idact) {

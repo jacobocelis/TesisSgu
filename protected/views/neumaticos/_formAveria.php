@@ -58,7 +58,7 @@
 	<i>Buscar vehiculo por #:  </i>
 		<?php 
 		//echo CHtml::submitButton('Buscar',array("id"=>"boton","style"=>"float:right;margin-top:2px;margin-left:10px;")); 
-		echo $form->dropDownList(new Vehiculo,'id',CHtml::listData(Vehiculo::model()->findAll(),'id','numeroUnidad'),array('id'=>'lista','prompt'=>'Seleccione ','style' => 'width:110px;float:right')); ?>
+		echo $form->dropDownList(new Vehiculo,'id',CHtml::listData(Vehiculo::model()->findAll('activo<>0'),'id','numeroUnidad'),array('id'=>'lista','prompt'=>'Seleccione ','style' => 'width:110px;float:right')); ?>
 	</div>
 	<?php echo $form->error($model,'idhistoricoCaucho'); ?>
 	<?php $this->widget('zii.widgets.grid.CGridView', array(
