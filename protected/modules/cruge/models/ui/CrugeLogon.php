@@ -26,7 +26,7 @@ class CrugeLogon extends CFormModel
     public $rememberMe;
     private $_model;
     private $_identity;
-
+    
     public function getModel()
     {
         return $this->_model;
@@ -41,6 +41,7 @@ class CrugeLogon extends CFormModel
             array('rememberMe', 'boolean', 'on' => 'login'),
             array('password', 'required', 'on' => 'login'),
             array('password', 'length', 'max' => 20, 'on' => 'login'),
+            
             array(
                 'verifyCode',
                 'captcha',
@@ -50,14 +51,29 @@ class CrugeLogon extends CFormModel
             array('password', 'authenticate', 'on' => 'login'),
         );
     }
-
+    public function verificarEnLDAP($user){
+        $server="192.168.0.50";
+        $cn="profread";
+        $pwd="UnLectP013.";
+        $dominio="dc=unet,dc=edu,dc=ve";
+        $ds=ldap_connect($server); 
+        $dn="cn=".$cn.",dc=unet,dc=edu,dc=ve";
+        $bind=ldap_bind($ds,$dn,$pwd);      
+            if($bind)
+                $busqueda = ldap_search($ds,$dominio,"uid=".$user);
+                if($busqueda)
+                    return 1;
+                else
+                    return 0;
+    }
     public function user_exists_validator($arg, $param)
     {
         // carga el usuario por su username o su email,
         // ademas de cargar sus campos de perfil (flag=true)
         $this->_model = Yii::app()->user->um->loadUser($this[$arg], true);
         if ($this->_model == null) {
-            $this->addError($arg, CrugeTranslator::t('logon', 'User not found'));
+            if(!$this->verificarEnLDAP($this[$arg]))
+                $this->addError($arg, CrugeTranslator::t('logon', 'El usuario no existe'));
         }
     }
 

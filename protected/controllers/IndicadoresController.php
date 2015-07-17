@@ -45,11 +45,7 @@ class IndicadoresController extends Controller
 		);
 	}
 
-	/**
-	 * Displays a particular model.
-	 * @param integer $id the ID of the model to be displayed
-	 */
-	/*array("unidad","diasMtto","diasDisponible",diasMes)*/
+	
 	public function diasMtto($unidad,$fecha,$tipo){
 		$diasMtto=0;
 		$diasDisponible=0;
@@ -377,49 +373,43 @@ class IndicadoresController extends Controller
 		return $TMPR_total;
 	}
 	public function tiempoMtto($uni,$desde,$hasta){
-		$preventivo=0;
-		$correctivo=0;
-		$totalCo= Yii::app()->db->createCommand('select * from sgu_reporteFalla where idvehiculo="'.$uni["id"].'" and idestatus=3')->queryAll();
-		foreach ($totalCo as $co) {
-			if($co['fechaFalla']<=$desde and $co['fechaRealizada']>=$hasta){
-				
-				$correctivo+=abs((strtotime($hasta)-strtotime($desde))/86400)+1;
-			}
-			/**/
-			if($co['fechaFalla']<$desde and $co['fechaRealizada']<$hasta and $desde<$co['fechaRealizada']){
-				
-				$correctivo+=abs((strtotime($co['fechaRealizada'])-strtotime($desde))/86400)+1;
+		$periodo=array();
+		$vector=array();
+		$incremento=$desde;
+		$actPreventivas= Actividades::model()->findAll('idvehiculo="'.$uni["id"].'" and idestatus=3');
+		$actCorrectivas= Reportefalla::model()->findAll('idvehiculo="'.$uni["id"].'" and idestatus=3');
+		$i=0;
+		while(!($incremento>$hasta)){
+			array_push($periodo, $incremento);
+			
+			foreach ($actPreventivas as $pre) {
+				$incrementoPre=$pre["fechaComenzada"];
+				while (!($incrementoPre>$pre["fechaRealizada"])) {
+					
+					if($periodo[$i]==$incrementoPre){
+						$vector[$i]=$incremento;
+					}
+					$incrementoPre = strtotime ( '+1 day' , strtotime ( $incrementoPre ) ) ;
+					$incrementoPre = date ( 'Y-m-d' , $incrementoPre );
+				}
 			}
 
-			if($co['fechaFalla']>=$desde and $co['fechaRealizada']<$hasta){
-				 //echo $a;
-				$correctivo+=abs((strtotime($co['fechaRealizada'])-strtotime($co['fechaFalla']))/86400)+1;
+			foreach ($actCorrectivas as $cor) {
+				$incrementoCor=$cor["fechaFalla"];
+				while (!($incrementoCor>$cor["fechaRealizada"])) {
+					
+					if($periodo[$i]==$incrementoCor){
+						$vector[$i]=$incremento;
+					}
+					$incrementoCor = strtotime ( '+1 day' , strtotime ( $incrementoCor ) ) ;
+					$incrementoCor = date ( 'Y-m-d' , $incrementoCor );
+				}
 			}
-			if($co['fechaFalla']>$desde and $co['fechaRealizada']>=$hasta and $hasta>=$co['fechaFalla']){
-				
-				$correctivo+=abs((strtotime($hasta)-strtotime($co['fechaFalla']))/86400)+1;
-			}
-			if($co['fechaFalla']>$desde and $co['fechaRealizada']<$hasta){
-				 //echo $a;
-				//$correctivo+=abs((strtotime($co['fechaRealizada'])-strtotime($desde))/86400)+1;
-			}
+			$incremento = strtotime ( '+1 day' , strtotime ( $incremento ) ) ;
+			$incremento = date ( 'Y-m-d' , $incremento );
+			$i++;
 		}
-		$totalPre= Yii::app()->db->createCommand('select * from sgu_actividades where idvehiculo="'.$uni["id"].'" and idestatus=3')->queryAll();
-		foreach ($totalPre as $pre) {
-			if($pre['fechaComenzada']<=$desde and $pre['fechaRealizada']>=$hasta){
-				$preventivo+=abs((strtotime($hasta)-strtotime($desde))/86400)+1;
-			}
-			if($pre['fechaComenzada']>=$desde and $pre['fechaRealizada']<$hasta){
-				$preventivo+=abs((strtotime($pre['fechaRealizada'])-strtotime($pre['fechaComenzada']))/86400)+1;
-			}
-			if($pre['fechaComenzada']>$desde and $pre['fechaRealizada']>=$hasta){
-				$preventivo+=abs((strtotime($hasta)-strtotime($pre['fechaComenzada']))/86400)+1;
-			}
-			if($pre['fechaComenzada']>$desde and $pre['fechaRealizada']<$hasta){
-				$preventivo+=abs((strtotime($pre['fechaRealizada'])-strtotime($desde))/86400)+1;
-			}
-		}
-		return ($preventivo+$correctivo);
+		return count($vector);
 	}
 	public function getDISP($desde,$hasta,$unidades,$diasOperacion,$vehiculo=null){
 		$numerador=0;
@@ -671,6 +661,7 @@ class IndicadoresController extends Controller
 	 		'TMEF_total'=>$this->getTMEF($desde,$hasta,$unidades,$diasOperacion),
 	 		'TMPR_total'=>$this->getTMPR($desde,$hasta),
 	 		'dispPeriodo'=>$dispMensualVeh,
+	 		//'prueba'=>$this->mtto($unidades[1],$desde,$hasta)
 	 	));
 	}
 	public function actionInd5(){

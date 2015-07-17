@@ -78,6 +78,14 @@ $this->widget('zii.widgets.grid.CGridView', array(
 				),
 				array(
 					'type'=>'raw',
+					'header'=>'Fecha comienzo',
+					'name'=>'fechaComenzada',
+					'value'=>'date("d/m/Y",strtotime($data->fechaComenzada))',
+					'htmlOptions'=>array('style'=>' text-align:center;'),
+					'headerHtmlOptions'=>array('style'=>'font-size: 5px;line-height: 15px;'),
+				),
+				array(
+					'type'=>'raw',
 					'header'=>'Fecha realizada',
 					'name'=>'fechaRealizada',
 					'value'=>'date("d/m/Y",strtotime($data->fechaRealizada))',

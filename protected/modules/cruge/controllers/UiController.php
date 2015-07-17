@@ -239,22 +239,26 @@ class UiController extends Controller
 
         if (isset($_POST[CrugeUtil::config()->postNameMappings['CrugeLogon']])) {
             $model->attributes = $_POST[CrugeUtil::config()->postNameMappings['CrugeLogon']];
-            //file_put_contents("borrar.txt", print_r($model,true));
+            
             if ($model->validate()) {
-                if(Yii::app()->crugemailer->sendPasswordTo($model->getModel())){
+
+				
+				if($model->username<>"admin"){
 					 Yii::app()->user->setFlash(
                     'pwdrecflash'
                     ,
-						CrugeTranslator::t('Su contraseña ha sido enviada a su correo')
+						CrugeTranslator::t('Opción válida sólo para el administrador de sistema')
+
 					);
-				}
-				else{
-					 Yii::app()->user->setFlash(
+				}else{
+                    Yii::app()->crugemailer->sendPasswordTo($model->getModel());
+                     Yii::app()->user->setFlash(
                     'pwdrecflash'
                     ,
-						CrugeTranslator::t('Su contraseña no pudo ser enviada por un problema en el servidor..  intente más tarde')
-					);
-				}
+                        CrugeTranslator::t('Su contraseña ha sido enviada a su correo')
+                    );
+
+                }
 					
                
             }

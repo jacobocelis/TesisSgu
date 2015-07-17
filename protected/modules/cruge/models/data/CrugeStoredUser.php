@@ -24,7 +24,7 @@ class CrugeStoredUser extends CActiveRecord implements ICrugeStoredUser
     public $_fields = array();
     public $deleteConfirmation; // required on 'delete'
     public $newPassword; // declararlo 'safe'
-
+        public $password_repeat;
     // terminos y condiciones, caso registration,
     public $terminosYCondiciones;
     public $verifyCode;
@@ -316,6 +316,8 @@ class CrugeStoredUser extends CActiveRecord implements ICrugeStoredUser
                 'allowEmpty' => true,
                 'message' => CrugeTranslator::t('logon', 'Security code is invalid'),
             ),
+            array('newPassword','safe'),
+            array('password_repeat','compare','compareAttribute'=>'newPassword','message' => 'Las contraseñas deben coincidir'),
             array('iduser, username, email, state, logondate', 'safe', 'on' => 'search'),
 			//array('password_repeat', 'required', 'on'=>'create'),
 			//array('password_repeat','safe'),

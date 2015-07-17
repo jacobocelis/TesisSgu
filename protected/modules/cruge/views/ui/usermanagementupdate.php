@@ -40,13 +40,13 @@ $this->menu=array(
 
 		<h6><?php echo ucfirst(CrugeTranslator::t("datos de la cuenta"));?></h6>
 		<?php if($boolIsUserManagement){?>
-		<div class='col'>
+		<div class='col textfield-readonly' >
 			<?php echo $form->labelEx($model,'username'); ?>
 			<?php echo $form->textField($model,'username'); ?>
 			<?php echo $form->error($model,'username'); ?>
 		</div>
 		<?php }else{?>
-		<div class='col'>
+		<div class='col textfield-readonly' style="display:none ">
 			<?php echo $form->labelEx($model,'username'); ?>
 			<?php echo $form->textField($model,'username'); ?>
 			<?php echo $form->error($model,'username'); ?>
@@ -58,12 +58,19 @@ $this->menu=array(
 			<?php echo $form->error($model,'email'); ?>
 		</div>
 		
+		<?php if(!$boolIsUserManagement) {?>
 		<div class='col' style=" ">
 			
 			
 			<?php echo $form->labelEx($model,'newPassword'); ?>
-			<?php echo $form->textField($model,'newPassword',array('size'=>10)); ?>
+			<?php echo $form->passwordField($model,'newPassword',array('size'=>10)); ?>
 			<?php echo $form->error($model,'newPassword'); ?>
+
+	
+		<?php echo $form->labelEx($model,'password_repeat'); ?>
+		<?php echo $form->passwordField($model,'password_repeat',array('size'=>20,'maxlength'=>20)); ?>
+		<?php echo $form->error($model,'password_repeat'); ?>
+	
 			<script>
 				function fnSuccess(data){
 					$('#CrugeStoredUser_newPassword').val(data);
@@ -72,16 +79,10 @@ $this->menu=array(
 					alert("error: "+e.responseText);
 				}
 			</script>
-			<?php 
-			if($boolIsUserManagement)
-			echo CHtml::ajaxbutton(
-				CrugeTranslator::t("Generar una nueva clave")
-				,Yii::app()->user->ui->ajaxGenerateNewPasswordUrl
-				,array('success'=>new CJavaScriptExpression('fnSuccess'),
-					'error'=>new CJavaScriptExpression('fnError'))
-			); ?>
+			 
+ 
 		</div>
-
+		<?php }?>
 	</div>
 	
 	<div class='field-group'>
@@ -95,7 +96,7 @@ $this->menu=array(
 					)
 			); ?>
 		</div>
-		<div class='col textfield-readonly'>
+		<div class='col textfield-readonly' style='display:none'>
 			<?php echo $form->labelEx($model,'actdate'); ?>
 			<?php echo $form->textField($model,'actdate'
 					,array(
